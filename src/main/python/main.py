@@ -1,7 +1,4 @@
-import os
+from .connection import OnlineConnection, OfflineConnection
 
-url = os.environ["URL"]
-key = os.environ["KEY"]
-
-print(url)
-print(key)
+con = OnlineConnection()
+con.play()
