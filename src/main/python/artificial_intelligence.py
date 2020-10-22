@@ -2,7 +2,7 @@ import random
 
 from abc import ABCMeta, abstractmethod
 
-from .action_enum import ActionEnum
+from src.main.python.model.action import Action
 
 
 class ArtificialIntelligence(metaclass=ABCMeta):
@@ -16,4 +16,4 @@ class ChillowAI(ArtificialIntelligence):
 
     def create_next_action(self, data):
         # Todo: Implement
-        return random.choice(list(ActionEnum))
+        return random.choice(list(Action))
