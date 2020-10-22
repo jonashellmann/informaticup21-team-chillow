@@ -27,9 +27,9 @@ class OnlineConnection(Connection):
     def play(self):
         async with websockets.connect(f"{self.url}?key={self.key}") as websocket:
             while True:
-                data = await websocket.recv()
-                data_object = self.data_loader.load(data)
-                action = self.ai.create_next_action(data_object)
+                game_data = await websocket.recv()
+                game = self.data_loader.load(game_data)
+                action = self.ai.create_next_action(game)
                 data_out = self.data_writer.write(action)
                 await websocket.send(data_out)
 

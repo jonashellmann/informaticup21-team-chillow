@@ -12,7 +12,7 @@ class DataLoader(metaclass=ABCMeta):
 
 class JSONDataLoader(DataLoader):
 
-    def load(self, data):
-        json_data = json.loads(data)
+    def load(self, game_data):
+        json_data = json.loads(game_data)
         # Todo: Fill json data in Objects and return them
         return None
