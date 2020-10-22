@@ -21,6 +21,3 @@ class Game:
 
         if len(self.cells[0]) != self.width:
             raise AttributeError("Cell array does not fit to game width")
-
-    def has_player(self, player: Player) -> bool:
-        return self.players.count(player) > 0
