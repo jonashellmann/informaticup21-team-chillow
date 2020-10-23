@@ -1,8 +1,9 @@
 from dataclasses import dataclass, field
 from datetime import datetime
+from typing import List
 
-from .player import Player
-from .cell import Cell
+from model.player import Player
+from model.cell import Cell
 
 
 @dataclass
@@ -10,8 +11,8 @@ class Game:
 
     width: int
     height: int
-    cells: list[list[Cell]]
-    players: list[Player]
+    cells: List[List[Cell]]
+    players: List[Player]
     _you: int = field(repr=False)
     you: Player = field(init=False)
     running: bool

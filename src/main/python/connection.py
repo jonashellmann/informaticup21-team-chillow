@@ -1,11 +1,12 @@
 import os
 import websockets
+import asyncio
 
 from abc import ABCMeta, abstractmethod
 
-from .data_loader import JSONDataLoader
-from .data_writer import JSONDataWriter
-from .artificial_intelligence import ChillowAI
+from data_loader import JSONDataLoader
+from data_writer import JSONDataWriter
+from artificial_intelligence import ChillowAI
 
 
 class Connection(metaclass=ABCMeta):
@@ -25,6 +26,9 @@ class OnlineConnection(Connection):
         self.ai = ChillowAI()
 
     def play(self):
+        asyncio.get_event_loop().run_until_complete(self._play())
+
+    async def _play(self):
         async with websockets.connect(f"{self.url}?key={self.key}") as websocket:
             while True:
                 game_data = await websocket.recv()
