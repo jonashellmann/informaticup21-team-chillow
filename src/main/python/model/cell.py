@@ -6,4 +6,4 @@ from .player import Player
 @dataclass
 class Cell:
 
-    player: Player
+    player: Player = None
