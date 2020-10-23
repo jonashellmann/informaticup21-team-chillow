@@ -2,8 +2,8 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import List
 
-from .player import Player
-from .cell import Cell
+from model.player import Player
+from model.cell import Cell
 
 
 @dataclass

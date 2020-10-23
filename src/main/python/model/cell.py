@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from .player import Player
+from model.player import Player
 
 
 @dataclass

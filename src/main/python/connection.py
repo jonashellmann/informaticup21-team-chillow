@@ -4,9 +4,9 @@ import asyncio
 
 from abc import ABCMeta, abstractmethod
 
-from .data_loader import JSONDataLoader
-from .data_writer import JSONDataWriter
-from .artificial_intelligence import ChillowAI
+from data_loader import JSONDataLoader
+from data_writer import JSONDataWriter
+from artificial_intelligence import ChillowAI
 
 
 class Connection(metaclass=ABCMeta):

@@ -1,7 +1,7 @@
 import json
 
 from abc import ABCMeta, abstractmethod
-from src.main.python.model.action import Action
+from model.action import Action
 
 
 class DataWriter(metaclass=ABCMeta):

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from .direction import Direction
+from model.direction import Direction
 
 
 @dataclass
