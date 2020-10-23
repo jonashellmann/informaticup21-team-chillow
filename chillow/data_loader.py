@@ -25,7 +25,7 @@ class JSONDataLoader(DataLoader):
 
         for json_player in json_data["players"]:
             player = Player(
-                json_player,
+                int(json_player),
                 int(json_data["players"][json_player]["x"]),
                 int(json_data["players"][json_player]["y"]),
                 Direction[json_data["players"][json_player]["direction"]],
@@ -41,7 +41,7 @@ class JSONDataLoader(DataLoader):
                 cell = Cell()
                 if json_cell != "0":
                     for player in players:
-                        if player.id == str(json_cell):
+                        if player.id == json_cell:
                             cell = Cell(player)
                 row.append(cell)
             cells.append(row)

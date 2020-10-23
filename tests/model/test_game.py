@@ -11,11 +11,11 @@ class GameTest(unittest.TestCase):
 
     def test_examines_your_player_after_creation(self):
         cells = [[Cell(), Cell()], [Cell(), Cell()]]
-        player = Player("2", 0, 0, Direction.up, 0, True, "Name 2")
+        player = Player(2, 0, 0, Direction.up, 0, True, "Name 2")
         players = [
-            Player("1", 0, 0, Direction.up, 0, True, "Name 1"),
+            Player(1, 0, 0, Direction.up, 0, True, "Name 1"),
             player,
-            Player("3", 0, 0, Direction.up, 0, True, "Name 3")
+            Player(3, 0, 0, Direction.up, 0, True, "Name 3")
         ]
         game = Game(2, 2, cells, players, 2, True, datetime.now())
 
@@ -24,8 +24,8 @@ class GameTest(unittest.TestCase):
     def test_raise_exception_on_non_existing_own_player(self):
         cells = [[Cell(), Cell()], [Cell(), Cell()]]
         players = [
-            Player("1", 0, 0, Direction.up, 0, True, "Name 1"),
-            Player("3", 0, 0, Direction.up, 0, True, "Name 3")
+            Player(1, 0, 0, Direction.up, 0, True, "Name 1"),
+            Player(3, 0, 0, Direction.up, 0, True, "Name 3")
         ]
 
         with self.assertRaises(AttributeError):

@@ -6,7 +6,7 @@ from chillow.model.direction import Direction
 @dataclass
 class Player:
 
-    id: str
+    id: int
     x: int
     y: int
     direction: Direction

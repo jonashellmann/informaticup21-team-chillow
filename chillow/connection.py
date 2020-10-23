@@ -49,8 +49,8 @@ class OfflineConnection(Connection):
 
     def play(self):
         #  ToDo: Implement
-        player1 = Player("1", 10, 10, Direction.down, 1, True, "Player 1")
-        player2 = Player("2", 30, 30, Direction.up, 1, True, "Player 2")
+        player1 = Player(1, 10, 10, Direction.down, 1, True, "Player 1")
+        player2 = Player(2, 30, 30, Direction.up, 1, True, "Player 2")
         players = [player1, player2]
         field_size = 40
         cells = [[Cell() for i in range(field_size)] for j in range(field_size)]
