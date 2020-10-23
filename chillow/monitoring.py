@@ -3,6 +3,7 @@ import random as rnd
 if "DEACTIVATE_PYGAME" not in os.environ or not os.environ["DEACTIVATE_PYGAME"]:
     import pygame
 
+from tabulate import tabulate
 from abc import ABCMeta, abstractmethod
 
 from chillow.model.game import Game
@@ -23,10 +24,9 @@ class ConsoleMonitoring(Monitoring):
     def update(self, game: Game):
         print("Round : ", self.round)
         self.round += 1
-        for i in range(len(game.cells)):
-            for j in range(len(game.cells[i])):
-                print(game.cells[i][j].get_player_id(), end=' ')
-            print()
+
+        table_player_ids = [[' ' if cell.get_player_id() == 0 else cell.get_player_id() for cell in cells] for cells in game.cells]
+        print(tabulate(table_player_ids, tablefmt="presto"))
 
 
 class GraphicalMonitoring(Monitoring):
