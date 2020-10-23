@@ -56,11 +56,10 @@ class OfflineConnection(Connection):
         cells[30][30] = 2
         game = Game(field_size, field_size, cells, players, "1", True, None)
 
-
-        if "DEACTIVATE_PYGAME" in os.environ and os.environ["DEACTIVATE_PYGAME"]:
-            monitoring = ConsoleMonitoring()
-        else:
+        if "DEACTIVATE_PYGAME" not in os.environ or not os.environ["DEACTIVATE_PYGAME"]:
             monitoring = GraphicalMonitoring(game)
+        else:
+            monitoring = ConsoleMonitoring()
 
         while True:
             monitoring.update(game)

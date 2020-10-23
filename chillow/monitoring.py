@@ -1,6 +1,6 @@
 import os
 import random as rnd
-if "DEACTIVATE_PYGAME" not in os.environ:
+if "DEACTIVATE_PYGAME" not in os.environ or not os.environ["DEACTIVATE_PYGAME"]:
     import pygame
 
 from abc import ABCMeta, abstractmethod
