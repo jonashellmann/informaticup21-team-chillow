@@ -13,10 +13,10 @@ class Game:
     height: int
     cells: List[List[Cell]]
     players: List[Player]
-    you: str
+    _you: int = field(repr=False)
+    you: Player = field(init=False)
     running: bool
     deadline: datetime
-    _you: Player = None
 
     def __post_init__(self):
         if len(self.cells) != self.height:
@@ -26,9 +26,9 @@ class Game:
             raise AttributeError("Cell array does not fit to game width")
 
         for player in self.players:
-            if str(player.id) == self.you:
-                self._you = player
+            if player.id == str(self._you):
+                self.you = player
                 break
 
-        if self._you is None:
+        if self.you is None:
             raise AttributeError("Your own player was not found in the game")
