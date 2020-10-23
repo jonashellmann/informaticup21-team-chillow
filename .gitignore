@@ -1,5 +1,5 @@
 /.idea
 /venv
 /.pybuilder
-/__pycache__
+__pycache__/
 /target
