@@ -1,12 +1,19 @@
-import os
-import websockets
 import asyncio
+import os
+import time
+from datetime import datetime
+import websockets
 
 from abc import ABCMeta, abstractmethod
 
 from chillow.data_loader import JSONDataLoader
 from chillow.data_writer import JSONDataWriter
 from chillow.artificial_intelligence import ChillowAI
+from chillow.monitoring import GraphicalMonitoring, ConsoleMonitoring
+from chillow.model.game import Game
+from chillow.model.player import Player
+from chillow.model.direction import Direction
+from chillow.model.cell import Cell
 
 
 class Connection(metaclass=ABCMeta):
@@ -42,4 +49,20 @@ class OfflineConnection(Connection):
 
     def play(self):
         #  ToDo: Implement
-        pass
+        player1 = Player("1", 10, 10, Direction.down, 1, True, "Player 1")
+        player2 = Player("2", 30, 30, Direction.up, 1, True, "Player 2")
+        players = [player1, player2]
+        field_size = 40
+        cells = [[Cell() for i in range(field_size)] for j in range(field_size)]
+        cells[10][10] = Cell(player1)
+        cells[30][30] = Cell(player2)
+        game = Game(field_size, field_size, cells, players, 1, True, datetime.now())
+
+        if "DEACTIVATE_PYGAME" not in os.environ or not os.environ["DEACTIVATE_PYGAME"]:
+            monitoring = GraphicalMonitoring(game)
+        else:
+            monitoring = ConsoleMonitoring()
+
+        while True:
+            monitoring.update(game)
+            time.sleep(1)  # Sleep for 1 sek
