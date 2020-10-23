@@ -1,10 +1,10 @@
 FROM python
 
-COPY . /code
-WORKDIR /code
+COPY . /app
+WORKDIR /app
 
 RUN python -m pip install --upgrade pip
 RUN pip install poetry
-RUN poetry install
+RUN poetry export -f requirements.txt | pip install -r /dev/stdin
 
 CMD [ "python", "./main.py"]
