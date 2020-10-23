@@ -4,4 +4,5 @@ COPY . /code
 WORKDIR /code
 
 RUN pip install -r requirements.txt
-CMD [ "python", "./src/main/python/main.py" ]
+RUN python -m pip install --upgrade pip
+CMD [ "python", "./src/main/python/main.py"]
