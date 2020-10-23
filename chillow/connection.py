@@ -60,7 +60,6 @@ class OfflineConnection(Connection):
         console_monitoring = ConsoleMonitoring()
 
         while True:
-            # Waiting for changes in the game-object to update
             graphical_monitoring.update(game)
             console_monitoring.update(game)
             time.sleep(1)  # Sleep for 1 sek
