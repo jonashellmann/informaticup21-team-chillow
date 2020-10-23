@@ -24,7 +24,7 @@ class OnlineConnection(Connection):
         self.data_writer = JSONDataWriter()
         self.ai = ChillowAI()
 
-    def play(self):
+    async def play(self):
         async with websockets.connect(f"{self.url}?key={self.key}") as websocket:
             while True:
                 game_data = await websocket.recv()
