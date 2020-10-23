@@ -25,7 +25,7 @@ class ConsoleMonitoring(Monitoring):
         self.round += 1
         for i in range(len(game.cells)):
             for j in range(len(game.cells[i])):
-                print(game.cells[i][j], end=' ')
+                print(game.cells[i][j].get_player_id(), end=' ')
             print()
 
 
