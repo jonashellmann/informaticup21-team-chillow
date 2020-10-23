@@ -1,7 +1,12 @@
 import json
+import iso8601
 
 from abc import ABCMeta, abstractmethod
+
+from chillow.model.direction import Direction
 from chillow.model.game import Game
+from chillow.model.player import Player
+from chillow.model.cell import Cell
 
 
 class DataLoader(metaclass=ABCMeta):
@@ -15,5 +20,38 @@ class JSONDataLoader(DataLoader):
 
     def load(self, game_data: str) -> Game:
         json_data = json.loads(game_data)
-        # Todo: Fill json data in Objects and return them
-        return None
+        players = []
+        cells = []
+
+        for json_player in json_data["players"]:
+            player = Player(
+                json_player,
+                int(json_data["players"][json_player]["x"]),
+                int(json_data["players"][json_player]["y"]),
+                Direction[json_data["players"][json_player]["direction"]],
+                int(json_data["players"][json_player]["speed"]),
+                json_data["players"][json_player]["active"],
+                json_data["players"][json_player]["name"] if "name" in json_data["players"][json_player] else ""
+            )
+            players.append(player)
+
+        for json_row in json_data["cells"]:
+            row = []
+            for json_cell in json_row:
+                cell = Cell()
+                if json_cell != "0":
+                    for player in players:
+                        if player.id == str(json_cell):
+                            cell = Cell(player)
+                row.append(cell)
+            cells.append(row)
+
+        return Game(
+            int(json_data["width"]),
+            int(json_data["height"]),
+            cells,
+            players,
+            int(json_data["you"]),
+            json_data["running"],
+            iso8601.parse_date(json_data["deadline"])
+        )
