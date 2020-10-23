@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from chillow.player import Player
+from chillow.model.player import Player
 
 
 @dataclass

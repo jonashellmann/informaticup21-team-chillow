@@ -1,7 +1,7 @@
 import json
 
 from abc import ABCMeta, abstractmethod
-from chillow.game import Game
+from chillow.model.game import Game
 
 
 class DataLoader(metaclass=ABCMeta):

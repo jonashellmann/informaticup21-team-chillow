@@ -1,10 +1,10 @@
 import unittest
 from datetime import datetime
 
-from chillow.cell import Cell
-from chillow.direction import Direction
-from chillow.game import Game
-from chillow.player import Player
+from chillow.model.cell import Cell
+from chillow.model.direction import Direction
+from chillow.model.game import Game
+from chillow.model.player import Player
 
 
 class GameTest(unittest.TestCase):

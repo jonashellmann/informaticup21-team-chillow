@@ -1,6 +1,6 @@
 import unittest
 
-from chillow.action import Action
+from chillow.model.action import Action
 
 
 class ActionTest(unittest.TestCase):

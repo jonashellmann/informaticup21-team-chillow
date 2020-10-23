@@ -1,6 +1,6 @@
 import unittest
 
-from chillow.direction import Direction
+from chillow.model.direction import Direction
 
 
 class DirectionTest(unittest.TestCase):
