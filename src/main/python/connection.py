@@ -25,7 +25,7 @@ class OnlineConnection(Connection):
         self.data_writer = JSONDataWriter()
         self.ai = ChillowAI()
 
-    async def play(self):
+    def play(self):
         asyncio.get_event_loop().run_until_complete(self._play())
 
     async def _play(self):
