@@ -4,6 +4,7 @@ COPY . /code
 WORKDIR /code
 
 RUN python -m pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install poetry
+RUN poetry install
 
-CMD [ "python", "./src/main/python/main.py"]
+CMD [ "python", "./main.py"]

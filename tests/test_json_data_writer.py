@@ -1,7 +1,7 @@
 import unittest
 
-from src.main.python.data_writer import JSONDataWriter
-from src.main.python.model.action import Action
+from chillow.data_writer import JSONDataWriter
+from chillow.action import Action
 
 
 class JSONDataWriterTest(unittest.TestCase):

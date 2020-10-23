@@ -1,7 +1,7 @@
 import json
 
 from abc import ABCMeta, abstractmethod
-from model.action import Action
+from chillow.action import Action
 
 
 class DataWriter(metaclass=ABCMeta):

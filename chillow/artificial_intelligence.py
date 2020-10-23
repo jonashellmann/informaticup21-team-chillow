@@ -2,8 +2,8 @@ import random
 
 from abc import ABCMeta, abstractmethod
 
-from model.action import Action
-from model.game import Game
+from chillow.action import Action
+from chillow.game import Game
 
 
 class ArtificialIntelligence(metaclass=ABCMeta):
