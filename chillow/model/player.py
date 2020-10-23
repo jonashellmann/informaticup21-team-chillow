@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from model.direction import Direction
+from chillow.model.direction import Direction
 
 
 @dataclass

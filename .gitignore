@@ -3,3 +3,4 @@
 /.pybuilder
 __pycache__/
 /target
+/dist
