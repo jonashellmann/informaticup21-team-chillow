@@ -1,5 +1,7 @@
-import pygame
+import os
 import random as rnd
+if "DEACTIVATE_PYGAME" not in os.environ:
+    import pygame
 
 from abc import ABCMeta, abstractmethod
 
@@ -28,7 +30,6 @@ class ConsoleMonitoring(Monitoring):
 
 
 class GraphicalMonitoring(Monitoring):
-
     def __init__(self, game: Game):
         self.rectangleSize = 10
         self.game = game

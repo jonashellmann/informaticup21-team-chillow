@@ -56,10 +56,12 @@ class OfflineConnection(Connection):
         cells[30][30] = 2
         game = Game(field_size, field_size, cells, players, "1", True, None)
 
-        graphical_monitoring = GraphicalMonitoring(game)
-        console_monitoring = ConsoleMonitoring()
+
+        if "DEACTIVATE_PYGAME" in os.environ and os.environ["DEACTIVATE_PYGAME"]:
+            monitoring = ConsoleMonitoring()
+        else:
+            monitoring = GraphicalMonitoring(game)
 
         while True:
-            graphical_monitoring.update(game)
-            console_monitoring.update(game)
+            monitoring.update(game)
             time.sleep(1)  # Sleep for 1 sek
