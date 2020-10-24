@@ -23,9 +23,9 @@ class JSONDataWriterTest(unittest.TestCase):
 
     def test_convert_json_to_game(self):
         json = self.testfile.read()
-        player1 = Player("1", 2, 2, Direction.up, 1, True, "")
-        player2 = Player("2", 1, 0, Direction.down, 3, True, "")
-        player3 = Player("3", 4, 3, Direction.left, 2, False, "Name 3")
+        player1 = Player(1, 2, 2, Direction.up, 1, True, "")
+        player2 = Player(2, 1, 0, Direction.down, 3, True, "")
+        player3 = Player(3, 4, 3, Direction.left, 2, False, "Name 3")
         players = [player1, player2, player3]
         cells = [
             [Cell(), Cell(player2), Cell(), Cell(), Cell()],

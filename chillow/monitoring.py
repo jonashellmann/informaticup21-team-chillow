@@ -25,7 +25,8 @@ class ConsoleMonitoring(Monitoring):
         print("Round : ", self.round)
         self.round += 1
 
-        table_player_ids = [[' ' if cell.get_player_id() == 0 else cell.get_player_id() for cell in cells] for cells in game.cells]
+        table_player_ids =\
+            [[' ' if cell.get_player_id() == 0 else cell.get_player_id() for cell in cells] for cells in game.cells]
         print(tabulate(table_player_ids, tablefmt="presto"))
 
 
@@ -46,7 +47,7 @@ class GraphicalMonitoring(Monitoring):
         self.screen.fill((0, 0, 0))
         for row in range(game.width):
             for col in range(game.height):
-                pygame.draw.rect(self.screen, self.playerColors[int(game.cells[row][col].get_player_id())],
+                pygame.draw.rect(self.screen, self.playerColors[game.cells[row][col].get_player_id()],
                                  (row * self.rectangleSize,
                                   col * self.rectangleSize,
                                   self.rectangleSize,

@@ -26,7 +26,7 @@ class Game:
             raise AttributeError("Cell array does not fit to game width")
 
         for player in self.players:
-            if player.id == str(self._you):
+            if player.id == self._you:
                 self.you = player
                 break
 
