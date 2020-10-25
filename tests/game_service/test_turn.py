@@ -19,7 +19,7 @@ class TurnTest(unittest.TestCase):
         self.sut = Turn(self.players, date)
 
     def test_turn_not_ended(self):
-        self.assertEquals(self.sut.action(self.player1), False)
+        self.assertEqual(self.sut.action(self.player1), False)
 
     def test_turn_should_be_ended(self):
         self.sut.action(self.player1)
