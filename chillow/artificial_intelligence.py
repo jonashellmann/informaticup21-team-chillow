@@ -8,6 +8,9 @@ from chillow.model.game import Game
 
 class ArtificialIntelligence(metaclass=ABCMeta):
 
+    def __init__(self, game: Game):
+        self.game = game
+
     @abstractmethod
     def create_next_action(self, game: Game) -> Action:
         raise NotImplementedError
@@ -16,5 +19,6 @@ class ArtificialIntelligence(metaclass=ABCMeta):
 class ChillowAI(ArtificialIntelligence):
 
     def create_next_action(self, game: Game) -> Action:
+        self.game = game
         # Todo: Implement
         return random.choice(list(Action))
