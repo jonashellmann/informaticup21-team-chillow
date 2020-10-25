@@ -54,8 +54,8 @@ class OfflineConnection(Connection):
         players = [player1, player2]
         field_size = 40
         cells = [[Cell() for i in range(field_size)] for j in range(field_size)]
-        cells[10][10] = Cell(player1)
-        cells[30][30] = Cell(player2)
+        cells[10][10] = Cell([player1])
+        cells[30][30] = Cell([player2])
         game = Game(field_size, field_size, cells, players, 1, True, datetime.now())
 
         if "DEACTIVATE_PYGAME" not in os.environ or not os.environ["DEACTIVATE_PYGAME"]:

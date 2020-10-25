@@ -16,10 +16,10 @@ class TurnTest(unittest.TestCase):
         player3 = Player(3, 4, 3, Direction.left, 2, False, "Name 3")
         players = [player1, player2, player3]
         cells = [
-            [Cell(), Cell(player2), Cell(), Cell(), Cell()],
+            [Cell(), Cell([player2]), Cell(), Cell(), Cell()],
             [Cell(), Cell(), Cell(), Cell(), Cell()],
-            [Cell(), Cell(player1), Cell(player1), Cell(), Cell()],
-            [Cell(), Cell(), Cell(), Cell(), Cell(player3)]
+            [Cell(), Cell([player1]), Cell([player1]), Cell(), Cell()],
+            [Cell(), Cell(), Cell(), Cell(), Cell([player3])]
         ]
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
         self.game = Game(5, 4, cells, players, 2, True, time)

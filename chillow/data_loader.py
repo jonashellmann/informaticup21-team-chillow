@@ -42,7 +42,7 @@ class JSONDataLoader(DataLoader):
                 if json_cell != "0":
                     for player in players:
                         if player.id == json_cell:
-                            cell = Cell(player)
+                            cell = Cell([player])
                 row.append(cell)
             cells.append(row)
 

@@ -6,7 +6,7 @@ from chillow.model.player import Player
 @dataclass
 class Cell:
 
-    player: Player = None
+    players: Player = None  # List of players
 
     def get_player_id(self) -> int:
-        return 0 if self.player is None else self.player.id
+        return 0 if self.players is None else self.players.id
