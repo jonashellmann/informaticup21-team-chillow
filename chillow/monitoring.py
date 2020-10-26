@@ -69,8 +69,8 @@ class GraphicalMonitoring(Monitoring):
         for row in range(game.width):
             for col in range(game.height):
                 pygame.draw.rect(self.screen, self.playerColors[game.cells[row][col].get_player_id()],
-                                 (row * self.rectangleSize,
-                                  col * self.rectangleSize,
+                                 (col * self.rectangleSize,
+                                  row * self.rectangleSize,
                                   self.rectangleSize,
                                   self.rectangleSize))
         pygame.display.update()

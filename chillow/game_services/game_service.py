@@ -14,16 +14,33 @@ class GameService:
     def __init__(self, game: Game):
         self.game = game
         self.turn = Turn(self.game.players, game.deadline)
+        self.visited_cells_by_player = {}
 
     def do_action(self, player: Player, action: Action):
         try:
-            self.turn.action(player)
-            self.get_and_visit_cells(player, action)
+            new_turn = self.turn.action(player)
+            self.visited_cells_by_player[player.id] = self.get_and_visit_cells(player, action)
+
+            if new_turn:
+                self.check_and_set_died_players()
+
         except (MultipleActionByPlayerError, DeadLineExceededException, PlayerSpeedNotInRangeException,
                 PlayerOutsidePlaygroundException) as exc:
             player.active = False
 
         self.game.running = self.is_game_running()
+
+    def check_and_set_died_players(self):
+        for row in range(len(self.game.cells)):
+            for col in range(len(self.game.cells[row])):
+                cell = self.game.cells[row][col]
+                if cell.players is not None and len(cell.players) > 1:
+                    for player_id, cells in self.visited_cells_by_player.items():
+                        for cell in cells:
+                            if cell[0] == row and cell[1] == col:
+                                for player in self.game.players:
+                                    if player_id == player.id:
+                                        player.active = False
 
     def is_game_running(self) -> bool:
         active_player_ctr = 0
@@ -62,8 +79,8 @@ class GameService:
             else:
                 self.game.cells[x][y].players.append(player)
 
-        player.x = visited_cells[-1][1]
-        player.y = visited_cells[-1][0]
+        player.x = visited_cells[-1][0]
+        player.y = visited_cells[-1][1]
 
         if player.x not in range(self.game.width) or player.y not in range(self.game.height):
             raise PlayerOutsidePlaygroundException(player)
