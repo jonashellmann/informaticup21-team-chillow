@@ -12,9 +12,9 @@ from chillow.model.player import Player
 class TurnTest(unittest.TestCase):
 
     def setUp(self):
-        self.player1 = Player(1, 2, 2, Direction.up, 1, True, "")
+        self.player1 = Player(1, 2, 2, Direction.down, 1, True, "")
         self.player2 = Player(2, 1, 0, Direction.down, 3, True, "")
-        self.player3 = Player(3, 4, 3, Direction.left, 2, False, "Name 3")
+        self.player3 = Player(3, 4, 3, Direction.right, 2, False, "Name 3")
         players = [self.player1, self.player2, self.player3]
         cells = [[Cell() for i in range(40)] for j in range(40)]
         cells[10][10] = Cell([self.player1])
@@ -48,3 +48,51 @@ class TurnTest(unittest.TestCase):
 
     def test_player_should_loose_if_he_exceeded_time_limit(self):
         pass
+
+    def test_visited_cells_should_be_calculated_correctly_turn_1_to_5(self):
+        self.player1.direction = Direction.down
+        self.player1.speed = 1
+        self.game.cells[10][10] = Cell([self.player1])
+        self.player2.direction = Direction.up
+        self.player2.speed = 3
+        self.game.cells[10][30] = Cell([self.player2])
+        self.player3.direction = Direction.right
+        self.player3.speed = 5
+        self.game.cells[30][10] = Cell([self.player3])
+        visited_cells_p1_expected = [(11, 10), (12, 10)]
+        visited_cells_p2_expected = [(9, 30), (8, 30)]
+        visited_cells_p3_expected = [(29, 10)]
+
+        visited_cells_p1 = self.sut.get_and_visit_cells(self.player1, Action.speed_up)
+        visited_cells_p2 = self.sut.get_and_visit_cells(self.player1, Action.slow_down)
+        visited_cells_p3 = self.sut.get_and_visit_cells(self.player1, Action.turn_left)
+
+        self.assertEqual(visited_cells_p1_expected, visited_cells_p1)
+        self.assertEqual(visited_cells_p2_expected, visited_cells_p2)
+        self.assertEqual(visited_cells_p3_expected, visited_cells_p3)
+        self.assertTrue(self.player1 in self.game.cells[11][10])
+        self.assertTrue(self.player1 in self.game.cells[12][10])
+        self.assertTrue(self.player2 in self.game.cells[9][30])
+        self.assertTrue(self.player2 in self.game.cells[8][30])
+        self.assertTrue(self.player3 in self.game.cells[29][10])
+
+    def test_visited_cells_should_be_calculated_correctly_turn_6(self):
+        self.sut.turn.turn_ctr = 12  # 6, 12, 18 should all work
+        self.player1.direction = Direction.down
+        self.player1.speed = 1
+        self.game.cells[10][10] = Cell([self.player1])
+        self.player2.direction = Direction.up
+        self.player2.speed = 5
+        self.game.cells[10][30] = Cell([self.player2])
+        visited_cells_p1_expected = [(11, 10), (12, 10)]
+        visited_cells_p2_expected = [(9, 30), (4, 30)]
+
+        visited_cells_p1 = self.sut.get_and_visit_cells(self.player1, Action.speed_up)
+        visited_cells_p2 = self.sut.get_and_visit_cells(self.player1, Action.speed_up)
+
+        self.assertEqual(visited_cells_p1_expected, visited_cells_p1)
+        self.assertEqual(visited_cells_p2_expected, visited_cells_p2)
+        self.assertTrue(self.player1 in self.game.cells[11][10])
+        self.assertTrue(self.player1 in self.game.cells[12][10])
+        self.assertTrue(self.player2 in self.game.cells[9][30])
+        self.assertTrue(self.player2 in self.game.cells[4][30])

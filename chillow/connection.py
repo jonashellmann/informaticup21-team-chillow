@@ -9,6 +9,7 @@ from abc import ABCMeta, abstractmethod
 from chillow.data_loader import JSONDataLoader
 from chillow.data_writer import JSONDataWriter
 from chillow.artificial_intelligence import ChillowAI
+from chillow.game_services.game_service import GameService
 from chillow.monitoring import GraphicalMonitoring, ConsoleMonitoring
 from chillow.model.game import Game
 from chillow.model.player import Player
@@ -63,6 +64,8 @@ class OfflineConnection(Connection):
         else:
             monitoring = ConsoleMonitoring()
 
-        while True:
+        game_service = GameService(game)
+
+        while game.running:
             monitoring.update(game)
             time.sleep(1)  # Sleep for 1 sek
