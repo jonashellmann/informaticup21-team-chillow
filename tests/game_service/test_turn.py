@@ -38,14 +38,16 @@ class TurnTest(unittest.TestCase):
         with self.assertRaises(ex.DeadLineExceededException): self.sut.action(self.player1)
 
     def test_new_turn_should_be_initialized(self):
+        old_turn_ctr = self.sut.turn_ctr
         self.sut.action(self.player1)
         self.sut.action(self.player2)
 
-        self.assertEquals(len(self.sut.playersWithPendingAction), len(self.sut.players))
+        self.assertEqual(len(self.sut.playersWithPendingAction), len(self.sut.players))
+        self.assertEqual(old_turn_ctr + 1, self.sut.turn_ctr)
 
     def test_inactive_players_should_not_be_added_to_pending_actions(self):
         self.player1.active = False
         self.sut.action(self.player1)
         self.sut.action(self.player2)
 
-        self.assertEquals(len(self.sut.playersWithPendingAction), len(self.sut.players) - 1)
+        self.assertEqual(len(self.sut.playersWithPendingAction), len(self.sut.players) - 1)

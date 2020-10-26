@@ -11,6 +11,7 @@ class Turn:
         self.players = players.copy()
         self.playersWithPendingAction = players.copy()
         self.deadline = deadline
+        self.turn_ctr = 1
 
     def action(self, player):
         d = datetime.now()
@@ -21,6 +22,7 @@ class Turn:
         else:
             self.playersWithPendingAction.remove(player)
             if len(self.playersWithPendingAction) == 0:
+                self.turn_ctr += 1
                 for player in self.players:
                     if player.active:
                         self.playersWithPendingAction.append(player)
