@@ -16,7 +16,7 @@ class Turn:
     def action(self, player):
         if player not in self.playersWithPendingAction:
             raise ex.MultipleActionByPlayerError(player)
-        #elif self.deadline < datetime.now():
+        # elif self.deadline < datetime.now():
         #    raise ex.DeadLineExceededException(player)
         else:
             self.playersWithPendingAction.remove(player)

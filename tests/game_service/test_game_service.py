@@ -9,7 +9,7 @@ from chillow.model.game import Game
 from chillow.model.player import Player
 
 
-class TurnTest(unittest.TestCase):
+class GameTest(unittest.TestCase):
 
     def setUp(self):
         self.player1 = Player(1, 10, 10, Direction.down, 1, True, "")
@@ -45,10 +45,6 @@ class TurnTest(unittest.TestCase):
         self.sut.do_action(self.player1, Action.speed_up)
 
         self.assertEqual(self.player1.active, True)
-
-    def test_player_should_loose_if_he_exceeded_time_limit(self):
-        # ToDo: Not rly needed for offline-version
-        pass
 
     def test_visited_cells_should_be_calculated_correctly_turn_1_to_5(self):
         self.player1.direction = Direction.down

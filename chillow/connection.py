@@ -51,7 +51,6 @@ class OnlineConnection(Connection):
 class OfflineConnection(Connection):
 
     def play(self):
-        #  ToDo: Implement
         player1 = Player(1, 10, 10, Direction.down, 1, True, "Human Player 1")
         player2 = Player(2, 30, 30, Direction.up, 1, True, "AI Player 1")
         players = [player1, player2]

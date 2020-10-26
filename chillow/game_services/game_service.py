@@ -25,7 +25,7 @@ class GameService:
                 self.check_and_set_died_players()
 
         except (MultipleActionByPlayerError, DeadLineExceededException, PlayerSpeedNotInRangeException,
-                PlayerOutsidePlaygroundException) as exc:
+                PlayerOutsidePlaygroundException):
             player.active = False
 
         self.game.running = self.is_game_running()

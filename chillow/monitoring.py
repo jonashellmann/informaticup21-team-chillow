@@ -33,22 +33,24 @@ class ConsoleMonitoring(Monitoring):
         print("Round : ", self.round)
         self.round += 1
 
-        table_player_ids =\
+        table_player_ids = \
             [[' ' if cell.get_player_id() == 0 else cell.get_player_id() for cell in cells] for cells in game.cells]
         print(tabulate(table_player_ids, tablefmt="presto"))
 
     def create_next_action(self) -> Action:
-        input = input("Input Next Aktcion(l:turn_left, r:turn_right, u:speed_up, d:slow_down, n:change_nothing): ")
-        if input == "u":
+        user_input = input("Input Next Action (l:turn_left, r:turn_right, u:speed_up, d:slow_down, "
+                           "n:change_nothing): ")
+        if user_input == "u":
             return Action.speed_up
-        elif input == "d":
+        elif user_input == "d":
             return Action.slow_down
-        elif input == "r":
+        elif user_input == "r":
             return Action.turn_right
-        elif input == "l":
+        elif user_input == "l":
             return Action.turn_left
-        elif input == "n":
+        elif user_input == "n":
             return Action.change_nothing
+
 
 class GraphicalMonitoring(Monitoring):
     def __init__(self, game: Game):
