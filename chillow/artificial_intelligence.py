@@ -11,7 +11,6 @@ class ArtificialIntelligence(metaclass=ABCMeta):
 
     def __init__(self, player: Player):
         self.player = player
-        self.game = None
 
     @abstractmethod
     def create_next_action(self, game: Game) -> Action:
@@ -21,7 +20,6 @@ class ArtificialIntelligence(metaclass=ABCMeta):
 class ChillowAI(ArtificialIntelligence):
 
     def create_next_action(self, game: Game) -> Action:
-        self.game = game
         # Todo: Implement
         return Action.change_nothing
         # return random.choice(list(Action))
