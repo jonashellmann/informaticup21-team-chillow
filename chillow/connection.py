@@ -1,7 +1,6 @@
 import asyncio
 import os
-import time
-from datetime import datetime
+from datetime import datetime, timedelta
 import websockets
 
 from abc import ABCMeta, abstractmethod
@@ -9,6 +8,7 @@ from abc import ABCMeta, abstractmethod
 from chillow.data_loader import JSONDataLoader
 from chillow.data_writer import JSONDataWriter
 from chillow.artificial_intelligence import ChillowAI
+from chillow.game_services.game_service import GameService
 from chillow.monitoring import GraphicalMonitoring, ConsoleMonitoring
 from chillow.model.game import Game
 from chillow.model.player import Player
@@ -30,7 +30,7 @@ class OnlineConnection(Connection):
         self.key = os.environ["KEY"]
         self.data_loader = JSONDataLoader()
         self.data_writer = JSONDataWriter()
-        self.ai = ChillowAI()
+        self.ai = None
 
     def play(self):
         asyncio.get_event_loop().run_until_complete(self._play())
@@ -40,6 +40,8 @@ class OnlineConnection(Connection):
             while True:
                 game_data = await websocket.recv()
                 game = self.data_loader.load(game_data)
+                if self.ai is None:
+                    self.ai = ChillowAI(game.you)
                 action = self.ai.create_next_action(game)
                 data_out = self.data_writer.write(action)
                 await websocket.send(data_out)
@@ -48,21 +50,30 @@ class OnlineConnection(Connection):
 class OfflineConnection(Connection):
 
     def play(self):
-        #  ToDo: Implement
-        player1 = Player(1, 10, 10, Direction.down, 1, True, "Player 1")
-        player2 = Player(2, 30, 30, Direction.up, 1, True, "Player 2")
+        player1 = Player(1, 10, 10, Direction.down, 1, True, "Human Player 1")
+        player2 = Player(2, 30, 30, Direction.up, 1, True, "AI Player 1")
         players = [player1, player2]
         field_size = 40
         cells = [[Cell() for i in range(field_size)] for j in range(field_size)]
-        cells[10][10] = Cell(player1)
-        cells[30][30] = Cell(player2)
-        game = Game(field_size, field_size, cells, players, 1, True, datetime.now())
+        cells[10][10] = Cell([player1])
+        cells[30][30] = Cell([player2])
+        game = Game(field_size, field_size, cells, players, 1, True, datetime.now() + timedelta(0, 180))
 
         if "DEACTIVATE_PYGAME" not in os.environ or not os.environ["DEACTIVATE_PYGAME"]:
             monitoring = GraphicalMonitoring(game)
         else:
             monitoring = ConsoleMonitoring()
+        monitoring.update(game)
 
-        while True:
+        game_service = GameService(game)
+        ai = ChillowAI(player2)
+
+        while game.running:
+            action = monitoring.create_next_action()
+            game_service.do_action(player1, action)
+            action = ai.create_next_action(game)
+            game_service.do_action(player2, action)
+
             monitoring.update(game)
-            time.sleep(1)  # Sleep for 1 sek
+
+        input("Enter drücken zum verlassen ... ")
