@@ -21,4 +21,5 @@ class ChillowAI(ArtificialIntelligence):
     def create_next_action(self, game: Game) -> Action:
         self.game = game
         # Todo: Implement
-        return random.choice(list(Action))
+        return Action.change_nothing
+        # return random.choice(list(Action))

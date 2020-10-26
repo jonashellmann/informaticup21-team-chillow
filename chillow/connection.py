@@ -31,7 +31,7 @@ class OnlineConnection(Connection):
         self.key = os.environ["KEY"]
         self.data_loader = JSONDataLoader()
         self.data_writer = JSONDataWriter()
-        self.ai = ChillowAI()
+        self.ai = None
 
     def play(self):
         asyncio.get_event_loop().run_until_complete(self._play())
@@ -41,6 +41,8 @@ class OnlineConnection(Connection):
             while True:
                 game_data = await websocket.recv()
                 game = self.data_loader.load(game_data)
+                if self.ai is None:
+                    self.ai = ChillowAI(game.you)
                 action = self.ai.create_next_action(game)
                 data_out = self.data_writer.write(action)
                 await websocket.send(data_out)
@@ -50,8 +52,8 @@ class OfflineConnection(Connection):
 
     def play(self):
         #  ToDo: Implement
-        player1 = Player(1, 10, 10, Direction.down, 1, True, "Player 1")
-        player2 = Player(2, 30, 30, Direction.up, 1, True, "Player 2")
+        player1 = Player(1, 10, 10, Direction.down, 1, True, "Human Player 1")
+        player2 = Player(2, 30, 30, Direction.up, 1, True, "AI Player 1")
         players = [player1, player2]
         field_size = 40
         cells = [[Cell() for i in range(field_size)] for j in range(field_size)]
@@ -63,9 +65,17 @@ class OfflineConnection(Connection):
             monitoring = GraphicalMonitoring(game)
         else:
             monitoring = ConsoleMonitoring()
+        monitoring.update(game)
 
         game_service = GameService(game)
+        ai = ChillowAI(player2)
 
         while game.running:
+            action = monitoring.create_next_action()
+            game_service.do_action(player1, action)
+            action = ai.create_next_action(game)
+            game_service.do_action(player2, action)
+
             monitoring.update(game)
-            time.sleep(1)  # Sleep for 1 sek
+
+        input("Enter drücken zum verlassen ... ")

@@ -18,18 +18,19 @@ class GameService:
     def do_action(self, player: Player, action: Action):
         try:
             self.turn.action(player)
+            self.get_and_visit_cells(player, action)
         except (MultipleActionByPlayerError, DeadLineExceededException, PlayerSpeedNotInRangeException,
                 PlayerOutsidePlaygroundException) as exc:
             player.active = False
 
-        self.game.running = self.is_game_ended()
+        self.game.running = self.is_game_running()
 
-    def is_game_ended(self) -> bool:
+    def is_game_running(self) -> bool:
         active_player_ctr = 0
         for player in self.game.players:
             if player.active:
                 active_player_ctr += 1
-        return True if active_player_ctr < 2 else False
+        return active_player_ctr >= 2
 
     def get_and_visit_cells(self, player: Player, action: Action) -> List[Tuple[int, int]]:
         visited_cells = []

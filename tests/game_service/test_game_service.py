@@ -28,12 +28,12 @@ class TurnTest(unittest.TestCase):
         self.player1.active = False
         self.player2.active = False
 
-        self.assertEqual(self.sut.is_game_ended(), True)
+        self.assertEqual(self.sut.is_game_running(), False)
 
     def test_game_should_not_end_when_more_than_one_players_are_left(self):
         self.player1.active = False
 
-        self.assertEqual(self.sut.is_game_ended(), False)
+        self.assertEqual(self.sut.is_game_running(), True)
 
     def test_player_should_loose_if_he_did_more_than_one_action_in_one_round(self):
         self.sut.do_action(self.player1, Action.speed_up)
