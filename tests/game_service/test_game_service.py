@@ -12,16 +12,16 @@ from chillow.model.player import Player
 class TurnTest(unittest.TestCase):
 
     def setUp(self):
-        self.player1 = Player(1, 2, 2, Direction.down, 1, True, "")
-        self.player2 = Player(2, 1, 0, Direction.down, 3, True, "")
-        self.player3 = Player(3, 4, 3, Direction.right, 2, False, "Name 3")
+        self.player1 = Player(1, 10, 10, Direction.down, 1, True, "")
+        self.player2 = Player(2, 10, 30, Direction.down, 3, True, "")
+        self.player3 = Player(3, 30, 10, Direction.right, 2, True, "Name 3")
         players = [self.player1, self.player2, self.player3]
         cells = [[Cell() for i in range(40)] for j in range(40)]
         cells[10][10] = Cell([self.player1])
         cells[10][30] = Cell([self.player2])
         cells[30][10] = Cell([self.player3])
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
-        self.game = Game(5, 4, cells, players, 2, True, time)
+        self.game = Game(40, 40, cells, players, 2, True, time)
         self.sut = GameService(self.game)
 
     def test_game_should_end_when_less_than_two_players_are_left(self):
@@ -33,7 +33,7 @@ class TurnTest(unittest.TestCase):
     def test_game_should_not_end_when_more_than_one_players_are_left(self):
         self.player1.active = False
 
-        self.assertEqual(self.sut.is_game_ended(), True)
+        self.assertEqual(self.sut.is_game_ended(), False)
 
     def test_player_should_loose_if_he_did_more_than_one_action_in_one_round(self):
         self.sut.do_action(self.player1, Action.speed_up)
@@ -47,6 +47,7 @@ class TurnTest(unittest.TestCase):
         self.assertEqual(self.player1.active, False)
 
     def test_player_should_loose_if_he_exceeded_time_limit(self):
+        # ToDo: Not rly needed for offline-version
         pass
 
     def test_visited_cells_should_be_calculated_correctly_turn_1_to_5(self):

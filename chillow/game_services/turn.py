@@ -2,7 +2,7 @@ from typing import List
 
 import chillow.game_services.exceptions as ex
 from chillow.model.player import Player
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class Turn:
@@ -14,15 +14,15 @@ class Turn:
         self.turn_ctr = 1
 
     def action(self, player):
-        d = datetime.now()
         if player not in self.playersWithPendingAction:
-            raise ex.MultipleActionByPlayerError
-        elif self.deadline < d:
-            raise ex.DeadLineExceededException
+            raise ex.MultipleActionByPlayerError(player)
+        #elif self.deadline < datetime.now():
+        #    raise ex.DeadLineExceededException(player)
         else:
             self.playersWithPendingAction.remove(player)
             if len(self.playersWithPendingAction) == 0:
                 self.turn_ctr += 1
+                self.deadline = datetime.now() + timedelta(0, 180)
                 for player in self.players:
                     if player.active:
                         self.playersWithPendingAction.append(player)

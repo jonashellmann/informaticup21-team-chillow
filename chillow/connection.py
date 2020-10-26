@@ -1,7 +1,7 @@
 import asyncio
 import os
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 import websockets
 
 from abc import ABCMeta, abstractmethod
@@ -57,7 +57,7 @@ class OfflineConnection(Connection):
         cells = [[Cell() for i in range(field_size)] for j in range(field_size)]
         cells[10][10] = Cell([player1])
         cells[30][30] = Cell([player2])
-        game = Game(field_size, field_size, cells, players, 1, True, datetime.now())
+        game = Game(field_size, field_size, cells, players, 1, True, datetime.now() + timedelta(0, 180))
 
         if "DEACTIVATE_PYGAME" not in os.environ or not os.environ["DEACTIVATE_PYGAME"]:
             monitoring = GraphicalMonitoring(game)
