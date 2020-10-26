@@ -44,7 +44,7 @@ class TurnTest(unittest.TestCase):
     def test_player_should_not_loose_if_he_did_exactly_one_action_in_one_round(self):
         self.sut.do_action(self.player1, Action.speed_up)
 
-        self.assertEqual(self.player1.active, False)
+        self.assertEqual(self.player1.active, True)
 
     def test_player_should_loose_if_he_exceeded_time_limit(self):
         # ToDo: Not rly needed for offline-version
@@ -57,25 +57,29 @@ class TurnTest(unittest.TestCase):
         self.player2.direction = Direction.up
         self.player2.speed = 3
         self.game.cells[10][30] = Cell([self.player2])
-        self.player3.direction = Direction.right
+        self.player3.direction = Direction.down
         self.player3.speed = 5
         self.game.cells[30][10] = Cell([self.player3])
         visited_cells_p1_expected = [(11, 10), (12, 10)]
         visited_cells_p2_expected = [(9, 30), (8, 30)]
-        visited_cells_p3_expected = [(29, 10)]
+        visited_cells_p3_expected = [(30, 11), (30, 12), (30, 13), (30, 14), (30, 15)]
 
         visited_cells_p1 = self.sut.get_and_visit_cells(self.player1, Action.speed_up)
-        visited_cells_p2 = self.sut.get_and_visit_cells(self.player1, Action.slow_down)
-        visited_cells_p3 = self.sut.get_and_visit_cells(self.player1, Action.turn_left)
+        visited_cells_p2 = self.sut.get_and_visit_cells(self.player2, Action.slow_down)
+        visited_cells_p3 = self.sut.get_and_visit_cells(self.player3, Action.turn_left)
 
         self.assertEqual(visited_cells_p1_expected, visited_cells_p1)
         self.assertEqual(visited_cells_p2_expected, visited_cells_p2)
         self.assertEqual(visited_cells_p3_expected, visited_cells_p3)
-        self.assertTrue(self.player1 in self.game.cells[11][10])
-        self.assertTrue(self.player1 in self.game.cells[12][10])
-        self.assertTrue(self.player2 in self.game.cells[9][30])
-        self.assertTrue(self.player2 in self.game.cells[8][30])
-        self.assertTrue(self.player3 in self.game.cells[29][10])
+        self.assertTrue(self.player1 in self.game.cells[11][10].players)
+        self.assertTrue(self.player1 in self.game.cells[12][10].players)
+        self.assertTrue(self.player2 in self.game.cells[9][30].players)
+        self.assertTrue(self.player2 in self.game.cells[8][30].players)
+        self.assertTrue(self.player3 in self.game.cells[30][11].players)
+        self.assertTrue(self.player3 in self.game.cells[30][12].players)
+        self.assertTrue(self.player3 in self.game.cells[30][13].players)
+        self.assertTrue(self.player3 in self.game.cells[30][14].players)
+        self.assertTrue(self.player3 in self.game.cells[30][15].players)
 
     def test_visited_cells_should_be_calculated_correctly_turn_6(self):
         self.sut.turn.turn_ctr = 12  # 6, 12, 18 should all work
@@ -89,11 +93,11 @@ class TurnTest(unittest.TestCase):
         visited_cells_p2_expected = [(9, 30), (4, 30)]
 
         visited_cells_p1 = self.sut.get_and_visit_cells(self.player1, Action.speed_up)
-        visited_cells_p2 = self.sut.get_and_visit_cells(self.player1, Action.speed_up)
+        visited_cells_p2 = self.sut.get_and_visit_cells(self.player2, Action.speed_up)
 
         self.assertEqual(visited_cells_p1_expected, visited_cells_p1)
         self.assertEqual(visited_cells_p2_expected, visited_cells_p2)
-        self.assertTrue(self.player1 in self.game.cells[11][10])
-        self.assertTrue(self.player1 in self.game.cells[12][10])
-        self.assertTrue(self.player2 in self.game.cells[9][30])
-        self.assertTrue(self.player2 in self.game.cells[4][30])
+        self.assertTrue(self.player1 in self.game.cells[11][10].players)
+        self.assertTrue(self.player1 in self.game.cells[12][10].players)
+        self.assertTrue(self.player2 in self.game.cells[9][30].players)
+        self.assertTrue(self.player2 in self.game.cells[4][30].players)
