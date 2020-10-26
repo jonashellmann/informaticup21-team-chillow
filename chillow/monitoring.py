@@ -37,9 +37,18 @@ class ConsoleMonitoring(Monitoring):
             [[' ' if cell.get_player_id() == 0 else cell.get_player_id() for cell in cells] for cells in game.cells]
         print(tabulate(table_player_ids, tablefmt="presto"))
 
-    def create_next_action(self):
-        pass
-
+    def create_next_action(self) -> Action:
+        input = input("Input Next Aktcion(l:turn_left, r:turn_right, u:speed_up, d:slow_down, n:change_nothing): ")
+        if input == "u":
+            return Action.speed_up
+        elif input == "d":
+            return Action.slow_down
+        elif input == "r":
+            return Action.turn_right
+        elif input == "l":
+            return Action.turn_left
+        elif input == "n":
+            return Action.change_nothing
 
 class GraphicalMonitoring(Monitoring):
     def __init__(self, game: Game):
