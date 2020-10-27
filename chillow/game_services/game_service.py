@@ -75,15 +75,15 @@ class GameService:
         if self.turn.turn_ctr % 6 == 0 and len(visited_cells) > 1:  # Lücke, also nur die erste und letzte Punkt nehmen
             visited_cells = [visited_cells[0], visited_cells[-1]]
 
-        for (x, y) in visited_cells:
+        for (y, x) in visited_cells:
             if x not in range(self.game.width) or y not in range(self.game.height):
                 raise PlayerOutsidePlaygroundException(player)
             player.x = visited_cells[-1][1]
             player.y = visited_cells[-1][0]
-            if self.game.cells[x][y].players is None:
-                self.game.cells[x][y].players = [player]
+            if self.game.cells[y][x].players is None:
+                self.game.cells[y][x].players = [player]
             else:
-                self.game.cells[x][y].players.append(player)
+                self.game.cells[y][x].players.append(player)
 
         return visited_cells
 
