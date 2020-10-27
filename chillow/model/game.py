@@ -28,11 +28,7 @@ class Game:
         for player in self.players:
             if player.id == self._you:
                 self.you = player
-
-            if self.cells[player.y][player.x].players \
-                    or len(self.cells[player.y][player.x].players) != 1 \
-                    or self.cells[player.y][player.x].players[0] != player:
-                raise AttributeError("Player's position is not saved in game")
+                break
 
         if self.you is None:
             raise AttributeError("Your own player was not found in the game")
