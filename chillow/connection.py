@@ -7,7 +7,7 @@ from abc import ABCMeta, abstractmethod
 
 from chillow.data_loader import JSONDataLoader
 from chillow.data_writer import JSONDataWriter
-from chillow.artificial_intelligence import ChillowAI
+from chillow.artificial_intelligence import ChillowAI, NotKillingItselfAI
 from chillow.game_services.game_service import GameService
 from chillow.monitoring import GraphicalMonitoring, ConsoleMonitoring
 from chillow.model.game import Game
@@ -70,9 +70,9 @@ class OfflineConnection(Connection):
         monitoring.update(game)
 
         game_service = GameService(game)
-        ai1 = ChillowAI(player2)
-        ai2 = ChillowAI(player3)
-        ai3 = ChillowAI(player4)
+        ai1 = NotKillingItselfAI(player2, game)
+        ai2 = NotKillingItselfAI(player3, game)
+        ai3 = NotKillingItselfAI(player4, game)
 
         while game.running:
             action = monitoring.create_next_action()
