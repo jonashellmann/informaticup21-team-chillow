@@ -51,12 +51,16 @@ class OfflineConnection(Connection):
 
     def play(self):
         player1 = Player(1, 10, 10, Direction.down, 1, True, "Human Player 1")
-        player2 = Player(2, 30, 30, Direction.up, 1, True, "AI Player 1")
-        players = [player1, player2]
+        player2 = Player(2, 10, 30, Direction.down, 1, True, "AI Player 1")
+        player3 = Player(3, 30, 10, Direction.up, 1, True, "AI Player 2")
+        player4 = Player(4, 30, 30, Direction.up, 1, True, "AI Player 4")
+        players = [player1, player2, player3, player4]
         field_size = 40
         cells = [[Cell() for i in range(field_size)] for j in range(field_size)]
         cells[10][10] = Cell([player1])
-        cells[30][30] = Cell([player2])
+        cells[10][30] = Cell([player2])
+        cells[30][10] = Cell([player3])
+        cells[30][30] = Cell([player4])
         game = Game(field_size, field_size, cells, players, 1, True, datetime.now() + timedelta(0, 180))
 
         if "DEACTIVATE_PYGAME" not in os.environ or not os.environ["DEACTIVATE_PYGAME"]:
@@ -66,13 +70,19 @@ class OfflineConnection(Connection):
         monitoring.update(game)
 
         game_service = GameService(game)
-        ai = ChillowAI(player2)
+        ai1 = ChillowAI(player2)
+        ai2 = ChillowAI(player3)
+        ai3 = ChillowAI(player4)
 
         while game.running:
             action = monitoring.create_next_action()
             game_service.do_action(player1, action)
-            action = ai.create_next_action(game)
-            game_service.do_action(player2, action)
+            action = ai1.create_next_action(game)
+            game_service.do_action(ai1.player, action)
+            action = ai2.create_next_action(game)
+            game_service.do_action(ai2.player, action)
+            action = ai3.create_next_action(game)
+            game_service.do_action(ai3.player, action)
 
             monitoring.update(game)
 
