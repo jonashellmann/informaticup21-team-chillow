@@ -111,7 +111,7 @@ class GameService:
         elif action == action.slow_down:
             player.speed -= 1
 
-        if player.speed not in range(0, 11):
+        if player.speed not in range(1, 10):
             raise PlayerSpeedNotInRangeException(player)
 
     def set_player_inactive(self, player: Player):
