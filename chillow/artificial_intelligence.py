@@ -30,10 +30,11 @@ class ChillowAI(ArtificialIntelligence):
 
 class NotKillingItselfAI(ArtificialIntelligence):
 
-    def __init__(self, player: Player, game: Game):
+    def __init__(self, player: Player, game: Game, max_distance: bool):
         self.player = player
         self.game = game
         self.turn_ctr = 0
+        self.max_distance = max_distance
 
     def create_next_action(self, game: Game) -> Action:
 
@@ -43,9 +44,12 @@ class NotKillingItselfAI(ArtificialIntelligence):
         game_service.turn.turn_ctr = self.turn_ctr
 
         surviving_actions = self.find_surviving_actions(game_service)
-        max_distance_action = self.calc_action_with_max_distance_to_visited_cells(game_service, surviving_actions)
-
-        return max_distance_action if max_distance_action is not None else Action.change_nothing
+        if self.max_distance:
+            max_distance_action = self.calc_action_with_max_distance_to_visited_cells(game_service, surviving_actions)
+            return max_distance_action if max_distance_action is not None else Action.change_nothing
+        else:
+            return random.choice(surviving_actions) if surviving_actions is not None and len(
+                surviving_actions) > 0 else Action.change_nothing
 
     def find_surviving_actions(self, game_service: GameService) -> [Action]:
         result: List[Action] = []
@@ -90,7 +94,7 @@ class NotKillingItselfAI(ArtificialIntelligence):
                             y = player.y + (i + 1) * vertical_multiplier
                             if x in range(gs_copy.game.width) and y in range(gs_copy.game.height) and (
                                     gs_copy.game.cells[y][x].players is None or len(
-                                    gs_copy.game.cells[y][x].players) == 0):
+                                gs_copy.game.cells[y][x].players) == 0):
                                 straight_distance += 1
                             else:
                                 break
