@@ -7,9 +7,9 @@ from chillow.model.game import Game
 from chillow.model.player import Player
 from chillow.model.cell import Cell
 from chillow.model.direction import Direction
-from chillow.data_loader import JSONDataLoader
+from chillow.service.data_loader import JSONDataLoader
 
-TEST_DATA_FILENAME = os.path.join(os.path.dirname(__file__), 'test_data/game.json')
+TEST_DATA_FILENAME = os.path.join(os.path.dirname(__file__), '../test_data/game.json')
 
 
 class JSONDataWriterTest(unittest.TestCase):

@@ -1,6 +1,6 @@
 from typing import List
 
-import chillow.game_services.exceptions as ex
+import chillow.exceptions as ex
 from chillow.model.player import Player
 from datetime import datetime, timedelta
 
