@@ -18,6 +18,12 @@ from chillow.model.cell import Cell
 
 class Connection(metaclass=ABCMeta):
 
+    def __init__(self):
+        if "DEACTIVATE_PYGAME" not in os.environ or not os.environ["DEACTIVATE_PYGAME"]:
+            self.monitoring = GraphicalMonitoring()
+        else:
+            self.monitoring = ConsoleMonitoring()
+
     @abstractmethod
     def play(self):
         raise NotImplementedError
@@ -26,6 +32,7 @@ class Connection(metaclass=ABCMeta):
 class OnlineConnection(Connection):
 
     def __init__(self):
+        super().__init__()
         self.url = os.environ["URL"]
         self.key = os.environ["KEY"]
         self.data_loader = JSONDataLoader()
@@ -40,6 +47,7 @@ class OnlineConnection(Connection):
             while True:
                 game_data = await websocket.recv()
                 game = self.data_loader.load(game_data)
+                self.monitoring.update(game)
                 if self.ai is None:
                     self.ai = ChillowAI(game.you)
                 action = self.ai.create_next_action(game)
@@ -48,6 +56,9 @@ class OnlineConnection(Connection):
 
 
 class OfflineConnection(Connection):
+
+    def __init__(self):
+        super().__init__()
 
     def play(self):
         player1 = Player(1, 10, 10, Direction.down, 1, True, "Human Player 1")
@@ -63,11 +74,7 @@ class OfflineConnection(Connection):
         cells[player4.y][player4.x] = Cell([player4])
         game = Game(field_size, field_size, cells, players, 1, True, datetime.now() + timedelta(0, 180))
 
-        if "DEACTIVATE_PYGAME" not in os.environ or not os.environ["DEACTIVATE_PYGAME"]:
-            monitoring = GraphicalMonitoring(game)
-        else:
-            monitoring = ConsoleMonitoring()
-        monitoring.update(game)
+        self.monitoring.update(game)
 
         game_service = GameService(game)
         ai1 = ChillowAI(player2)
@@ -75,7 +82,7 @@ class OfflineConnection(Connection):
         ai3 = ChillowAI(player4)
 
         while game.running:
-            action = monitoring.create_next_action()
+            action = self.monitoring.create_next_action()
             game_service.do_action(player1, action)
             action = ai1.create_next_action(game)
             game_service.do_action(ai1.player, action)
@@ -84,6 +91,6 @@ class OfflineConnection(Connection):
             action = ai3.create_next_action(game)
             game_service.do_action(ai3.player, action)
 
-            monitoring.update(game)
+            self.monitoring.update(game)
 
         input("Enter drücken zum verlassen ... ")

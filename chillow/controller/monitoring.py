@@ -1,5 +1,5 @@
 import os
-import random as rnd
+import random
 import sys
 
 from chillow.model.action import Action
@@ -53,28 +53,31 @@ class ConsoleMonitoring(Monitoring):
 
 
 class GraphicalMonitoring(Monitoring):
-    def __init__(self, game: Game):
-        self.rectangleSize = 10
-        self.game = game
-        self.playerColors = {0: (0, 0, 0)}  # black if no Player is on the cell
-        for i in range(0, len(game.players)):
-            self.playerColors[int(game.players[i].id)] = (rnd.randint(0, 255), rnd.randint(0, 255), rnd.randint(0, 255))
-        self.screen = pygame.display.set_mode(
-            [game.width * self.rectangleSize + game.width, game.height * self.rectangleSize + game.height])
+    RECTANGLE_SIZE = 10
+    CLOCK_TICK = 60
+
+    def __init__(self):
         self.clock = pygame.time.Clock()
         pygame.init()
-        self.clock.tick(60)
+        self.clock.tick(self.CLOCK_TICK)
         self.next_Action = True
 
+        self.interface_initialized = False
+        self.playerColors = {0: (0, 0, 0)}  # black if no Player is on the cell
+        self.screen = None
+
     def update(self, game: Game):
+        if not self.interface_initialized:
+            self.initialize_interface(game)
+
         self.screen.fill((0, 0, 0))
         for row in range(game.width):
             for col in range(game.height):
                 pygame.draw.rect(self.screen, self.playerColors[game.cells[row][col].get_player_id()],
-                                 (col * self.rectangleSize + col,
-                                  row * self.rectangleSize + row,
-                                  self.rectangleSize,
-                                  self.rectangleSize))
+                                 (col * self.RECTANGLE_SIZE + col,
+                                  row * self.RECTANGLE_SIZE + row,
+                                  self.RECTANGLE_SIZE,
+                                  self.RECTANGLE_SIZE))
         pygame.display.update()
         self.clock.tick(60)
 
@@ -98,3 +101,11 @@ class GraphicalMonitoring(Monitoring):
                         return Action.change_nothing
                 elif event.type == pygame.KEYUP:
                     self.next_Action = True
+
+    def initialize_interface(self, game: Game):
+        self.interface_initialized = True
+        for i in range(0, len(game.players)):
+            self.playerColors[int(game.players[i].id)] = (
+                random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        self.screen = pygame.display.set_mode(
+            [game.width * self.RECTANGLE_SIZE + game.width, game.height * self.RECTANGLE_SIZE + game.height])
