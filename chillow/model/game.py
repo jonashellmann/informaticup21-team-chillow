@@ -11,7 +11,7 @@ class Game:
 
     width: int
     height: int
-    cells: List[List[Cell]]
+    cells: List[List[Cell]]  # First index is the row (y), second index is the column (x).
     players: List[Player]
     _you: int = field(repr=False)
     you: Player = field(init=False)

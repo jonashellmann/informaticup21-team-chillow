@@ -37,7 +37,7 @@ class GameService:
                 if cell.players is not None and len(cell.players) > 1:
                     for player_id, cells in self.visited_cells_by_player.items():
                         for cell in cells:
-                            if cell[0] == row and cell[1] == col:
+                            if cell[0] == col and cell[1] == row:
                                 for player in self.game.players:
                                     if player_id == player.id:
                                         self.set_player_inactive(player)
@@ -70,7 +70,7 @@ class GameService:
 
         for i in range(0, player.speed):
             visited_cells.append(
-                (player.x + (i + 1) * vertical_multiplier, player.y + (i + 1) * horizontal_multiplier))
+                (player.x + (i + 1) * horizontal_multiplier, player.y + (i + 1) * vertical_multiplier))
 
         if self.turn.turn_ctr % 6 == 0 and len(visited_cells) > 1:  # Lücke, also nur die erste und letzte Punkt nehmen
             visited_cells = [visited_cells[0], visited_cells[-1]]
@@ -80,10 +80,10 @@ class GameService:
                 raise PlayerOutsidePlaygroundException(player)
             player.x = visited_cells[-1][0]
             player.y = visited_cells[-1][1]
-            if self.game.cells[x][y].players is None:
-                self.game.cells[x][y].players = [player]
+            if self.game.cells[y][x].players is None:
+                self.game.cells[y][x].players = [player]
             else:
-                self.game.cells[x][y].players.append(player)
+                self.game.cells[y][x].players.append(player)
 
         return visited_cells
 
@@ -111,7 +111,7 @@ class GameService:
         elif action == action.slow_down:
             player.speed -= 1
 
-        if player.speed not in range(0, 11):
+        if player.speed not in range(1, 11):
             raise PlayerSpeedNotInRangeException(player)
 
     def set_player_inactive(self, player: Player):
