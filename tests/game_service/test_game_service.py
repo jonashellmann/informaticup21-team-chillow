@@ -17,9 +17,9 @@ class GameTest(unittest.TestCase):
         self.player3 = Player(3, 30, 10, Direction.right, 2, True, "Name 3")
         players = [self.player1, self.player2, self.player3]
         cells = [[Cell() for i in range(40)] for j in range(40)]
-        cells[10][10] = Cell([self.player1])
-        cells[10][30] = Cell([self.player2])
-        cells[30][10] = Cell([self.player3])
+        cells[self.player1.y][self.player1.x] = Cell([self.player1])
+        cells[self.player2.y][self.player2.x] = Cell([self.player2])
+        cells[self.player3.y][self.player3.x] = Cell([self.player3])
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
         self.game = Game(40, 40, cells, players, 2, True, time)
         self.sut = GameService(self.game)
@@ -49,16 +49,23 @@ class GameTest(unittest.TestCase):
     def test_visited_cells_should_be_calculated_correctly_turn_1_to_5(self):
         self.player1.direction = Direction.down
         self.player1.speed = 1
-        self.game.cells[10][10] = Cell([self.player1])
+        player1_x = self.player1.x
+        player1_y = self.player1.y
+        self.game.cells[self.player1.y][self.player1.x] = Cell([self.player1])
         self.player2.direction = Direction.up
         self.player2.speed = 3
-        self.game.cells[10][30] = Cell([self.player2])
+        player2_x = self.player2.x
+        player2_y = self.player2.y
+        self.game.cells[self.player2.y][self.player2.x] = Cell([self.player2])
         self.player3.direction = Direction.down
         self.player3.speed = 5
-        self.game.cells[30][10] = Cell([self.player3])
-        visited_cells_p1_expected = [(11, 10), (12, 10)]
-        visited_cells_p2_expected = [(9, 30), (8, 30)]
-        visited_cells_p3_expected = [(30, 11), (30, 12), (30, 13), (30, 14), (30, 15)]
+        player3_x = self.player3.x
+        player3_y = self.player3.y
+        self.game.cells[self.player3.y][self.player3.x] = Cell([self.player3])
+        visited_cells_p1_expected = [(player1_y + 1, player1_x), (player1_y + 2, player1_x)]
+        visited_cells_p2_expected = [(player2_y - 1, player2_x), (player2_y - 2, player2_x)]
+        visited_cells_p3_expected = [(player3_y, player3_x + 1), (player3_y, player3_x + 2), (player3_y, player3_x + 3),
+                                     (player3_y, player3_x + 4), (player3_y, player3_x + 5)]
 
         visited_cells_p1 = self.sut.get_and_visit_cells(self.player1, Action.speed_up)
         visited_cells_p2 = self.sut.get_and_visit_cells(self.player2, Action.slow_down)
@@ -67,33 +74,37 @@ class GameTest(unittest.TestCase):
         self.assertEqual(visited_cells_p1_expected, visited_cells_p1)
         self.assertEqual(visited_cells_p2_expected, visited_cells_p2)
         self.assertEqual(visited_cells_p3_expected, visited_cells_p3)
-        self.assertTrue(self.player1 in self.game.cells[11][10].players)
-        self.assertTrue(self.player1 in self.game.cells[12][10].players)
-        self.assertTrue(self.player2 in self.game.cells[9][30].players)
-        self.assertTrue(self.player2 in self.game.cells[8][30].players)
-        self.assertTrue(self.player3 in self.game.cells[30][11].players)
-        self.assertTrue(self.player3 in self.game.cells[30][12].players)
-        self.assertTrue(self.player3 in self.game.cells[30][13].players)
-        self.assertTrue(self.player3 in self.game.cells[30][14].players)
-        self.assertTrue(self.player3 in self.game.cells[30][15].players)
+        self.assertTrue(self.player1 in self.game.cells[player1_y + 1][player1_x].players)
+        self.assertTrue(self.player1 in self.game.cells[player1_y + 2][player1_x].players)
+        self.assertTrue(self.player2 in self.game.cells[player2_y - 2][player2_x].players)
+        self.assertTrue(self.player2 in self.game.cells[player2_y - 2][player2_x].players)
+        self.assertTrue(self.player3 in self.game.cells[player3_y][player3_x + 1].players)
+        self.assertTrue(self.player3 in self.game.cells[player3_y][player3_x + 2].players)
+        self.assertTrue(self.player3 in self.game.cells[player3_y][player3_x + 3].players)
+        self.assertTrue(self.player3 in self.game.cells[player3_y][player3_x + 4].players)
+        self.assertTrue(self.player3 in self.game.cells[player3_y][player3_x + 5].players)
 
     def test_visited_cells_should_be_calculated_correctly_turn_6(self):
         self.sut.turn.turn_ctr = 12  # 6, 12, 18 should all work
         self.player1.direction = Direction.down
         self.player1.speed = 1
+        player1_x = self.player1.x
+        player1_y = self.player1.y
         self.game.cells[10][10] = Cell([self.player1])
         self.player2.direction = Direction.up
         self.player2.speed = 5
+        player2_x = self.player2.x
+        player2_y = self.player2.y
         self.game.cells[10][30] = Cell([self.player2])
-        visited_cells_p1_expected = [(11, 10), (12, 10)]
-        visited_cells_p2_expected = [(9, 30), (4, 30)]
+        visited_cells_p1_expected = [(player1_y + 1, player1_x), (player1_y + 2, player1_x)]
+        visited_cells_p2_expected = [(player2_y - 1, player2_x), (player2_y - 6, player2_x)]
 
         visited_cells_p1 = self.sut.get_and_visit_cells(self.player1, Action.speed_up)
         visited_cells_p2 = self.sut.get_and_visit_cells(self.player2, Action.speed_up)
 
         self.assertEqual(visited_cells_p1_expected, visited_cells_p1)
         self.assertEqual(visited_cells_p2_expected, visited_cells_p2)
-        self.assertTrue(self.player1 in self.game.cells[11][10].players)
-        self.assertTrue(self.player1 in self.game.cells[12][10].players)
-        self.assertTrue(self.player2 in self.game.cells[9][30].players)
-        self.assertTrue(self.player2 in self.game.cells[4][30].players)
+        self.assertTrue(self.player1 in self.game.cells[player1_y + 1][player1_x].players)
+        self.assertTrue(self.player1 in self.game.cells[player1_y + 2][player1_x].players)
+        self.assertTrue(self.player2 in self.game.cells[player2_y - 1][player2_x].players)
+        self.assertTrue(self.player2 in self.game.cells[player2_y - 6][player2_x].players)
