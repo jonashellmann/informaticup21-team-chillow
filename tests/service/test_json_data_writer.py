@@ -1,6 +1,6 @@
 import unittest
 
-from chillow.data_writer import JSONDataWriter
+from chillow.service.data_writer import JSONDataWriter
 from chillow.model.action import Action
 
 

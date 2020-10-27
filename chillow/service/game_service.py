@@ -1,12 +1,12 @@
 from typing import List, Tuple
 
-from chillow.game_services.exceptions import MultipleActionByPlayerError, DeadLineExceededException, \
+from chillow.exceptions import MultipleActionByPlayerError, DeadLineExceededException, \
     PlayerSpeedNotInRangeException, PlayerOutsidePlaygroundException
 from chillow.model.game import Game
 from chillow.model.action import Action
 from chillow.model.player import Player
 from chillow.model.direction import Direction
-from chillow.game_services.turn import Turn
+from chillow.model.turn import Turn
 
 
 class GameService:

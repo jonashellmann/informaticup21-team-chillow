@@ -5,11 +5,11 @@ import websockets
 
 from abc import ABCMeta, abstractmethod
 
-from chillow.data_loader import JSONDataLoader
-from chillow.data_writer import JSONDataWriter
+from chillow.service.data_loader import JSONDataLoader
+from chillow.service.data_writer import JSONDataWriter
 from chillow.artificial_intelligence import ChillowAI
-from chillow.game_services.game_service import GameService
-from chillow.monitoring import GraphicalMonitoring, ConsoleMonitoring
+from chillow.service.game_service import GameService
+from chillow.controller.monitoring import GraphicalMonitoring, ConsoleMonitoring
 from chillow.model.game import Game
 from chillow.model.player import Player
 from chillow.model.direction import Direction
