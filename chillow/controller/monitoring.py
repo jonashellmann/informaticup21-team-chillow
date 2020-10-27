@@ -23,6 +23,10 @@ class Monitoring(metaclass=ABCMeta):
     def create_next_action(self):
         raise NotImplementedError
 
+    @abstractmethod
+    def end(self):
+        raise NotImplementedError
+
 
 class ConsoleMonitoring(Monitoring):
 
@@ -50,6 +54,9 @@ class ConsoleMonitoring(Monitoring):
             return Action.turn_left
         elif user_input == "n":
             return Action.change_nothing
+
+    def end(self):
+        print("Game ended!")
 
 
 class GraphicalMonitoring(Monitoring):
@@ -85,7 +92,7 @@ class GraphicalMonitoring(Monitoring):
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    sys.exit()  # closes the application
+                    self.end()
                 elif event.type == pygame.KEYDOWN:
                     pressed_key = pygame.key.get_pressed()
                     self.next_Action = False
@@ -101,6 +108,11 @@ class GraphicalMonitoring(Monitoring):
                         return Action.change_nothing
                 elif event.type == pygame.KEYUP:
                     self.next_Action = True
+
+    def end(self):
+        pygame.display.quit()
+        pygame.quit()
+        sys.exit()
 
     def initialize_interface(self, game: Game):
         self.interface_initialized = True

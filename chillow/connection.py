@@ -41,6 +41,7 @@ class OnlineConnection(Connection):
 
     def play(self):
         asyncio.get_event_loop().run_until_complete(self._play())
+        self.monitoring.end()
 
     async def _play(self):
         async with websockets.connect(f"{self.url}?key={self.key}") as websocket:
