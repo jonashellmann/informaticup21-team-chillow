@@ -45,3 +45,10 @@ class OwnPlayerMissingException(Exception):
 
     def __init__(self):
         print("The player defined as your player is not present in game")
+
+
+class PlayerPositionException(Exception):
+
+    def __init__(self, player_x: int, player_y: int):
+        print("Player is not placed at given position in game: (x=" +
+              str(player_x) + ",y=" + str(player_y) + ")")

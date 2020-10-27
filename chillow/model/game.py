@@ -4,7 +4,8 @@ from typing import List
 
 from chillow.model.player import Player
 from chillow.model.cell import Cell
-from chillow.exceptions import WrongGameWidthException, WrongGameHeightException, OwnPlayerMissingException
+from chillow.exceptions import WrongGameWidthException, WrongGameHeightException, OwnPlayerMissingException,\
+    PlayerPositionException
 
 
 @dataclass
@@ -29,7 +30,11 @@ class Game:
         for player in self.players:
             if player.id == self._you:
                 self.you = player
-                break
+
+            if self.cells[player.y][player.x].players is None \
+                    or len(self.cells[player.y][player.x].players) != 1 \
+                    or self.cells[player.y][player.x].players[0] != player:
+                raise PlayerPositionException(player.x, player.y)
 
         if not hasattr(self, 'you'):
             raise OwnPlayerMissingException()
