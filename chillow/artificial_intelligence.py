@@ -27,5 +27,5 @@ class RandomAI(ArtificialIntelligence):
 class RandomWaitingAI(RandomAI):
 
     def create_next_action(self, game: Game) -> Action:
-        time.sleep(10)
+        time.sleep(5)
         return super().create_next_action(game)
