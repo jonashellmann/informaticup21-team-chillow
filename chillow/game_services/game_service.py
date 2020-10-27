@@ -37,7 +37,7 @@ class GameService:
                 if cell.players is not None and len(cell.players) > 1:
                     for player_id, cells in self.visited_cells_by_player.items():
                         for cell in cells:
-                            if cell[0] == row and cell[1] == col:
+                            if cell[0] == col and cell[1] == row:
                                 for player in self.game.players:
                                     if player_id == player.id:
                                         self.set_player_inactive(player)
