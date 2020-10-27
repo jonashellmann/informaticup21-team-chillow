@@ -1,10 +1,11 @@
 import os
 import random
 import sys
+import time
 
 from chillow.model.action import Action
 
-if "DEACTIVATE_PYGAME" not in os.environ or not os.environ["DEACTIVATE_PYGAME"]:
+if not os.getenv("DEACTIVATE_PYGAME", False):
     import pygame
 
 from tabulate import tabulate
@@ -110,6 +111,7 @@ class GraphicalMonitoring(Monitoring):
                     self.next_Action = True
 
     def end(self):
+        time.sleep(10)
         pygame.display.quit()
         pygame.quit()
         sys.exit()

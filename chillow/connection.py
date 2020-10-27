@@ -19,7 +19,7 @@ from chillow.model.cell import Cell
 class Connection(metaclass=ABCMeta):
 
     def __init__(self):
-        if "DEACTIVATE_PYGAME" not in os.environ or not os.environ["DEACTIVATE_PYGAME"]:
+        if not os.getenv("DEACTIVATE_PYGAME", False):
             self.monitoring = GraphicalMonitoring()
         else:
             self.monitoring = ConsoleMonitoring()
