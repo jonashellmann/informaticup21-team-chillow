@@ -74,3 +74,30 @@ class GameTest(unittest.TestCase):
 
         with self.assertRaises(WrongGameHeightException):
             Game(2, 2, cells, [], 0, True, datetime.now())
+
+    def test_find_winner_in_ended_game(self):
+        player1 = Player(1, 0, 0, Direction.up, 0, False, "Name")
+        player2 = Player(1, 1, 0, Direction.up, 0, True, "Name")
+        cells = [[Cell([player1]), Cell([player2])]]
+        game = Game(2, 1, cells, [player1, player2], 1, False, datetime.now())
+
+        result = game.get_winner()
+
+        self.assertEquals(game.get_winner(), result)
+
+    def test_raise_exception_for_winner_in_running_game(self):
+        player = Player(1, 0, 0, Direction.up, 0, True, "Name")
+        cells = [[Cell([player]), Cell()]]
+        game = Game(2, 1, cells, [player], 1, True, datetime.now())
+
+        with self.assertRaises(Exception):
+            game.get_winner()
+
+    def test_raise_exception_for_no_winner_in_ended_game(self):
+        player1 = Player(1, 0, 0, Direction.up, 0, True, "Name")
+        player2 = Player(1, 1, 0, Direction.up, 0, True, "Name")
+        cells = [[Cell([player1]), Cell([player2])]]
+        game = Game(2, 1, cells, [player1, player2], 1, True, datetime.now())
+
+        with self.assertRaises(Exception):
+            game.get_winner()

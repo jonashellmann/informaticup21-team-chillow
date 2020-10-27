@@ -38,3 +38,11 @@ class Game:
 
         if not hasattr(self, 'you'):
             raise OwnPlayerMissingException()
+
+    def get_winner(self) -> Player:
+        if self.running:
+            raise Exception("Game not ended and has no winner yet")
+        for player in self.players:
+            if player.active:
+                return player
+        raise Exception("No winner in ended game found")

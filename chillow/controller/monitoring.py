@@ -42,6 +42,10 @@ class ConsoleMonitoring(Monitoring):
             [[' ' if cell.get_player_id() == 0 else cell.get_player_id() for cell in cells] for cells in game.cells]
         print(tabulate(table_player_ids, tablefmt="presto"))
 
+        if not game.running:
+            player = game.get_winner()
+            print("Winner: Player " + str(player.id) + " (" + player.name + "). Your player ID was " + str(game.you.id))
+
     def create_next_action(self) -> Action:
         user_input = input("Input Next Action (l:turn_left, r:turn_right, u:speed_up, d:slow_down, "
                            "n:change_nothing): ")
@@ -77,6 +81,10 @@ class GraphicalMonitoring(Monitoring):
     def update(self, game: Game):
         if not self.interface_initialized:
             self.initialize_interface(game)
+
+        if not game.running:
+            player = game.get_winner()
+            print("Winner: Player " + str(player.id) + " (" + player.name + "). Your player ID was " + str(game.you.id))
 
         self.screen.fill((0, 0, 0))
         for row in range(game.height):
