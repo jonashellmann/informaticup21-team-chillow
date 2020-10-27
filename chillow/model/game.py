@@ -17,7 +17,7 @@ class Game:
     _you: int = field(repr=False)
     you: Player = field(init=False)
     running: bool
-    deadline: datetime
+    deadline: datetime = None
 
     def __post_init__(self):
         if len(self.cells) != self.height:
