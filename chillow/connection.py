@@ -74,19 +74,16 @@ class OfflineConnection(Connection):
         ai1 = NotKillingItselfAI(player2, game, True)
         ai2 = NotKillingItselfAI(player3, game, False)
         ai3 = NotKillingItselfAI(player4, game, False)
+        ais = [ai0, ai1, ai2, ai3]
 
         while game.running:
             # action = monitoring.create_next_action()
             # game_service.do_action(player1, action)
 
-            action = ai0.create_next_action(game)
-            game_service.do_action(ai0.player, action)
-            action = ai1.create_next_action(game)
-            game_service.do_action(ai1.player, action)
-            action = ai2.create_next_action(game)
-            game_service.do_action(ai2.player, action)
-            action = ai3.create_next_action(game)
-            game_service.do_action(ai3.player, action)
+            for ai in ais:
+                if ai.player.active:
+                    action = ai.create_next_action(game)
+                    game_service.do_action(ai.player, action)
 
             monitoring.update(game)
 
