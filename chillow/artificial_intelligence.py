@@ -1,4 +1,5 @@
 import random
+import time
 
 from abc import ABCMeta, abstractmethod
 
@@ -20,5 +21,5 @@ class ArtificialIntelligence(metaclass=ABCMeta):
 class ChillowAI(ArtificialIntelligence):
 
     def create_next_action(self, game: Game) -> Action:
-        # Todo: Implement
+        time.sleep(5)
         return random.choice(list(Action))
