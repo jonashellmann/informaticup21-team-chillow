@@ -60,7 +60,7 @@ class GraphicalMonitoring(Monitoring):
         for i in range(0, len(game.players)):
             self.playerColors[int(game.players[i].id)] = (rnd.randint(0, 255), rnd.randint(0, 255), rnd.randint(0, 255))
         self.screen = pygame.display.set_mode(
-            [game.width * self.rectangleSize, game.height * self.rectangleSize])
+            [game.width * self.rectangleSize + game.width, game.height * self.rectangleSize + game.height])
         self.clock = pygame.time.Clock()
         pygame.init()
         self.clock.tick(60)
@@ -71,8 +71,8 @@ class GraphicalMonitoring(Monitoring):
         for row in range(game.width):
             for col in range(game.height):
                 pygame.draw.rect(self.screen, self.playerColors[game.cells[row][col].get_player_id()],
-                                 (col * self.rectangleSize,
-                                  row * self.rectangleSize,
+                                 (col * self.rectangleSize + col,
+                                  row * self.rectangleSize + row,
                                   self.rectangleSize,
                                   self.rectangleSize))
         pygame.display.update()
