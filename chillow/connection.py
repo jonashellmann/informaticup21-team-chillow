@@ -7,7 +7,7 @@ from abc import ABCMeta, abstractmethod
 
 from chillow.service.data_loader import JSONDataLoader
 from chillow.service.data_writer import JSONDataWriter
-from chillow.artificial_intelligence import ChillowAI
+from chillow.artificial_intelligence import RandomAI, RandomWaitingAI
 from chillow.service.game_service import GameService
 from chillow.controller.monitoring import GraphicalMonitoring, ConsoleMonitoring
 from chillow.model.game import Game
@@ -18,6 +18,12 @@ from chillow.model.cell import Cell
 
 class Connection(metaclass=ABCMeta):
 
+    def __init__(self):
+        if not os.getenv("DEACTIVATE_PYGAME", False):
+            self.monitoring = GraphicalMonitoring()
+        else:
+            self.monitoring = ConsoleMonitoring()
+
     @abstractmethod
     def play(self):
         raise NotImplementedError
@@ -26,6 +32,7 @@ class Connection(metaclass=ABCMeta):
 class OnlineConnection(Connection):
 
     def __init__(self):
+        super().__init__()
         self.url = os.environ["URL"]
         self.key = os.environ["KEY"]
         self.data_loader = JSONDataLoader()
@@ -34,20 +41,28 @@ class OnlineConnection(Connection):
 
     def play(self):
         asyncio.get_event_loop().run_until_complete(self._play())
+        self.monitoring.end()
 
     async def _play(self):
         async with websockets.connect(f"{self.url}?key={self.key}") as websocket:
             while True:
                 game_data = await websocket.recv()
                 game = self.data_loader.load(game_data)
+                self.monitoring.update(game)
+
                 if self.ai is None:
-                    self.ai = ChillowAI(game.you)
-                action = self.ai.create_next_action(game)
-                data_out = self.data_writer.write(action)
-                await websocket.send(data_out)
+                    self.ai = RandomWaitingAI(game.you)
+
+                if game.you.active:
+                    action = self.ai.create_next_action(game)
+                    data_out = self.data_writer.write(action)
+                    await websocket.send(data_out)
 
 
 class OfflineConnection(Connection):
+
+    def __init__(self):
+        super().__init__()
 
     def play(self):
         player1 = Player(1, 10, 10, Direction.down, 1, True, "Human Player 1")
@@ -63,27 +78,22 @@ class OfflineConnection(Connection):
         cells[player4.y][player4.x] = Cell([player4])
         game = Game(field_size, field_size, cells, players, 1, True, datetime.now() + timedelta(0, 180))
 
-        if "DEACTIVATE_PYGAME" not in os.environ or not os.environ["DEACTIVATE_PYGAME"]:
-            monitoring = GraphicalMonitoring(game)
-        else:
-            monitoring = ConsoleMonitoring()
-        monitoring.update(game)
+        self.monitoring.update(game)
 
         game_service = GameService(game)
-        ai1 = ChillowAI(player2)
-        ai2 = ChillowAI(player3)
-        ai3 = ChillowAI(player4)
+        ai1 = RandomAI(player2)
+        ai2 = RandomAI(player3)
+        ai3 = RandomAI(player4)
+        ais = [ai1, ai2, ai3]
 
         while game.running:
-            action = monitoring.create_next_action()
-            game_service.do_action(player1, action)
-            action = ai1.create_next_action(game)
-            game_service.do_action(ai1.player, action)
-            action = ai2.create_next_action(game)
-            game_service.do_action(ai2.player, action)
-            action = ai3.create_next_action(game)
-            game_service.do_action(ai3.player, action)
+            if player1.active:
+                action = self.monitoring.create_next_action()
+                game_service.do_action(player1, action)
 
-            monitoring.update(game)
+            for ai in ais:
+                if ai.player.active:
+                    action = ai.create_next_action(game)
+                    game_service.do_action(ai.player, action)
 
-        input("Enter drücken zum verlassen ... ")
+            self.monitoring.update(game)

@@ -17,7 +17,7 @@ class Game:
     _you: int = field(repr=False)
     you: Player = field(init=False)
     running: bool
-    deadline: datetime
+    deadline: datetime = None
 
     def __post_init__(self):
         if len(self.cells) != self.height:
@@ -38,3 +38,11 @@ class Game:
 
         if not hasattr(self, 'you'):
             raise OwnPlayerMissingException()
+
+    def get_winner(self) -> Player:
+        if self.running:
+            raise Exception("Game not ended and has no winner yet")
+        for player in self.players:
+            if player.active:
+                return player
+        raise Exception("No winner in ended game found")

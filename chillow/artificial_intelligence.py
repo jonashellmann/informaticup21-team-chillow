@@ -1,4 +1,8 @@
 import random
+import time
+import os
+if not os.getenv("DEACTIVATE_PYGAME", False):
+    import pygame
 
 from abc import ABCMeta, abstractmethod
 
@@ -17,8 +21,16 @@ class ArtificialIntelligence(metaclass=ABCMeta):
         raise NotImplementedError
 
 
-class ChillowAI(ArtificialIntelligence):
+class RandomAI(ArtificialIntelligence):
 
     def create_next_action(self, game: Game) -> Action:
-        # Todo: Implement
         return random.choice(list(Action))
+
+
+class RandomWaitingAI(RandomAI):
+
+    def create_next_action(self, game: Game) -> Action:
+        if not os.getenv("DEACTIVATE_PYGAME", False):
+            pygame.event.pump()
+        time.sleep(5)
+        return super().create_next_action(game)
