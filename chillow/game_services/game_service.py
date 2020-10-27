@@ -26,7 +26,7 @@ class GameService:
 
         except (MultipleActionByPlayerError, DeadLineExceededException, PlayerSpeedNotInRangeException,
                 PlayerOutsidePlaygroundException):
-            player.active = False
+            self.set_player_inactive(player)
 
         self.game.running = self.is_game_running()
 
@@ -40,7 +40,9 @@ class GameService:
                             if cell[0] == row and cell[1] == col:
                                 for player in self.game.players:
                                     if player_id == player.id:
-                                        player.active = False
+                                        self.set_player_inactive(player)
+                                        print("Player " + player.name + ", id " + str(player.id) + "collision and is "
+                                                                                                   "inactive now")
 
     def is_game_running(self) -> bool:
         active_player_ctr = 0
@@ -111,3 +113,8 @@ class GameService:
 
         if player.speed not in range(0, 11):
             raise PlayerSpeedNotInRangeException(player)
+
+    def set_player_inactive(self, player: Player):
+        if player in self.turn.playersWithPendingAction:
+            self.turn.playersWithPendingAction.remove(player)
+        player.active = False
