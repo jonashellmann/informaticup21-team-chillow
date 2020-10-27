@@ -62,10 +62,10 @@ class GameTest(unittest.TestCase):
         player3_x = self.player3.x
         player3_y = self.player3.y
         self.game.cells[self.player3.y][self.player3.x] = Cell([self.player3])
-        visited_cells_p1_expected = [(player1_y + 1, player1_x), (player1_y + 2, player1_x)]
-        visited_cells_p2_expected = [(player2_y - 1, player2_x), (player2_y - 2, player2_x)]
-        visited_cells_p3_expected = [(player3_y, player3_x + 1), (player3_y, player3_x + 2), (player3_y, player3_x + 3),
-                                     (player3_y, player3_x + 4), (player3_y, player3_x + 5)]
+        visited_cells_p1_expected = [(player1_x, player1_y + 1), (player1_x, player1_y + 2)]
+        visited_cells_p2_expected = [(player2_x, player2_y - 1), (player2_x, player2_y - 2)]
+        visited_cells_p3_expected = [(player3_x + 1, player3_y), (player3_x + 2, player3_y), (player3_x + 3, player3_y),
+                                     (player3_x + 4, player3_y), (player3_x + 5, player3_y)]
 
         visited_cells_p1 = self.sut.get_and_visit_cells(self.player1, Action.speed_up)
         visited_cells_p2 = self.sut.get_and_visit_cells(self.player2, Action.slow_down)
@@ -96,8 +96,8 @@ class GameTest(unittest.TestCase):
         player2_x = self.player2.x
         player2_y = self.player2.y
         self.game.cells[10][30] = Cell([self.player2])
-        visited_cells_p1_expected = [(player1_y + 1, player1_x), (player1_y + 2, player1_x)]
-        visited_cells_p2_expected = [(player2_y - 1, player2_x), (player2_y - 6, player2_x)]
+        visited_cells_p1_expected = [(player1_x, player1_y + 1), (player1_x, player1_y + 2)]
+        visited_cells_p2_expected = [(player2_x, player2_y - 1), (player2_x, player2_y - 6)]
 
         visited_cells_p1 = self.sut.get_and_visit_cells(self.player1, Action.speed_up)
         visited_cells_p2 = self.sut.get_and_visit_cells(self.player2, Action.speed_up)
