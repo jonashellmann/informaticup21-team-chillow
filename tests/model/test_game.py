@@ -5,6 +5,7 @@ from chillow.model.cell import Cell
 from chillow.model.direction import Direction
 from chillow.model.game import Game
 from chillow.model.player import Player
+from chillow.exceptions import WrongGameWidthException, WrongGameHeightException, OwnPlayerMissingException
 
 
 class GameTest(unittest.TestCase):
@@ -28,7 +29,7 @@ class GameTest(unittest.TestCase):
             Player(3, 0, 0, Direction.up, 0, True, "Name 3")
         ]
 
-        with self.assertRaises(AttributeError):
+        with self.assertRaises(OwnPlayerMissingException):
             Game(2, 2, cells, players, 2, True, datetime.now())
 
     def test_raise_exception_on_wrong_width(self):
@@ -41,7 +42,7 @@ class GameTest(unittest.TestCase):
             ]
         ]
 
-        with self.assertRaises(AttributeError):
+        with self.assertRaises(WrongGameWidthException):
             Game(2, 2, cells, [], 0, True, datetime.now())
 
     def test_raise_exception_on_wrong_height(self):
@@ -51,5 +52,5 @@ class GameTest(unittest.TestCase):
             ]
         ]
 
-        with self.assertRaises(AttributeError):
+        with self.assertRaises(WrongGameHeightException):
             Game(2, 2, cells, [], 0, True, datetime.now())

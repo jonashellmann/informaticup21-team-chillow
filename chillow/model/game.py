@@ -4,6 +4,7 @@ from typing import List
 
 from chillow.model.player import Player
 from chillow.model.cell import Cell
+from chillow.exceptions import WrongGameWidthException, WrongGameHeightException, OwnPlayerMissingException
 
 
 @dataclass
@@ -20,15 +21,15 @@ class Game:
 
     def __post_init__(self):
         if len(self.cells) != self.height:
-            raise AttributeError("Cell array does not fit to game height")
+            raise WrongGameHeightException(len(self.cells), self.height)
 
         if len(self.cells[0]) != self.width:
-            raise AttributeError("Cell array does not fit to game width")
+            raise WrongGameWidthException(len(self.cells[0]), self.width)
 
         for player in self.players:
             if player.id == self._you:
                 self.you = player
                 break
 
-        if self.you is None:
-            raise AttributeError("Your own player was not found in the game")
+        if not hasattr(self, 'you'):
+            raise OwnPlayerMissingException()
