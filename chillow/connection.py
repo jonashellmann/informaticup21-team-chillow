@@ -7,7 +7,7 @@ from abc import ABCMeta, abstractmethod
 
 from chillow.service.data_loader import JSONDataLoader
 from chillow.service.data_writer import JSONDataWriter
-from chillow.artificial_intelligence import ChillowAI
+from chillow.artificial_intelligence import RandomAI, RandomWaitingAI
 from chillow.service.game_service import GameService
 from chillow.controller.monitoring import GraphicalMonitoring, ConsoleMonitoring
 from chillow.model.game import Game
@@ -49,11 +49,14 @@ class OnlineConnection(Connection):
                 game_data = await websocket.recv()
                 game = self.data_loader.load(game_data)
                 self.monitoring.update(game)
+
                 if self.ai is None:
-                    self.ai = ChillowAI(game.you)
-                action = self.ai.create_next_action(game)
-                data_out = self.data_writer.write(action)
-                await websocket.send(data_out)
+                    self.ai = RandomWaitingAI(game.you)
+
+                if game.you.active:
+                    action = self.ai.create_next_action(game)
+                    data_out = self.data_writer.write(action)
+                    await websocket.send(data_out)
 
 
 class OfflineConnection(Connection):
@@ -78,20 +81,19 @@ class OfflineConnection(Connection):
         self.monitoring.update(game)
 
         game_service = GameService(game)
-        ai1 = ChillowAI(player2)
-        ai2 = ChillowAI(player3)
-        ai3 = ChillowAI(player4)
+        ai1 = RandomAI(player2)
+        ai2 = RandomAI(player3)
+        ai3 = RandomAI(player4)
+        ais = [ai1, ai2, ai3]
 
         while game.running:
-            action = self.monitoring.create_next_action()
-            game_service.do_action(player1, action)
-            action = ai1.create_next_action(game)
-            game_service.do_action(ai1.player, action)
-            action = ai2.create_next_action(game)
-            game_service.do_action(ai2.player, action)
-            action = ai3.create_next_action(game)
-            game_service.do_action(ai3.player, action)
+            if player1.active:
+                action = self.monitoring.create_next_action()
+                game_service.do_action(player1, action)
+
+            for ai in ais:
+                if ai.player.active:
+                    action = ai.create_next_action(game)
+                    game_service.do_action(ai.player, action)
 
             self.monitoring.update(game)
-
-        input("Enter drücken zum verlassen ... ")

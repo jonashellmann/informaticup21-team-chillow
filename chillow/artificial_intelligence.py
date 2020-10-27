@@ -18,8 +18,14 @@ class ArtificialIntelligence(metaclass=ABCMeta):
         raise NotImplementedError
 
 
-class ChillowAI(ArtificialIntelligence):
+class RandomAI(ArtificialIntelligence):
 
     def create_next_action(self, game: Game) -> Action:
-        time.sleep(5)
         return random.choice(list(Action))
+
+
+class RandomWaitingAI(RandomAI):
+
+    def create_next_action(self, game: Game) -> Action:
+        time.sleep(10)
+        return super().create_next_action(game)
