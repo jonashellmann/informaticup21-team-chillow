@@ -41,8 +41,8 @@ class GameService:
                                 for player in self.game.players:
                                     if player_id == player.id:
                                         self.set_player_inactive(player)
-                                        print("Player " + player.name + ", id " + str(player.id) + "collision and is "
-                                                                                                   "inactive now")
+                                        print("Player " + player.name + ", id " + str(player.id) + " collision and is"
+                                                                                                   " inactive now")
 
     def is_game_running(self) -> bool:
         active_player_ctr = 0

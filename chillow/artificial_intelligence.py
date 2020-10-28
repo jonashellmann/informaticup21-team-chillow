@@ -2,7 +2,7 @@ import copy
 import random
 
 from abc import ABCMeta, abstractmethod
-from typing import List
+from typing import List, Dict
 from enum import Enum
 
 from chillow.game_services.game_service import GameService
@@ -35,11 +35,13 @@ class AIOptions(Enum):
 
 class NotKillingItselfAI(ArtificialIntelligence):
 
-    def __init__(self, player: Player, game: Game, options: List[AIOptions]):
+    def __init__(self, player: Player, game: Game, options: List[AIOptions], max_speed: int, max_worth_distance: int):
         self.player = player
         self.game = game
         self.turn_ctr = 0
         self.options = options
+        self.max_speed = max_speed
+        self.max_worth_distance = max_worth_distance
 
     def create_next_action(self, game: Game) -> Action:
 
@@ -50,8 +52,9 @@ class NotKillingItselfAI(ArtificialIntelligence):
 
         surviving_actions = self.find_surviving_actions(game_service)
         if AIOptions.max_distance in self.options:
-            max_distance_action = self.calc_action_with_max_distance_to_visited_cells(game_service, surviving_actions)
-            return max_distance_action if max_distance_action is not None else Action.change_nothing
+            max_distance_actions = self.calc_action_with_max_distance_to_visited_cells(game_service, surviving_actions)
+            return random.choice(max_distance_actions) if max_distance_actions is not None and len(
+                max_distance_actions) > 0 else Action.change_nothing
         else:
             return random.choice(surviving_actions) if surviving_actions is not None and len(
                 surviving_actions) > 0 else Action.change_nothing
@@ -62,6 +65,8 @@ class NotKillingItselfAI(ArtificialIntelligence):
             gs_copy = copy.deepcopy(game_service)
             for player in gs_copy.game.players:
                 if player.id == self.player.id:
+                    if player.speed == self.max_speed and action == Action.speed_up:
+                        continue
                     try:
                         gs_copy.visited_cells_by_player[player.id] = gs_copy.get_and_visit_cells(player, action)
                     except Exception:
@@ -73,9 +78,9 @@ class NotKillingItselfAI(ArtificialIntelligence):
         return result
 
     def calc_action_with_max_distance_to_visited_cells(self, game_service: GameService,
-                                                       actions: List[Action]) -> Action:
+                                                       actions: List[Action]) -> List[Action]:
         max_straight_distance = 0
-        best_action: Action = None
+        best_actions: Dict[Action, int] = {}
         for action in actions:
             gs_copy = copy.deepcopy(game_service)
             for player in gs_copy.game.players:
@@ -105,11 +110,18 @@ class NotKillingItselfAI(ArtificialIntelligence):
                             else:
                                 break
 
-                        if best_action is None or straight_distance > max_straight_distance:
+                        if len(best_actions) == 0 or straight_distance > max_straight_distance:
                             max_straight_distance = straight_distance
-                            best_action = action
-
-                    except Exception:
+                            best_actions[action] = straight_distance
+                            updated_best_actions: Dict[Action, int] = {}
+                            for (act, dist) in best_actions.items():  # new max_straight_distance. Remove worth options
+                                if dist >= max_straight_distance - self.max_worth_distance:
+                                    updated_best_actions[action] = dist
+                            best_actions = updated_best_actions
+                        elif straight_distance >= max_straight_distance - self.max_worth_distance:  # still good option
+                            best_actions[action] = straight_distance
+                    except Exception as ex:
+                        print(ex)
                         continue
 
-        return best_action
+        return list(best_actions.keys())

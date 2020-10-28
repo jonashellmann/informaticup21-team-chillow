@@ -50,9 +50,9 @@ class OnlineConnection(Connection):
 class OfflineConnection(Connection):
 
     def play(self):
-        player1 = Player(1, 10, 10, Direction.down, 1, True, "Human Player 1")
-        player2 = Player(2, 10, 30, Direction.down, 1, True, "AI Player 1")
-        player3 = Player(3, 30, 10, Direction.up, 1, True, "AI Player 2")
+        player1 = Player(1, 10, 10, Direction.down, 1, True, "AI Player 1")
+        player2 = Player(2, 10, 30, Direction.down, 1, True, "AI Player 2")
+        player3 = Player(3, 30, 10, Direction.up, 1, True, "AI Player 3")
         player4 = Player(4, 30, 30, Direction.up, 1, True, "AI Player 4")
         players = [player1, player2, player3, player4]
         field_size = 40
@@ -70,10 +70,10 @@ class OfflineConnection(Connection):
         monitoring.update(game)
 
         game_service = GameService(game)
-        ai0 = NotKillingItselfAI(player1, game, [AIOptions.max_distance])
-        ai1 = NotKillingItselfAI(player2, game, [AIOptions.max_distance])
-        ai2 = NotKillingItselfAI(player3, game, [])
-        ai3 = NotKillingItselfAI(player4, game, [])
+        ai0 = NotKillingItselfAI(player1, game, [AIOptions.max_distance], 3, 0)
+        ai1 = NotKillingItselfAI(player2, game, [AIOptions.max_distance], 3, 3)
+        ai2 = NotKillingItselfAI(player3, game, [], 10, 0)
+        ai3 = NotKillingItselfAI(player4, game, [], 10, 0)
         ais = [ai0, ai1, ai2, ai3]
 
         while game.running:
