@@ -18,14 +18,14 @@
 			"x": 3,
 			"y": 1,
 			"direction": "right",
-			"speed": 3,
+			"speed": 1,
 			"active": true
 		},
 		"3": {
 			"x": 2,
 			"y": 3,
 			"direction": "left",
-			"speed": 2,
+			"speed": 1,
 			"active": true
 		}
 	},

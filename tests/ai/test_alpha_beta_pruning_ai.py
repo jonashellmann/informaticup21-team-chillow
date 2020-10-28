@@ -18,5 +18,5 @@ class AlphaBetaPruningAITest(unittest.TestCase):
 
         result = sut.create_next_action(game)
 
-        self.assertEquals(result, Action.turn_right)
+        self.assertEqual(result, Action.turn_right)
         testfile.close()
