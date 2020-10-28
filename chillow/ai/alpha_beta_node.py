@@ -23,6 +23,7 @@ class AlphaBetaRoot(object):
     def append_child(self, node):
         self.__children.append(node)
 
+    # Todo: Anpassen
     def evaluate(self) -> int:
         if not self.__game.you.active:
             return 0
