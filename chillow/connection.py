@@ -7,7 +7,7 @@ from abc import ABCMeta, abstractmethod
 
 from chillow.service.data_loader import JSONDataLoader
 from chillow.service.data_writer import JSONDataWriter
-from chillow.artificial_intelligence import RandomAI, RandomWaitingAI
+from chillow.ai.random_ai import RandomAI, RandomWaitingAI
 from chillow.service.game_service import GameService
 from chillow.controller.monitoring import GraphicalMonitoring, ConsoleMonitoring
 from chillow.model.game import Game
