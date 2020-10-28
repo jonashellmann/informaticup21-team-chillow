@@ -1,7 +1,7 @@
 import unittest
 
-from chillow.game_services.turn import Turn
-import chillow.game_services.exceptions as ex
+from chillow.model.turn import Turn
+import chillow.exceptions as ex
 from datetime import datetime
 from datetime import timedelta
 

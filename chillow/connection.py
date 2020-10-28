@@ -5,11 +5,11 @@ import websockets
 
 from abc import ABCMeta, abstractmethod
 
-from chillow.data_loader import JSONDataLoader
-from chillow.data_writer import JSONDataWriter
-from chillow.artificial_intelligence import ChillowAI, NotKillingItselfAI, AIOptions
-from chillow.game_services.game_service import GameService
-from chillow.monitoring import GraphicalMonitoring, ConsoleMonitoring
+from chillow.service.data_loader import JSONDataLoader
+from chillow.service.data_writer import JSONDataWriter
+from chillow.ai.random_ai import RandomAI, RandomWaitingAI
+from chillow.service.game_service import GameService
+from chillow.controller.monitoring import GraphicalMonitoring, ConsoleMonitoring
 from chillow.model.game import Game
 from chillow.model.player import Player
 from chillow.model.direction import Direction
@@ -17,6 +17,12 @@ from chillow.model.cell import Cell
 
 
 class Connection(metaclass=ABCMeta):
+
+    def __init__(self):
+        if not os.getenv("DEACTIVATE_PYGAME", False):
+            self.monitoring = GraphicalMonitoring()
+        else:
+            self.monitoring = ConsoleMonitoring()
 
     @abstractmethod
     def play(self):
@@ -26,6 +32,7 @@ class Connection(metaclass=ABCMeta):
 class OnlineConnection(Connection):
 
     def __init__(self):
+        super().__init__()
         self.url = os.environ["URL"]
         self.key = os.environ["KEY"]
         self.data_loader = JSONDataLoader()
@@ -34,25 +41,33 @@ class OnlineConnection(Connection):
 
     def play(self):
         asyncio.get_event_loop().run_until_complete(self._play())
+        self.monitoring.end()
 
     async def _play(self):
         async with websockets.connect(f"{self.url}?key={self.key}") as websocket:
             while True:
                 game_data = await websocket.recv()
                 game = self.data_loader.load(game_data)
+                self.monitoring.update(game)
+
                 if self.ai is None:
-                    self.ai = ChillowAI(game.you)
-                action = self.ai.create_next_action(game)
-                data_out = self.data_writer.write(action)
-                await websocket.send(data_out)
+                    self.ai = RandomWaitingAI(game.you)
+
+                if game.you.active:
+                    action = self.ai.create_next_action(game)
+                    data_out = self.data_writer.write(action)
+                    await websocket.send(data_out)
 
 
 class OfflineConnection(Connection):
 
+    def __init__(self):
+        super().__init__()
+
     def play(self):
-        player1 = Player(1, 10, 10, Direction.down, 1, True, "AI Player 1")
-        player2 = Player(2, 10, 30, Direction.down, 1, True, "AI Player 2")
-        player3 = Player(3, 30, 10, Direction.up, 1, True, "AI Player 3")
+        player1 = Player(1, 10, 10, Direction.down, 1, True, "Human Player 1")
+        player2 = Player(2, 10, 30, Direction.down, 1, True, "AI Player 1")
+        player3 = Player(3, 30, 10, Direction.up, 1, True, "AI Player 2")
         player4 = Player(4, 30, 30, Direction.up, 1, True, "AI Player 4")
         players = [player1, player2, player3, player4]
         field_size = 40
@@ -63,28 +78,22 @@ class OfflineConnection(Connection):
         cells[player4.y][player4.x] = Cell([player4])
         game = Game(field_size, field_size, cells, players, 1, True, datetime.now() + timedelta(0, 180))
 
-        if "DEACTIVATE_PYGAME" not in os.environ or not os.environ["DEACTIVATE_PYGAME"]:
-            monitoring = GraphicalMonitoring(game)
-        else:
-            monitoring = ConsoleMonitoring()
-        monitoring.update(game)
+        self.monitoring.update(game)
 
         game_service = GameService(game)
-        ai0 = NotKillingItselfAI(player1, game, [AIOptions.max_distance], 1, 0)
-        ai1 = NotKillingItselfAI(player2, game, [AIOptions.max_distance], 3, 3)
-        ai2 = NotKillingItselfAI(player3, game, [], 10, 0)
-        ai3 = NotKillingItselfAI(player4, game, [], 10, 0)
-        ais = [ai0, ai1, ai2, ai3]
+        ai1 = RandomAI(player2)
+        ai2 = RandomAI(player3)
+        ai3 = RandomAI(player4)
+        ais = [ai1, ai2, ai3]
 
         while game.running:
-            # action = monitoring.create_next_action()
-            # game_service.do_action(player1, action)
+            if player1.active:
+                action = self.monitoring.create_next_action()
+                game_service.do_action(player1, action)
 
             for ai in ais:
                 if ai.player.active:
                     action = ai.create_next_action(game)
                     game_service.do_action(ai.player, action)
 
-            monitoring.update(game)
-
-        input("Enter drücken zum verlassen ... ")
+            self.monitoring.update(game)

@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime, timezone
 
-from chillow.game_services.game_service import GameService
+from chillow.service.game_service import GameService
 from chillow.model.action import Action
 from chillow.model.cell import Cell
 from chillow.model.direction import Direction

@@ -53,5 +53,5 @@ class JSONDataLoader(DataLoader):
             players,
             int(json_data["you"]),
             json_data["running"],
-            iso8601.parse_date(json_data["deadline"])
+            iso8601.parse_date(json_data["deadline"]) if json_data["running"] else None
         )

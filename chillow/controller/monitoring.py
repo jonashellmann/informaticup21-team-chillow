@@ -1,10 +1,11 @@
 import os
-import random as rnd
+import random
 import sys
+import time
 
 from chillow.model.action import Action
 
-if "DEACTIVATE_PYGAME" not in os.environ or not os.environ["DEACTIVATE_PYGAME"]:
+if not os.getenv("DEACTIVATE_PYGAME", False):
     import pygame
 
 from tabulate import tabulate
@@ -23,6 +24,10 @@ class Monitoring(metaclass=ABCMeta):
     def create_next_action(self):
         raise NotImplementedError
 
+    @abstractmethod
+    def end(self):
+        raise NotImplementedError
+
 
 class ConsoleMonitoring(Monitoring):
 
@@ -36,6 +41,10 @@ class ConsoleMonitoring(Monitoring):
         table_player_ids = \
             [[' ' if cell.get_player_id() == 0 else cell.get_player_id() for cell in cells] for cells in game.cells]
         print(tabulate(table_player_ids, tablefmt="presto"))
+
+        if not game.running:
+            player = game.get_winner()
+            print("Winner: Player " + str(player.id) + " (" + player.name + "). Your player ID was " + str(game.you.id))
 
     def create_next_action(self) -> Action:
         user_input = input("Input Next Action (l:turn_left, r:turn_right, u:speed_up, d:slow_down, "
@@ -51,30 +60,40 @@ class ConsoleMonitoring(Monitoring):
         elif user_input == "n":
             return Action.change_nothing
 
+    def end(self):
+        print("Game ended!")
+
 
 class GraphicalMonitoring(Monitoring):
-    def __init__(self, game: Game):
-        self.rectangleSize = 10
-        self.game = game
-        self.playerColors = {0: (0, 0, 0)}  # black if no Player is on the cell
-        for i in range(0, len(game.players)):
-            self.playerColors[int(game.players[i].id)] = (rnd.randint(0, 255), rnd.randint(0, 255), rnd.randint(0, 255))
-        self.screen = pygame.display.set_mode(
-            [game.width * self.rectangleSize + game.width, game.height * self.rectangleSize + game.height])
+    RECTANGLE_SIZE = 10
+    CLOCK_TICK = 60
+
+    def __init__(self):
         self.clock = pygame.time.Clock()
         pygame.init()
-        self.clock.tick(60)
+        self.clock.tick(self.CLOCK_TICK)
         self.next_Action = True
 
+        self.interface_initialized = False
+        self.playerColors = {0: (0, 0, 0)}  # black if no Player is on the cell
+        self.screen = None
+
     def update(self, game: Game):
+        if not self.interface_initialized:
+            self.initialize_interface(game)
+
+        if not game.running:
+            player = game.get_winner()
+            print("Winner: Player " + str(player.id) + " (" + player.name + "). Your player ID was " + str(game.you.id))
+
         self.screen.fill((0, 0, 0))
-        for row in range(game.width):
-            for col in range(game.height):
+        for row in range(game.height):
+            for col in range(game.width):
                 pygame.draw.rect(self.screen, self.playerColors[game.cells[row][col].get_player_id()],
-                                 (col * self.rectangleSize + col,
-                                  row * self.rectangleSize + row,
-                                  self.rectangleSize,
-                                  self.rectangleSize))
+                                 (col * self.RECTANGLE_SIZE + col,
+                                  row * self.RECTANGLE_SIZE + row,
+                                  self.RECTANGLE_SIZE,
+                                  self.RECTANGLE_SIZE))
         pygame.display.update()
         self.clock.tick(60)
 
@@ -82,7 +101,7 @@ class GraphicalMonitoring(Monitoring):
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    sys.exit()  # closes the application
+                    self.end()
                 elif event.type == pygame.KEYDOWN:
                     pressed_key = pygame.key.get_pressed()
                     self.next_Action = False
@@ -98,3 +117,17 @@ class GraphicalMonitoring(Monitoring):
                         return Action.change_nothing
                 elif event.type == pygame.KEYUP:
                     self.next_Action = True
+
+    def end(self):
+        time.sleep(10)
+        pygame.display.quit()
+        pygame.quit()
+        sys.exit()
+
+    def initialize_interface(self, game: Game):
+        self.interface_initialized = True
+        for i in range(0, len(game.players)):
+            self.playerColors[int(game.players[i].id)] = (
+                random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        self.screen = pygame.display.set_mode(
+            [game.width * self.RECTANGLE_SIZE + game.width, game.height * self.RECTANGLE_SIZE + game.height])
