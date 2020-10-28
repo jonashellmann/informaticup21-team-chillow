@@ -98,7 +98,7 @@ class NotKillingItselfAI(ArtificialIntelligence):
                             updated_best_actions: Dict[Action, int] = {}
                             for (act, dist) in best_actions.items():  # new max_straight_distance. Remove worth options
                                 if dist >= max_straight_distance - self.max_worse_distance:
-                                    updated_best_actions[action] = dist
+                                    updated_best_actions[act] = dist
                             best_actions = updated_best_actions
                         elif straight_distance >= max_straight_distance - self.max_worse_distance:  # still good option
                             best_actions[action] = straight_distance
