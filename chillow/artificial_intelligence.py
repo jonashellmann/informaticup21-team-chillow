@@ -29,10 +29,11 @@ class ChillowAI(ArtificialIntelligence):
         return random.choice(list(Action))
 
 
-class NotKillingItselfAI(ArtificialIntelligence):
+class AIOptions(Enum):
+    max_distance, avoid_small_ares = range(2)
 
-    class AIOptions(Enum):
-        max_distance, avoid_small_ares = range(2)
+
+class NotKillingItselfAI(ArtificialIntelligence):
 
     def __init__(self, player: Player, game: Game, options: List[AIOptions]):
         self.player = player
@@ -48,7 +49,7 @@ class NotKillingItselfAI(ArtificialIntelligence):
         game_service.turn.turn_ctr = self.turn_ctr
 
         surviving_actions = self.find_surviving_actions(game_service)
-        if NotKillingItselfAI.AIOptions.max_distance in self.options:
+        if AIOptions.max_distance in self.options:
             max_distance_action = self.calc_action_with_max_distance_to_visited_cells(game_service, surviving_actions)
             return max_distance_action if max_distance_action is not None else Action.change_nothing
         else:
