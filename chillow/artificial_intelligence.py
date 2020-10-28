@@ -3,6 +3,7 @@ import random
 
 from abc import ABCMeta, abstractmethod
 from typing import List
+from enum import Enum
 
 from chillow.game_services.game_service import GameService
 from chillow.model.action import Action
@@ -30,11 +31,14 @@ class ChillowAI(ArtificialIntelligence):
 
 class NotKillingItselfAI(ArtificialIntelligence):
 
-    def __init__(self, player: Player, game: Game, max_distance: bool):
+    class AIOptions(Enum):
+        max_distance, avoid_small_ares = range(2)
+
+    def __init__(self, player: Player, game: Game, options: List[AIOptions]):
         self.player = player
         self.game = game
         self.turn_ctr = 0
-        self.max_distance = max_distance
+        self.options = options
 
     def create_next_action(self, game: Game) -> Action:
 
@@ -44,7 +48,7 @@ class NotKillingItselfAI(ArtificialIntelligence):
         game_service.turn.turn_ctr = self.turn_ctr
 
         surviving_actions = self.find_surviving_actions(game_service)
-        if self.max_distance:
+        if NotKillingItselfAI.AIOptions.max_distance in self.options:
             max_distance_action = self.calc_action_with_max_distance_to_visited_cells(game_service, surviving_actions)
             return max_distance_action if max_distance_action is not None else Action.change_nothing
         else:
@@ -67,7 +71,8 @@ class NotKillingItselfAI(ArtificialIntelligence):
 
         return result
 
-    def calc_action_with_max_distance_to_visited_cells(self, game_service: GameService, actions: Action) -> Action:
+    def calc_action_with_max_distance_to_visited_cells(self, game_service: GameService,
+                                                       actions: List[Action]) -> Action:
         max_straight_distance = 0
         best_action: Action = None
         for action in actions:
