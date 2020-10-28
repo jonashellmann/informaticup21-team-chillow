@@ -21,8 +21,17 @@ class AlphaBetaPruningAI(ArtificialIntelligence):
 @dataclass
 class AlphaBetaNode(object):
 
-    data: Game = None
+    game: Game = None
     children: List[Type['AlphaBetaNode']] = field(default_factory=list)
 
     def append_child(self, node):
         self.children.append(node)
+
+    def evaluate(self) -> int:
+        if self.game is None or not self.game.you.active:
+            return 0
+
+        evaluation = 1
+        for child in self.children:
+            evaluation += child.evaluate()
+        return evaluation
