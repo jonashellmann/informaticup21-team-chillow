@@ -18,5 +18,15 @@ class AlphaBetaPruningAITest(unittest.TestCase):
 
         result = sut.create_next_action(game)
 
-        self.assertEqual(result, Action.turn_right)
+        self.assertEqual(Action.turn_right, result)
+        testfile.close()
+
+    def test_should_select_action_to_let_player_survive_next_two_rounds(self):
+        testfile = open(tests.get_test_file_path("game_2.json"))  # Todo: Beispiel konstruieren
+        game = self.data_loader.load(testfile.read())
+        sut = AlphaBetaPruningAI(game.you, 2)
+
+        result = sut.create_next_action(game)
+
+        self.assertEqual(Action.turn_right, result)
         testfile.close()
