@@ -70,7 +70,7 @@ class OfflineConnection(Connection):
         monitoring.update(game)
 
         game_service = GameService(game)
-        ai0 = NotKillingItselfAI(player1, game, [AIOptions.max_distance], 3, 0)
+        ai0 = NotKillingItselfAI(player1, game, [AIOptions.max_distance], 1, 0)
         ai1 = NotKillingItselfAI(player2, game, [AIOptions.max_distance], 3, 3)
         ai2 = NotKillingItselfAI(player3, game, [], 10, 0)
         ai3 = NotKillingItselfAI(player4, game, [], 10, 0)

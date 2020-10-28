@@ -30,18 +30,18 @@ class ChillowAI(ArtificialIntelligence):
 
 
 class AIOptions(Enum):
-    max_distance, avoid_small_ares = range(2)
+    max_distance = range(1)
 
 
 class NotKillingItselfAI(ArtificialIntelligence):
 
-    def __init__(self, player: Player, game: Game, options: List[AIOptions], max_speed: int, max_worth_distance: int):
+    def __init__(self, player: Player, game: Game, options: List[AIOptions], max_speed: int, max_worse_distance: int):
         self.player = player
         self.game = game
         self.turn_ctr = 0
         self.options = options
         self.max_speed = max_speed
-        self.max_worth_distance = max_worth_distance
+        self.max_worse_distance = max_worse_distance
 
     def create_next_action(self, game: Game) -> Action:
 
@@ -115,10 +115,10 @@ class NotKillingItselfAI(ArtificialIntelligence):
                             best_actions[action] = straight_distance
                             updated_best_actions: Dict[Action, int] = {}
                             for (act, dist) in best_actions.items():  # new max_straight_distance. Remove worth options
-                                if dist >= max_straight_distance - self.max_worth_distance:
+                                if dist >= max_straight_distance - self.max_worse_distance:
                                     updated_best_actions[action] = dist
                             best_actions = updated_best_actions
-                        elif straight_distance >= max_straight_distance - self.max_worth_distance:  # still good option
+                        elif straight_distance >= max_straight_distance - self.max_worse_distance:  # still good option
                             best_actions[action] = straight_distance
                     except Exception as ex:
                         print(ex)
