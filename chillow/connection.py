@@ -5,6 +5,7 @@ import websockets
 
 from abc import ABCMeta, abstractmethod
 
+from chillow.ai.not_killing_Itself_ai import NotKillingItselfAI, AIOptions
 from chillow.service.data_loader import JSONDataLoader
 from chillow.service.data_writer import JSONDataWriter
 from chillow.ai.random_ai import RandomAI, RandomWaitingAI
@@ -81,8 +82,8 @@ class OfflineConnection(Connection):
         self.monitoring.update(game)
 
         game_service = GameService(game)
-        ai1 = RandomAI(player2)
-        ai2 = RandomAI(player3)
+        ai1 = NotKillingItselfAI(player2, game, [], 3, 0)
+        ai2 = NotKillingItselfAI(player3, game, [AIOptions.max_distance], 2, 0)
         ai3 = RandomAI(player4)
         ais = [ai1, ai2, ai3]
 
