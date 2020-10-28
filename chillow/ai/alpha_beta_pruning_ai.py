@@ -1,5 +1,5 @@
-from dataclasses import dataclass
-from typing import List
+from dataclasses import dataclass, field
+from typing import List, Type
 
 from chillow.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.model.action import Action
@@ -21,8 +21,8 @@ class AlphaBetaPruningAI(ArtificialIntelligence):
 @dataclass
 class AlphaBetaNode(object):
 
-    data: Game
-    children = []
+    data: Game = None
+    children: List[Type['AlphaBetaNode']] = field(default_factory=list)
 
     def append_child(self, node):
         self.children.append(node)
