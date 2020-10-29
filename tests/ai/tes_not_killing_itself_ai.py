@@ -13,23 +13,20 @@ from chillow.service.game_service import GameService
 
 class NotKillingItselfAITest(unittest.TestCase):
 
-    def setUp(self):
-        pass
-
     def test_ai_should_choose_the_own_non_killing_itself_action(self):
-        self.player1 = Player(1, 0, 0, Direction.up, 1, True, "")
-        self.player2 = Player(2, 4, 4, Direction.down, 3, True, "")
-        self.players = [self.player1, self.player2]
-        cells = [[Cell([self.player1]), Cell(), Cell(), Cell(), Cell()],
+        player1 = Player(1, 0, 0, Direction.up, 1, True, "")
+        player2 = Player(2, 4, 4, Direction.down, 3, True, "")
+        players = [player1, player2]
+        cells = [[Cell([player1]), Cell(), Cell(), Cell(), Cell()],
                  [Cell(), Cell(), Cell(), Cell(), Cell()],
                  [Cell(), Cell(), Cell(), Cell(), Cell()],
                  [Cell(), Cell(), Cell(), Cell(), Cell()],
-                 [Cell(), Cell(), Cell(), Cell(), Cell([self.player2])]]
+                 [Cell(), Cell(), Cell(), Cell(), Cell([player2])]]
 
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
-        game = Game(5, 5, cells, self.players, 2, True, time)
+        game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(self.player1, game, [], 3, 0)
+        sut = NotKillingItselfAI(player1, game, [], 3, 0)
 
         actions: List[Action] = sut.find_surviving_actions(game_service)
 
@@ -37,19 +34,19 @@ class NotKillingItselfAITest(unittest.TestCase):
         self.assertTrue(len(actions) == 1)
 
     def test_ai_should_choose_the_correct_list_of_actions_non_killing_itself(self):
-        self.player1 = Player(1, 0, 1, Direction.up, 1, True, "")
-        self.player2 = Player(2, 4, 4, Direction.down, 3, True, "")
-        self.players = [self.player1, self.player2]
+        player1 = Player(1, 0, 1, Direction.up, 1, True, "")
+        player2 = Player(2, 4, 4, Direction.down, 3, True, "")
+        players = [player1, player2]
         cells = [[Cell(), Cell(), Cell(), Cell(), Cell()],
-                 [Cell([self.player1]), Cell(), Cell(), Cell(), Cell()],
+                 [Cell([player1]), Cell(), Cell(), Cell(), Cell()],
                  [Cell(), Cell(), Cell(), Cell(), Cell()],
                  [Cell(), Cell(), Cell(), Cell(), Cell()],
-                 [Cell(), Cell(), Cell(), Cell(), Cell([self.player2])]]
+                 [Cell(), Cell(), Cell(), Cell(), Cell([player2])]]
 
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
-        game = Game(5, 5, cells, self.players, 2, True, time)
+        game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(self.player1, game, [], 3, 0)
+        sut = NotKillingItselfAI(player1, game, [], 3, 0)
 
         actions: List[Action] = sut.find_surviving_actions(game_service)
 
@@ -58,19 +55,19 @@ class NotKillingItselfAITest(unittest.TestCase):
         self.assertTrue(len(actions) == 2)
 
     def test_ai_should_choose_the_correct_list_of_actions_non_killing_itself2(self):
-        self.player1 = Player(1, 1, 2, Direction.up, 1, True, "")
-        self.player2 = Player(2, 1, 1, Direction.down, 3, True, "")
-        self.players = [self.player1, self.player2]
+        player1 = Player(1, 1, 2, Direction.up, 1, True, "")
+        player2 = Player(2, 1, 1, Direction.down, 3, True, "")
+        players = [player1, player2]
         cells = [[Cell(), Cell(), Cell(), Cell(), Cell()],
-                 [Cell(), Cell([self.player2]), Cell(), Cell(), Cell()],
-                 [Cell(), Cell([self.player1]), Cell(), Cell(), Cell()],
+                 [Cell(), Cell([player2]), Cell(), Cell(), Cell()],
+                 [Cell(), Cell([player1]), Cell(), Cell(), Cell()],
                  [Cell(), Cell(), Cell(), Cell(), Cell()],
                  [Cell(), Cell(), Cell(), Cell(), Cell()]]
 
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
-        game = Game(5, 5, cells, self.players, 2, True, time)
+        game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(self.player1, game, [], 3, 0)
+        sut = NotKillingItselfAI(player1, game, [], 3, 0)
 
         actions: List[Action] = sut.find_surviving_actions(game_service)
 
@@ -79,19 +76,19 @@ class NotKillingItselfAITest(unittest.TestCase):
         self.assertTrue(len(actions) == 2)
 
     def test_ai_should_choose_the_correct_list_of_actions_non_killing_itself_in_turn_6(self):
-        self.player1 = Player(1, 0, 4, Direction.up, 3, True, "")
-        self.player2 = Player(2, 0, 1, Direction.down, 3, True, "")
-        self.players = [self.player1, self.player2]
+        player1 = Player(1, 0, 4, Direction.up, 3, True, "")
+        player2 = Player(2, 0, 1, Direction.down, 3, True, "")
+        players = [player1, player2]
         cells = [[Cell(), Cell(), Cell(), Cell(), Cell()],
-                 [Cell([self.player2]), Cell(), Cell(), Cell(), Cell()],
+                 [Cell([player2]), Cell(), Cell(), Cell(), Cell()],
                  [Cell(), Cell(), Cell(), Cell(), Cell()],
                  [Cell(), Cell(), Cell(), Cell(), Cell()],
-                 [Cell([self.player1]), Cell(), Cell(), Cell(), Cell()]]
+                 [Cell([player1]), Cell(), Cell(), Cell(), Cell()]]
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
-        game = Game(5, 5, cells, self.players, 2, True, time)
+        game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
         game_service.turn.turn_ctr = 6
-        sut = NotKillingItselfAI(self.player1, game, [], 4, 0)
+        sut = NotKillingItselfAI(player1, game, [], 4, 0)
 
         actions: List[Action] = sut.find_surviving_actions(game_service)
 
@@ -102,18 +99,18 @@ class NotKillingItselfAITest(unittest.TestCase):
 
     def test_ai_should_not_choose_speed_up_if_max_speed_is_allready_reached(self):
         MAX_SPEED = 3
-        self.player1 = Player(1, 0, 4, Direction.up, MAX_SPEED, True, "")
-        self.player2 = Player(2, 0, 1, Direction.down, 3, True, "")
-        self.players = [self.player1, self.player2]
+        player1 = Player(1, 0, 4, Direction.up, MAX_SPEED, True, "")
+        player2 = Player(2, 0, 1, Direction.down, 3, True, "")
+        players = [player1, player2]
         cells = [[Cell(), Cell(), Cell(), Cell(), Cell()],
-                 [Cell([self.player2]), Cell(), Cell(), Cell(), Cell()],
+                 [Cell([player2]), Cell(), Cell(), Cell(), Cell()],
                  [Cell(), Cell(), Cell(), Cell(), Cell()],
                  [Cell(), Cell(), Cell(), Cell(), Cell()],
-                 [Cell([self.player1]), Cell(), Cell(), Cell(), Cell()]]
+                 [Cell([player1]), Cell(), Cell(), Cell(), Cell()]]
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
-        game = Game(5, 5, cells, self.players, 2, True, time)
+        game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(self.player1, game, [], MAX_SPEED, 0)
+        sut = NotKillingItselfAI(player1, game, [], MAX_SPEED, 0)
 
         actions: List[Action] = sut.find_surviving_actions(game_service)
 
@@ -122,18 +119,18 @@ class NotKillingItselfAITest(unittest.TestCase):
         self.assertTrue(len(actions) == 2)
 
     def test_ai_should_calc_action_with_max_distance(self):
-        self.player1 = Player(1, 0, 4, Direction.up, 1, True, "")
-        self.player2 = Player(2, 0, 1, Direction.down, 3, True, "")
-        self.players = [self.player1, self.player2]
+        player1 = Player(1, 0, 4, Direction.up, 1, True, "")
+        player2 = Player(2, 0, 1, Direction.down, 3, True, "")
+        players = [player1, player2]
         cells = [[Cell(), Cell(), Cell(), Cell(), Cell()],
-                 [Cell([self.player2]), Cell(), Cell(), Cell(), Cell()],
+                 [Cell([player2]), Cell(), Cell(), Cell(), Cell()],
                  [Cell(), Cell(), Cell(), Cell(), Cell()],
                  [Cell(), Cell(), Cell(), Cell(), Cell()],
-                 [Cell([self.player1]), Cell(), Cell(), Cell(), Cell()]]
+                 [Cell([player1]), Cell(), Cell(), Cell(), Cell()]]
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
-        game = Game(5, 5, cells, self.players, 2, True, time)
+        game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(self.player1, game, [], 3, 0)
+        sut = NotKillingItselfAI(player1, game, [], 3, 0)
 
         actions: List[Action] = sut.calc_action_with_max_distance_to_visited_cells(game_service, [Action.speed_up,
                                                                                                   Action.change_nothing,
@@ -144,18 +141,18 @@ class NotKillingItselfAITest(unittest.TestCase):
 
     def test_ai_should_calc_all_action_with_max_distance_with_max_worse_distance(self):
         MAX_WORSE_DISTANCE = 1
-        self.player1 = Player(1, 0, 4, Direction.up, 1, True, "")
-        self.player2 = Player(2, 4, 4, Direction.down, 3, True, "")
-        self.players = [self.player1, self.player2]
+        player1 = Player(1, 0, 4, Direction.up, 1, True, "")
+        player2 = Player(2, 4, 4, Direction.down, 3, True, "")
+        players = [player1, player2]
         cells = [[Cell(), Cell(), Cell(), Cell(), Cell()],
                  [Cell(), Cell(), Cell(), Cell(), Cell()],
                  [Cell(), Cell(), Cell(), Cell(), Cell()],
                  [Cell(), Cell(), Cell(), Cell(), Cell()],
-                 [Cell([self.player1]), Cell(), Cell(), Cell(), Cell([self.player2])]]
+                 [Cell([player1]), Cell(), Cell(), Cell(), Cell([player2])]]
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
-        game = Game(5, 5, cells, self.players, 2, True, time)
+        game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(self.player1, game, [], 3, MAX_WORSE_DISTANCE)
+        sut = NotKillingItselfAI(player1, game, [], 3, MAX_WORSE_DISTANCE)
 
         actions: List[Action] = sut.calc_action_with_max_distance_to_visited_cells(game_service, [Action.speed_up,
                                                                                                   Action.change_nothing,
