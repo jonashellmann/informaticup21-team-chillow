@@ -45,17 +45,16 @@ class NotKillingItselfAI(ArtificialIntelligence):
         result: List[Action] = []
         for action in Action:  # select a surviving action
             gs_copy = copy.deepcopy(game_service)
-            for player in gs_copy.game.players:
-                if player.id == self.player.id:
-                    if player.speed == self.max_speed and action == Action.speed_up:
-                        continue
-                    try:
-                        gs_copy.visited_cells_by_player[player.id] = gs_copy.get_and_visit_cells(player, action)
-                    except Exception:
-                        continue
-                    gs_copy.check_and_set_died_players()
-                    if player.active:
-                        result += [action]
+            try:
+                player = gs_copy.game.get_player_by_id(self.player.id)
+                if player.speed == self.max_speed and action == Action.speed_up:
+                    continue
+                gs_copy.visited_cells_by_player[player.id] = gs_copy.get_and_visit_cells(player, action)
+            except Exception:
+                continue
+            gs_copy.check_and_set_died_players()
+            if player.active:
+                result += [action]
 
         return result
 
@@ -65,45 +64,44 @@ class NotKillingItselfAI(ArtificialIntelligence):
         best_actions: Dict[Action, int] = {}
         for action in actions:
             gs_copy = copy.deepcopy(game_service)
-            for player in gs_copy.game.players:
-                if player.id == self.player.id:
-                    try:
-                        gs_copy.visited_cells_by_player[player.id] = gs_copy.get_and_visit_cells(player, action)
+            try:
+                player = gs_copy.game.get_player_by_id(self.player.id)
+                gs_copy.visited_cells_by_player[player.id] = gs_copy.get_and_visit_cells(player, action)
 
-                        straight_distance = 0
-                        vertical_multiplier = 0
-                        horizontal_multiplier = 0
-                        if player.direction == Direction.up:
-                            vertical_multiplier = -1
-                        elif player.direction == Direction.down:
-                            vertical_multiplier = 1
-                        elif player.direction == Direction.left:
-                            horizontal_multiplier = -1
-                        elif player.direction == Direction.right:
-                            horizontal_multiplier = 1
+                straight_distance = 0
+                vertical_multiplier = 0
+                horizontal_multiplier = 0
+                if player.direction == Direction.up:
+                    vertical_multiplier = -1
+                elif player.direction == Direction.down:
+                    vertical_multiplier = 1
+                elif player.direction == Direction.left:
+                    horizontal_multiplier = -1
+                elif player.direction == Direction.right:
+                    horizontal_multiplier = 1
 
-                        for i in range(max(gs_copy.game.height, gs_copy.game.width)):
-                            x = player.x + (i + 1) * horizontal_multiplier
-                            y = player.y + (i + 1) * vertical_multiplier
-                            if x in range(gs_copy.game.width) and y in range(gs_copy.game.height) and (
-                                    gs_copy.game.cells[y][x].players is None or len(
-                                gs_copy.game.cells[y][x].players) == 0):
-                                straight_distance += 1
-                            else:
-                                break
+                for i in range(max(gs_copy.game.height, gs_copy.game.width)):
+                    x = player.x + (i + 1) * horizontal_multiplier
+                    y = player.y + (i + 1) * vertical_multiplier
+                    if x in range(gs_copy.game.width) and y in range(gs_copy.game.height) and (
+                            gs_copy.game.cells[y][x].players is None or len(
+                        gs_copy.game.cells[y][x].players) == 0):
+                        straight_distance += 1
+                    else:
+                        break
 
-                        if len(best_actions) == 0 or straight_distance > max_straight_distance:
-                            max_straight_distance = straight_distance
-                            best_actions[action] = straight_distance
-                            updated_best_actions: Dict[Action, int] = {}
-                            for (act, dist) in best_actions.items():  # new max_straight_distance. Remove worth options
-                                if dist >= max_straight_distance - self.max_worse_distance:
-                                    updated_best_actions[act] = dist
-                            best_actions = updated_best_actions
-                        elif straight_distance >= max_straight_distance - self.max_worse_distance:  # still good option
-                            best_actions[action] = straight_distance
-                    except Exception as ex:
-                        print(ex)
-                        continue
+                if len(best_actions) == 0 or straight_distance > max_straight_distance:
+                    max_straight_distance = straight_distance
+                    best_actions[action] = straight_distance
+                    updated_best_actions: Dict[Action, int] = {}
+                    for (act, dist) in best_actions.items():  # new max_straight_distance. Remove worth options
+                        if dist >= max_straight_distance - self.max_worse_distance:
+                            updated_best_actions[act] = dist
+                    best_actions = updated_best_actions
+                elif straight_distance >= max_straight_distance - self.max_worse_distance:  # still good option
+                    best_actions[action] = straight_distance
+            except Exception as ex:
+                print(ex)
+                continue
 
         return list(best_actions.keys())

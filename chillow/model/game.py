@@ -5,7 +5,7 @@ from typing import List
 from chillow.model.player import Player
 from chillow.model.cell import Cell
 from chillow.exceptions import WrongGameWidthException, WrongGameHeightException, OwnPlayerMissingException, \
-    PlayerPositionException
+    PlayerPositionException, PlayerWithGivenIdNotAvailableException
 
 
 @dataclass
@@ -46,3 +46,9 @@ class Game:
             if player.active:
                 return player
         raise Exception("No winner in ended game found")
+
+    def get_player_by_id(self, player_id: int) -> Player:
+        for player in self.players:
+            if player.id == player_id:
+                return player
+        raise PlayerWithGivenIdNotAvailableException(player_id)
