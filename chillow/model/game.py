@@ -46,3 +46,10 @@ class Game:
             if player.active:
                 return player
         raise Exception("No winner in ended game found")
+
+    def get_other_players(self) -> list[Player]:
+        players = []
+        for player in self.players:
+            if player.id != self.you.id:
+                players.append(player)
+        return players

@@ -19,7 +19,7 @@ class SearchTreeAI(ArtificialIntelligence):
     def create_next_action(self, game: Game) -> Action:
         self.__turn_counter += 1
         root = SearchTreeRoot(deepcopy(game))
-        combinations = SearchTreeAI.__get_combinations(len(game.players))
+        combinations = SearchTreeAI.__get_combinations(len(game.get_other_players()))
 
         return root.calculate_action(combinations, self.__depth, self.__turn_counter)
 

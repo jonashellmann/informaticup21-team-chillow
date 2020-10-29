@@ -6,15 +6,16 @@ from chillow.exceptions import MultipleActionByPlayerError, DeadLineExceededExce
     PlayerOutsidePlaygroundException
 from chillow.model.action import Action
 from chillow.model.game import Game
+from chillow.model.player import Player
 from chillow.service.game_service import GameService
 
 
 @dataclass
 class SearchTreeRoot(object):
-    __game: Game
+    _game: Game
     __children: List[Type['SearchTreeNode']] = field(default_factory=list, init=False)
 
-    def __append_child(self, node):
+    def append_child(self, node):
         self.__children.append(node)
 
     def calculate_action(self, combinations: list[tuple[Any]], depth: int, turn_counter: int):
@@ -22,46 +23,79 @@ class SearchTreeRoot(object):
             raise Exception
 
         if depth == 1:
-            for combination in combinations:
-                node = SearchTreeRoot.__try_combination(self.__game, combination, turn_counter)
-                self.__append_child(node)
+            for action in list(Action):
+                child = self.__create_child(action, turn_counter)
+                if child._game.you.active:
+                    self.append_child(child)
 
             for child in self.__children:
-                if child.is_win():
+                if SearchTreeRoot.__try_combinations_for_child(child, combinations, turn_counter):
                     return child.get_action()
             return None
 
-        for child in self.__children:
-            action = child.create_combinations(deepcopy(combinations), depth - 1, turn_counter + 1)
-            if action is not None:
-                return self.select_action(action)
+        for action in list(Action):
+            child = self.__create_child(action, turn_counter)
+            if child._game.you.active:
+                for combination in combinations:
+                    node = SearchTreeRoot.__try_combination(child._game, combination, turn_counter)
+                    if node._game.you.active:
+                        child.append_child(node)
+                        node_action = node.calculate_action(combinations, depth - 1, turn_counter + 1)
+                        if node_action is not None:
+                            return action
+
+
+
+    def __create_child(self, action: Action, turn_counter: int):
+        modified_game = deepcopy(self._game)
+        game_service = GameService(modified_game)
+        game_service.turn.turn_ctr = turn_counter
+        SearchTreeRoot.__perform_simulation(game_service, action, modified_game.you)
+        game_service.check_and_set_died_players()
+
+        return SearchTreeNode(deepcopy(modified_game), action)
+
+    @staticmethod
+    def __try_combinations_for_child(child: Type['SearchTreeRoot'], combinations: list[tuple[Action]],
+                                     turn_counter: int) -> bool:
+        for combination in combinations:
+            node = SearchTreeRoot.__try_combination(child._game, combination, turn_counter)
+            if not node._game.you.active:
+                return False
+            child.append_child(node)
+        return True
 
     @staticmethod
     def __try_combination(game: Game, combination: tuple[Action], turn_counter: int):
         modified_game = deepcopy(game)
         game_service = GameService(modified_game)
         game_service.turn.turn_ctr = turn_counter
-        own_action = None
-        for j in range(len(modified_game.players)):
+        for j in range(len(combination)):
             action = combination[j]
-            player = modified_game.players[j]
-            if player.id == game.you.id:
-                own_action = action
-            if player.active:
-                try:
-                    game_service.visited_cells_by_player[player.id] = \
-                        game_service.get_and_visit_cells(player, action)
-                except (MultipleActionByPlayerError, DeadLineExceededException, PlayerSpeedNotInRangeException,
-                        PlayerOutsidePlaygroundException):
-                    game_service.set_player_inactive(player)
+            player = modified_game.get_other_players()[j]
+            SearchTreeRoot.__perform_simulation(game_service, action, player)
+
         game_service.check_and_set_died_players()
-        return SearchTreeNode(deepcopy(modified_game), deepcopy(own_action))
+        return SearchTreeRoot(deepcopy(modified_game))
+
+    @staticmethod
+    def __perform_simulation(game_service: GameService, action: Action, player: Player):
+        if player.active:
+            try:
+                game_service.visited_cells_by_player[player.id] = \
+                    game_service.get_and_visit_cells(player, action)
+            except (MultipleActionByPlayerError, DeadLineExceededException, PlayerSpeedNotInRangeException,
+                    PlayerOutsidePlaygroundException):
+                game_service.set_player_inactive(player)
+
+    def get_action(self) -> Action:
+        return None
 
     def select_action(self, action: Action) -> Action:
         return action
 
     def is_win(self) -> bool:
-        if not self.__game.you.active:
+        if not self._game.you.active:
             return False
 
         for child in self.__children:
@@ -72,7 +106,7 @@ class SearchTreeRoot(object):
 
     # Todo: Anpassen
     def evaluate(self) -> int:
-        if not self.__game.you.active:
+        if not self._game.you.active:
             return 0
 
         evaluation = 1
@@ -85,7 +119,7 @@ class SearchTreeRoot(object):
 class SearchTreeNode(SearchTreeRoot):
     __action: Action
 
-    def get_action(self):
+    def get_action(self) -> Action:
         return self.__action
 
     def select_action(self, action: Action) -> Action:
