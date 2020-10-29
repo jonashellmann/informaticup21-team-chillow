@@ -57,4 +57,4 @@ class PlayerPositionException(Exception):
 class PlayerWithGivenIdNotAvailableException(Exception):
 
     def __init__(self, player_id: int):
-        print("Player with the id " + player_id + "is not in this game")
+        print("Player with the id " + str(player_id) + "is not in this game")
