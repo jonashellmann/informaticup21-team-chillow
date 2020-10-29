@@ -37,7 +37,7 @@ class SearchTreeRoot(object):
             child = self.__create_child(player, action, turn_counter)
             if child._game.get_player_by_id(player.id).active:
                 for combination in combinations:
-                    node = SearchTreeRoot.__try_combination(child._game, combination, turn_counter)
+                    node = SearchTreeRoot.__try_combination(child._game, player, combination, turn_counter)
                     if node._game.get_player_by_id(player.id).active:
                         child.append_child(node)
                         node_action = node.calculate_action(player, combinations, depth - 1, turn_counter + 1)
@@ -59,20 +59,20 @@ class SearchTreeRoot(object):
                                      combinations: list[tuple[Action]],
                                      turn_counter: int) -> bool:
         for combination in combinations:
-            node = SearchTreeRoot.__try_combination(child._game, combination, turn_counter)
+            node = SearchTreeRoot.__try_combination(child._game, player, combination, turn_counter)
             if not node._game.get_player_by_id(player.id).active:
                 return False
             child.append_child(node)
         return True
 
     @staticmethod
-    def __try_combination(game: Game, combination: tuple[Action], turn_counter: int):
+    def __try_combination(game: Game, p: Player, combination: tuple[Action], turn_counter: int):
         modified_game = deepcopy(game)
         game_service = GameService(modified_game)
         game_service.turn.turn_ctr = turn_counter
         for j in range(len(combination)):
             action = combination[j]
-            player = modified_game.get_other_players()[j]
+            player = modified_game.get_other_players(p)[j]
             SearchTreeRoot.__perform_simulation(game_service, action, player)
 
         game_service.check_and_set_died_players()
