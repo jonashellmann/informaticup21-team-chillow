@@ -11,6 +11,8 @@ from chillow.model.player import Player
 from chillow.service.game_service import GameService
 
 
+# Todo: AI umbennen
+# Todo: Zaehler für Zug ergaenzen wegen Lücken
 class AlphaBetaPruningAI(ArtificialIntelligence):
 
     def __init__(self, player: Player, depth: int):
