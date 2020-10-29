@@ -91,16 +91,10 @@ class SearchTreeRoot(object):
     def get_action(self) -> Action:
         return None
 
-    def select_action(self, action: Action) -> Action:
-        return action
-
 
 @dataclass
 class SearchTreeNode(SearchTreeRoot):
     __action: Action
 
     def get_action(self) -> Action:
-        return self.__action
-
-    def select_action(self, action: Action) -> Action:
         return self.__action
