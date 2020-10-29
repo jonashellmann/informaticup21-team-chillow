@@ -1,7 +1,7 @@
 from itertools import product
 from copy import deepcopy
 
-from chillow.ai.alpha_beta_node import AlphaBetaRoot, AlphaBetaNode
+from chillow.ai.search_tree_node import SearchTreeRoot, SearchTreeNode
 from chillow.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.exceptions import MultipleActionByPlayerError, DeadLineExceededException, PlayerSpeedNotInRangeException, \
     PlayerOutsidePlaygroundException
@@ -11,8 +11,7 @@ from chillow.model.player import Player
 from chillow.service.game_service import GameService
 
 
-# Todo: AI umbennen
-class AlphaBetaPruningAI(ArtificialIntelligence):
+class SearchTreeAI(ArtificialIntelligence):
 
     def __init__(self, player: Player, depth: int):
         super().__init__(player)
@@ -21,13 +20,13 @@ class AlphaBetaPruningAI(ArtificialIntelligence):
 
     def create_next_action(self, game: Game) -> Action:
         self.__turn_counter += 1
-        root = AlphaBetaRoot(deepcopy(game))
-        combinations = AlphaBetaPruningAI.__get_combinations(len(game.players))
+        root = SearchTreeRoot(deepcopy(game))
+        combinations = SearchTreeAI.__get_combinations(len(game.players))
 
         for depth in range(self.__depth):
             for node in root.get_children(depth):
                 for combination in combinations:
-                    created_node = AlphaBetaPruningAI.__try_combination(game, combination, self.__turn_counter)
+                    created_node = SearchTreeAI.__try_combination(game, combination, self.__turn_counter)
                     node.append_child(created_node)
 
         return root.get_winning_action()
@@ -38,7 +37,7 @@ class AlphaBetaPruningAI(ArtificialIntelligence):
 
     # Todo: Implementierung dieser Methode
     @staticmethod
-    def __try_combination(game: Game, combination: tuple[Action], turn_counter: int) -> AlphaBetaNode:
+    def __try_combination(game: Game, combination: tuple[Action], turn_counter: int) -> SearchTreeNode:
         modified_game = deepcopy(game)
         game_service = GameService(modified_game)
         game_service.turn.turn_ctr = turn_counter
@@ -56,4 +55,4 @@ class AlphaBetaPruningAI(ArtificialIntelligence):
                         PlayerOutsidePlaygroundException):
                     game_service.set_player_inactive(player)
         game_service.check_and_set_died_players()
-        return AlphaBetaNode(deepcopy(modified_game), deepcopy(own_action))
+        return SearchTreeNode(deepcopy(modified_game), deepcopy(own_action))

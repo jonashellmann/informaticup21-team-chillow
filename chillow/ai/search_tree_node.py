@@ -6,9 +6,9 @@ from chillow.model.game import Game
 
 
 @dataclass
-class AlphaBetaRoot(object):
+class SearchTreeRoot(object):
     __game: Game
-    __children: List[Type['AlphaBetaNode']] = field(default_factory=list, init=False)
+    __children: List[Type['SearchTreeNode']] = field(default_factory=list, init=False)
 
     def get_children(self, depth: int):
         if depth <= 0:
@@ -41,7 +41,7 @@ class AlphaBetaRoot(object):
 
 
 @dataclass
-class AlphaBetaNode(AlphaBetaRoot):
+class SearchTreeNode(SearchTreeRoot):
     __action: Action
 
     def get_action(self):
