@@ -1,3 +1,4 @@
+import random
 from itertools import product
 from copy import deepcopy
 from typing import Any
@@ -22,7 +23,8 @@ class SearchTreeAI(ArtificialIntelligence):
         root = SearchTreeRoot(deepcopy(game))
         combinations = SearchTreeAI.__get_combinations(len(game.get_other_players(self.__player)))
 
-        return root.calculate_action(self.__player, combinations, self.__depth, self.__turn_counter)
+        action = root.calculate_action(self.__player, combinations, self.__depth, self.__turn_counter)
+        return action if action is not None else random.choice(list(Action))
 
     @staticmethod
     def __get_combinations(player_count: int) -> list[tuple[Any]]:
