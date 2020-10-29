@@ -12,21 +12,22 @@ from chillow.service.game_service import GameService
 
 
 # Todo: AI umbennen
-# Todo: Zaehler für Zug ergaenzen wegen Lücken
 class AlphaBetaPruningAI(ArtificialIntelligence):
 
     def __init__(self, player: Player, depth: int):
         super().__init__(player)
         self.__depth = depth
+        self.__turn_counter = 0
 
     def create_next_action(self, game: Game) -> Action:
+        self.__turn_counter += 1
         root = AlphaBetaRoot(deepcopy(game))
         combinations = AlphaBetaPruningAI.__get_combinations(len(game.players))
 
         for depth in range(self.__depth):
             for node in root.get_children(depth):
                 for combination in combinations:
-                    created_node = AlphaBetaPruningAI.__try_combination(game, combination)
+                    created_node = AlphaBetaPruningAI.__try_combination(game, combination, self.__turn_counter)
                     node.append_child(created_node)
 
         return root.get_winning_action()
@@ -37,9 +38,10 @@ class AlphaBetaPruningAI(ArtificialIntelligence):
 
     # Todo: Implementierung dieser Methode
     @staticmethod
-    def __try_combination(game: Game, combination: tuple[Action]) -> AlphaBetaNode:
+    def __try_combination(game: Game, combination: tuple[Action], turn_counter: int) -> AlphaBetaNode:
         modified_game = deepcopy(game)
         game_service = GameService(modified_game)
+        game_service.turn.turn_ctr = turn_counter
         own_action = None
         for j in range(len(modified_game.players)):
             action = combination[j]
