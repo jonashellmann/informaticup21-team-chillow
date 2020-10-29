@@ -23,7 +23,7 @@ class SearchTreeRoot(object):
             raise Exception
 
         if depth == 1:
-            for action in list(Action):
+            for action in Action.get_actions():
                 child = self.__create_child(player, action, turn_counter)
                 if child._game.get_player_by_id(player.id).active:
                     self.append_child(child)
@@ -33,7 +33,7 @@ class SearchTreeRoot(object):
                     return child.get_action()
             return None
 
-        for action in list(Action):
+        for action in Action.get_actions():
             child = self.__create_child(player, action, turn_counter)
             if child._game.get_player_by_id(player.id).active:
                 for combination in combinations:
