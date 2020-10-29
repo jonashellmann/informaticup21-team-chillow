@@ -85,7 +85,7 @@ class NotKillingItselfAI(ArtificialIntelligence):
                     y = player.y + (i + 1) * vertical_multiplier
                     if x in range(gs_copy.game.width) and y in range(gs_copy.game.height) and (
                             gs_copy.game.cells[y][x].players is None or len(
-                        gs_copy.game.cells[y][x].players) == 0):
+                            gs_copy.game.cells[y][x].players) == 0):
                         straight_distance += 1
                     else:
                         break
