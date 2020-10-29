@@ -2,7 +2,7 @@ import unittest
 from datetime import datetime, timezone
 from typing import List
 
-from chillow.ai.not_killing_Itself_ai import NotKillingItselfAI
+from chillow.ai.not_killing_itself_ai import NotKillingItselfAI
 from chillow.model.action import Action
 from chillow.model.cell import Cell
 from chillow.model.direction import Direction
