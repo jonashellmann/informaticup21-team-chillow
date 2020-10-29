@@ -18,7 +18,7 @@ class AIOptions(Enum):
 class NotKillingItselfAI(ArtificialIntelligence):
 
     def __init__(self, player: Player, game: Game, options: List[AIOptions], max_speed: int, max_worse_distance: int):
-        self.player = player
+        super().__init__(player)
         self.game = game
         self.turn_ctr = 0
         self.options = options
