@@ -18,49 +18,49 @@ class SearchTreeRoot(object):
     def append_child(self, node):
         self.__children.append(node)
 
-    def calculate_action(self, combinations: list[tuple[Any]], depth: int, turn_counter: int):
+    def calculate_action(self, player: Player, combinations: list[tuple[Any]], depth: int, turn_counter: int):
         if depth <= 0:
             raise Exception
 
         if depth == 1:
             for action in list(Action):
-                child = self.__create_child(action, turn_counter)
-                if child._game.you.active:
+                child = self.__create_child(player, action, turn_counter)
+                if child._game.get_player_by_id(player.id).active:
                     self.append_child(child)
 
             for child in self.__children:
-                if SearchTreeRoot.__try_combinations_for_child(child, combinations, turn_counter):
+                if SearchTreeRoot.__try_combinations_for_child(child, player, combinations, turn_counter):
                     return child.get_action()
             return None
 
         for action in list(Action):
-            child = self.__create_child(action, turn_counter)
-            if child._game.you.active:
+            child = self.__create_child(player, action, turn_counter)
+            if child._game.get_player_by_id(player.id).active:
                 for combination in combinations:
                     node = SearchTreeRoot.__try_combination(child._game, combination, turn_counter)
-                    if node._game.you.active:
+                    if node._game.get_player_by_id(player.id).active:
                         child.append_child(node)
-                        node_action = node.calculate_action(combinations, depth - 1, turn_counter + 1)
+                        node_action = node.calculate_action(player, combinations, depth - 1, turn_counter + 1)
                         if node_action is not None:
                             return action
 
-
-
-    def __create_child(self, action: Action, turn_counter: int):
+    def __create_child(self, player: Player, action: Action, turn_counter: int):
         modified_game = deepcopy(self._game)
         game_service = GameService(modified_game)
         game_service.turn.turn_ctr = turn_counter
-        SearchTreeRoot.__perform_simulation(game_service, action, modified_game.you)
+        SearchTreeRoot.__perform_simulation(game_service, action, modified_game.get_player_by_id(player.id))
         game_service.check_and_set_died_players()
 
         return SearchTreeNode(deepcopy(modified_game), action)
 
     @staticmethod
-    def __try_combinations_for_child(child: Type['SearchTreeRoot'], combinations: list[tuple[Action]],
+    def __try_combinations_for_child(child: Type['SearchTreeRoot'],
+                                     player: Player,
+                                     combinations: list[tuple[Action]],
                                      turn_counter: int) -> bool:
         for combination in combinations:
             node = SearchTreeRoot.__try_combination(child._game, combination, turn_counter)
-            if not node._game.you.active:
+            if not node._game.get_player_by_id(player.id).active:
                 return False
             child.append_child(node)
         return True
@@ -93,26 +93,6 @@ class SearchTreeRoot(object):
 
     def select_action(self, action: Action) -> Action:
         return action
-
-    def is_win(self) -> bool:
-        if not self._game.you.active:
-            return False
-
-        for child in self.__children:
-            if not child.is_win():
-                return False
-
-        return True
-
-    # Todo: Anpassen
-    def evaluate(self) -> int:
-        if not self._game.you.active:
-            return 0
-
-        evaluation = 1
-        for child in self.__children:
-            evaluation += child.evaluate()
-        return evaluation
 
 
 @dataclass

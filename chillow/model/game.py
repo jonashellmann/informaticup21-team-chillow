@@ -53,3 +53,8 @@ class Game:
             if player.id != self.you.id:
                 players.append(player)
         return players
+
+    def get_player_by_id(self, player_id: int) -> Player:
+        for player in self.players:
+            if player.id == player_id:
+                return player

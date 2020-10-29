@@ -13,6 +13,7 @@ class SearchTreeAI(ArtificialIntelligence):
 
     def __init__(self, player: Player, depth: int):
         super().__init__(player)
+        self.__player = player
         self.__depth = depth
         self.__turn_counter = 0
 
@@ -21,7 +22,7 @@ class SearchTreeAI(ArtificialIntelligence):
         root = SearchTreeRoot(deepcopy(game))
         combinations = SearchTreeAI.__get_combinations(len(game.get_other_players()))
 
-        return root.calculate_action(combinations, self.__depth, self.__turn_counter)
+        return root.calculate_action(self.__player, combinations, self.__depth, self.__turn_counter)
 
     @staticmethod
     def __get_combinations(player_count: int) -> list[tuple[Any]]:
