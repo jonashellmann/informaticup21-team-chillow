@@ -22,7 +22,7 @@ class AlphaBetaPruningAITest(unittest.TestCase):
         testfile.close()
 
     def test_should_select_action_to_let_player_survive_next_two_rounds(self):
-        testfile = open(tests.get_test_file_path("game_2.json"))  # Todo: Beispiel konstruieren
+        testfile = open(tests.get_test_file_path("game_2.json"))
         game = self.data_loader.load(testfile.read())
         sut = SearchTreeAI(game.you, 2)
 

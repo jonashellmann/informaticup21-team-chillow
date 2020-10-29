@@ -1,14 +1,12 @@
 from itertools import product
 from copy import deepcopy
+from typing import Any
 
-from chillow.ai.search_tree_node import SearchTreeRoot, SearchTreeNode
+from chillow.ai.search_tree_node import SearchTreeRoot
 from chillow.ai.artificial_intelligence import ArtificialIntelligence
-from chillow.exceptions import MultipleActionByPlayerError, DeadLineExceededException, PlayerSpeedNotInRangeException, \
-    PlayerOutsidePlaygroundException
 from chillow.model.action import Action
 from chillow.model.game import Game
 from chillow.model.player import Player
-from chillow.service.game_service import GameService
 
 
 class SearchTreeAI(ArtificialIntelligence):
@@ -23,36 +21,8 @@ class SearchTreeAI(ArtificialIntelligence):
         root = SearchTreeRoot(deepcopy(game))
         combinations = SearchTreeAI.__get_combinations(len(game.players))
 
-        for depth in range(self.__depth):
-            for node in root.get_children(depth):
-                for combination in combinations:
-                    created_node = SearchTreeAI.__try_combination(game, combination, self.__turn_counter)
-                    node.append_child(created_node)
-
-        return root.get_winning_action()
+        return root.calculate_action(combinations, self.__depth, self.__turn_counter)
 
     @staticmethod
-    def __get_combinations(player_count: int) -> list[tuple[Action]]:
+    def __get_combinations(player_count: int) -> list[tuple[Any]]:
         return list(product(list(Action), repeat=player_count))
-
-    # Todo: Implementierung dieser Methode
-    @staticmethod
-    def __try_combination(game: Game, combination: tuple[Action], turn_counter: int) -> SearchTreeNode:
-        modified_game = deepcopy(game)
-        game_service = GameService(modified_game)
-        game_service.turn.turn_ctr = turn_counter
-        own_action = None
-        for j in range(len(modified_game.players)):
-            action = combination[j]
-            player = modified_game.players[j]
-            if player.id == game.you.id:
-                own_action = action
-            if player.active:
-                try:
-                    game_service.visited_cells_by_player[player.id] = \
-                        game_service.get_and_visit_cells(player, action)
-                except (MultipleActionByPlayerError, DeadLineExceededException, PlayerSpeedNotInRangeException,
-                        PlayerOutsidePlaygroundException):
-                    game_service.set_player_inactive(player)
-        game_service.check_and_set_died_players()
-        return SearchTreeNode(deepcopy(modified_game), deepcopy(own_action))
