@@ -126,8 +126,8 @@ class GraphicalMonitoring(Monitoring):
 
     def initialize_interface(self, game: Game):
         self.interface_initialized = True
+        colors = [(255, 61, 0), (156, 204, 101), (171, 71, 188), (38, 166, 154), (255, 238, 88), (66, 165, 245)]
         for i in range(0, len(game.players)):
-            self.playerColors[int(game.players[i].id)] = (
-                random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+            self.playerColors[int(game.players[i].id)] = colors[i]
         self.screen = pygame.display.set_mode(
             [game.width * self.RECTANGLE_SIZE + game.width, game.height * self.RECTANGLE_SIZE + game.height])
