@@ -85,8 +85,8 @@ class GameService:
         for (x, y) in visited_cells:
             if x not in range(self.game.width) or y not in range(self.game.height):
                 raise PlayerOutsidePlaygroundException(player)
-            player.x = visited_cells[-1][0]
-            player.y = visited_cells[-1][1]
+            player.x = x
+            player.y = y
             visited_cells_result.append((x, y))
             if self.game.cells[y][x].players is None:
                 self.game.cells[y][x].players = [player]
