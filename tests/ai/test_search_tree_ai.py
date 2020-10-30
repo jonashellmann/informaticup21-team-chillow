@@ -6,7 +6,7 @@ import tests
 from chillow.service.data_loader import JSONDataLoader
 
 
-class AlphaBetaPruningAITest(unittest.TestCase):
+class SearchTreeAITest(unittest.TestCase):
 
     def setUp(self):
         self.data_loader = JSONDataLoader()
