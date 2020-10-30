@@ -52,3 +52,9 @@ class PlayerPositionException(Exception):
     def __init__(self, player_x: int, player_y: int):
         print("Player is not placed at given position in game: (x=" +
               str(player_x) + ",y=" + str(player_y) + ")")
+
+
+class PlayerWithGivenIdNotAvailableException(Exception):
+
+    def __init__(self, player_id: int):
+        print("Player with the id " + str(player_id) + "is not in this game")
