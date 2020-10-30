@@ -15,11 +15,12 @@ from chillow.service.game_service import GameService
 
 class PathfindingAI(ArtificialIntelligence):
 
-    def __init__(self, player: Player, game: Game, max_speed):
+    def __init__(self, player: Player, game: Game, max_speed, count_paths_to_check):
         super().__init__(player)
         self.__game = game
         self.turn_ctr = 0
         self.max_speed = max_speed
+        self.count_paths_to_check = count_paths_to_check
 
     def create_next_action(self, game: Game) -> Action:
         self.turn_ctr += 1
@@ -40,16 +41,18 @@ class PathfindingAI(ArtificialIntelligence):
         path_finder = AStarFinder(diagonal_movement=DiagonalMovement.never)
 
         for action in actions:
-            game_copy = copy.deepcopy(self.__game)
+            game_copy = self.__game.copy()
             game_service = GameService(game_copy)
             try:
                 player = game_service.game.get_player_by_id(self.player.id)
                 game_service.visited_cells_by_player[player.id] = game_service.get_and_visit_cells(player, action)
             except Exception:
                 continue
+
+            matrix = self.translate_cell_matrix_to_pathfinding_grid(game_copy)
             current_possible_paths = 0
             for free_cell in free_cells_for_pathfinding:
-                grid = self.translate_cell_matrix_to_pathfinding_grid(game_copy)
+                grid = Grid(matrix=matrix)
                 start = grid.node(player.x, player.y)
                 end = grid.node(free_cell[0], free_cell[1])
                 path, runs = path_finder.find_path(start, end, grid)
@@ -63,7 +66,7 @@ class PathfindingAI(ArtificialIntelligence):
     def get_different_free_cells_from_playground(self) -> List[Tuple[int, int]]:
         # Todo: currently generating random points. Try generating equal distributed points
         free_cells: List[(int, int)] = []
-        for i in range(20):
+        for i in range(self.count_paths_to_check):
             x = randint(0, self.__game.width - 1)
             y = randint(0, self.__game.height - 1)
             if self.__game.cells[y][x].players is None or len(self.__game.cells[y][x].players) == 0:
@@ -71,10 +74,10 @@ class PathfindingAI(ArtificialIntelligence):
         return free_cells
 
     @staticmethod
-    def translate_cell_matrix_to_pathfinding_grid(game: Game) -> Grid:
+    def translate_cell_matrix_to_pathfinding_grid(game: Game) -> List[List[int]]:
         matrix = [[1 for _ in range(game.width)] for _ in range(game.height)]
         for i in range(len(game.cells)):
             for j in range(len(game.cells[i])):
                 if game.cells[i][j].players is not None and len(game.cells[i][j].players) > 0:
                     matrix[i][j] = 0  # Collision cell
-        return Grid(matrix=matrix)
+        return matrix
