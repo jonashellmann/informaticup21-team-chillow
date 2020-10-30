@@ -18,14 +18,14 @@ class SearchTreeRoot(object):
             raise Exception
 
         if depth == 1:
-            for action in Action.get_actions():
+            for action in Action.get_actions():  # Evtl noch mit Action.get_random_actions() ersetzen
                 child = self.__create_child(player, action, turn_counter)
                 if child._game.get_player_by_id(player.id).active:
                     if SearchTreeRoot.__try_combinations_for_child(child, player, combinations, turn_counter):
                         return child.get_action()
             return None
 
-        for action in Action.get_actions():
+        for action in Action.get_actions():  # Evtl noch mit Action.get_random_actions() ersetzen
             child = self.__create_child(player, action, turn_counter)
             if child._game.get_player_by_id(player.id).active:
                 for combination in combinations:
