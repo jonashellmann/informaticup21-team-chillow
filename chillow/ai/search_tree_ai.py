@@ -14,16 +14,15 @@ class SearchTreeAI(ArtificialIntelligence):
 
     def __init__(self, player: Player, depth: int):
         super().__init__(player)
-        self.__player = player
         self.__depth = depth
         self.__turn_counter = 0
 
     def create_next_action(self, game: Game) -> Action:
         self.__turn_counter += 1
         root = SearchTreeRoot(deepcopy(game))
-        combinations = SearchTreeAI.__get_combinations(len(game.get_other_players(self.__player)))
+        combinations = SearchTreeAI.__get_combinations(len(game.get_other_players(self.player)))
 
-        action = root.calculate_action(self.__player, combinations, self.__depth, self.__turn_counter)
+        action = root.calculate_action(self.player, combinations, self.__depth, self.__turn_counter)
         return action if action is not None else random.choice(list(Action))
 
     @staticmethod
