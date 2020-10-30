@@ -69,7 +69,7 @@ class NotKillingItselfAI(ArtificialIntelligence):
                 gs_copy.visited_cells_by_player[player.id] = gs_copy.get_and_visit_cells(player, action)
 
                 straight_distance = 0
-                horizontal_multiplier, vertical_multiplier = gs_copy.get_horizontal_and_vertical_multiplier(player)
+                horizontal_multiplier, vertical_multiplier = GameService.get_horizontal_and_vertical_multiplier(player)
 
                 for i in range(max(gs_copy.game.height, gs_copy.game.width)):
                     x = player.x + (i + 1) * horizontal_multiplier
