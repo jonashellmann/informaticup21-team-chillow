@@ -31,13 +31,6 @@ class TurnTest(unittest.TestCase):
 
         with self.assertRaises(ex.MultipleActionByPlayerError): self.sut.action(self.player1)
 
-    @unittest.skip
-    def test_deadlineException(self):
-        date = datetime.now() - timedelta(0, 180)
-        self.sut = Turn(self.players, date)
-
-        with self.assertRaises(ex.DeadLineExceededException): self.sut.action(self.player1)
-
     def test_new_turn_should_be_initialized(self):
         old_turn_ctr = self.sut.turn_ctr
         self.sut.action(self.player1)
