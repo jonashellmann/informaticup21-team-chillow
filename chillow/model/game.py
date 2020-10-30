@@ -1,7 +1,7 @@
-from copy import deepcopy
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import List
+import pickle
 
 from chillow.model.player import Player
 from chillow.model.cell import Cell
@@ -62,4 +62,4 @@ class Game:
         raise PlayerWithGivenIdNotAvailableException(player_id)
 
     def copy(self):
-        return deepcopy(self)
+        return pickle.loads(pickle.dumps(self))
