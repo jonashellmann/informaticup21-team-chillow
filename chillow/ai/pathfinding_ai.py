@@ -1,3 +1,5 @@
+from random import choice
+
 from chillow.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.model.action import Action
 from chillow.model.game import Game
@@ -20,3 +22,4 @@ class Pahtfinding_AI(ArtificialIntelligence):
 
         surviving_actions = self.find_surviving_actions(game_service)
 
+        return choice(surviving_actions) if len(surviving_actions) > 0 else choice()

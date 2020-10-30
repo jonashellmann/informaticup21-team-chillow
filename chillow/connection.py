@@ -82,8 +82,8 @@ class OfflineConnection(Connection):
         self.monitoring.update(game)
 
         game_service = GameService(game)
-        ai1 = NotKillingItselfAI(player2, game, [], 3, 0)
-        ai2 = NotKillingItselfAI(player3, game, [AIOptions.max_distance], 2, 0)
+        ai1 = NotKillingItselfAI(player2, game, [AIOptions.max_distance], 1, 0)
+        ai2 = NotKillingItselfAI(player3, game, [AIOptions.max_distance], 2, 2)
         ai3 = RandomAI(player4)
         ais = [ai1, ai2, ai3]
 
