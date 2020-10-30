@@ -12,21 +12,17 @@ class AlphaBetaPruningAITest(unittest.TestCase):
         self.data_loader = JSONDataLoader()
 
     def test_should_select_action_to_let_player_survive_next_round(self):
-        testfile = open(tests.get_test_file_path("game_1.json"))
-        game = self.data_loader.load(testfile.read())
+        game = self.data_loader.load(tests.read_test_file("game_1.json"))
         sut = SearchTreeAI(game.you, 1)
 
         result = sut.create_next_action(game)
 
         self.assertEqual(Action.turn_right, result)
-        testfile.close()
 
     def test_should_select_action_to_let_player_survive_next_two_rounds(self):
-        testfile = open(tests.get_test_file_path("game_2.json"))
-        game = self.data_loader.load(testfile.read())
+        game = self.data_loader.load(tests.read_test_file("game_2.json"))
         sut = SearchTreeAI(game.you, 2)
 
         result = sut.create_next_action(game)
 
         self.assertEqual(Action.turn_right, result)
-        testfile.close()
