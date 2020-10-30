@@ -1,6 +1,6 @@
-import copy
 from typing import List, Tuple
 from random import randint, shuffle
+from numpy import arange
 
 from pathfinding.core.diagonal_movement import DiagonalMovement
 from pathfinding.core.grid import Grid
@@ -36,7 +36,7 @@ class PathfindingAI(ArtificialIntelligence):
     def find_action_by_best_path_connection(self, actions: List[Action]) -> Action:
         shuffle(actions)
         best_action: Tuple[Action, int] = (actions[0], 0)
-        free_cells_for_pathfinding = self.get_different_free_cells_from_playground()
+        free_cells_for_pathfinding = self.get_random_free_cells_from_playground()
 
         path_finder = AStarFinder(diagonal_movement=DiagonalMovement.never)
 
@@ -63,12 +63,23 @@ class PathfindingAI(ArtificialIntelligence):
 
         return best_action[0]
 
-    def get_different_free_cells_from_playground(self) -> List[Tuple[int, int]]:
-        # Todo: currently generating random points. Try generating equal distributed points
+    def get_random_free_cells_from_playground(self) -> List[Tuple[int, int]]:
+        # Todo: Find minimum Number of free Cells
         free_cells: List[(int, int)] = []
         for i in range(self.count_paths_to_check):
             x = randint(0, self.__game.width - 1)
             y = randint(0, self.__game.height - 1)
+            if self.__game.cells[y][x].players is None or len(self.__game.cells[y][x].players) == 0:
+                free_cells.append((x, y))
+        return free_cells
+
+    def get_aranged_free_cells_from_playground(self) -> List[Tuple[int, int]]:
+        free_cells: List[(int, int)] = []
+        count_cells = self.__game.width * self.__game.height
+        evenly_aranged_points = arange(0, count_cells, int(count_cells / self.count_paths_to_check))
+        for point in evenly_aranged_points:
+            x = point % self.__game.width + 5
+            y = int(point / self.__game.width)
             if self.__game.cells[y][x].players is None or len(self.__game.cells[y][x].players) == 0:
                 free_cells.append((x, y))
         return free_cells
