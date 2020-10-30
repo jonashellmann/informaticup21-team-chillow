@@ -41,8 +41,8 @@ class GameService:
                                 for player in self.game.players:
                                     if player_id == player.id:
                                         self.set_player_inactive(player)
-                                        print("Player " + player.name + ", id " + str(player.id) + "collision and is "
-                                                                                                   "inactive now")
+                                        print("Player " + player.name + ", id " + str(player.id) + " collision and is"
+                                                                                                   " inactive now")
 
     def is_game_running(self) -> bool:
         active_player_ctr = 0
@@ -51,14 +51,9 @@ class GameService:
                 active_player_ctr += 1
         return active_player_ctr >= 2
 
-    def get_and_visit_cells(self, player: Player, action: Action) -> List[Tuple[int, int]]:
-        visited_cells = []
-
-        self.change_player_status_by_action(player, action)
-
+    def get_horizontal_and_vertical_multiplier(self, player: Player) -> Tuple[int, int]:
         vertical_multiplier = 0
         horizontal_multiplier = 0
-
         if player.direction == Direction.up:
             vertical_multiplier = -1
         elif player.direction == Direction.down:
@@ -67,6 +62,15 @@ class GameService:
             horizontal_multiplier = -1
         elif player.direction == Direction.right:
             horizontal_multiplier = 1
+
+        return horizontal_multiplier, vertical_multiplier
+
+    def get_and_visit_cells(self, player: Player, action: Action) -> List[Tuple[int, int]]:
+        visited_cells = []
+
+        self.change_player_status_by_action(player, action)
+
+        horizontal_multiplier, vertical_multiplier = self.get_horizontal_and_vertical_multiplier(player)
 
         for i in range(0, player.speed):
             visited_cells.append(

@@ -5,8 +5,8 @@ from chillow.model.cell import Cell
 from chillow.model.direction import Direction
 from chillow.model.game import Game
 from chillow.model.player import Player
-from chillow.exceptions import WrongGameWidthException, WrongGameHeightException, OwnPlayerMissingException,\
-    PlayerPositionException
+from chillow.exceptions import WrongGameWidthException, WrongGameHeightException, OwnPlayerMissingException, \
+    PlayerPositionException, PlayerWithGivenIdNotAvailableException
 
 
 class GameTest(unittest.TestCase):
@@ -101,3 +101,20 @@ class GameTest(unittest.TestCase):
 
         with self.assertRaises(Exception):
             game.get_winner()
+
+    def test_player_with_id_should_be_returned(self):
+        player1 = Player(1, 0, 0, Direction.up, 0, True, "Name")
+        player2 = Player(2, 1, 0, Direction.up, 0, True, "Name")
+        cells = [[Cell([player1]), Cell([player2])]]
+        game = Game(2, 1, cells, [player1, player2], 1, True, datetime.now())
+
+        self.assertEqual(player1, game.get_player_by_id(1))
+
+    def test_player_with_id_should_be_returned(self):
+        player1 = Player(1, 0, 0, Direction.up, 0, True, "Name")
+        player2 = Player(2, 1, 0, Direction.up, 0, True, "Name")
+        cells = [[Cell([player1]), Cell([player2])]]
+        game = Game(2, 1, cells, [player1, player2], 1, True, datetime.now())
+
+        with self.assertRaises(PlayerWithGivenIdNotAvailableException):
+            game.get_player_by_id(100)

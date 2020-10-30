@@ -108,3 +108,23 @@ class GameTest(unittest.TestCase):
         self.assertTrue(self.player1 in self.game.cells[player1_y + 2][player1_x].players)
         self.assertTrue(self.player2 in self.game.cells[player2_y - 1][player2_x].players)
         self.assertTrue(self.player2 in self.game.cells[player2_y - 6][player2_x].players)
+
+    def test_correct_multiplier_should_be_returned_direction_up(self):
+        self.player1.direction = Direction.up
+
+        self.assertEqual((0, -1), self.sut.get_horizontal_and_vertical_multiplier(self.player1))
+
+    def test_correct_multiplier_should_be_returned_direction_down(self):
+        self.player1.direction = Direction.down
+
+        self.assertEqual((0, 1), self.sut.get_horizontal_and_vertical_multiplier(self.player1))
+
+    def test_correct_multiplier_should_be_returned_direction_left(self):
+        self.player1.direction = Direction.left
+
+        self.assertEqual((-1, 0), self.sut.get_horizontal_and_vertical_multiplier(self.player1))
+
+    def test_correct_multiplier_should_be_returned_direction_right(self):
+        self.player1.direction = Direction.right
+
+        self.assertEqual((1, 0), self.sut.get_horizontal_and_vertical_multiplier(self.player1))
