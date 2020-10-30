@@ -83,7 +83,7 @@ class GameTest(unittest.TestCase):
 
         result = game.get_winner()
 
-        self.assertEquals(game.get_winner(), result)
+        self.assertEqual(game.get_winner(), result)
 
     def test_raise_exception_for_winner_in_running_game(self):
         player = Player(1, 0, 0, Direction.up, 0, True, "Name")
