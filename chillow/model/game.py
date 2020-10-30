@@ -48,7 +48,7 @@ class Game:
                 return player
         raise Exception("No winner in ended game found")
 
-    def get_other_players(self, p: Player) -> list[Player]:
+    def get_other_players(self, p: Player) -> List[Player]:
         players = []
         for player in self.players:
             if player.id != p.id:
