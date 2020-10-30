@@ -1,5 +1,3 @@
-import random
-
 from abc import ABCMeta, abstractmethod
 
 from chillow.model.action import Action
