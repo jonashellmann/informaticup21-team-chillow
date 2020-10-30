@@ -43,7 +43,7 @@ jobs:
     name: "Publish Unit Tests Results"
     needs: build-and-test
     runs-on: ubuntu-latest
-    if: success() || failure()
+    if: always()
 
     steps:
       - name: Download Artifacts
@@ -55,5 +55,7 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action@v1.3
         with:
           check_name: Unit Test Results
+          comment_title: Unit Test Statistics
+          hide_comments: all but latest
           github_token: ${{ secrets.GITHUB_TOKEN }}
           files: pytest.xml
