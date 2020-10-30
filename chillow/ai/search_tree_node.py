@@ -36,13 +36,14 @@ class SearchTreeRoot(object):
         for action in Action.get_actions():
             child = self.__create_child(player, action, turn_counter)
             if child._game.get_player_by_id(player.id).active:
+                # self.append_child(child)
                 for combination in combinations:
                     node = SearchTreeRoot.__try_combination(child._game, player, combination, turn_counter)
                     if node._game.get_player_by_id(player.id).active:
-                        child.append_child(node)
+                        # child.append_child(node)
                         node_action = node.calculate_action(player, combinations, depth - 1, turn_counter + 1)
                         if node_action is not None:
-                            return action
+                            return child.get_action()
 
     def __create_child(self, player: Player, action: Action, turn_counter: int):
         modified_game = deepcopy(self._game)
