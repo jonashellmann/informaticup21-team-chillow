@@ -134,7 +134,6 @@ class GameTest(unittest.TestCase):
         self.assertEqual(self.player1.x, 8)
         self.assertEqual(self.player1.y, 0)
 
-
     def test_correct_multiplier_should_be_returned_direction_up(self):
         self.player1.direction = Direction.up
 
