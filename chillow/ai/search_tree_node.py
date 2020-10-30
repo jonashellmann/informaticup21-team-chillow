@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from typing import Type, Any
-from copy import deepcopy
 
 from chillow.exceptions import MultipleActionByPlayerError, DeadLineExceededException, PlayerSpeedNotInRangeException, \
     PlayerOutsidePlaygroundException
@@ -37,13 +36,13 @@ class SearchTreeRoot(object):
                             return child.get_action()
 
     def __create_child(self, player: Player, action: Action, turn_counter: int):
-        modified_game = deepcopy(self._game)
+        modified_game = self._game.copy()
         game_service = GameService(modified_game)
         game_service.turn.turn_ctr = turn_counter
         SearchTreeRoot.__perform_simulation(game_service, action, modified_game.get_player_by_id(player.id))
         game_service.check_and_set_died_players()
 
-        return SearchTreeNode(deepcopy(modified_game), action)
+        return SearchTreeNode(modified_game.copy(), action)
 
     @staticmethod
     def __try_combinations_for_child(child: Type['SearchTreeRoot'],
@@ -58,7 +57,7 @@ class SearchTreeRoot(object):
 
     @staticmethod
     def __try_combination(game: Game, p: Player, combination: tuple[Action], turn_counter: int):
-        modified_game = deepcopy(game)
+        modified_game = game.copy()
         game_service = GameService(modified_game)
         game_service.turn.turn_ctr = turn_counter
         for j in range(len(combination)):
@@ -67,7 +66,7 @@ class SearchTreeRoot(object):
             SearchTreeRoot.__perform_simulation(game_service, action, player)
 
         game_service.check_and_set_died_players()
-        return SearchTreeRoot(deepcopy(modified_game))
+        return SearchTreeRoot(modified_game.copy())
 
     @staticmethod
     def __perform_simulation(game_service: GameService, action: Action, player: Player):

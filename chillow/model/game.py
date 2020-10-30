@@ -1,3 +1,4 @@
+from copy import deepcopy
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import List
@@ -59,3 +60,6 @@ class Game:
             if player.id == player_id:
                 return player
         raise PlayerWithGivenIdNotAvailableException(player_id)
+
+    def copy(self):
+        return deepcopy(self)
