@@ -33,13 +33,13 @@ In der Konsole des Docker-Containers lässt sich dann der Spiel-Verlauf nachvoll
 ### Manuelle Installation
 
 Neben der Docker-Installation kann das Projekt auch eigenständig gebaut werden.
-Dafür ist erforderlich, dass sowohl Python in Version 3.8 [Poetry](https://python-poetry.org/) installiert ist, was
-als Build-Tool eingesetzt wird.
+Dafür ist erforderlich, dass neben Python in der Version 3.8 auch [Poetry](https://python-poetry.org/) als Build-Tool
+installiert ist.
 
 Die erforderlichen Abhängigkeiten lassen sich anschließend mittels `poetry install` installieren.
 
-Um ein Spiel zu starten, in dem in einer simplen grafischen Oberfläche gegen die implementierte KI gespielt werden kann,
-genügt `python ./main.py`.
+Um ein Spiel mit einer simplen grafischen Oberfläche zu starten, in dem gegen die implementierte KI gespielt werden
+kann, genügt der Befehl `python ./main.py`.
 
 Um ein Online-Spiel der KI auf dem Server zu starten, müssen folgende Umgebungsvariablen verwendet werden, die im
 Docker-Container automatisch gesetzt bzw. als Parameter übergeben werden:
