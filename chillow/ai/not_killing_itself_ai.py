@@ -40,23 +40,6 @@ class NotKillingItselfAI(ArtificialIntelligence):
             return choice(surviving_actions) if surviving_actions is not None and len(
                 surviving_actions) > 0 else Action.change_nothing
 
-    def find_surviving_actions(self, game_service: GameService) -> [Action]:
-        result: List[Action] = []
-        for action in Action:  # select a surviving action
-            gs_copy = copy.deepcopy(game_service)
-            try:
-                player = gs_copy.game.get_player_by_id(self.player.id)
-                if player.speed == self.max_speed and action == Action.speed_up:
-                    continue
-                gs_copy.visited_cells_by_player[player.id] = gs_copy.get_and_visit_cells(player, action)
-            except Exception:
-                continue
-            gs_copy.check_and_set_died_players()
-            if player.active:
-                result += [action]
-
-        return result
-
     def calc_action_with_max_distance_to_visited_cells(self, game_service: GameService,
                                                        actions: List[Action]) -> List[Action]:
         max_straight_distance = 0
