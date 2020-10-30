@@ -72,7 +72,7 @@ class OfflineConnection(Connection):
         player4 = Player(4, 30, 30, Direction.up, 1, True, "AI Player 4")
         players = [player1, player2, player3, player4]
         field_size = 40
-        cells = [[Cell() for i in range(field_size)] for j in range(field_size)]
+        cells = [[Cell() for _ in range(field_size)] for _ in range(field_size)]
         cells[player1.y][player1.x] = Cell([player1])
         cells[player2.y][player2.x] = Cell([player2])
         cells[player3.y][player3.x] = Cell([player3])

@@ -16,7 +16,7 @@ class GameTest(unittest.TestCase):
         self.player2 = Player(2, 10, 30, Direction.down, 3, True, "")
         self.player3 = Player(3, 30, 10, Direction.right, 2, True, "Name 3")
         players = [self.player1, self.player2, self.player3]
-        cells = [[Cell() for i in range(40)] for j in range(40)]
+        cells = [[Cell() for _ in range(40)] for _ in range(40)]
         cells[self.player1.y][self.player1.x] = Cell([self.player1])
         cells[self.player2.y][self.player2.x] = Cell([self.player2])
         cells[self.player3.y][self.player3.x] = Cell([self.player3])
