@@ -1,5 +1,5 @@
-from dataclasses import dataclass, field
-from typing import List, Type, Any
+from dataclasses import dataclass
+from typing import Type, Any
 from copy import deepcopy
 
 from chillow.exceptions import MultipleActionByPlayerError, DeadLineExceededException, PlayerSpeedNotInRangeException, \
@@ -13,10 +13,6 @@ from chillow.service.game_service import GameService
 @dataclass
 class SearchTreeRoot(object):
     _game: Game
-    __children: List[Type['SearchTreeNode']] = field(default_factory=list, init=False)
-
-    def append_child(self, node):
-        self.__children.append(node)
 
     def calculate_action(self, player: Player, combinations: list[tuple[Any]], depth: int, turn_counter: int):
         if depth <= 0:
@@ -26,21 +22,16 @@ class SearchTreeRoot(object):
             for action in Action.get_actions():
                 child = self.__create_child(player, action, turn_counter)
                 if child._game.get_player_by_id(player.id).active:
-                    self.append_child(child)
-
-            for child in self.__children:
-                if SearchTreeRoot.__try_combinations_for_child(child, player, combinations, turn_counter):
-                    return child.get_action()
+                    if SearchTreeRoot.__try_combinations_for_child(child, player, combinations, turn_counter):
+                        return child.get_action()
             return None
 
         for action in Action.get_actions():
             child = self.__create_child(player, action, turn_counter)
             if child._game.get_player_by_id(player.id).active:
-                # self.append_child(child)
                 for combination in combinations:
                     node = SearchTreeRoot.__try_combination(child._game, player, combination, turn_counter)
                     if node._game.get_player_by_id(player.id).active:
-                        # child.append_child(node)
                         node_action = node.calculate_action(player, combinations, depth - 1, turn_counter + 1)
                         if node_action is not None:
                             return child.get_action()
@@ -63,7 +54,6 @@ class SearchTreeRoot(object):
             node = SearchTreeRoot.__try_combination(child._game, player, combination, turn_counter)
             if not node._game.get_player_by_id(player.id).active:
                 return False
-            child.append_child(node)
         return True
 
     @staticmethod
