@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import List
+import pickle
 
 from chillow.model.player import Player
 from chillow.model.cell import Cell
@@ -47,8 +48,18 @@ class Game:
                 return player
         raise Exception("No winner in ended game found")
 
+    def get_other_players(self, p: Player) -> List[Player]:
+        players = []
+        for player in self.players:
+            if player.id != p.id:
+                players.append(player)
+        return players
+
     def get_player_by_id(self, player_id: int) -> Player:
         for player in self.players:
             if player.id == player_id:
                 return player
         raise PlayerWithGivenIdNotAvailableException(player_id)
+
+    def copy(self):
+        return pickle.loads(pickle.dumps(self))

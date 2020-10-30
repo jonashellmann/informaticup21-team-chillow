@@ -1,5 +1,4 @@
 import unittest
-import os
 
 from datetime import datetime, timezone
 
@@ -8,6 +7,7 @@ from chillow.model.player import Player
 from chillow.model.cell import Cell
 from chillow.model.direction import Direction
 from chillow.service.data_loader import JSONDataLoader
+import tests
 
 
 class JSONDataWriterTest(unittest.TestCase):
@@ -15,12 +15,8 @@ class JSONDataWriterTest(unittest.TestCase):
     def setUp(self):
         self.sut = JSONDataLoader()
 
-    def tearDown(self):
-        self.testfile.close()
-
     def test_convert_json_to_running_game(self):
-        self.testfile = open(self.get_test_file_path("game.json"))
-        json = self.testfile.read()
+        json = tests.read_test_file("game.json")
         player1 = Player(1, 2, 2, Direction.up, 1, True, "")
         player2 = Player(2, 1, 0, Direction.down, 3, True, "")
         player3 = Player(3, 4, 3, Direction.left, 2, False, "Name 3")
@@ -39,8 +35,7 @@ class JSONDataWriterTest(unittest.TestCase):
         self.assertEqual(expected, result)
 
     def test_convert_json_to_ended_game(self):
-        self.testfile = open(self.get_test_file_path("game_ended.json"))
-        json = self.testfile.read()
+        json = tests.read_test_file("game_ended.json")
         player1 = Player(1, 2, 2, Direction.up, 1, True, "")
         player2 = Player(2, 1, 0, Direction.down, 3, True, "")
         player3 = Player(3, 4, 3, Direction.left, 2, False, "Name 3")
@@ -56,6 +51,3 @@ class JSONDataWriterTest(unittest.TestCase):
         result = self.sut.load(json)
 
         self.assertEqual(expected, result)
-
-    def get_test_file_path(self, filename: str):
-        return os.path.join(os.path.dirname(__file__), '../test_data/' + filename)
