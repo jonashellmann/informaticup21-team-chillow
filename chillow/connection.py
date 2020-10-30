@@ -6,6 +6,7 @@ import websockets
 from abc import ABCMeta, abstractmethod
 
 from chillow.ai.not_killing_itself_ai import NotKillingItselfAI, AIOptions
+from chillow.ai.pathfinding_ai import PathfindingAI
 from chillow.service.data_loader import JSONDataLoader
 from chillow.service.data_writer import JSONDataWriter
 from chillow.ai.random_ai import RandomAI, RandomWaitingAI
@@ -82,15 +83,16 @@ class OfflineConnection(Connection):
         self.monitoring.update(game)
 
         game_service = GameService(game)
+        ai0 = PathfindingAI(player1, game, 2)
         ai1 = NotKillingItselfAI(player2, game, [AIOptions.max_distance], 1, 0)
         ai2 = NotKillingItselfAI(player3, game, [AIOptions.max_distance], 2, 2)
-        ai3 = RandomAI(player4)
-        ais = [ai1, ai2, ai3]
+        ai3 = PathfindingAI(player4, game, 2)
+        ais = [ai0, ai1, ai2, ai3]
 
         while game.running:
-            if player1.active:
-                action = self.monitoring.create_next_action()
-                game_service.do_action(player1, action)
+            # if player1.active:
+            #     action = self.monitoring.create_next_action()
+            #     game_service.do_action(player1, action)
 
             for ai in ais:
                 if ai.player.active:

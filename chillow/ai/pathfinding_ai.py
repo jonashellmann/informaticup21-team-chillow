@@ -1,5 +1,6 @@
+import copy
 from typing import List, Tuple
-from random import randint
+from random import randint, shuffle
 
 from pathfinding.core.diagonal_movement import DiagonalMovement
 from pathfinding.core.grid import Grid
@@ -18,7 +19,7 @@ class PathfindingAI(ArtificialIntelligence):
         super().__init__(player)
         self.__game = game
         self.turn_ctr = 0
-        self.__max_speed = max_speed
+        self.max_speed = max_speed
 
     def create_next_action(self, game: Game) -> Action:
         self.turn_ctr += 1
@@ -32,38 +33,48 @@ class PathfindingAI(ArtificialIntelligence):
             surviving_actions) > 0 else Action.get_random_action()
 
     def find_action_by_best_path_connection(self, actions: List[Action]) -> Action:
+        shuffle(actions)
         best_action: Tuple[Action, int] = (actions[0], 0)
         free_cells_for_pathfinding = self.get_different_free_cells_from_playground()
-        grid = self.translate_cell_matrix_to_pathfinding_grid()
 
         path_finder = AStarFinder(diagonal_movement=DiagonalMovement.never)
-        start = grid.node(self.player.x, self.player.y)
+
         for action in actions:
-            current_possible_actions = 0
+            game_copy = copy.deepcopy(self.__game)
+            game_service = GameService(game_copy)
+            try:
+                player = game_service.game.get_player_by_id(self.player.id)
+                game_service.visited_cells_by_player[player.id] = game_service.get_and_visit_cells(player, action)
+            except Exception:
+                continue
+            current_possible_paths = 0
             for free_cell in free_cells_for_pathfinding:
+                grid = self.translate_cell_matrix_to_pathfinding_grid(game_copy)
+                start = grid.node(player.x, player.y)
                 end = grid.node(free_cell[0], free_cell[1])
                 path, runs = path_finder.find_path(start, end, grid)
-                if runs > 0:
-                    current_possible_actions += 1
-            if len(best_action) == 0 or best_action[1] < current_possible_actions:
-                best_action = (action, current_possible_actions)
+                if len(path) > 0:
+                    current_possible_paths += 1
+            if len(best_action) == 0 or best_action[1] < current_possible_paths:
+                best_action = (action, current_possible_paths)
 
         return best_action[0]
 
-    def get_different_free_cells_from_playground(self) -> List[(int, int)]:
+    def get_different_free_cells_from_playground(self) -> List[Tuple[int, int]]:
         # Todo: currently generating random points. Try generating equal distributed points
         free_cells: List[(int, int)] = []
         for i in range(20):
-            x = randint(0, self.__game.width)
-            y = randint(0, self.__game.height)
+            x = randint(0, self.__game.width - 1)
+            y = randint(0, self.__game.height - 1)
             if self.__game.cells[y][x].players is None or len(self.__game.cells[y][x].players) == 0:
                 free_cells.append((x, y))
         return free_cells
 
-    def translate_cell_matrix_to_pathfinding_grid(self) -> Grid:
-        matrix = [[0 for _ in range(self.__game.width)] for _ in range(self.__game.height)]
-        for i in range(len(self.__game.cells)):
-            for j in range(len(self.__game.cells[i])):
-                if self.__game.cells[i][j].players is not None and len(self.__game.cells[i][j].players) > 0:
-                    matrix[i][j] = 1
+    @staticmethod
+    def translate_cell_matrix_to_pathfinding_grid(game: Game) -> Grid:
+        matrix = [[1 for _ in range(game.width)] for _ in range(game.height)]
+        for i in range(len(game.cells)):
+            for j in range(len(game.cells[i])):
+                if game.cells[i][j].players is not None and len(game.cells[i][j].players) > 0:
+                    matrix[i][j] = 0  # Collision cell
         return Grid(matrix=matrix)
