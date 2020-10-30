@@ -1,3 +1,4 @@
+import logging
 from typing import List, Tuple
 
 from chillow.exceptions import MultipleActionByPlayerError, DeadLineExceededException, \
@@ -41,8 +42,8 @@ class GameService:
                                 for player in self.game.players:
                                     if player_id == player.id:
                                         self.set_player_inactive(player)
-                                        print("Player " + player.name + ", id " + str(player.id) + " collision and is"
-                                                                                                   " inactive now")
+                                        logging.debug("Player with id " + str(player.id)
+                                                      + " had a collision and is inactive now")
 
     def is_game_running(self) -> bool:
         active_player_ctr = 0

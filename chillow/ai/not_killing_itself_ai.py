@@ -1,4 +1,5 @@
 import copy
+import logging
 from enum import Enum
 from random import choice
 from typing import List, Dict
@@ -90,7 +91,7 @@ class NotKillingItselfAI(ArtificialIntelligence):
                 elif straight_distance >= max_straight_distance - self.max_worse_distance:  # still good option
                     best_actions[action] = straight_distance
             except Exception as ex:
-                print(ex)
+                logging.warning(ex)
                 continue
 
         return list(best_actions.keys())
