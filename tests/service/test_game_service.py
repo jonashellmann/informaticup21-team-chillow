@@ -122,7 +122,7 @@ class GameTest(unittest.TestCase):
         self.assertEqual(self.player1.x, 0)
         self.assertEqual(self.player1.y, 0)
 
-    def test_playerX_playerY_should_be_correct_after_collision(self):
+    def test_playerX_playerY_should_be_correct_without_collision(self):
         self.player1.direction = Direction.left
         self.player1.speed = 2
         self.player1.x = 10
