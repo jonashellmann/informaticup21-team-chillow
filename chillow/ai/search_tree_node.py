@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Type, Any
+from typing import Type, Any, List, Tuple
 
 from chillow.exceptions import MultipleActionByPlayerError, DeadLineExceededException, PlayerSpeedNotInRangeException, \
     PlayerOutsidePlaygroundException
@@ -13,7 +13,7 @@ from chillow.service.game_service import GameService
 class SearchTreeRoot(object):
     _game: Game
 
-    def calculate_action(self, player: Player, combinations: list[tuple[Any]], depth: int, turn_counter: int):
+    def calculate_action(self, player: Player, combinations: List[Tuple[Any]], depth: int, turn_counter: int):
         if depth <= 0:
             raise Exception
 
@@ -47,7 +47,7 @@ class SearchTreeRoot(object):
     @staticmethod
     def __try_combinations_for_child(child: Type['SearchTreeRoot'],
                                      player: Player,
-                                     combinations: list[tuple[Action]],
+                                     combinations: List[Tuple[Action]],
                                      turn_counter: int) -> bool:
         for combination in combinations:
             node = SearchTreeRoot.__try_combination(child._game, player, combination, turn_counter)
@@ -56,7 +56,7 @@ class SearchTreeRoot(object):
         return True
 
     @staticmethod
-    def __try_combination(game: Game, p: Player, combination: tuple[Action], turn_counter: int):
+    def __try_combination(game: Game, p: Player, combination: Tuple[Action], turn_counter: int):
         modified_game = game.copy()
         game_service = GameService(modified_game)
         game_service.turn.turn_ctr = turn_counter

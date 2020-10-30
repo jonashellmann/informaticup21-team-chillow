@@ -1,7 +1,7 @@
 import random
 from itertools import product
 from copy import deepcopy
-from typing import Any
+from typing import Any, List, Tuple
 
 from chillow.ai.search_tree_node import SearchTreeRoot
 from chillow.ai.artificial_intelligence import ArtificialIntelligence
@@ -23,8 +23,8 @@ class SearchTreeAI(ArtificialIntelligence):
         combinations = SearchTreeAI.__get_combinations(len(game.get_other_players(self.player)))
 
         action = root.calculate_action(self.player, combinations, self.__depth, self.__turn_counter)
-        return action if action is not None else random.choice(list(Action))
+        return action if action is not None else Action.get_random_action()
 
     @staticmethod
-    def __get_combinations(player_count: int) -> list[tuple[Any]]:
-        return list(product(list(Action), repeat=player_count))
+    def __get_combinations(player_count: int) -> List[Tuple[Any]]:
+        return list(product(Action.get_actions(), repeat=player_count))
