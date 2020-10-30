@@ -1,4 +1,3 @@
-import random
 import os
 import time
 if not os.getenv("DEACTIVATE_PYGAME", False):
@@ -12,7 +11,7 @@ from chillow.model.game import Game
 class RandomAI(ArtificialIntelligence):
 
     def create_next_action(self, game: Game) -> Action:
-        return random.choice(list(Action))
+        return Action.get_random_action()
 
 
 class RandomWaitingAI(RandomAI):
