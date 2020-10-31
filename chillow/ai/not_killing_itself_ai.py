@@ -5,6 +5,7 @@ from random import choice
 from typing import List, Dict
 
 from chillow.ai.artificial_intelligence import ArtificialIntelligence
+from chillow.exceptions import InvalidPlayerMoveException
 from chillow.model.action import Action
 from chillow.model.game import Game
 from chillow.model.player import Player
@@ -50,7 +51,7 @@ class NotKillingItselfAI(ArtificialIntelligence):
                 if player.speed == self.max_speed and action == Action.speed_up:
                     continue
                 gs_copy.visited_cells_by_player[player.id] = gs_copy.get_and_visit_cells(player, action)
-            except Exception:
+            except InvalidPlayerMoveException:
                 continue
             gs_copy.check_and_set_died_players()
             if player.active:
