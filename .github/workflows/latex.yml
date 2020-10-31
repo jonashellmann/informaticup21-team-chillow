@@ -1,10 +1,6 @@
 name: Documentation
 
-on:
-  push:
-    branches: [ grundaufbau-dokumentation ]
-  pull_request:
-    branches: [ main ]
+on: [push]
 
 jobs:
   latex-compile:
@@ -15,7 +11,8 @@ jobs:
     - name: Compile LaTeX document
       uses: dante-ev/latex-action@v0.2.0
       with:
-        root_file: dokumentation/document.tex
+        working_directory: dokumentation
+        root_file: document.tex
     - name: Upload PDF file
       if: success()
       uses: actions/upload-artifact@v2
