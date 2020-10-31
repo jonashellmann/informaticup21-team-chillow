@@ -260,7 +260,6 @@ TSWLatexianTemp*
 # gummi
 .*.swp
 
-/tmp
 # KBibTeX
 *~[0-9]*
 
