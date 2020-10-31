@@ -9,7 +9,7 @@ from chillow.ai.not_killing_itself_ai import NotKillingItselfAI, AIOptions
 from chillow.ai.pathfinding_ai import PathfindingAI
 from chillow.service.data_loader import JSONDataLoader
 from chillow.service.data_writer import JSONDataWriter
-from chillow.ai.random_ai import RandomAI, RandomWaitingAI
+from chillow.ai.random_ai import RandomWaitingAI
 from chillow.service.game_service import GameService
 from chillow.controller.monitoring import GraphicalMonitoring, ConsoleMonitoring
 from chillow.model.game import Game
@@ -100,6 +100,3 @@ class OfflineConnection(Connection):
                     game_service.do_action(ai.player, action)
 
             self.monitoring.update(game)
-
-        while True:
-            continue
