@@ -12,15 +12,15 @@ class SearchTreeAITest(unittest.TestCase):
         self.data_loader = JSONDataLoader()
 
     def test_should_select_action_to_let_player_survive_next_round(self):
-        game = self.data_loader.load(tests.read_test_file("game_1.json"))
-        sut = SearchTreeAI(game.you, 1)
+        game = self.data_loader.load(tests.read_test_file("ai/game_1.json"))
+        sut = SearchTreeAI(game.you, 1, 3, True)
 
         result = sut.create_next_action(game)
 
         self.assertEqual(Action.turn_right, result)
 
-    def test_should_select_action_to_let_player_survive_next_two_rounds(self):
-        game = self.data_loader.load(tests.read_test_file("game_2.json"))
+    def test_should_select_action_to_let_player_survive_next_two_rounds_1(self):
+        game = self.data_loader.load(tests.read_test_file("ai/game_2.json"))
         sut = SearchTreeAI(game.you, 2)
 
         result = sut.create_next_action(game)
