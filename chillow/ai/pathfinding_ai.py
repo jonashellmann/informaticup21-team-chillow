@@ -7,6 +7,7 @@ from pathfinding.core.grid import Grid
 from pathfinding.finder.best_first import BestFirst
 
 from chillow.ai.artificial_intelligence import ArtificialIntelligence
+from chillow.exceptions import InvalidPlayerMoveException
 from chillow.model.action import Action
 from chillow.model.game import Game
 from chillow.model.player import Player
@@ -48,7 +49,7 @@ class PathfindingAI(ArtificialIntelligence):
             try:
                 player = game_service.game.get_player_by_id(self.player.id)
                 game_service.visited_cells_by_player[player.id] = game_service.get_and_visit_cells(player, action)
-            except Exception:
+            except InvalidPlayerMoveException:
                 continue
 
             matrix = self.translate_cell_matrix_to_pathfinding_matrix(game_copy)
