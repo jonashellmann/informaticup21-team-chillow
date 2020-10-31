@@ -66,12 +66,12 @@ class PathfindingAI(ArtificialIntelligence):
     def get_random_free_cells_from_playground(self) -> List[Tuple[int, int]]:
         # Todo: Find minimum Number of free Cells
         free_cells: List[(int, int)] = []
-        for i in range(self.count_paths_to_check):
-            x = randint(0, self.__game.width - 1)
-            y = randint(0, self.__game.height - 1)
-            if self.__game.cells[y][x].players is None or len(self.__game.cells[y][x].players) == 0:
-                free_cells.append((x, y))
-        return free_cells
+        for x in range(self.__game.height):
+            for y in range(self.__game.width):
+                if self.__game.cells[y][x].players is None or len(self.__game.cells[y][x].players) == 0:
+                    free_cells.append((x, y))
+        shuffle(free_cells)
+        return free_cells[:min(self.count_paths_to_check, len(free_cells))]
 
     def get_aranged_free_cells_from_playground(self) -> List[Tuple[int, int]]:
         free_cells: List[(int, int)] = []

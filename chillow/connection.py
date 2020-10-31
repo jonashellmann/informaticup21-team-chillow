@@ -83,7 +83,7 @@ class OfflineConnection(Connection):
         self.monitoring.update(game)
 
         game_service = GameService(game)
-        ai0 = PathfindingAI(player1, game, 2, 60)
+        ai0 = PathfindingAI(player1, game, 2, 50)
         ai1 = NotKillingItselfAI(player2, game, [AIOptions.max_distance], 1, 0)
         ai2 = NotKillingItselfAI(player3, game, [AIOptions.max_distance], 2, 2)
         ai3 = NotKillingItselfAI(player4, game, [AIOptions.max_distance], 2, 2)
