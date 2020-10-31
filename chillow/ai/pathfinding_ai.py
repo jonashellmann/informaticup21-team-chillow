@@ -1,5 +1,5 @@
 from typing import List, Tuple
-from random import randint, shuffle
+from random import shuffle
 from numpy import arange
 
 from pathfinding.core.diagonal_movement import DiagonalMovement
@@ -30,8 +30,11 @@ class PathfindingAI(ArtificialIntelligence):
 
         surviving_actions = self.find_surviving_actions(game_service)
 
-        return self.find_action_by_best_path_connection(surviving_actions) if len(
-            surviving_actions) > 0 else Action.get_random_action()
+        if len(surviving_actions) == 1:
+            return surviving_actions[0]
+        else:
+            return self.find_action_by_best_path_connection(surviving_actions) if len(
+                surviving_actions) > 0 else Action.get_random_action()
 
     def find_action_by_best_path_connection(self, actions: List[Action]) -> Action:
         shuffle(actions)
@@ -64,7 +67,6 @@ class PathfindingAI(ArtificialIntelligence):
         return best_action[0]
 
     def get_random_free_cells_from_playground(self) -> List[Tuple[int, int]]:
-        # Todo: Find minimum Number of free Cells
         free_cells: List[(int, int)] = []
         for x in range(self.__game.height):
             for y in range(self.__game.width):
@@ -73,11 +75,11 @@ class PathfindingAI(ArtificialIntelligence):
         shuffle(free_cells)
         return free_cells[:min(self.count_paths_to_check, len(free_cells))]
 
-    def get_aranged_free_cells_from_playground(self) -> List[Tuple[int, int]]:
+    def get_evenly_distributed_free_cells_from_playground(self) -> List[Tuple[int, int]]:
         free_cells: List[(int, int)] = []
         count_cells = self.__game.width * self.__game.height
-        evenly_aranged_points = arange(0, count_cells, int(count_cells / self.count_paths_to_check))
-        for point in evenly_aranged_points:
+        evenly_distributed_points = arange(0, count_cells, int(count_cells / self.count_paths_to_check))
+        for point in evenly_distributed_points:
             x = point % self.__game.width + 5
             y = int(point / self.__game.width)
             if self.__game.cells[y][x].players is None or len(self.__game.cells[y][x].players) == 0:
