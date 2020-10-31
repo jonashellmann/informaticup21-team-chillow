@@ -11,10 +11,10 @@ from chillow.service.game_service import GameService
 
 class ArtificialIntelligence(metaclass=ABCMeta):
 
-    def __init__(self, player: Player):
+    def __init__(self, player: Player, max_speed: int = 10):
         self.player = player
         self.turn_ctr = 0
-        self.max_speed = 10
+        self.max_speed = max_speed
 
     @abstractmethod
     def create_next_action(self, game: Game) -> Action:

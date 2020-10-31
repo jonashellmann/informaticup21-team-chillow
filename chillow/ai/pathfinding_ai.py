@@ -16,9 +16,8 @@ from chillow.service.game_service import GameService
 class PathfindingAI(ArtificialIntelligence):
 
     def __init__(self, player: Player, game: Game, max_speed, count_paths_to_check):
-        super().__init__(player)
+        super().__init__(player, max_speed)
         self.__game = game
-        self.max_speed = max_speed
         self.count_paths_to_check = count_paths_to_check
 
     def create_next_action(self, game: Game) -> Action:

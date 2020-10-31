@@ -12,9 +12,8 @@ from chillow.model.player import Player
 class SearchTreeAI(ArtificialIntelligence):
 
     def __init__(self, player: Player, depth: int, max_speed: int = 10, randomize: bool = False):
-        super().__init__(player)
+        super().__init__(player, max_speed)
         self.__depth = depth
-        self.__max_sped = max_speed
         self.__randomize = randomize
 
     def create_next_action(self, game: Game) -> Action:
@@ -22,7 +21,7 @@ class SearchTreeAI(ArtificialIntelligence):
         root = SearchTreeRoot(deepcopy(game))
         combinations = SearchTreeAI.__get_combinations(len(game.get_other_players(self.player)))
 
-        action = root.calculate_action(self.player, combinations, self.__depth, self.turn_ctr, self.__max_sped,
+        action = root.calculate_action(self.player, combinations, self.__depth, self.turn_ctr, self.max_speed,
                                        self.__randomize)
         return action if action is not None else Action.get_random_action()
 
