@@ -13,21 +13,22 @@ from chillow.service.game_service import GameService
 class SearchTreeRoot(object):
     _game: Game
 
-    def calculate_action(self, player: Player, combinations: List[Tuple[Any]], depth: int, turn_counter: int):
+    def calculate_action(self, player: Player, combinations: List[Tuple[Any]], depth: int, turn_counter: int,
+                         max_speed: int = 10, randomize: bool = False):
         if depth <= 0:
             raise Exception
 
         if depth == 1:
-            for action in Action.get_actions():  # Evtl noch mit Action.get_random_actions() ersetzen
-                child = self.__create_child(player, action, turn_counter)
-                if child._game.get_player_by_id(player.id).active:
+            for action in Action.get_actions(randomize):
+                child = self.__create_child(player, action, turn_counter, max_speed)
+                if child is not None and child._game.get_player_by_id(player.id).active:
                     if SearchTreeRoot.__try_combinations_for_child(child, player, combinations, turn_counter):
                         return child.get_action()
             return None
 
-        for action in Action.get_actions():  # Evtl noch mit Action.get_random_actions() ersetzen
-            child = self.__create_child(player, action, turn_counter)
-            if child._game.get_player_by_id(player.id).active:
+        for action in Action.get_actions(randomize):
+            child = self.__create_child(player, action, turn_counter, max_speed)
+            if child is not None and child._game.get_player_by_id(player.id).active:
                 for combination in combinations:
                     node = SearchTreeRoot.__try_combination(child._game, player, combination, turn_counter)
                     if node._game.get_player_by_id(player.id).active:
@@ -35,7 +36,10 @@ class SearchTreeRoot(object):
                         if node_action is not None:
                             return child.get_action()
 
-    def __create_child(self, player: Player, action: Action, turn_counter: int):
+    def __create_child(self, player: Player, action: Action, turn_counter: int, max_speed: int):
+        if player.speed == max_speed and action == Action.speed_up:
+            return
+
         modified_game = self._game.copy()
         game_service = GameService(modified_game)
         game_service.turn.turn_ctr = turn_counter
