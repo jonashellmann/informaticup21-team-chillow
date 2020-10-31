@@ -1,8 +1,7 @@
 from dataclasses import dataclass
 from typing import Type, Any, List, Tuple
 
-from chillow.exceptions import MultipleActionByPlayerError, DeadLineExceededException, PlayerSpeedNotInRangeException, \
-    PlayerOutsidePlaygroundException
+from chillow.exceptions import InvalidPlayerMoveException
 from chillow.model.action import Action
 from chillow.model.game import Game
 from chillow.model.player import Player
@@ -74,11 +73,10 @@ class SearchTreeRoot(object):
             try:
                 game_service.visited_cells_by_player[player.id] = \
                     game_service.get_and_visit_cells(player, action)
-            except (MultipleActionByPlayerError, DeadLineExceededException, PlayerSpeedNotInRangeException,
-                    PlayerOutsidePlaygroundException):
+            except InvalidPlayerMoveException:
                 game_service.set_player_inactive(player)
 
-    def get_action(self) -> Action:
+    def get_action(self):
         return None
 
 
@@ -86,5 +84,5 @@ class SearchTreeRoot(object):
 class SearchTreeNode(SearchTreeRoot):
     __action: Action
 
-    def get_action(self) -> Action:
+    def get_action(self):
         return self.__action
