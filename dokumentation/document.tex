@@ -1,79 +1,68 @@
-% Vorgestellte Dokumentenklasse
 \documentclass[xcolor=dvipsnames,12pt,a4paper,oneside]{book}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%% Package-Sammlung %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-                                                                    %%%
-\usepackage[utf8]{inputenc} % UTF-8 und Umlaut-Darstellung          %%%
-\usepackage[ngerman]{babel} % Silbentrennung nach neudt. Rechtschr. %%%
-\usepackage{amsmath}  % Für den Mathemodus                          %%%
-\usepackage{amsfonts} % |                                           %%%
-\usepackage{amssymb}  % |                                           %%%
-\usepackage{graphicx} % Einbinden von Bildern						%%%
-\usepackage{footnote}												%%%
-\usepackage{float}													%%%
-\usepackage[labelfont=bf]{caption}									%%%
-\usepackage{textcomp}												%%%
-\usepackage{hyperref}												%%%
-\usepackage[numbers]{natbib}										%%%
-\usepackage{verbatim} % Quellcode darstellen						%%%
-\usepackage{url} % URLs einbinden 									%%%
-\usepackage{pifont}													%%%
-\usepackage{listings} % Quellcode darstellen						%%%
-\usepackage{color} % Für Farben                     	            %%%
-\usepackage{microtype}                                    	    	%%%
-\usepackage{pdfpages}       										%%%
-\usepackage{acronym}												%%%
-\usepackage{nomencl}												%%%
-\usepackage{multirow}											    %%%
-\usepackage{makecell}												%%%
-\usepackage{imakeidx}												%%%
-																	%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{footnote}
+\usepackage{float}
+\usepackage[labelfont=bf]{caption}
+\usepackage{textcomp}
+\usepackage{hyperref}
+\usepackage[numbers]{natbib}
+\usepackage{verbatim}
+\usepackage{url}
+\usepackage{pifont}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{microtype}
+\usepackage{pdfpages}
+\usepackage{acronym}
+\usepackage{nomencl}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{imakeidx}
 \input{Befehle}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%% Code-Eigenschaften (aus Vorlage; evlt. anpassen) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-																																		%%%
-% Farben definieren																														%%%
-\definecolor{mygreen}{rgb}{0,0.6,0}																										%%%
-\definecolor{mygray}{rgb}{0.5,0.5,0.5}																									%%%
-\definecolor{mymauve}{rgb}{0.58,0,0.82}																									%%%
-																																		%%%
-\lstset{ % Code-Optionen für Pseudocode                             																	%%%
-  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}				%%%
-  basicstyle=\footnotesize,        % the size of the fonts that are used for the code													%%%
-  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace											%%%
-  breaklines=true,                 % sets automatic line breaking																		%%%
-  captionpos=b,                    % sets the caption-position to bottom																%%%
-  commentstyle=\color{mygreen},    % comment style																						%%%
-  deletekeywords={...},            % if you want to delete keywords from the given language												%%%
-  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code															%%%
-  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8				%%%
-  frame=single,	                   % adds a frame around the code																		%%%
-  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)		%%%
-  keywordstyle=\color{blue},       % keyword style																						%%%
-  language=Octave,                 % the language of the code																			%%%
-  otherkeywords={*,...},           % if you want to add more keywords to the set														%%%
-  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)								%%%
-  numbersep=5pt,                   % how far the line-numbers are from the code															%%%
-  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers														%%%
-  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments) 	%%%
-  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'				%%%
-  showstringspaces=false,          % underline spaces within strings only																%%%
-  showtabs=false,                  % show tabs within strings adding particular underscores												%%%
-  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered							%%%
-  stringstyle=\color{mymauve},     % string literal style																				%%%
-  tabsize=2,	                   % sets default tabsize to 2 spaces																	%%%
-  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title		%%%
-}																																		%%%
-																																		%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% Code-Eigenschaften %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\lstset{ % Code-Optionen für Pseudocode
+  backgroundcolor=\color{white},
+  basicstyle=\footnotesize,
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  commentstyle=\color{mygreen},
+  deletekeywords={...},
+  escapeinside={\%*}{*)},
+  extendedchars=true,
+  frame=single,
+  keepspaces=true,
+  keywordstyle=\color{blue},
+  language=Octave,
+  otherkeywords={*,...},
+  numbers=left,
+  numbersep=5pt,
+  numberstyle=\tiny\color{mygray},
+  rulecolor=\color{black},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  stepnumber=2,
+  stringstyle=\color{mymauve},
+  tabsize=2,
+  title=\lstname
+}
+
 
 % Titelblatt
 \bibliographystyle{alpha}
@@ -82,96 +71,103 @@
 \author{Uni Oldenburg, Florian Trei und Jonas Hellmann}				   		
 \date{\today}  								   		
 \title{Dokumentation Team Chillow - informatiCup 2021}
-			
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%	Titelseite und Inhaltsverzeichnis   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%					
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%		
-\setlength{\parindent}{0pt}					        						%%%
-\begin{document} % START													%%%
-\lstset{language=Python}													%%%
-																			%%%
-\begin{titlepage}															%%%
-\pagestyle{empty}															%%%
-\begin{center}																%%%
-																			%%%
-																			%%%
-\begin{figure}[H]															%%%
-\centering																	%%%
-\includegraphics[width=0.35\textwidth]{Logo.jpg}                            %%%
-\end{figure}																%%%
-																			%%%
-\bigskip \bigskip \noindent													%%%
-\textsc{\textbf{\LARGE informatiCup 2021:}} \par \bigskip \noindent			%%%																																				%%%
-\textsc{\textbf{\LARGE Dokumentation}}										%%%
-																			%%%
-																			%%%
-\par \bigskip \bigskip \bigskip \bigskip \bigskip \noindent					%%%
-{\Large Team Chillow} \par \medskip \noindent								%%%
-{\Large (Florian Trei, Jonas Hellmann)} \par \medskip \noindent				%%%
-																			%%%
-																			%%%
-																			%%%
-																			%%%
-\par \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \noindent		%%%																																				%%%
-\begin{center} \Large Wintersemester 2020/21 \end{center}					%%%
-																			%%%
-																			%%%
-\par \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \noindent		%%%																																				%%%
-\textsf{\textbf{Spiel-Implementierung:\\spe\_ed}} \par \noindent			%%%
-\textsf{\textbf{}}\par														%%%
-\bigskip																	%%%
-									                						%%%
-																			%%%
-\bigskip\bigskip\bigskip\bigskip\bigskip\noindent							%%%
-Stand:\par\noindent															%%%
-\today																		%%%
-																			%%%
-																			%%%
-\end{center}																%%%
-\end{titlepage}																%%%
-																			%%%
-\pdfbookmark[1]{Inhaltsverzeichnis}{inhalt}									%%%
-\tableofcontents															%%%
-\clearpage																	%%%
-																			%%%
-\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}						%%%
-\listoffigures																%%%
-\clearpage																	%%%
-																			%%%
-\addcontentsline{toc}{chapter}{Tabellenverzeichnis}							%%%
-\listoftables																%%%
-\clearpage																	%%%
-																			%%%
-\addcontentsline{toc}{chapter}{Listing-Verzeichnis}							%%%
-\lstlistoflistings															%%%
-\clearpage																	%%%
-																			%%%
-\addcontentsline{toc}{chapter}{Abkürzungsverzeichnis}						%%%
-\newcommand{\abkvz}{Abkürzungsverzeichnis}									%%%
-\renewcommand{\nomname}{\abkvz}												%%%
-\chapter*{\abkvz}															%%%
-\markboth{\abkvz}{\abkvz}													%%%
-\input{Abkuerzungen}														%%%
-\clearpage																	%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%% Titelseite %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setlength{\parindent}{0pt}
+\begin{document}
+\lstset{language=Python}
+
+\begin{titlepage}
+\pagestyle{empty}
+\begin{center}
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.35\textwidth]{Logo.jpg}
+\end{figure}
+
+\bigskip \bigskip \noindent
+\textsc{\textbf{\LARGE informatiCup 2021:}} \par \bigskip \noindent
+\textsc{\textbf{\LARGE Dokumentation}}
+
+
+\par \bigskip \bigskip \bigskip \bigskip \bigskip \noindent
+{\Large Team Chillow} \par \medskip \noindent
+{\Large (Florian Trei, Jonas Hellmann)} \par \medskip \noindent
+
+
+
+
+\par \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \noindent
+\begin{center} \Large Wintersemester 2020/21 \end{center}
+
+
+\par \bigskip \bigskip \bigskip \bigskip \bigskip \bigskip \noindent
+\textsf{\textbf{Spiel-Implementierung:\\spe\_ed}} \par \noindent
+\textsf{\textbf{}}\par
+\bigskip
+
+
+\bigskip\bigskip\bigskip\bigskip\bigskip\noindent
+Stand:\par\noindent
+\today
+
+
+\end{center}
+\end{titlepage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%% Verzeichnisse %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pdfbookmark[1]{Inhaltsverzeichnis}{inhalt}
+\tableofcontents
+\clearpage
+
+\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
+\listoffigures
+\clearpage
+
+\addcontentsline{toc}{chapter}{Tabellenverzeichnis}
+\listoftables
+\clearpage
+
+\addcontentsline{toc}{chapter}{Listing-Verzeichnis}
+\lstlistoflistings
+\clearpage
+
+\addcontentsline{toc}{chapter}{Abkürzungsverzeichnis}
+\newcommand{\abkvz}{Abkürzungsverzeichnis}
+\renewcommand{\nomname}{\abkvz}
+\chapter*{\abkvz}
+\markboth{\abkvz}{\abkvz}
+\input{Abkuerzungen}
+\clearpage
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%% Import der einzelnen Inhalte %%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-													%%%
-\include{Inhalte/Einleitung}						%%%
-\include{Inhalte/Einstieg}  						%%%
-\include{Inhalte/Loesungsansatz}					%%%
-\include{Inhalte/Implementierung}					%%%
-\include{Inhalte/SoftwareArchitektur}				%%%
-\include{Inhalte/Weiterentwicklung}				    %%%
-\include{Inhalte/Fazit}			        			%%%
-\include{Inhalte/Benutzerhandbuch}					%%%
-													%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\include{Inhalte/Einleitung}
+\include{Inhalte/Einstieg}
+\include{Inhalte/Loesungsansatz}
+\include{Inhalte/Implementierung}
+\include{Inhalte/SoftwareArchitektur}
+\include{Inhalte/Weiterentwicklung}
+\include{Inhalte/Fazit}
+\include{Inhalte/Benutzerhandbuch}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%% Literaturverzeichnis %%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \pagebreak
 \addcontentsline{toc}{chapter}{Literaturverzeichnis}
