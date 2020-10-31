@@ -4,7 +4,7 @@ from numpy import arange
 
 from pathfinding.core.diagonal_movement import DiagonalMovement
 from pathfinding.core.grid import Grid
-from pathfinding.finder.a_star import AStarFinder
+from pathfinding.finder.best_first import BestFirst
 
 from chillow.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.model.action import Action
@@ -41,7 +41,7 @@ class PathfindingAI(ArtificialIntelligence):
         best_action: Tuple[Action, int] = (actions[0], 0)
         free_cells_for_pathfinding = self.get_random_free_cells_from_playground()
 
-        path_finder = AStarFinder(diagonal_movement=DiagonalMovement.never)
+        path_finder = BestFirst(diagonal_movement=DiagonalMovement.never)
 
         for action in actions:
             game_copy = self.__game.copy()
