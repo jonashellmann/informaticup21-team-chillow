@@ -1,0 +1,53 @@
+{
+	"width": 10,
+	"height": 8,
+	"cells": [
+      	[0, 3, 3, 3, 3, 0, 0, 0, 0, 0],
+      	[0, 0, 5, 0, 0, 0, 0, 0, 0, 0],
+      	[0, 0, 5, 5, 0, 4, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 4, 0, 0, 0, 0],
+		[0, 0, 1, 1, 2, 4, 4, 0, 0, 0],
+		[0, 0, 0, 1, 2, 2, 2, 0, 0, 0],
+		[0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+      	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
+	"players": {
+		"1": {
+			"x": 3,
+			"y": 6,
+			"direction": "down",
+			"speed": 1,
+			"active": true
+		},
+		"2": {
+			"x": 4,
+			"y": 4,
+			"direction": "up",
+			"speed": 2,
+			"active": true
+		},
+		"3": {
+			"x": 1,
+			"y": 0,
+			"direction": "left",
+			"speed": 1,
+			"active": true
+		},
+		"4": {
+			"x": 6,
+			"y": 4,
+			"direction": "right",
+			"speed": 1,
+			"active": true
+		},
+		"5": {
+			"x": 2,
+			"y": 1,
+			"direction": "up",
+			"speed": 1,
+			"active": false
+		}
+	},
+	"you": 2,
+	"running": true,
+	"deadline": "2020-10-01T12:05:13Z"
+}
