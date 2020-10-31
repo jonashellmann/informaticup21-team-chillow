@@ -12,10 +12,11 @@ class ArtificialIntelligence(metaclass=ABCMeta):
 
     def __init__(self, player: Player):
         self.player = player
+        self.turn_ctr = 0
 
     @abstractmethod
     def create_next_action(self, game: Game) -> Action:
-        raise NotImplementedError
+        self.turn_ctr += 1
 
     def find_surviving_actions(self, game_service: GameService) -> [Action]:
         result: List[Action] = []

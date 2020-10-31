@@ -18,12 +18,12 @@ class PathfindingAI(ArtificialIntelligence):
     def __init__(self, player: Player, game: Game, max_speed, count_paths_to_check):
         super().__init__(player)
         self.__game = game
-        self.turn_ctr = 0
         self.max_speed = max_speed
         self.count_paths_to_check = count_paths_to_check
 
     def create_next_action(self, game: Game) -> Action:
-        self.turn_ctr += 1
+        super().create_next_action(game)
+
         self.__game = game
         game_service = GameService(game)
         game_service.turn.turn_ctr = self.turn_ctr

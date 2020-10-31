@@ -90,7 +90,7 @@ class PathfindingAITest(unittest.TestCase):
 
         self.assertEqual(action, Action.turn_left)
 
-    def test_create_Action_should_return_one_of_the_possible_action_with_best_connection(self):
+    def test_create_action_should_return_one_of_the_possible_action_with_best_connection(self):
         player1 = Player(1, 0, 0, Direction.right, 2, True, "")
         player2 = Player(2, 0, 2, Direction.down, 3, True, "")
         players = [player1, player2]

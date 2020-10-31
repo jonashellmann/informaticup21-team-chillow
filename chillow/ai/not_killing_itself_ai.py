@@ -20,14 +20,12 @@ class NotKillingItselfAI(ArtificialIntelligence):
     def __init__(self, player: Player, game: Game, options: List[AIOptions], max_speed: int, max_worse_distance: int):
         super().__init__(player)
         self.game = game
-        self.turn_ctr = 0
         self.options = options
         self.max_speed = max_speed
         self.max_worse_distance = max_worse_distance
 
     def create_next_action(self, game: Game) -> Action:
-
-        self.turn_ctr += 1
+        super().create_next_action(game)
 
         game_service = GameService(game)
         game_service.turn.turn_ctr = self.turn_ctr

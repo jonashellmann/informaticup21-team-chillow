@@ -11,6 +11,7 @@ from chillow.model.game import Game
 class RandomAI(ArtificialIntelligence):
 
     def create_next_action(self, game: Game) -> Action:
+        super().create_next_action(game)
         return Action.get_random_action()
 
 
