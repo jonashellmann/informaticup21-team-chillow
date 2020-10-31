@@ -5,6 +5,7 @@ from random import choice
 from typing import List, Dict
 
 from chillow.ai.artificial_intelligence import ArtificialIntelligence
+from chillow.exceptions import InvalidPlayerMoveException
 from chillow.model.action import Action
 from chillow.model.game import Game
 from chillow.model.player import Player

@@ -3,25 +3,30 @@ import logging
 from chillow.model.player import Player
 
 
-class MultipleActionByPlayerError(Exception):
+class InvalidPlayerMoveException(Exception):
+    pass
+
+
+class MultipleActionByPlayerError(InvalidPlayerMoveException):
     def __init__(self, player: Player):
+        super().__init__()
         logging.debug("Player " + str(player.name) + ", id "
                       + str(player.id) + " did more than one action this turn and is inactive now")
 
 
-class DeadLineExceededException(Exception):
+class DeadLineExceededException(InvalidPlayerMoveException):
     def __init__(self, player: Player):
         logging.debug(
             "Player " + str(player.name) + ", id " + str(player.id) + " exceeded the Deadline and is inactive now")
 
 
-class PlayerSpeedNotInRangeException(Exception):
+class PlayerSpeedNotInRangeException(InvalidPlayerMoveException):
     def __init__(self, player: Player):
         logging.debug(
             "Player " + str(player.name) + ", id " + str(player.id) + " reached invalid speed and is inactive now")
 
 
-class PlayerOutsidePlaygroundException(Exception):
+class PlayerOutsidePlaygroundException(InvalidPlayerMoveException):
     def __init__(self, player: Player):
         logging.debug(
             "Player " + str(player.name) + ", id " + str(player.id) + " outside Playground and is inactive now")

@@ -16,7 +16,7 @@ class JSONDataWriterTest(unittest.TestCase):
         self.sut = JSONDataLoader()
 
     def test_convert_json_to_running_game(self):
-        json = tests.read_test_file("game.json")
+        json = tests.read_test_file("service/game.json")
         player1 = Player(1, 2, 2, Direction.up, 1, True, "")
         player2 = Player(2, 1, 0, Direction.down, 3, True, "")
         player3 = Player(3, 4, 3, Direction.left, 2, False, "Name 3")
@@ -35,7 +35,7 @@ class JSONDataWriterTest(unittest.TestCase):
         self.assertEqual(expected, result)
 
     def test_convert_json_to_ended_game(self):
-        json = tests.read_test_file("game_ended.json")
+        json = tests.read_test_file("service/game_ended.json")
         player1 = Player(1, 2, 2, Direction.up, 1, True, "")
         player2 = Player(2, 1, 0, Direction.down, 3, True, "")
         player3 = Player(3, 4, 3, Direction.left, 2, False, "Name 3")

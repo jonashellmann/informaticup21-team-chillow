@@ -1,8 +1,8 @@
 import logging
 from typing import List, Tuple
 
-from chillow.exceptions import MultipleActionByPlayerError, DeadLineExceededException, \
-    PlayerSpeedNotInRangeException, PlayerOutsidePlaygroundException
+from chillow.exceptions import InvalidPlayerMoveException, PlayerSpeedNotInRangeException, \
+    PlayerOutsidePlaygroundException
 from chillow.model.game import Game
 from chillow.model.action import Action
 from chillow.model.player import Player
@@ -25,8 +25,7 @@ class GameService:
             if new_turn:
                 self.check_and_set_died_players()
 
-        except (MultipleActionByPlayerError, DeadLineExceededException, PlayerSpeedNotInRangeException,
-                PlayerOutsidePlaygroundException):
+        except InvalidPlayerMoveException:
             self.set_player_inactive(player)
 
         self.game.running = self.is_game_running()
