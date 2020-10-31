@@ -49,7 +49,7 @@ class PathfindingAI(ArtificialIntelligence):
             except Exception:
                 continue
 
-            matrix = self.translate_cell_matrix_to_pathfinding_grid(game_copy)
+            matrix = self.translate_cell_matrix_to_pathfinding_matrix(game_copy)
             current_possible_paths = 0
             for free_cell in free_cells_for_pathfinding:
                 grid = Grid(matrix=matrix)
@@ -85,7 +85,7 @@ class PathfindingAI(ArtificialIntelligence):
         return free_cells
 
     @staticmethod
-    def translate_cell_matrix_to_pathfinding_grid(game: Game) -> List[List[int]]:
+    def translate_cell_matrix_to_pathfinding_matrix(game: Game) -> List[List[int]]:
         matrix = [[1 for _ in range(game.width)] for _ in range(game.height)]
         for i in range(len(game.cells)):
             for j in range(len(game.cells[i])):
