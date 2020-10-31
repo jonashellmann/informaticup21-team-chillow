@@ -1,6 +1,7 @@
 import unittest
 from datetime import datetime, timezone
 
+from chillow.exceptions import PlayerOutsidePlaygroundException
 from chillow.service.game_service import GameService
 from chillow.model.action import Action
 from chillow.model.cell import Cell
@@ -16,7 +17,7 @@ class GameTest(unittest.TestCase):
         self.player2 = Player(2, 10, 30, Direction.down, 3, True, "")
         self.player3 = Player(3, 30, 10, Direction.right, 2, True, "Name 3")
         players = [self.player1, self.player2, self.player3]
-        cells = [[Cell() for i in range(40)] for j in range(40)]
+        cells = [[Cell() for _ in range(40)] for _ in range(40)]
         cells[self.player1.y][self.player1.x] = Cell([self.player1])
         cells[self.player2.y][self.player2.x] = Cell([self.player2])
         cells[self.player3.y][self.player3.x] = Cell([self.player3])
@@ -108,6 +109,30 @@ class GameTest(unittest.TestCase):
         self.assertTrue(self.player1 in self.game.cells[player1_y + 2][player1_x].players)
         self.assertTrue(self.player2 in self.game.cells[player2_y - 1][player2_x].players)
         self.assertTrue(self.player2 in self.game.cells[player2_y - 6][player2_x].players)
+
+    def test_playerX_playerY_should_be_correct_after_collision(self):
+        self.player1.direction = Direction.left
+        self.player1.speed = 2
+        self.player1.x = 1
+        self.player1.y = 0
+        self.game.cells[self.player1.y][self.player1.x] = Cell([self.player1])
+
+        with self.assertRaises(PlayerOutsidePlaygroundException):
+            self.sut.get_and_visit_cells(self.player1, Action.speed_up)
+        self.assertEqual(self.player1.x, 0)
+        self.assertEqual(self.player1.y, 0)
+
+    def test_playerX_playerY_should_be_correct_without_collision(self):
+        self.player1.direction = Direction.left
+        self.player1.speed = 2
+        self.player1.x = 10
+        self.player1.y = 0
+        self.game.cells[self.player1.y][self.player1.x] = Cell([self.player1])
+
+        self.sut.get_and_visit_cells(self.player1, Action.change_nothing)
+
+        self.assertEqual(self.player1.x, 8)
+        self.assertEqual(self.player1.y, 0)
 
     def test_correct_multiplier_should_be_returned_direction_up(self):
         self.player1.direction = Direction.up

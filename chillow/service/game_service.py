@@ -1,3 +1,4 @@
+import logging
 from typing import List, Tuple
 
 from chillow.exceptions import MultipleActionByPlayerError, DeadLineExceededException, \
@@ -41,8 +42,8 @@ class GameService:
                                 for player in self.game.players:
                                     if player_id == player.id:
                                         self.set_player_inactive(player)
-                                        print("Player " + player.name + ", id " + str(player.id) + " collision and is"
-                                                                                                   " inactive now")
+                                        logging.debug("Player with id " + str(player.id)
+                                                      + " had a collision and is inactive now")
 
     def is_game_running(self) -> bool:
         active_player_ctr = 0
@@ -51,7 +52,8 @@ class GameService:
                 active_player_ctr += 1
         return active_player_ctr >= 2
 
-    def get_horizontal_and_vertical_multiplier(self, player: Player) -> Tuple[int, int]:
+    @staticmethod
+    def get_horizontal_and_vertical_multiplier(player: Player) -> Tuple[int, int]:
         vertical_multiplier = 0
         horizontal_multiplier = 0
         if player.direction == Direction.up:
@@ -68,9 +70,9 @@ class GameService:
     def get_and_visit_cells(self, player: Player, action: Action) -> List[Tuple[int, int]]:
         visited_cells = []
 
-        self.change_player_status_by_action(player, action)
+        GameService.change_player_status_by_action(player, action)
 
-        horizontal_multiplier, vertical_multiplier = self.get_horizontal_and_vertical_multiplier(player)
+        horizontal_multiplier, vertical_multiplier = GameService.get_horizontal_and_vertical_multiplier(player)
 
         for i in range(0, player.speed):
             visited_cells.append(
@@ -83,8 +85,8 @@ class GameService:
         for (x, y) in visited_cells:
             if x not in range(self.game.width) or y not in range(self.game.height):
                 raise PlayerOutsidePlaygroundException(player)
-            player.x = visited_cells[-1][0]
-            player.y = visited_cells[-1][1]
+            player.x = x
+            player.y = y
             visited_cells_result.append((x, y))
             if self.game.cells[y][x].players is None:
                 self.game.cells[y][x].players = [player]
@@ -94,7 +96,8 @@ class GameService:
 
         return visited_cells_result
 
-    def change_player_status_by_action(self, player: Player, action: Action):
+    @staticmethod
+    def change_player_status_by_action(player: Player, action: Action):
         if action == action.turn_left:
             if player.direction == Direction.up:
                 player.direction = Direction.left
