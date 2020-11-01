@@ -1,0 +1,28 @@
+name: Documentation
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  latex-compile:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./dokumentation
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install LaTeX
+      run: sudo apt-get install texlive-full
+    - name: Compile LaTeX
+      run: |
+        latex document
+        bibtex document
+        latex document
+        latex document
+    - name: Upload PDF file
+      if: success()
+      uses: actions/upload-artifact@v2
+      with:
+        name: PDF Document
+        path: document.pdf
