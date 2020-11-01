@@ -28,12 +28,17 @@
 \usepackage{multirow}
 \usepackage{makecell}
 \usepackage{imakeidx}
+\usepackage{setspace}
 \input{Befehle}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%% Code-Eigenschaften %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
 
 \lstset{ % Code-Optionen für Pseudocode
   backgroundcolor=\color{white},
@@ -57,7 +62,7 @@
   showspaces=false,
   showstringspaces=false,
   showtabs=false,
-  stepnumber=2,
+  stepnumber=1,
   stringstyle=\color{mymauve},
   tabsize=2,
   title=\lstname
@@ -154,6 +159,7 @@ Stand:\par\noindent
 %%%%%%%%% Import der einzelnen Inhalte %%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\onehalfspacing
 \include{Inhalte/Einleitung}
 \include{Inhalte/Einstieg}
 \include{Inhalte/Loesungsansatz}
