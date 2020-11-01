@@ -3,7 +3,7 @@
 
 Bevor mit der Implementierung der \ac{KI} begonnen werden konnte, mussten zuerst noch einge andere Punkte geklärt
 \bzw erledigt werden.
-Diese ersten Schritte werden im folgenden erläutert.
+Diese ersten Schritte werden im Folgenden erläutert.
 
 \section{Auswahl der Programmiersprache}
 \label{sec:auswahl-programmiersprache}
@@ -17,19 +17,23 @@ zukünftigen Wichtigkeit. \Vgl{tiobe} \Vgl{pypl}
 Hinzu kommt, dass wir vor Beginn der Implementierung anhand der Aufgabenstellung das Potenzial für den Einsatz von
 Machine Learning gesehen haben und Python in diesem Bereich oft empfohlen wird. \Vgl{springboard} \Vgl{towardsscience}
 
+\section{Erstellung eines lauffähigen Projekts}
+\label{sec:erstellung-projekt}
+
 \subsection{Einsatz von Poetry als Build-Tool}
 \label{subsec:poetry}
 
-% Vorteile eines Build-Tools und Poetry im Speziellen
-% Verwaltung von Abhängigkeiten mit Poetry
-
-\section{Erstellung eines lauffähigen Projekts}
-\label{sec:erstellung-projekt}
+Der einfachste Weg, um Abhängigkeiten in Python zu verwalten, ist, eine Datei mit dem Namen \Code{requirements.txt} zu
+verwenden und in dieser die eingesetzten Bibliotheken aufzulosten.
+Wir haben uns allerdings für die Verwendung von Poetry als vollständiges Build-Tool entschieden, da dieses zum Einen
+sehr einfach zum Einstieg ist und simple Kommandozeilen-Befehle bereitstellt, aber auch weitere Funktionen wie das
+Ausführen von Tests und Erstellen eines fertigen Pakets anbietet.
+Zudem funktioniert die Auflösung komplexerer Abhängigkeiten von Paketen von diesem Tool sehr gut. \Vgl{poetry}
 
 \subsection{Entwicklung eines Dockerfile}
 \label{subsec:dockerfile}
 
-Nachdem die Nutzung von Python feststand, haben wir zum Start ein minimales Python-Skript erstellt, das lediglich die
+Zum Start haben wir ein minimales Python-Skript erstellt, das lediglich die
 an den Docker-Container übergebenen Parameter für die Server-URL und den API-Key ausgibt.
 Zwar mussten bis hierhin noch keine Abhängigkeiten hinzugefügt werden, aber bei der Konzeption des Dockerfiles sollte
 bereits die Installtion zusätzlicher Bibliotheken berücksichtigt werden.
@@ -42,13 +46,50 @@ installieren.
 Später sind noch Umgebungsvariablen zur Steuerung des Programm-Ablaufs hinzugekommen, sodass das Dockerfile
 letztendlich wie in \Listing{lst:dockerfile} dargestellt aussieht.
 
-\begin{minipage}{\linewidth}
 \lstinputlisting[label=lst:dockerfile,language=Java,caption=Dockerfile zum Erstellen eines lauffähigen Containers]
 {../Dockerfile}
-\end{minipage}
 
 \section{Nachstellung des Spiels}
 \label{sec:nachstellung-spiel}
 
-% Spiel nachprogrammiert, um selbst offline gegen die KIs spielen zu können
-% Vorgriff auf spätere Kapitel: Zentrale Funktionalitäten konnten später wiederverwendet werden
+Um die zu entwickelnde \ac{KI} ohne die Server-Verbimdung manuell testen zu können, haben wir bei der Implementierung
+damit begonnen, die Spiellogik nachzustellen.
+Dazu haben wir nach Erhalt des API-Keys anhand der bereitgestellten Dokumentation und der Möglichkeit, das Spiel in
+einer Online-Version im Browser das Spiel testen zu können, begonnen, die Spiellogik zu analysieren.
+
+Diese Logik ist relativ einfach nachzuvollziehen.
+Nachdem alle Spieler ihre Aktion an den Server gesendet haben, wird jede Aktion eines Spielers in einer Runde zeitgleich
+ausgeführt.
+Trifft der Spieler während seiner Aktion auf ein bereits belegtes Feld, so verliert dieser das Spiel und bewegt sich
+nicht weiter vorwärts, auch wenn seine Aktion dies normalerweise noch bewirkt hätte.
+Verhindert werden können solche Kollisionen mittels eines Sprung, der bei entsprechendem Tempo automatisch in jeder
+sechsten Runde des Spiels ausgeführt wird.
+
+Wir haben diese Logik, auf die wir später noch genauer eingehen werden und die bei der Implementierung der \ac{KI}s
+sehr gut wiederverwendet werden konnte, in einer Klasse \Code{GameService} implementiert.
+Zum Testen haben wir zwei verschiedene Oberflächen entwickelt.
+Zum einen kann das Spielfeld nach jeder Runde auf der Konsole ausgegeben werden.
+Dazu wird das Spielfeld als Tabelle dargestellt und in den Zellen, in denen sich ein Spieler befindet, wird dessen
+Spieler-ID angezeigt.
+Diese Darstellung wird in der \Abbildung{fig:KonsolenOberflaeche} verdeutlicht.
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.6\textwidth]{Bilder/KonsolenOberflaeche.png}
+\caption{Darstellung der Oberfläche in der Konsole}
+\label{fig:KonsolenOberflaeche}
+\end{figure}
+
+Zum anderen gibt es auch die Möglichkeit, das Spiel auf einer grafischen Oberfläche zu spielen, die mittels PyGame
+entworfen wurde.
+Jedem Spieler wird dabei zu Spielbeginn eine Farbe zugeordnet, um die verschiedenen Spieler auseinanderhalten zu können.
+Ein Spiel mit grafischer Oberfläche wird in \Abbildung{fig:GrafischeOberflaeche} gezeigt.
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.5\textwidth]{Bilder/GrafischeOberflaeche.png}
+\caption{Darstellung der grafischen Oberfläche mit PyGame}
+\label{fig:GrafischeOberflaeche}
+\end{figure}
+
+% TODO: Hier schon auf die GameService-Logik eingehen oder erst im Kapitel Implementierung?
