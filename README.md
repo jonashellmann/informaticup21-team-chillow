@@ -7,8 +7,10 @@ Dieses Repository beinhaltet den Beitrag von Team Chillow mit den Teammitglieder
 Die gestellte Aufgabe mit dem Titel **spe_ed** kann in dem
 [Repo zum informatiCup 2021](https://github.com/informatiCup/informatiCup2021) nachvollzogen werden.
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Carl_von_Ossietzky_Universit%C3%A4t_Oldenburg_logo.svg/1200px-Carl_von_Ossietzky_Universit%C3%A4t_Oldenburg_logo.svg.png" alt="Logo Uni Oldenburg" width="200" />
-<img src="https://informaticup.github.io/images/informaticup-logo.png" alt="Logo Uni Oldenburg" width="300" />
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Carl_von_Ossietzky_Universit%C3%A4t_Oldenburg_logo.svg/1200px-Carl_von_Ossietzky_Universit%C3%A4t_Oldenburg_logo.svg.png" alt="Logo Uni Oldenburg" width="200" />
+    <img src="https://informaticup.github.io/images/informaticup-logo.png" alt="Logo Uni Oldenburg" width="300" />
+</div>
 
 ## Installation
 
