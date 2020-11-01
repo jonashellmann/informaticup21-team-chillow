@@ -19,7 +19,48 @@ Aufgrund dessen haben wir uns dafür entschieden, zunächst Lösungsansätze ohn
 Diese Strategie hatte für uns den Vorteil mithilfe einfacherer Lösungsansätze die Komplexität und auftretenden Probleme im Spielverlauf besser kennen zu lernen.
 
 
-\section{Lösungsansatz nicht lernende KI}
+\section{Lösungsansatz nicht-lernende-KI}
 \label{sec:loesungsansatz-nicht-lernende-KI}
 
-Bei dem Ansatz Strategien fest in Code zu implementieren hatten wir mehrere unterschiedliche Ideen, die nachfolgend
+Bei dem Ansatz, Strategien fest in Code zu implementieren, hatten wir mehrere unterschiedliche Ideen, 
+die nachfolgend beschrieben werden. Hierbei haben wir jeweils versucht, Teilprobleme zu lösen,
+mit der Intuition diese unterschiedlichen \acs{KI}s kombinieren zu können.
+
+\section{NotKillingItselfAI}
+\label{sec:notkillingitself-ai}
+
+Durch eine \acs{KI}, die zufällige Aktionen ausführt, ist uns das grundlegende Problem aufgefallen, dass
+sich die \acs{KI} selber tötet.
+Folglich wird die Minimal- und Maximalgeschwindigkeit überschritten, das Spielfeld verlassen oder
+in vorhandene Spuren gefahren, mit denen die Kollision vermeidbar gewesen wäre.
+Daher haben wir uns dafür entschieden, die \Code{NotKillingItselfAI} zu implementieren, die aus allen
+Aktionen eine zufällige Aktion auswählt, die sie nicht direkt verlieren lässt. 
+Hierbei bleiben mögliche Aktionen der Gegenspieler zunächst unberücksichtigt.\\
+
+\section{PathfindingAI}
+\label{sec:pathfinding-ai}
+
+Durch die Implementierung der \Code{NotKillingItselfAI} fiel auf, dass die \acs{KI} sich zwar nicht mehr im
+unmittelbar folgenden Zug tötete, jedoch häufig in Sackgassen läuft.
+Folglich haben wir einen Lösungsansatz gesucht, welcher das betreten von Sackgassen verhindert.
+Genutzt wurde die Basis der \Code{NotKillingItselfAI}, sodass nur zwischen überlebenden Aktionen gewählt wird.
+Um die Aktionen zu finden, die nicht in eine Sackgasse läuft, haben wir uns für einen Lösungsansatz zum 
+finden von Pfaden entschieden.
+Dazu wird eine konfigurierbare Anzahl Koordinaten generiert, auf denen sich bisher kein Spieler befindet.
+Anschließend wird für jede Aktion geprüft, zu wie vielen der Koordinaten, nach der Ausführung der 
+Aktion noch ein möglicher Pfad existiert. \todo{In einem Bild verdeutlichen warum das ein Bewertungskriterium darstellt}
+Die Aktion, die die höchste Anzahl Koordinaten erreichen kann, führt mit höchster Wahrscheinlichkeit
+nicht in eine Sackgasse und wird ausgewählt.
+
+\section{SearchTreeAI}
+\label{sec:searchtree-ai}
+
+Bei der \Code{PathfindingAI}, als auch der \Code{NotKillingItselfAI} gibt es weiterhin ein  bestehendes 
+Problem. Die \acs{KI} beachtet die möglichen Aktionen der Gegenspieler nicht.
+Ziel ist es, dass die die \Code{NotKillingItselfAI}, falls möglich, auch nur Aktionen berechnet,
+bei denen bereits alle möglichen Gegnerischen Aktionen und dessen Auswirkungen berücksichtigt werden.
+Unser Lösungsansatz für dieses Problem ist es, mithilfe eines Suchbaums, alle möglichen gegnerischen 
+Aktions-Kombinationen zu prüfen und einen Teilbaum zu finden, bei dem vorausgesagt werden kann, dass
+der Spieler nicht im nächsten Zug stirbt. Der Vorteil eines Suchbaums ist es, dass wir diesem eine
+beliebige Tiefe mitgeben können, um entsprechend der Tiefe viele zukünftige Züge vor zu berechnen. 
+\todo{Besser ausformulieren, Problem der Komplexität benennen und Beispielskizze}
