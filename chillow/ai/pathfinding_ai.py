@@ -54,14 +54,15 @@ class PathfindingAI(ArtificialIntelligence):
 
             matrix = self.translate_cell_matrix_to_pathfinding_matrix(game_copy)
             current_possible_paths = 0
-            for i in range(len(free_cells_for_pathfinding)):
+            length_free_cells = len(free_cells_for_pathfinding)
+            for i in range(length_free_cells):
                 grid = Grid(matrix=matrix)
                 start = grid.node(player.x, player.y)
                 end = grid.node(free_cells_for_pathfinding[i][0], free_cells_for_pathfinding[i][1])
                 path, runs = path_finder.find_path(start, end, grid)
                 if len(path) > 0:
                     current_possible_paths += 1
-                if current_possible_paths + len(free_cells_for_pathfinding) - i <= best_action[1]:  # can't be better
+                if current_possible_paths + length_free_cells - i <= best_action[1]:  # can't be better
                     break
             if len(best_action) == 0 or best_action[1] < current_possible_paths:
                 best_action = (action, current_possible_paths)
