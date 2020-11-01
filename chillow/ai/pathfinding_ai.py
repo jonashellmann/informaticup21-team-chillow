@@ -63,6 +63,8 @@ class PathfindingAI(ArtificialIntelligence):
                     current_possible_paths += 1
             if len(best_action) == 0 or best_action[1] < current_possible_paths:
                 best_action = (action, current_possible_paths)
+            if best_action[1] == len(free_cells_for_pathfinding):  # best possible action already found
+                return best_action[0]
 
         return best_action[0]
 
