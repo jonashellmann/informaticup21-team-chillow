@@ -63,7 +63,8 @@ Dazu wird eine konfigurierbare Anzahl Koordinaten generiert, auf denen sich bish
 Anschließend wird für jede Aktion geprüft, zu wie vielen der Koordinaten, nach der Ausführung der Aktion noch ein
 möglicher Pfad existiert. \todo{In einem Bild verdeutlichen warum das ein Bewertungskriterium darstellt}
 Die Aktion, die die höchste Anzahl Koordinaten erreichen kann, führt mit höchster Wahrscheinlichkeit
-nicht in eine Sackgasse und wird ausgewählt.
+nicht in eine Sackgasse und wird ausgewählt. \\
+
 Bei diesem Lösungsansatz arbeiten wir lediglich mit der Warscheinlichkeit, dass wir nicht in eine Sackgasse laufen.
 Dies liegt dem Problem zugrunde, dass wir die Implementierung eines Algorithmus zum tatsächtichen Erkennen von
 Sackgassen oder abgesperrten Gebieten als schwieriger erachteten.
@@ -76,7 +77,8 @@ Bei der \Code{PathfindingAI}, als auch der \Code{NotKillingItselfAI} gibt es wei
 Problem.
 Die \acs{KI} beachtet die möglichen Aktionen der Gegenspieler nicht.
 Ziel der \Code{SearchTreeAI} ist es, dass die die \Code{NotKillingItselfAI}, falls möglich, auch nur Aktionen berechnet,
-bei denen bereits alle möglichen Gegnerischen Aktionen und dessen Auswirkungen berücksichtigt werden.
+bei denen bereits alle möglichen Gegnerischen Aktionen und dessen Auswirkungen berücksichtigt werden. \\
+
 Unser Lösungsansatz für dieses Problem ist es, mithilfe eines Suchbaums, alle möglichen gegnerischen
 Aktions-Kombinationen zu prüfen und einen Teilbaum zu finden, bei dem vorausgesagt werden kann, dass
 der Spieler nicht im nächsten Zug stirbt.
