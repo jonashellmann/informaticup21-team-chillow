@@ -1,2 +1,80 @@
 \chapter{Benutzerhandbuch}
 \label{ch:benutzerhandbuch}
+
+Das Benutzerhandbuch soll eine Anleitung darstellen, wie die eingereichte Lösung installiert und ausgeführt werden kann.
+Dafür wird zwischen der Verwendung von Docker oder einer manuellen Installation unterschieden.
+
+\section{Installation}
+\label{sec:installation}
+
+Zur Verwendung dieses Projektes muss es lokal heruntergeladen werden, entweder durch Klonen des Repositorys oder durch
+einen Download als ZIP-Datei.
+Das Projekt kann unter folgendem Link eingesehen werden:
+\url{https://github.com/jonashellmann/informaticup21-team-chillow}
+
+\subsection{Docker}
+\label{subsec:docker}
+
+Falls Sie Docker auf Ihrem Rechner installiert haben, lässt sich für das Projekt aufgrund des vorhandenen
+\Code{Dockerfile}s mit folgendem Befehl ein neuer Container erstellen:
+
+\begin{verbatim}
+docker build -t informaticup21-team-chillow .
+\end{verbatim}
+
+Dieser Container kann mit folgendem Befehl gestartet werden, wobei die URL zum spe\_ed-Server und der API-Key
+entsprechend angepasst werden müssen:
+
+\begin{verbatim}
+docker run -e URL=SERVER_URL -e KEY=API_KEY informaticup21-team-chillow
+\end{verbatim}
+
+In der Konsole des Docker-Containers lässt sich dann der Spiel-Verlauf nachvollziehen.
+
+\subsection{Manuelle Installation}
+\label{subsec:manuelle-installation}
+
+Neben der Docker-Installation kann das Projekt auch eigenständig gebaut werden.
+Dafür ist erforderlich, dass neben Python in der Version 3.8 auch Poetry als Build-Tool installiert ist.
+
+Die erforderlichen Abhängigkeiten lassen sich anschließend mittels \Code{poetry install} installieren.
+
+Um ein Spiel mit einer simplen grafischen Oberfläche zu starten, in dem gegen die implementierte \ac{KI} gespielt
+werden kann, genügt der Befehl \Code{python ./main.py}.
+Wenn gegen eine andere \ac{KI} gespielt werden soll als die, für die wir uns am Ende entschieden haben, muss dies in
+der \Code{OfflineConnection} bei der Erstellung des initialen Spiels manuell angepasst werden.
+
+Um ein Online-Spiel der KI auf dem Server zu starten, müssen folgende Umgebungsvariablen verwendet werden, die im
+Docker-Container automatisch gesetzt \bzw als Parameter übergeben werden:
+
+\begin{itemize}
+    \item \Code{PLAY\_ONLINE=TRUE}
+	\item \Code{URL=[SERVER\_URL]}
+	\item \Code{KEY=[API\_KEY]}
+\end{itemize}
+
+Mittels der Umgebungsvariable \Code{DEACTIVATE\_PYGAME} kann entschieden werden, ob eine grafische Oberfläche benutzt
+werden soll oder die Ausgabe wie im Docker-Container über die Konsole erfolgt.
+
+\section{Benutzung}
+\label{sec:benutzung}
+
+Wenn das Programm im Online-Modus gestartet wird, ist keine weitere Eingabe des Benutzers zu tätigen.
+Sobald der Server das Spiel startet, kann entweder auf der Konsole oder in der grafischen Oberfläche der Spielverlauf
+nachvollzogen werden.
+
+Bei einer Ausführung im Offline-Modus wird - je nach manueller Anpassung in der \Code{OfflineConnection} - auf eine
+Eingabe von einem oder mehreren Spielern gewartet, bis die nächste Runde des Spiels gestartet wird.
+Der \Tabelle{tab:eingaben-oeberflaeche} kann entnommen werden, mit welchen Eingaben eine Aktion ausgeführt werden kann.
+
+\begin{table}[htb]
+    \centering
+    \begin{tabular}{|l|c|c|c|c|c|}
+        \hline
+         & \textbf{turn\_right} & {\textbf{turn\_left} & \textbf{speed\_up} & \textbf{slow\_down} & \textbf{change\_nothing} \\ \hline
+        \textbf{Konsole} & r & l & u & d & n \\ \hline
+        \textbf{Grafische Oberfläche} & → & ← & ↑ & ↓ & Leertaste \\ \hline
+    \end{tabular}
+    \caption{Steuerung der Oberflächen}
+    \label{tab:eingaben-oeberflaeche}
+\end{table}
