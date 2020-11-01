@@ -28,7 +28,7 @@ verwenden und in dieser die eingesetzten Bibliotheken aufzulosten.
 Wir haben uns allerdings für die Verwendung von Poetry als vollständiges Build-Tool entschieden, da dieses zum Einen
 sehr einfach zum Einstieg ist und simple Kommandozeilen-Befehle bereitstellt, aber auch weitere Funktionen wie das
 Ausführen von Tests und Erstellen eines fertigen Pakets anbietet.
-Zudem funktioniert die Auflösung komplexerer Abhängigkeiten von Paketen von diesem Tool sehr gut. \Vgl{poetry}
+Zudem funktioniert die Auflösung komplexerer Abhängigkeiten von Paketen durch dieses Tool sehr gut. \Vgl{poetry}
 
 \subsection{Entwicklung eines Dockerfile}
 \label{subsec:dockerfile}
@@ -52,10 +52,10 @@ letztendlich wie in \Listing{lst:dockerfile} dargestellt aussieht.
 \section{Nachstellung des Spiels}
 \label{sec:nachstellung-spiel}
 
-Um die zu entwickelnde \ac{KI} ohne die Server-Verbimdung manuell testen zu können, haben wir bei der Implementierung
+Um die zu entwickelnde \ac{KI} ohne die Server-Verbindung manuell testen zu können, haben wir bei der Implementierung
 damit begonnen, die Spiellogik nachzustellen.
 Dazu haben wir nach Erhalt des API-Keys anhand der bereitgestellten Dokumentation und der Möglichkeit, das Spiel in
-einer Online-Version im Browser das Spiel testen zu können, begonnen, die Spiellogik zu analysieren.
+einer Online-Version im Browser testen zu können, begonnen, die Spiellogik zu analysieren.
 
 Diese Logik ist relativ einfach nachzuvollziehen.
 Nachdem alle Spieler ihre Aktion an den Server gesendet haben, wird jede Aktion eines Spielers in einer Runde zeitgleich
@@ -66,7 +66,7 @@ Verhindert werden können solche Kollisionen mittels eines Sprung, der bei entsp
 sechsten Runde des Spiels ausgeführt wird.
 
 Wir haben diese Logik, auf die wir später noch genauer eingehen werden und die bei der Implementierung der \ac{KI}s
-sehr gut wiederverwendet werden konnte, in einer Klasse \Code{GameService} implementiert.
+wiederverwendet werden konnte, in einer Klasse \Code{GameService} implementiert.
 Zum Testen haben wir zwei verschiedene Oberflächen entwickelt.
 Zum einen kann das Spielfeld nach jeder Runde auf der Konsole ausgegeben werden.
 Dazu wird das Spielfeld als Tabelle dargestellt und in den Zellen, in denen sich ein Spieler befindet, wird dessen

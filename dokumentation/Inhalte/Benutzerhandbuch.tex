@@ -22,10 +22,11 @@ Falls Sie Docker auf Ihrem Rechner installiert haben, lässt sich für das Proje
 docker build -t informaticup21-team-chillow .
 \end{verbatim}
 
-Dieser Container kann dann unter der Angabe der URL zum spe\_ed-Server und dem API-Key gestartet werden:
+Dieser Container kann mit folgendem Befehl gestartet werden, wobei die URL zum spe\_ed-Server und der API-Key
+entsprechend angepasst werden müssen:
 
 \begin{verbatim}
-docker run -e URL=[SERVER_URL] -e KEY=[API_KEY] informaticup21-team-chillow
+docker run -e URL=SERVER_URL -e KEY=API_KEY informaticup21-team-chillow
 \end{verbatim}
 
 In der Konsole des Docker-Containers lässt sich dann der Spiel-Verlauf nachvollziehen.
@@ -63,7 +64,7 @@ Sobald der Server das Spiel startet, kann entweder auf der Konsole oder in der g
 nachvollzogen werden.
 
 Bei einer Ausführung im Offline-Modus wird - je nach manueller Anpassung in der \Code{OfflineConnection} - auf eine
-Eingabe von einem oder mehreren Spielern gewartet, bis eine neue Runde gestartet wird.
+Eingabe von einem oder mehreren Spielern gewartet, bis die nächste Runde des Spiels gestartet wird.
 Der \Tabelle{tab:eingaben-oeberflaeche} kann entnommen werden, mit welchen Eingaben eine Aktion ausgeführt werden kann.
 
 \begin{table}[htb]
