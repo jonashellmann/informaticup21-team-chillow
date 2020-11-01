@@ -11,12 +11,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Compile LaTeX document
-      uses: xu-cheng/latex-action@v2
+      uses: dante-ev/latex-action@v0.2.0
       with:
         working_directory: dokumentation
         root_file: document.tex
-        post_compile: "latexmk -c"
-        latexmk_shell_escape: true
+        args: -pdf -file-line-error -halt-on-error -interaction=nonstopmode -bibtex
     - name: Upload PDF file
       if: success()
       uses: actions/upload-artifact@v2
