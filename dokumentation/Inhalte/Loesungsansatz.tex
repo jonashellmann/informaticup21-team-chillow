@@ -5,3 +5,21 @@
 % Ggf. Vorgehen beschreiben, wie die beste KI ermittelt wurde
 % Probleme bei Erstellung eines Baums, da bei Vorausberechnung viele Kombinationen entstehen
 % Probleme für Reinforcement Learning, da Testdaten schwierig zu generieren sind
+
+\section{Selbstlernende KI mithilfe von Trainingsdaten}
+\label{sec:selbstlernende-ki-trainingsdaten}
+
+Zunächst einmal haben wir uns die Frage gestellt, ob eine \acs{KI} mithilfe von Trainingsdaten lernen soll.
+Dieser Ansatz bringt jedoch das Problem mit sich, gute Trainingsdatensätze besitzen zu müssen. 
+Bei einer maximalen Anzahl von sechs Spielern im Spiel \texttt{spe\_ed} und 5 unterschiedlichen möglichen Aktionen gibt
+es sehr viele Möglichkeiten wie ein Spiel verlaufen kann. 
+Dabei entsteht das Problem zu beurteilen, welche Spielsituationen und welche Spielverläufe als Trainingsdaten gut geeignet sind, 
+sodass die gesamte Komplexität des Spiels in unseren Trainingsdaten abgebildet wird.
+Aufgrund dessen haben wir uns dafür entschieden, zunächst Lösungsansätze ohne lernende \acs{KI}s auszuprobieren, bevor wir eine \acs{KI} mittels Trainingsdaten lernen lassen. 
+Diese Strategie hatte für uns den Vorteil mithilfe einfacherer Lösungsansätze die Komplexität und auftretenden Probleme im Spielverlauf besser kennen zu lernen.
+
+
+\section{Lösungsansatz nicht lernende KI}
+\label{sec:loesungsansatz-nicht-lernende-KI}
+
+Bei dem Ansatz Strategien fest in Code zu implementieren hatten wir mehrere unterschiedliche Ideen, die nachfolgend
