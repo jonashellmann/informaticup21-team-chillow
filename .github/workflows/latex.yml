@@ -7,8 +7,6 @@ on:
 jobs:
   latex-compile:
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./dokumentation
 
     steps:
     - uses: actions/checkout@v2
@@ -20,9 +18,10 @@ jobs:
         bibtex document
         latex document.tex
         latex document.tex
+      working-directory: dokumentation
     - name: Upload PDF file
       if: success()
       uses: actions/upload-artifact@v2
       with:
         name: PDF Document
-        path: document.pdf
+        path: dokumentation/document.pdf
