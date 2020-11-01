@@ -1,24 +1,49 @@
 \chapter{Einstieg in das Projekt}
 \label{ch:planung}
 
+Bevor mit der Implementierung der \ac{KI} begonnen werden konnte, mussten zuerst noch einge andere Punkte geklärt
+\bzw erledigt werden.
+Diese ersten Schritte werden im folgenden erläutert.
+
 \section{Auswahl der Programmiersprache}
 \label{sec:auswahl-programmiersprache}
 
-% Warum haben wir Python als Programmiersprache ausgewählt?
-
-\section{Erstellung eines lauffähigen Projekts}
-\label{sec:erstellung-projekt}
-
-% Als ersten Schritt haben wir ein sehr simples aufgesetzt
-
-\subsection{Entwicklung eines Dockerfile}
-\label{subsec:dockerfile}
+Zu beginn war zu klären, mit welcher Programmiersprache dieser Lösungsvorschlag umgesetzt werden soll.
+Die Wahl ist dabei schnell auf Python gefallen, obwohl beide Gruppenmitglieder hiermit noch keinerlei Erfahrung
+aufweisen konnte.
+Der Grund für diese Entscheidung liegt neben dem starken Interessen an dem Kennenlernen einer neuen Programmiersprache
+auch an der bereits sehr hohen und immer noch steigenden Popularität der Programmiersprache und der damit verbundenen
+zukünftigen Wichtigkeit. \Vgl{tiobe} \Vgl{pypl}
+Hinzu kommt, dass wir vor Beginn der Implementierung anhand der Aufgabenstellung das Potenzial für den Einsatz von
+Machine Learning gesehen haben und Python in diesem Bereich oft empfohlen wird. \Vgl{springboard} \Vgl{towardsscience}
 
 \subsection{Einsatz von Poetry als Build-Tool}
 \label{subsec:poetry}
 
 % Vorteile eines Build-Tools und Poetry im Speziellen
 % Verwaltung von Abhängigkeiten mit Poetry
+
+\section{Erstellung eines lauffähigen Projekts}
+\label{sec:erstellung-projekt}
+
+\subsection{Entwicklung eines Dockerfile}
+\label{subsec:dockerfile}
+
+Nachdem die Nutzung von Python feststand, haben wir zum Start ein minimales Python-Skript erstellt, das lediglich die
+an den Docker-Container übergebenen Parameter für die Server-URL und den API-Key ausgibt.
+Zwar mussten bis hierhin noch keine Abhängigkeiten hinzugefügt werden, aber bei der Konzeption des Dockerfiles sollte
+bereits die Installtion zusätzlicher Bibliotheken berücksichtigt werden.
+Mit der Nutzung des Standard-Python-Containers von Docker Hub wird bereits ein vorgefertigter Container bereitgestellt,
+in dem Python und Pip installiert ist.
+Anschließend wird mittels Pip die Installation von Poetry durchgeführt.
+Dieses Tool wiederum bietet die Möglichkeit, die verwalteten Abhängigkeiten in Form einer
+\texttt{requirements.txt}-Datei zu exportieren, welche dann von Pip eingelesen werden kann, um die Bibliotheken zu
+installieren.
+Später sind noch Umgebungsvariablen zur Steuerung des Programm-Ablaufs hinzugekommen, sodass das Dockerfile
+letztendlich wie in \Listing{lst:dockerfile} dargestellt aussieht.
+
+\lstinputlisting[label=lst:dockerfile,language=Java,caption=Dockerfile zum Erstellen eines lauffähigen Containers]
+{../Dockerfile}
 
 \section{Nachstellung des Spiels}
 \label{sec:nachstellung-spiel}
