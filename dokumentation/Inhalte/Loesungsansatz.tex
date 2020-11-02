@@ -10,23 +10,24 @@
 \section{Selbstlernende KI mithilfe von Trainingsdaten}
 \label{sec:selbstlernende-ki-trainingsdaten}
 
-Zunächst einmal haben wir uns die Frage gestellt, ob eine \acs{KI} mithilfe von Trainingsdaten lernen soll.
+Zunächst haben wir uns die Frage gestellt, ob eine \ac{KI} mithilfe von Trainingsdaten lernen soll.
 Dieser Ansatz bringt jedoch das Problem mit sich, gute Trainingsdatensätze besitzen zu müssen.
 Bei einer maximalen Anzahl von sechs Spielern im Spiel \texttt{spe\_ed} und 5 unterschiedlichen möglichen Aktionen gibt
-es sehr viele Möglichkeiten wie ein Spiel verlaufen kann.
+es sehr viele Möglichkeiten, wie ein Spiel verlaufen kann.
 Dabei entsteht das Problem zu beurteilen, welche Spielsituationen und welche Spielverläufe als Trainingsdaten gut
 geeignet sind, sodass die gesamte Komplexität des Spiels in unseren Trainingsdaten abgebildet wird.
-Aufgrund dessen haben wir uns dafür entschieden, zunächst Lösungsansätze ohne eine lernende \acs{KI} auszuprobieren.
-Diese Strategie hatte für uns den Vorteil mithilfe einfacherer Lösungsansätze die Komplexität und auftretenden Probleme
+Aufgrund dessen haben wir uns dafür entschieden, zunächst Lösungsansätze ohne eine selbstlernende \ac{KI}
+auszuprobieren.
+Diese Strategie hatte für uns den Vorteil, mithilfe einfacherer Lösungsansätze die Komplexität und auftretenden Probleme
 im Spielverlauf besser kennen zu lernen. \todo{weitere technische Begründung hinzufügen}
 
 
-\section{Lösungsansatz nicht-lernende-KI}
-\label{sec:loesungsansatz-nicht-lernende-KI}
+\section{Lösungsansätze ohne selbstlernende KIs}
+\label{sec:loesungsansatz-ohne-selbstlernende-kis}
 
 Bei dem Ansatz, Strategien fest in Code zu implementieren, hatten wir mehrere unterschiedliche Ideen,
 die nachfolgend beschrieben werden.
-Ziel war es hierbei, Teilprobleme zu erkennen und zu lösen, mit der Intuition diese unterschiedlichen \acs{KI}s
+Ziel war es hierbei, Teilprobleme zu erkennen und zu lösen, mit der Intuition diese unterschiedlichen \ac{KI}s
 kombinieren zu können.
 
 
@@ -45,11 +46,12 @@ gefahren, mit denen eine Kollision vermeidbar gewesen wäre.
 
 Aufgrund des beschriebenen Problemes der \Code{RandomAI} haben wir uns dafür entschieden, die \Code{NotKillingItselfAI}
 zu implementieren.
-Die \acs{KI} soll aus allen Aktionen eine zufällige Aktion auswählt, die sie nicht direkt verlieren lässt.
+Die \ac{KI} soll aus allen Aktionen eine zufällige Aktion auswählt, die sie nicht direkt verlieren lässt.
 Dazu wird für jede mögliche Aktion die Spur berechnet, die entstehen würde und auf Kollisionen überprüft.
 Aktionen die eine Kollision hervorrufen werden nicht ausgeführt.
 Hierbei bleiben mögliche Aktionen der Gegenspieler zunächst unberücksichtigt.\\
-Durch die Implementierung der \Code{NotKillingItselfAI} fiel auf, dass die \acs{KI} sich zwar nicht mehr im unmittelbar
+
+Durch die Implementierung der \Code{NotKillingItselfAI} fiel auf, dass die \ac{KI} sich zwar nicht mehr im unmittelbar
 folgenden Zug tötete, jedoch häufig in Sackgassen läuft.
 Dieses Problem wird in der \Abbildung{fig:Sackgassen_Problem} verdeutlicht.
 
@@ -69,12 +71,13 @@ Genutzt wurde die Basis der \Code{NotKillingItselfAI}, sodass nur zwischen über
 Um die Aktionen zu finden, die nicht in eine Sackgasse läuft, haben wir uns für einen Lösungsansatz zum finden von
 Pfaden entschieden.
 Dazu wird eine konfigurierbare Anzahl Koordinaten generiert, auf denen sich bisher kein Spieler befindet.
+Diese Koordinaten lassen sich gleichverteilt, als auch zufällig generieren.
 Anschließend wird für jede Aktion geprüft, zu wie vielen der Koordinaten, nach der Ausführung der Aktion noch ein
 möglicher Pfad existiert. \todo{In einem Bild verdeutlichen warum das ein Bewertungskriterium darstellt}
 Die Aktion, die die höchste Anzahl Koordinaten erreichen kann, führt mit höchster Wahrscheinlichkeit
 nicht in eine Sackgasse und wird ausgewählt. \\
 
-Bei diesem Lösungsansatz arbeiten wir lediglich mit der Warscheinlichkeit, dass wir nicht in eine Sackgasse laufen.
+Bei diesem Lösungsansatz arbeiten wir lediglich mit der Wahrscheinlichkeit, dass wir nicht in eine Sackgasse laufen.
 Dies liegt dem Problem zugrunde, dass wir die Implementierung eines Algorithmus zum tatsächtichen Erkennen von
 Sackgassen oder abgesperrten Gebieten als schwieriger erachteten.
 
@@ -84,13 +87,13 @@ Sackgassen oder abgesperrten Gebieten als schwieriger erachteten.
 
 Bei der \Code{PathfindingAI}, als auch der \Code{NotKillingItselfAI} gibt es weiterhin ein bestehendes
 Problem.
-Die \acs{KI} beachtet die möglichen Aktionen der Gegenspieler nicht.
+Die \ac{KI} beachtet die möglichen Aktionen der Gegenspieler nicht.
 Ziel der \Code{SearchTreeAI} ist es, dass die die \Code{NotKillingItselfAI}, falls möglich, auch nur Aktionen berechnet,
-bei denen bereits alle möglichen Gegnerischen Aktionen und dessen Auswirkungen berücksichtigt werden. \\
+bei denen bereits alle möglichen gegnerischen Aktionen und dessen Auswirkungen berücksichtigt werden. \\
 
-Unser Lösungsansatz für dieses Problem ist es, mithilfe eines Suchbaums, alle möglichen gegnerischen
+Unser Lösungsansatz für dieses Problem ist es, mithilfe eines Suchbaums alle möglichen gegnerischen
 Aktions-Kombinationen zu prüfen und einen Teilbaum zu finden, bei dem vorausgesagt werden kann, dass
-der Spieler nicht im nächsten Zug stirbt.
+der eigene Spieler unabhängig der ausgewählten Aktion von allen anderen Spielern nicht im nächsten Zug stirbt.
 Der Vorteil eines Suchbaums ist es, dass wir diesem eine
 beliebige Tiefe mitgeben können, um entsprechend der Tiefe viele zukünftige Züge vor zu berechnen.
 \todo{Besser ausformulieren, Problem der Komplexität benennen und Beispielskizze}
