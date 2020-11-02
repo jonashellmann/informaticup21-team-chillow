@@ -30,7 +30,6 @@ die nachfolgend beschrieben werden.
 Ziel war es hierbei, Teilprobleme zu erkennen und zu lösen, mit der Intuition diese unterschiedlichen \ac{KI}s
 kombinieren zu können.
 
-
 \subsection{RandomAI}
 \label{subsec:random-ai}
 
@@ -39,7 +38,6 @@ Diese stellt zwar keinen wirklichen Lösungsansatz dar, diente jedoch als Einsti
 Durch die \Code{RandomAI} ist uns das grundlegende Problem aufgefallen, dass sich die \acs{KI} selber tötet.
 Folglich wird die Minimal- und Maximalgeschwindigkeit überschritten, das Spielfeld verlassen oder in vorhandene Spuren
 gefahren, mit denen eine Kollision vermeidbar gewesen wäre.
-
 
 \subsection{NotKillingItselfAI}
 \label{subsec:notkillingitself-ai}
@@ -56,10 +54,10 @@ folgenden Zug tötete, jedoch häufig in Sackgassen läuft.
 Dieses Problem wird in der \Abbildung{fig:Sackgassen_Problem} verdeutlicht.
 
 \begin{figure}[htb]
-\centering
-\includegraphics[width=0.6\textwidth]{Bilder/Sackgassen_Problem.png}
-\caption{\Code{NotKillingItselfAI} unten rechts in einer Sackgasse}
-\label{fig:Sackgassen_Problem}
+    \centering
+    \includegraphics[width=0.6\textwidth]{Bilder/Sackgassen_Problem.png}
+    \caption{\Code{NotKillingItselfAI} unten rechts in einer Sackgasse}
+    \label{fig:Sackgassen_Problem}
 \end{figure}
 
 \subsection{PathfindingAI}
@@ -80,7 +78,6 @@ nicht in eine Sackgasse und wird ausgewählt. \\
 Bei diesem Lösungsansatz arbeiten wir lediglich mit der Wahrscheinlichkeit, dass wir nicht in eine Sackgasse laufen.
 Dies liegt dem Problem zugrunde, dass wir die Implementierung eines Algorithmus zum tatsächtichen Erkennen von
 Sackgassen oder abgesperrten Gebieten als schwieriger erachteten.
-
 
 \subsection{SearchTreeAI}
 \label{subsec:searchtree-ai}
