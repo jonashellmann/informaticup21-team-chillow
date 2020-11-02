@@ -50,8 +50,15 @@ Dazu wird für jede mögliche Aktion die Spur berechnet, die entstehen würde un
 Aktionen die eine Kollision hervorrufen werden nicht ausgeführt.
 Hierbei bleiben mögliche Aktionen der Gegenspieler zunächst unberücksichtigt.\\
 Durch die Implementierung der \Code{NotKillingItselfAI} fiel auf, dass die \acs{KI} sich zwar nicht mehr im unmittelbar
-folgenden Zug tötete, jedoch häufig in Sackgassen läuft. \todo{Bild einfügen}
+folgenden Zug tötete, jedoch häufig in Sackgassen läuft.
+Dieses Problem wird in der \Abbildung{fig:Sackgassen_Problem} verdeutlicht.
 
+\begin{figure}[htb]
+\centering
+\includegraphics[width=0.6\textwidth]{Bilder/Sackgassen_Problem.png}
+\caption{KI in einer Sackgasse}
+\label{fig:Sackgassen_Problem}
+\end{figure}
 
 \section{PathfindingAI}
 \label{sec:pathfinding-ai}
