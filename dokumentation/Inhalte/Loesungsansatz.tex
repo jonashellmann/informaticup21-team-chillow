@@ -30,7 +30,7 @@ Ziel war es hierbei, Teilprobleme zu erkennen und zu lösen, mit der Intuition d
 kombinieren zu können.
 
 
-\section{RandomAI}
+\subsection{RandomAI}
 \label{sec:random-ai}
 
 Die \Code{RandomAI} ist unsere erste lauffähige KI gewesen und unser Maß für die einfachste \acs{KI}.
@@ -40,7 +40,7 @@ Folglich wird die Minimal- und Maximalgeschwindigkeit überschritten, das Spielf
 gefahren, mit denen eine Kollision vermeidbar gewesen wäre.
 
 
-\section{NotKillingItselfAI}
+\subsection{NotKillingItselfAI}
 \label{sec:notkillingitself-ai}
 
 Aufgrund des beschriebenen Problemes der \Code{RandomAI} haben wir uns dafür entschieden, die \Code{NotKillingItselfAI}
@@ -56,11 +56,11 @@ Dieses Problem wird in der \Abbildung{fig:Sackgassen_Problem} verdeutlicht.
 \begin{figure}[htb]
 \centering
 \includegraphics[width=0.6\textwidth]{Bilder/Sackgassen_Problem.png}
-\caption{KI in einer Sackgasse}
+\caption{\Code{NotKillingItselfAI} unten rechts in einer Sackgasse}
 \label{fig:Sackgassen_Problem}
 \end{figure}
 
-\section{PathfindingAI}
+\subsection{PathfindingAI}
 \label{sec:pathfinding-ai}
 
 Folglich der \Code{NotKillingItselfAI} haben wir einen Lösungsansatz gesucht, welcher das Betreten von Sackgassen
@@ -79,7 +79,7 @@ Dies liegt dem Problem zugrunde, dass wir die Implementierung eines Algorithmus 
 Sackgassen oder abgesperrten Gebieten als schwieriger erachteten.
 
 
-\section{SearchTreeAI}
+\subsection{SearchTreeAI}
 \label{sec:searchtree-ai}
 
 Bei der \Code{PathfindingAI}, als auch der \Code{NotKillingItselfAI} gibt es weiterhin ein bestehendes
