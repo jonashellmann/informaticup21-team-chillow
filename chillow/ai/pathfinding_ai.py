@@ -62,7 +62,7 @@ class PathfindingAI(ArtificialIntelligence):
                 path, runs = path_finder.find_path(start, end, grid)
                 if len(path) > 0:
                     current_possible_paths += 1
-                if current_possible_paths + length_free_cells - i <= best_action[1]:  # can't be better
+                if current_possible_paths + length_free_cells - i <= best_action[1]:  # can't get better
                     break
             if len(best_action) == 0 or best_action[1] < current_possible_paths:
                 best_action = (action, current_possible_paths)
