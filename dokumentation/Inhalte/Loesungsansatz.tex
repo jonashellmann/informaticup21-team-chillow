@@ -35,26 +35,29 @@ kombinieren zu können.
 
 Die \Code{RandomAI} ist unsere erste lauffähige KI gewesen und unser Maß für die einfachste \acs{KI}.
 Diese stellt zwar keinen wirklichen Lösungsansatz dar, diente jedoch als Einstieg und um erste Probleme zu erkennen.
+Durch die \Code{RandomAI} ist uns das grundlegende Problem aufgefallen, dass sich die \acs{KI} selber tötet.
+Folglich wird die Minimal- und Maximalgeschwindigkeit überschritten, das Spielfeld verlassen oder in vorhandene Spuren
+gefahren, mit denen eine Kollision vermeidbar gewesen wäre.
 
 
 \section{NotKillingItselfAI}
 \label{sec:notkillingitself-ai}
 
-Durch die \Code{RandomAI}, die zufällige Aktionen ausführt, ist uns das grundlegende Problem aufgefallen, dass sich die
-\acs{KI} selber tötet.
-Folglich wird die Minimal- und Maximalgeschwindigkeit überschritten, das Spielfeld verlassen oder in vorhandene Spuren
-gefahren, mit denen die Kollision vermeidbar gewesen wäre.
-Daher haben wir uns dafür entschieden, die \Code{NotKillingItselfAI} zu implementieren, die aus allen
-Aktionen eine zufällige Aktion auswählt, die sie nicht direkt verlieren lässt.
+Aufgrund des beschriebenen Problemes der \Code{RandomAI} haben wir uns dafür entschieden, die \Code{NotKillingItselfAI}
+zu implementieren.
+Die \acs{KI} soll aus allen Aktionen eine zufällige Aktion auswählt, die sie nicht direkt verlieren lässt.
+Dazu wird für jede mögliche Aktion die Spur berechnet, die entstehen würde und auf Kollisionen überprüft.
+Aktionen die eine Kollision hervorrufen werden nicht ausgeführt.
 Hierbei bleiben mögliche Aktionen der Gegenspieler zunächst unberücksichtigt.\\
+Durch die Implementierung der \Code{NotKillingItselfAI} fiel auf, dass die \acs{KI} sich zwar nicht mehr im unmittelbar
+folgenden Zug tötete, jedoch häufig in Sackgassen läuft. \todo{Bild einfügen}
 
 
 \section{PathfindingAI}
 \label{sec:pathfinding-ai}
 
-Durch die Implementierung der \Code{NotKillingItselfAI} fiel auf, dass die \acs{KI} sich zwar nicht mehr im unmittelbar
-folgenden Zug tötete, jedoch häufig in Sackgassen läuft.
-Folglich haben wir einen Lösungsansatz gesucht, welcher das Betreten von Sackgassen verhindert.
+Folglich der \Code{NotKillingItselfAI} haben wir einen Lösungsansatz gesucht, welcher das Betreten von Sackgassen
+verhindert.
 Genutzt wurde die Basis der \Code{NotKillingItselfAI}, sodass nur zwischen überlebenden Aktionen gewählt wird.
 Um die Aktionen zu finden, die nicht in eine Sackgasse läuft, haben wir uns für einen Lösungsansatz zum finden von
 Pfaden entschieden.
