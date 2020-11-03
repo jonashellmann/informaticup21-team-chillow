@@ -17,8 +17,8 @@ class SearchTreeAI(ArtificialIntelligence):
         root = SearchTreeRoot(game.copy())
         combinations = Action.get_combinations(len(game.get_other_players(self.player)))
 
-        action = root.calculate_action(self.player, combinations, self.__depth, self.turn_ctr, self.max_speed,
-                                       self.__randomize)
+        action = root.calculate_action(self.player, combinations, self.__depth, self.turn_ctr, True, [],
+                                       self.max_speed, self.__randomize)
         return action if action is not None else Action.get_random_action()
 
 

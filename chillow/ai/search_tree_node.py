@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Type, Any, List, Tuple
+from typing import Type, Any, List, Tuple, Optional
 
 from chillow.exceptions import InvalidPlayerMoveException
 from chillow.model.action import Action
@@ -13,27 +13,35 @@ class SearchTreeRoot(object):
     _game: Game
 
     def calculate_action(self, player: Player, combinations: List[Tuple[Any]], depth: int, turn_counter: int,
-                         max_speed: int = 10, randomize: bool = False):
+                         root: bool, first_actions: List[Action], max_speed: int = 10, randomize: bool = False) \
+            -> Optional[Action]:
         if depth <= 0:
             raise Exception
 
         if depth == 1:
-            for action in Action.get_actions(randomize):
+            for action in SearchTreeRoot.__get_actions(root, first_actions, randomize):
                 child = self.__create_child(player, action, turn_counter, max_speed)
                 if child is not None and child._game.get_player_by_id(player.id).active:
                     if SearchTreeRoot.__try_combinations_for_child(child, player, combinations, turn_counter):
                         return child.get_action()
             return None
 
-        for action in Action.get_actions(randomize):
+        for action in SearchTreeRoot.__get_actions(root, first_actions, randomize):
             child = self.__create_child(player, action, turn_counter, max_speed)
             if child is not None and child._game.get_player_by_id(player.id).active:
                 for combination in combinations:
                     node = SearchTreeRoot.__try_combination(child._game, player, combination, turn_counter)
                     if node._game.get_player_by_id(player.id).active:
-                        node_action = node.calculate_action(player, combinations, depth - 1, turn_counter + 1)
+                        node_action = node.calculate_action(player, combinations, depth - 1, turn_counter + 1,
+                                                            False, first_actions, max_speed, randomize)
                         if node_action is not None:
                             return child.get_action()
+
+    @staticmethod
+    def __get_actions(root: bool, first_actions: List[Action], randomize: bool) -> List[Action]:
+        if root and first_actions is not None and len(first_actions) >= 1:
+            return first_actions
+        return Action.get_actions(randomize)
 
     def __create_child(self, player: Player, action: Action, turn_counter: int, max_speed: int):
         if player.speed == max_speed and action == Action.speed_up:
