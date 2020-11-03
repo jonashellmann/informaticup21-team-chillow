@@ -71,8 +71,8 @@ class PathfindingAI(ArtificialIntelligence):
 
     def get_random_free_cells_from_playground(self, game: Game) -> List[Tuple[int, int]]:
         free_cells: List[(int, int)] = []
-        for x in range(game.height):
-            for y in range(game.width):
+        for x in range(game.width):
+            for y in range(game.height):
                 if game.cells[y][x].players is None or len(game.cells[y][x].players) == 0:
                     free_cells.append((x, y))
         shuffle(free_cells)
