@@ -7,7 +7,7 @@ from chillow.model.player import Player
 
 class PathfindingSearchTreeAI(PathfindingAI):
 
-    def __init__(self, player: Player, max_speed, count_paths_to_check, depth: int):
+    def __init__(self, player: Player, max_speed: int, count_paths_to_check: int, depth: int):
         super().__init__(player, max_speed, count_paths_to_check)
         self.__depth = depth
 
