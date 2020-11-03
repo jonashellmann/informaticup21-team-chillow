@@ -1,5 +1,3 @@
-from copy import deepcopy
-
 from chillow.ai.pathfinding_ai import PathfindingAI
 from chillow.ai.search_tree_node import SearchTreeRoot
 from chillow.model.action import Action
@@ -9,8 +7,8 @@ from chillow.model.player import Player
 
 class PathfindingSearchTreeAI(PathfindingAI):
 
-    def __init__(self, player: Player, game: Game, max_speed, count_paths_to_check, depth: int):
-        super().__init__(player, game, max_speed, count_paths_to_check)
+    def __init__(self, player: Player, max_speed, count_paths_to_check, depth: int):
+        super().__init__(player, max_speed, count_paths_to_check)
         self.__depth = depth
 
     def create_next_action(self, game: Game) -> Action:
@@ -25,5 +23,5 @@ class PathfindingSearchTreeAI(PathfindingAI):
                                      self.max_speed, True) is not None:
                 surviving_actions.append(action)
 
-        return self.find_action_by_best_path_connection(surviving_actions) if len(
+        return self.find_action_by_best_path_connection(surviving_actions, game) if len(
                 surviving_actions) > 0 else Action.get_random_action()

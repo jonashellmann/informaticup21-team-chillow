@@ -16,15 +16,13 @@ from chillow.service.game_service import GameService
 
 class PathfindingAI(ArtificialIntelligence):
 
-    def __init__(self, player: Player, game: Game, max_speed, count_paths_to_check):
+    def __init__(self, player: Player, max_speed, count_paths_to_check):
         super().__init__(player, max_speed)
-        self.__game = game
         self.count_paths_to_check = count_paths_to_check
 
     def create_next_action(self, game: Game) -> Action:
         super().create_next_action(game)
 
-        self.__game = game
         game_service = GameService(game)
         game_service.turn.turn_ctr = self.turn_ctr
 
@@ -33,18 +31,18 @@ class PathfindingAI(ArtificialIntelligence):
         if len(surviving_actions) == 1:
             return surviving_actions[0]
         else:
-            return self.find_action_by_best_path_connection(surviving_actions) if len(
+            return self.find_action_by_best_path_connection(surviving_actions, game) if len(
                 surviving_actions) > 0 else Action.get_random_action()
 
-    def find_action_by_best_path_connection(self, actions: List[Action]) -> Action:
+    def find_action_by_best_path_connection(self, actions: List[Action], game: Game) -> Action:
         shuffle(actions)
         best_action: Tuple[Action, int] = (actions[0], 0)
-        free_cells_for_pathfinding = self.get_random_free_cells_from_playground()
+        free_cells_for_pathfinding = self.get_random_free_cells_from_playground(game)
 
         path_finder = BestFirst(diagonal_movement=DiagonalMovement.never)
 
         for action in actions:
-            game_copy = self.__game.copy()
+            game_copy = game.copy()
             game_service = GameService(game_copy)
             try:
                 player = game_service.game.get_player_by_id(self.player.id)
@@ -71,23 +69,23 @@ class PathfindingAI(ArtificialIntelligence):
 
         return best_action[0]
 
-    def get_random_free_cells_from_playground(self) -> List[Tuple[int, int]]:
+    def get_random_free_cells_from_playground(self, game: Game) -> List[Tuple[int, int]]:
         free_cells: List[(int, int)] = []
-        for x in range(self.__game.height):
-            for y in range(self.__game.width):
-                if self.__game.cells[y][x].players is None or len(self.__game.cells[y][x].players) == 0:
+        for x in range(game.height):
+            for y in range(game.width):
+                if game.cells[y][x].players is None or len(game.cells[y][x].players) == 0:
                     free_cells.append((x, y))
         shuffle(free_cells)
         return free_cells[:min(self.count_paths_to_check, len(free_cells))]
 
-    def get_evenly_distributed_free_cells_from_playground(self) -> List[Tuple[int, int]]:
+    def get_evenly_distributed_free_cells_from_playground(self, game: Game) -> List[Tuple[int, int]]:
         free_cells: List[(int, int)] = []
-        count_cells = self.__game.width * self.__game.height
+        count_cells = game.width * game.height
         evenly_distributed_points = arange(0, count_cells, int(count_cells / self.count_paths_to_check))
         for point in evenly_distributed_points:
-            x = point % self.__game.width + 5
-            y = int(point / self.__game.width)
-            if self.__game.cells[y][x].players is None or len(self.__game.cells[y][x].players) == 0:
+            x = point % game.width + 5
+            y = int(point / game.width)
+            if game.cells[y][x].players is None or len(game.cells[y][x].players) == 0:
                 free_cells.append((x, y))
         return free_cells
 
