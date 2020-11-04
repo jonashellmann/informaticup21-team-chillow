@@ -1,5 +1,7 @@
-from enum import Enum
 import random
+from enum import Enum
+from itertools import product
+from typing import Any, List, Tuple
 
 
 class Action(Enum):
@@ -20,3 +22,7 @@ class Action(Enum):
         actions = Action.get_actions()
         random.shuffle(actions)
         return actions
+
+    @staticmethod
+    def get_combinations(player_count: int) -> List[Tuple[Any]]:
+        return list(product(Action.get_actions(), repeat=player_count))
