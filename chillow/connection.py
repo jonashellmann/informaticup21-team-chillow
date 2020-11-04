@@ -1,5 +1,6 @@
 import asyncio
 import os
+import requests
 from datetime import datetime, timedelta
 import websockets
 
@@ -37,6 +38,7 @@ class OnlineConnection(Connection):
     def __init__(self):
         super().__init__()
         self.url = os.environ["URL"]
+        self.time_url = self.url.replace("wss://", "https://") + "_time"
         self.key = os.environ["KEY"]
         self.data_loader = JSONDataLoader()
         self.data_writer = JSONDataWriter()
@@ -51,6 +53,12 @@ class OnlineConnection(Connection):
             while True:
                 game_data = await websocket.recv()
                 game = self.data_loader.load(game_data)
+
+                time_data = requests.get(self.time_url).text
+                server_time = self.data_loader.read_server_time(time_data)
+                own_time = datetime.now(server_time.tzinfo).replace(microsecond=0)
+                game.normalize_deadline(server_time, own_time)
+
                 self.monitoring.update(game)
 
                 if self.ai is None:
