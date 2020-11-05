@@ -18,7 +18,7 @@ class ArtificialIntelligence(metaclass=ABCMeta):
 
     @abstractmethod
     def create_next_action(self, game: Game) -> Action:
-        self.turn_ctr += 1
+        raise NotImplementedError
 
     def find_surviving_actions(self, game_service: GameService) -> List[Action]:
         result: List[Action] = []
