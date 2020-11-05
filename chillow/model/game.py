@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List
 import pickle
 
@@ -63,3 +63,7 @@ class Game:
 
     def copy(self):
         return pickle.loads(pickle.dumps(self))
+
+    def normalize_deadline(self, server_time: datetime, own_time: datetime) -> None:
+        seconds_delta = (server_time - own_time).total_seconds() + 3
+        self.deadline -= timedelta(seconds=seconds_delta)

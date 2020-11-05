@@ -51,3 +51,11 @@ class JSONDataWriterTest(unittest.TestCase):
         result = self.sut.load(json)
 
         self.assertEqual(expected, result)
+
+    def test_read_correct_time(self):
+        time_data = '{"time":"2020-11-04T14:34:43Z"}'
+        expected = datetime(2020, 11, 4, 14, 34, 43, 0, timezone.utc)
+
+        result = self.sut.read_server_time(time_data)
+
+        self.assertEqual(expected, result)

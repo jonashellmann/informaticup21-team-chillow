@@ -1,6 +1,7 @@
 import json
 import iso8601
 
+from datetime import datetime
 from abc import ABCMeta, abstractmethod
 
 from chillow.model.direction import Direction
@@ -13,6 +14,10 @@ class DataLoader(metaclass=ABCMeta):
 
     @abstractmethod
     def load(self, data: str) -> Game:
+        raise NotImplementedError
+
+    @abstractmethod
+    def read_server_time(self, time_data: str) -> datetime:
         raise NotImplementedError
 
 
@@ -55,3 +60,7 @@ class JSONDataLoader(DataLoader):
             json_data["running"],
             iso8601.parse_date(json_data["deadline"]) if json_data["running"] else None
         )
+
+    def read_server_time(self, time_data: str) -> datetime:
+        json_data = json.loads(time_data)
+        return iso8601.parse_date(json_data["time"])

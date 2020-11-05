@@ -1,12 +1,14 @@
 import unittest
-from datetime import datetime
+from datetime import datetime, timezone
 
+import tests
 from chillow.model.cell import Cell
 from chillow.model.direction import Direction
 from chillow.model.game import Game
 from chillow.model.player import Player
 from chillow.exceptions import WrongGameWidthException, WrongGameHeightException, OwnPlayerMissingException, \
     PlayerPositionException, PlayerWithGivenIdNotAvailableException
+from chillow.service.data_loader import JSONDataLoader
 
 
 class GameTest(unittest.TestCase):
@@ -143,3 +145,13 @@ class GameTest(unittest.TestCase):
 
         self.assertEqual(game, result)
         self.assertNotEqual(id(game), id(result))
+
+    def test_normalize_game_deadline(self):
+        server_time = datetime(2020, 11, 4, 14, 34, 43, 0, timezone.utc)
+        own_time = datetime(2020, 11, 4, 14, 34, 40, 0, timezone.utc)
+        game = JSONDataLoader().load(tests.read_test_file("ai/game_1.json"))
+        expected = datetime(2020, 10, 1, 12, 5, 7, 0, timezone.utc)
+
+        game.normalize_deadline(server_time, own_time)
+
+        self.assertEqual(expected, game.deadline)
