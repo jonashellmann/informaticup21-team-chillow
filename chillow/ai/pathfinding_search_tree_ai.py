@@ -1,3 +1,4 @@
+from chillow.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.ai.pathfinding_ai import PathfindingAI
 from chillow.ai.search_tree_node import SearchTreeRoot
 from chillow.model.action import Action
@@ -12,7 +13,7 @@ class PathfindingSearchTreeAI(PathfindingAI):
         self.__depth = depth
 
     def create_next_action(self, game: Game) -> Action:
-        super().create_next_action(game)
+        ArtificialIntelligence.create_next_action(self, game)
         root = SearchTreeRoot(game.copy())
         combinations = Action.get_combinations(len(game.get_other_players(self.player)))
 
