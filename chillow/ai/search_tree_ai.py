@@ -13,7 +13,7 @@ class SearchTreeAI(ArtificialIntelligence):
         self.__randomize = randomize
 
     def create_next_action(self, game: Game) -> Action:
-        super().create_next_action(game)
+        self.turn_ctr += 1
         root = SearchTreeRoot(game.copy())
         combinations = Action.get_combinations(len(game.get_other_players(self.player)))
 

@@ -21,7 +21,7 @@ class PathfindingAI(ArtificialIntelligence):
         self.count_paths_to_check = count_paths_to_check
 
     def create_next_action(self, game: Game) -> Action:
-        super().create_next_action(game)
+        self.turn_ctr += 1
 
         game_service = GameService(game)
         game_service.turn.turn_ctr = self.turn_ctr
