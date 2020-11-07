@@ -1,13 +1,14 @@
 import logging
 from typing import List, Tuple
+from datetime import datetime, timedelta
 
+import chillow.exceptions as ex
 from chillow.exceptions import InvalidPlayerMoveException, PlayerSpeedNotInRangeException, \
     PlayerOutsidePlaygroundException
 from chillow.model.game import Game
 from chillow.model.action import Action
 from chillow.model.player import Player
 from chillow.model.direction import Direction
-from chillow.model.turn import Turn
 
 
 class GameService:
@@ -127,3 +128,27 @@ class GameService:
         if player in self.turn.playersWithPendingAction:
             self.turn.playersWithPendingAction.remove(player)
         player.active = False
+
+class Turn:
+
+    def __init__(self, players: List[Player], deadline):
+        self.players = players.copy()
+        self.playersWithPendingAction = players.copy()
+        self.deadline = deadline
+        self.turn_ctr = 1
+
+    def action(self, player):
+        if player not in self.playersWithPendingAction:
+            raise ex.MultipleActionByPlayerError(player)
+        # elif self.deadline < datetime.now():
+        #    raise ex.DeadLineExceededException(player)
+        else:
+            self.playersWithPendingAction.remove(player)
+            if len(self.playersWithPendingAction) == 0:
+                self.turn_ctr += 1
+                self.deadline = datetime.now() + timedelta(0, 180)
+                for player in self.players:
+                    if player.active:
+                        self.playersWithPendingAction.append(player)
+                return True  # Turn ended
+            return False  # Turn not ended

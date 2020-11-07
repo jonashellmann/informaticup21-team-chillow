@@ -1,12 +1,12 @@
 import unittest
 
-from chillow.model.turn import Turn
 import chillow.exceptions as ex
 from datetime import datetime
 from datetime import timedelta
 
 from chillow.model.direction import Direction
 from chillow.model.player import Player
+from chillow.service.game_service import Turn
 
 
 class TurnTest(unittest.TestCase):
