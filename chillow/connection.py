@@ -8,7 +8,7 @@ from abc import ABCMeta, abstractmethod
 
 from chillow.ai.not_killing_itself_ai import NotKillingItselfAI, AIOptions
 from chillow.ai.pathfinding_ai import PathfindingAI
-from chillow.ai.pathfinding_search_tree_ai import PathfindingSearchTreeAI
+from chillow.ai.search_tree_pathfinding_ai import SearchTreePathfindingAI
 from chillow.ai.search_tree_ai import SearchTreeAI
 from chillow.service.data_loader import JSONDataLoader
 from chillow.service.data_writer import JSONDataWriter
@@ -96,7 +96,7 @@ class OfflineConnection(Connection):
         game_service = GameService(game)
         ai0 = PathfindingAI(player1, 2, 75)
         ai1 = NotKillingItselfAI(player2, game, [AIOptions.max_distance], 1, 0)
-        ai2 = PathfindingSearchTreeAI(player3, 2, 75, 2)
+        ai2 = SearchTreePathfindingAI(player3, 2, 75, 2)
         ai3 = SearchTreeAI(player4, 2)
         ais = [ai0, ai1, ai2, ai3]
 
