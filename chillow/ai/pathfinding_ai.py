@@ -1,6 +1,6 @@
 from typing import List, Tuple, Optional
 from random import shuffle
-from numpy import arange, operator
+from numpy import operator
 
 from pathfinding.core.diagonal_movement import DiagonalMovement
 from pathfinding.core.grid import Grid
@@ -77,17 +77,6 @@ class PathfindingAI(ArtificialIntelligence):
                     free_cells.append((x, y))
         shuffle(free_cells)
         return free_cells[:min(self.count_paths_to_check, len(free_cells))]
-
-    def get_evenly_distributed_free_cells_from_playground(self, game: Game) -> List[Tuple[int, int]]:
-        free_cells: List[(int, int)] = []
-        count_cells = game.width * game.height
-        evenly_distributed_points = arange(0, count_cells, int(count_cells / self.count_paths_to_check))
-        for point in evenly_distributed_points:
-            x = point % game.width + 5
-            y = int(point / game.width)
-            if game.cells[y][x].players is None or len(game.cells[y][x].players) == 0:
-                free_cells.append((x, y))
-        return free_cells
 
     @staticmethod
     def translate_cell_matrix_to_pathfinding_matrix(game: Game) -> List[List[int]]:
