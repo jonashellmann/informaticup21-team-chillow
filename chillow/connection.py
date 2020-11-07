@@ -105,7 +105,7 @@ class OfflineConnection(Connection):
 
             for ai in ais:
                 if ai.player.active:
-                    action = ai.create_next_action(game)
+                    action = ai.create_next_action(game.copy())
                     game_service.do_action(ai.player, action)
 
             self.monitoring.update(game)
