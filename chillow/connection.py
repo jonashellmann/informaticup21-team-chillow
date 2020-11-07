@@ -45,10 +45,10 @@ class OnlineConnection(Connection):
         self.ai = None
 
     def play(self):
-        asyncio.get_event_loop().run_until_complete(self._play())
+        asyncio.get_event_loop().run_until_complete(self.__play())
         self.monitoring.end()
 
-    async def _play(self):
+    async def __play(self):
         async with websockets.connect(f"{self.url}?key={self.key}") as websocket:
             while True:
                 game_data = await websocket.recv()
