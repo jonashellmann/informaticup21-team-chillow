@@ -1,13 +1,14 @@
 import unittest
 from datetime import datetime
 
-
+import tests
 from chillow.model.action import Action
 from chillow.ai.pathfinding_search_tree_ai import PathfindingSearchTreeAI
 from chillow.model.cell import Cell
 from chillow.model.direction import Direction
 from chillow.model.game import Game
 from chillow.model.player import Player
+from chillow.service.data_loader import JSONDataLoader
 
 
 class PathfindingSearchTreeAITest(unittest.TestCase):
@@ -21,8 +22,15 @@ class PathfindingSearchTreeAITest(unittest.TestCase):
                  [Cell(), Cell(), Cell(), Cell()],
                  [Cell(), Cell(), Cell(), Cell()]]
 
-        game = Game(4, 4, cells, players, 2, True, datetime.now())
-        self.sut = PathfindingSearchTreeAI(player1, 2, 10, 2, 0.75)
+        self.game = Game(4, 4, cells, players, 2, True, datetime.now())
+        self.sut = PathfindingSearchTreeAI(player1, 2, 100, 2, 0.75)
+        self.data_loader = JSONDataLoader()
+
+    def test_should_select_action_to_let_player_survive_next_two_rounds(self):
+        game = self.data_loader.load(tests.read_test_file("ai/game_4.json"))
+        result = self.sut.create_next_action(game)
+
+        self.assertEqual(Action.turn_left, result)
 
     def test_get_best_action_should_find_best_action(self):
         action = self.sut.get_best_action([(Action.change_nothing, 10), (Action.speed_up, 8)], [Action.change_nothing])
