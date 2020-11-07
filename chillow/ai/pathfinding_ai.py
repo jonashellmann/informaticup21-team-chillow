@@ -1,6 +1,6 @@
+import operator
 from typing import List, Tuple, Optional
 from random import shuffle
-from numpy import operator
 
 from pathfinding.core.diagonal_movement import DiagonalMovement
 from pathfinding.core.grid import Grid
@@ -31,7 +31,7 @@ class PathfindingAI(ArtificialIntelligence):
         if len(surviving_actions) == 1:
             return surviving_actions[0]
         else:
-            return self.find_action_by_best_path_connection(surviving_actions, game) if len(
+            return self.find_action_by_best_path_connection(surviving_actions, game)[0][0] if len(
                 surviving_actions) > 0 else Action.get_random_action()
 
     def find_action_by_best_path_connection(self, actions: List[Action], game: Game) -> Optional[
@@ -40,7 +40,7 @@ class PathfindingAI(ArtificialIntelligence):
             return None
 
         shuffle(actions)
-        best_actions: List[Tuple[Action, int]] = []
+        actions_with_possible_paths: List[Tuple[Action, int]] = []
         free_cells_for_pathfinding = self.get_random_free_cells_from_playground(game)
 
         path_finder = BestFirst(diagonal_movement=DiagonalMovement.never)
@@ -65,9 +65,10 @@ class PathfindingAI(ArtificialIntelligence):
                 if len(path) > 0:
                     current_possible_paths += 1
 
-            best_actions.append((action, current_possible_paths))
+            actions_with_possible_paths.append((action, current_possible_paths))
 
-        return best_actions.sort(key=operator.itemgetter(1))
+        actions_with_possible_paths.sort(key=operator.itemgetter(1), reverse=True)
+        return actions_with_possible_paths
 
     def get_random_free_cells_from_playground(self, game: Game) -> List[Tuple[int, int]]:
         free_cells: List[(int, int)] = []

@@ -62,7 +62,7 @@ class PathfindingAITest(unittest.TestCase):
         for (x, y) in free_cells_xy:
             self.assertTrue(game.cells[y][x].players is None)
 
-    def test_create_action_should_return_own_possible_action(self):
+    def test_create_action_should_return_only_possible_action(self):
         player1 = Player(1, 0, 0, Direction.up, 1, True, "")
         player2 = Player(2, 0, 1, Direction.down, 3, True, "")
         players = [player1, player2]
@@ -100,6 +100,34 @@ class PathfindingAITest(unittest.TestCase):
         game = Game(3, 3, cells, players, 2, True, datetime.now())
         sut = PathfindingAI(player1, 2, 10)
 
-        action = sut.find_action_by_best_path_connection([Action.change_nothing, Action.slow_down], game)
+        actions = sut.find_action_by_best_path_connection([Action.change_nothing, Action.slow_down], game)
 
-        self.assertEqual(action, Action.slow_down)
+        self.assertEqual(actions[0][0], Action.slow_down)
+
+    def test_create_action_should_return_None_if_given_action_list_is_none(self):
+        player1 = Player(1, 0, 0, Direction.right, 2, True, "")
+        player2 = Player(2, 0, 2, Direction.down, 3, True, "")
+        players = [player1, player2]
+        cells = [[Cell([player1]),  Cell(),             Cell()],
+                 [Cell(),           Cell([player2]),    Cell()],
+                 [Cell([player2]),  Cell(),             Cell()]]
+        game = Game(3, 3, cells, players, 2, True, datetime.now())
+        sut = PathfindingAI(player1, 2, 10)
+
+        actions = sut.find_action_by_best_path_connection(None, game)
+
+        self.assertIsNone(actions)
+
+    def test_create_action_should_return_None_if_given_action_list_is_empty(self):
+        player1 = Player(1, 0, 0, Direction.right, 2, True, "")
+        player2 = Player(2, 0, 2, Direction.down, 3, True, "")
+        players = [player1, player2]
+        cells = [[Cell([player1]),  Cell(),             Cell()],
+                 [Cell(),           Cell([player2]),    Cell()],
+                 [Cell([player2]),  Cell(),             Cell()]]
+        game = Game(3, 3, cells, players, 2, True, datetime.now())
+        sut = PathfindingAI(player1, 2, 10)
+
+        actions = sut.find_action_by_best_path_connection([], game)
+
+        self.assertIsNone(actions)
