@@ -88,7 +88,7 @@ class GameService:
             player.x = x
             player.y = y
             visited_cells_result.append((x, y))
-            if self.game.cells[y][x].players is None:
+            if self.game.cells[y][x].players is None or len(self.game.cells[y][x].players) == 0:
                 self.game.cells[y][x].players = [player]
             else:
                 self.game.cells[y][x].players.append(player)

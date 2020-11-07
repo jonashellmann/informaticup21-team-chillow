@@ -10,4 +10,4 @@ class Cell:
     players: List[Player] = None  # List of players
 
     def get_player_id(self) -> int:
-        return 0 if self.players is None else self.players[0].id
+        return 0 if self.players is None or len(self.players) == 0 else self.players[0].id

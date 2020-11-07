@@ -8,6 +8,7 @@ from abc import ABCMeta, abstractmethod
 
 from chillow.ai.not_killing_itself_ai import NotKillingItselfAI, AIOptions
 from chillow.ai.pathfinding_ai import PathfindingAI
+from chillow.ai.pathfinding_search_tree_ai import PathfindingSearchTreeAI
 from chillow.ai.search_tree_ai import SearchTreeAI
 from chillow.service.data_loader import JSONDataLoader
 from chillow.service.data_writer import JSONDataWriter
@@ -76,25 +77,26 @@ class OfflineConnection(Connection):
         super().__init__()
 
     def play(self):
-        player1 = Player(1, 10, 10, Direction.down, 1, True, "Human Player 1")
-        player2 = Player(2, 10, 30, Direction.down, 1, True, "AI Player 1")
-        player3 = Player(3, 30, 10, Direction.up, 1, True, "AI Player 2")
-        player4 = Player(4, 30, 30, Direction.up, 1, True, "AI Player 4")
+        player1 = Player(1, 5, 5, Direction.down, 1, True, "Human Player 1")
+        player2 = Player(2, 25, 5, Direction.down, 1, True, "AI Player 1")
+        player3 = Player(3, 5, 15, Direction.up, 1, True, "AI Player 2")
+        player4 = Player(4, 25, 15, Direction.up, 1, True, "AI Player 4")
         players = [player1, player2, player3, player4]
-        field_size = 40
-        cells = [[Cell() for _ in range(field_size)] for _ in range(field_size)]
+        height = 20
+        width = 30
+        cells = [[Cell() for _ in range(width)] for _ in range(height)]
         cells[player1.y][player1.x] = Cell([player1])
         cells[player2.y][player2.x] = Cell([player2])
         cells[player3.y][player3.x] = Cell([player3])
         cells[player4.y][player4.x] = Cell([player4])
-        game = Game(field_size, field_size, cells, players, 1, True, datetime.now() + timedelta(0, 180))
+        game = Game(width, height, cells, players, 1, True, datetime.now() + timedelta(0, 180))
 
         self.monitoring.update(game)
 
         game_service = GameService(game)
-        ai0 = PathfindingAI(player1, game, 2, 75)
+        ai0 = PathfindingAI(player1, 2, 75)
         ai1 = NotKillingItselfAI(player2, game, [AIOptions.max_distance], 1, 0)
-        ai2 = SearchTreeAI(player3, 2)
+        ai2 = PathfindingSearchTreeAI(player3, 2, 75, 2)
         ai3 = SearchTreeAI(player4, 2)
         ais = [ai0, ai1, ai2, ai3]
 
@@ -105,7 +107,7 @@ class OfflineConnection(Connection):
 
             for ai in ais:
                 if ai.player.active:
-                    action = ai.create_next_action(game)
+                    action = ai.create_next_action(game.copy())
                     game_service.do_action(ai.player, action)
 
             self.monitoring.update(game)

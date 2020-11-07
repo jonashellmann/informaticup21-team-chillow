@@ -13,7 +13,7 @@ class PathfindingSearchTreeAITest(unittest.TestCase):
 
     def test_should_select_action_to_let_player_survive_next_two_rounds(self):
         game = self.data_loader.load(tests.read_test_file("ai/game_4.json"))
-        sut = PathfindingSearchTreeAI(game.you, 3, 20, 2)
+        sut = PathfindingSearchTreeAI(game.you, 3, 100, 2)
 
         result = sut.create_next_action(game)
 
