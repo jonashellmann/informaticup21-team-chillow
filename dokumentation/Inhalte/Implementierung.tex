@@ -43,11 +43,46 @@ entnommen werden.
 \subsection{Einlesen des Spiel-Zustands}
 \label{subsec:einlesen-spielzustand}
 
-\subsection{Ermitteln der besten Aktion}
+Der Beginn einer neuen Spielrunde wird damit eingeläutet, dass neue Daten über die Websocket-Verbindung vom Server
+versendet werden.
+Dabei handelt es sich jeweils um den aktuellen Zustand des Spiels mit allen notwendigen Daten.
+Zur Serialisierung wird das Spiel in ein JSON-Format übersetzt.
+Ein Beispiel zur Veranschaulichung dieses Formats in ist \Anhang{lst:json-spiel} abgebildet.
+Anzumerken ist, dass die exakte Formatierung des Strings abweichen kann.
+
+Dieser eingelesene String wird an ein Objekt der Klasse \Code{JSONDataLoader} übergeben, welches die Übersetzung des
+JSON-Formats in ein \Code{Game}-Objekt, das wie in \Kapitel{sec:modellierung} bescshrieben modelliert ist - zur Aufgabe
+hat.
+
+Sobald das Spiel fertig aufgebaut wurde, wird ein \Code{GET}-Request an den Server geschickt, auf welchen als Antwort
+die aktuelle Server-Zeit erwartet wird und ebenfalls durch den \Code{JSONDataLoader} aus einem String in ein
+\Code{datetime}-Objekt geparst wird.
+Diese Server-Zeit wird dann verwendet, um durch einen Abgleich mit der Zeit des eigenen Systems gegebenenfalls die
+Deadline für die Festlegung auf die nächste Aktion zu verschieben, da diese sich immer nach der Server-Zeit richtet.
+Es wird hierbei eine Toleranz von drei Sekunden eingebaut, da je nach Internet-Verbindung die Anfrage an den Server
+etwas dauern kann und so die Aktion besser zu früh als zu spät übermittelt werden sollte.
+
+\subsection{Ermittelung der besten Aktion}
 \label{subsec:ermitteln-aktion}
 
-\subsection{Übergeben der Aktion an Web-API}
+Anschließend ist das Spiel in seinem aktuellen Zustand korrekt abgebildet.
+Als nächstes steht an, dass eine Entscheidung für die nächste Aktion getroffen werden muss.
+Dies ist allerdings nur notwendig, wenn der eigene Spieler noch aktiv ist.
+
+Die Berechnung und Festlegung auf die nächste Aktion wird von der \Code{OnlineConnection} an ein Objekt einer
+Subklasse der abstrakten Basisklasse \Code{ArtificialIntelligence} mit dem Aufruf der Methode
+\Code{create_next_action(game: Game)} deligiert.
+Welche Art der im \Kapitel{ch:loesungsansatz} beschriebenen KIs gewählt werden soll, steht dem Anwender grundsätzlich
+vollkommen frei.
+
+\subsection{Übergabe der Aktion an Web-API}
 \label{subsec:uebergabe-aktion}
+
+Wenn eine Aktion ausgewählt wurde, muss diese dem Server noch mitgeteilt werden.
+In der Dokumentation für die diesjährige Aufgabestellung wurde festgehalten, dass auch hier wieder das JSON-Format
+verwendet werden soll.
+Daher wird die Aktion an die Klasse \Code{JSONDataWriter} überreicht, die einen String folgender Form erstellt:
+\texttt{\{"action": "speed\_up"\}}
 
 \section{Implementierung des Offline-Spiels}
 \label{sec:offline-implementierung}

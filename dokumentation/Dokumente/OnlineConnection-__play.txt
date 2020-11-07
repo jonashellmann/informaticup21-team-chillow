@@ -11,9 +11,6 @@ async def __play(self):
 
             self.monitoring.update(game)
 
-            if self.ai is None:
-                self.ai = RandomWaitingAI(game.you)
-
             if game.you.active:
                 action = self.ai.create_next_action(game)
                 data_out = self.data_writer.write(action)
