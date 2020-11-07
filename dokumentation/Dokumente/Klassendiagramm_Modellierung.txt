@@ -1,0 +1,19 @@
+// Erstellt mit https://yuml.me/diagram/plain/class/draw
+
+[Game|width: int;height: int;running: boolean; deadline: datetime]
+
+[Player|id: int;x: int;y: int;speed: int;active: boolean;name: string]
+
+[Cell]
+
+[<<enumaration>> Action|turn_left;turn_right;speed_up;slow_down;change_nothing|get_actions(randomize: bool = False): Action［］;get_random_action(): Action]
+
+[<<enumaration>> Direction|left;right;up;down]
+
+// ---
+
+[Cell]-players *>[Player]
+[Game]-players *>[Player]
+[Game]-cells *>[Cell]
+[Game]-you 1>[Player]
+[Player]-direction 1>[<<enumaration>> Direction]
