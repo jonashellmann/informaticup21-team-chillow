@@ -1,19 +1,62 @@
 \chapter{Implementierung}
 \label{ch:implementierung}
 
-% Hier insbesondere beschreiben, wie eine Runde im Spiel bei uns abläuft
-% Vielleicht mittels Sequenzdiagramm oder ähnlichem?
+Den Einstieg in das Programm stellt die Datei \Code{main.py} dar.
+Hier wird entschieden, ob ein Online- oder Offline-Spiel wie schon in den vorherigen Kapiteln beschrieben gestartet
+werden soll.
+Die Implementierungen dieser beiden Spielvarianten sollen in diesem Kapitel beschrieben werden, wobei der Fokus auf
+die Online-Verbindung gerichtet ist, da es sich hierbei um die Umsetzung der eigentlichen Aufgabenstellung handelt.
 
-\section{Einlesen des Spiel-Zustands}
-\label{sec:einlesen-spielzustand}
-
-\subsection{Modellierung des Spiels}
-\label{subsec:modellierung}
+\section{Modellierung des Spiels}
+\label{sec:modellierung}
 
 % UML-Klassendiagramm des Models
 
-\section{Ermitteln der besten Aktion}
-\label{sec:ermitteln-aktion}
+\section{Implementierung des Online-Spiels}
+\label{sec:online-implementierung}
 
-\section{Übergeben der Aktion an Web-API}
-\label{sec:uebergabe-aktion}
+Um eine Verbindung zu dem \Code{spe\_ed}-Server aufbauen zu können, müssen die URL und ein gültiger API-Key vor dem
+Start der Anwendung als Umgebungsvariablen gesetzt worden sein.
+Diese Websocket-URL wird entsprechend modifiziert auch als Endpunkt zur Abfrage der Server-Zeit verwendet, auf deren
+Nutzung nachfolgend noch eingegangen wird.
+
+Die zum Start des Spiels öffentlich bereitgestellte Methode \Code{play()} ist in \Listing{lst:online-play} dargestellt.
+Diese ist sehr simpel und ruft lediglich die private Methode \Code{\_\_play()} auf.
+Hierbei handelt es sich um eine asychrone Methode, wie schon in der Methoden-Signatur deutlich wird.
+Es wird mittels der Bibliothek \Code{asyncio} sichergestellt, dass diese asynchrone Methode vollständig verarbeitet
+wurde, bevor der Kontrollfluss im Programm weiterläuft.
+Sobald dies der Fall ist, ist das Spielende eingetreten und die Oberfläche wird deinitialisiert.
+
+\lstinputlisting[label=lst:online-play,language=Python,caption=\Code{play()}-Methode der \Code{OnlineConnection}]
+{./Dokumente/OnlineConnection-play.txt}
+
+In der im vorherigen Absatz bereits erwähnten Methode \Code{\_\_play()} in der \Code{OnlineConnection} wird eine
+Websocket-Verbindung zum Server aufgebaut.
+Anschließend wird in einer Endlosschleife die Logik zur Ausführung eines einzelnen Spielzugs ausgeführt.
+Wie ein solcher Spielzug abläuft, ist in \Anhang{fig:sequenzdiagramm-spielzug} in Form eines Sequenzdiagrammes
+nachvollziehbar und die Umsetzung in Python-Code kann zusammen mit dem Verbindungaufbau \Listing{lst:online-__play}
+entnommen werden.
+
+\lstinputlisting[label=lst:online-__play,language=Python,caption=\Code{\_\_play()}-Methode der \Code{OnlineConnection}]
+{./Dokumente/OnlineConnection-__play.txt}
+
+\subsection{Einlesen des Spiel-Zustands}
+\label{subsec:einlesen-spielzustand}
+
+\subsection{Ermitteln der besten Aktion}
+\label{subsec:ermitteln-aktion}
+
+\subsection{Übergeben der Aktion an Web-API}
+\label{subsec:uebergabe-aktion}
+
+\section{Implementierung des Offline-Spiels}
+\label{sec:offline-implementierung}
+
+\section{Bereitstellung einer Oberfläche}
+\label{sec:bereitstellung-oberflaeche}
+
+\subsection{Darstellung des Spiels in der Konsole}
+\label{subsec:oberflaeche-konsole}
+
+\subsection{Nutzung von PyGame als grafische Oberfläche}
+\label{subsec:oberflaeche-pygame}

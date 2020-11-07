@@ -1,0 +1,49 @@
+# Datei kann unter https://sequencediagram.org/ verwendet und angepasst werden
+participant Server
+participant OnlineConnection
+participant DataLoader
+participant Game
+participant Monitoring
+participant AI
+participant DataWriter
+
+activate OnlineConnection
+
+OnlineConnection->Server:websocket.recv()
+activate Server
+Server-->OnlineConnection:game_data
+deactivate Server
+
+OnlineConnection->DataLoader:load(game_data)
+activate DataLoader
+DataLoader-->OnlineConnection:game
+deactivate DataLoader
+
+OnlineConnection->Server:get_server_time
+Server-->OnlineConnection:server_time
+
+
+OnlineConnection->Game:normalize_deadline(server_time)
+activate Game
+space 
+deactivate Game
+
+OnlineConnection->Monitoring:update(game)
+activate Monitoring
+space 
+deactivate Monitoring
+
+opt own player is active
+OnlineConnection->AI:create_next_action(game)
+activate AI
+AI-->OnlineConnection:action
+deactivate AI
+
+OnlineConnection->DataWriter:write(action)
+activate DataWriter
+DataWriter-->OnlineConnection:action_data
+deactivate DataWriter
+
+OnlineConnection->Server:send(action_data)
+activate Server
+end
