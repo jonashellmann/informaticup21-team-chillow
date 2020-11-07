@@ -23,5 +23,5 @@ class PathfindingSearchTreeAI(PathfindingAI):
                                      self.max_speed, True) is not None:
                 surviving_actions.append(action)
 
-        return self.find_action_by_best_path_connection(surviving_actions, game) if len(
+        return self.find_action_by_best_path_connection(surviving_actions, game)[0][0] if len(
                 surviving_actions) > 0 else Action.get_random_action()
