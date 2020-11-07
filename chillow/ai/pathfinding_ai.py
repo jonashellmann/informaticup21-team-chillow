@@ -1,6 +1,6 @@
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 from random import shuffle
-from numpy import arange
+from numpy import arange, operator
 
 from pathfinding.core.diagonal_movement import DiagonalMovement
 from pathfinding.core.grid import Grid
@@ -34,9 +34,13 @@ class PathfindingAI(ArtificialIntelligence):
             return self.find_action_by_best_path_connection(surviving_actions, game) if len(
                 surviving_actions) > 0 else Action.get_random_action()
 
-    def find_action_by_best_path_connection(self, actions: List[Action], game: Game) -> Action:
+    def find_action_by_best_path_connection(self, actions: List[Action], game: Game) -> Optional[
+            List[Tuple[Action, int]]]:
+        if actions is None or len(actions) == 0:
+            return None
+
         shuffle(actions)
-        best_action: Tuple[Action, int] = (actions[0], 0)
+        best_actions: List[Tuple[Action, int]] = []
         free_cells_for_pathfinding = self.get_random_free_cells_from_playground(game)
 
         path_finder = BestFirst(diagonal_movement=DiagonalMovement.never)
@@ -60,14 +64,10 @@ class PathfindingAI(ArtificialIntelligence):
                 path, runs = path_finder.find_path(start, end, grid)
                 if len(path) > 0:
                     current_possible_paths += 1
-                if current_possible_paths + length_free_cells - i <= best_action[1]:  # can't get better
-                    break
-            if len(best_action) == 0 or best_action[1] < current_possible_paths:
-                best_action = (action, current_possible_paths)
-            if best_action[1] == len(free_cells_for_pathfinding):  # best possible action already found
-                return best_action[0]
 
-        return best_action[0]
+            best_actions.append((action, current_possible_paths))
+
+        return best_actions.sort(key=operator.itemgetter(1))
 
     def get_random_free_cells_from_playground(self, game: Game) -> List[Tuple[int, int]]:
         free_cells: List[(int, int)] = []
