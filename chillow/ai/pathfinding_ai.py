@@ -23,18 +23,19 @@ class PathfindingAI(ArtificialIntelligence):
     def create_next_action(self, game: Game) -> Action:
         self.turn_ctr += 1
 
+        actions: List[Tuple[Action, int]] = self.create_next_actions_ranked(game)
+
+        return actions[0][0] if len(actions) > 0 else Action.get_random_action()
+
+    def create_next_actions_ranked(self, game: Game) -> Optional[List[Tuple[Action, int]]]:
         game_service = GameService(game)
         game_service.turn.turn_ctr = self.turn_ctr
 
         surviving_actions = self.find_surviving_actions(game_service)
 
-        if len(surviving_actions) == 1:
-            return surviving_actions[0]
-        else:
-            return self.find_action_by_best_path_connection(surviving_actions, game)[0][0] if len(
-                surviving_actions) > 0 else Action.get_random_action()
+        return self.find_actions_by_best_path_connection(surviving_actions, game)
 
-    def find_action_by_best_path_connection(self, actions: List[Action], game: Game) -> Optional[
+    def find_actions_by_best_path_connection(self, actions: List[Action], game: Game) -> Optional[
             List[Tuple[Action, int]]]:
         if actions is None or len(actions) == 0:
             return None

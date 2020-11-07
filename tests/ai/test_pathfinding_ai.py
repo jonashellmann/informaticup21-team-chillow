@@ -100,7 +100,7 @@ class PathfindingAITest(unittest.TestCase):
         game = Game(3, 3, cells, players, 2, True, datetime.now())
         sut = PathfindingAI(player1, 2, 10)
 
-        actions = sut.find_action_by_best_path_connection([Action.change_nothing, Action.slow_down], game)
+        actions = sut.find_actions_by_best_path_connection([Action.change_nothing, Action.slow_down], game)
 
         self.assertEqual(actions[0][0], Action.slow_down)
 
@@ -114,7 +114,7 @@ class PathfindingAITest(unittest.TestCase):
         game = Game(3, 3, cells, players, 2, True, datetime.now())
         sut = PathfindingAI(player1, 2, 10)
 
-        actions = sut.find_action_by_best_path_connection(None, game)
+        actions = sut.find_actions_by_best_path_connection(None, game)
 
         self.assertIsNone(actions)
 
@@ -128,6 +128,6 @@ class PathfindingAITest(unittest.TestCase):
         game = Game(3, 3, cells, players, 2, True, datetime.now())
         sut = PathfindingAI(player1, 2, 10)
 
-        actions = sut.find_action_by_best_path_connection([], game)
+        actions = sut.find_actions_by_best_path_connection([], game)
 
         self.assertIsNone(actions)
