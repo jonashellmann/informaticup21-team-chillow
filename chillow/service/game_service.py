@@ -129,6 +129,7 @@ class GameService:
             self.turn.playersWithPendingAction.remove(player)
         player.active = False
 
+
 class Turn:
 
     def __init__(self, players: List[Player], deadline):
