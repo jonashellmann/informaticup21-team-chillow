@@ -13,13 +13,13 @@ die Online-Verbindung gerichtet ist, da es sich hierbei um die Umsetzung der eig
 Um eine Grundlage zu haben, auf der die Implmentierung aufgebaut werden konnte, wurde zunächst die Modellierung des
 Spiels vorgenommen.
 Dazu haben wir geschaut, welche Informationen benötigt und vom Server bereitgestellt werden und wie man diese dann
-mithilfe eines objektorientierten Ansatzes abbilden kann.
+mithilfe eines objektorientierten Ansatzes abbilden kann. \\
 
 Das Ergebnis der Modellierung ist in \Abbildung{fig:klassendiagramm-modell} zu sehen.
 Das \Code{Game} hat Zugriff auf die eigenen Eigenschaften, kennt aber auch alle \Code{Player}, die an diesem Spiel
 teilnehmen.
 Zudem besteht ein \Code{Game} aus einem zweidimensionalen Array aus \Code{Cells}, die das Spielfeld repräsentieren.
-In einer \Code{Cell} können sich dann kein, ein oder nach einer Kollision auch mehrere Spieler befinden.
+In einer \Code{Cell} können sich dann kein, ein oder nach einer Kollision auch mehrere Spieler befinden. \\
 
 \begin{figure}[htb]
 \centering
@@ -39,14 +39,14 @@ worden sind.
 Um eine Verbindung zu dem \Code{spe\_ed}-Server aufbauen zu können, müssen die URL und ein gültiger API-Key vor dem
 Start der Anwendung als Umgebungsvariablen gesetzt worden sein.
 Diese Websocket-URL wird entsprechend modifiziert auch als Endpunkt zur Abfrage der Server-Zeit verwendet, auf deren
-Nutzung nachfolgend noch eingegangen wird.
+Nutzung nachfolgend noch eingegangen wird. \\
 
 Die zum Start des Spiels öffentlich bereitgestellte Methode \Code{play()} ist in \Listing{lst:online-play} dargestellt.
 Diese ist sehr simpel und ruft lediglich die private Methode \Code{\_\_play()} auf.
 Hierbei handelt es sich um eine asynchrone Methode, wie schon in der Methoden-Signatur deutlich wird.
 Es wird mittels der Bibliothek \Code{asyncio} sichergestellt, dass diese asynchrone Methode vollständig verarbeitet
 wurde, bevor der Kontrollfluss im Programm weiterläuft.
-Sobald dies der Fall ist, ist das Spielende eingetreten und die Oberfläche wird beendet.
+Sobald dies der Fall ist, ist das Spielende eingetreten und die Oberfläche wird beendet. \\
 
 \lstinputlisting[label=lst:online-play,language=Python,caption=\Code{play()}-Methode der \Code{OnlineConnection}]
 {./Dokumente/OnlineConnection-play.txt}
@@ -69,11 +69,11 @@ versendet werden.
 Dabei handelt es sich jeweils um den aktuellen Zustand des Spiels mit allen notwendigen Daten.
 Zur Serialisierung wird das Spiel in ein JSON-Format übersetzt.
 Ein Beispiel zur Veranschaulichung dieses Formats ist in \Anhang{lst:json-spiel} abgebildet.
-Anzumerken ist, dass die exakte Formatierung des Strings abweichen kann.
+Anzumerken ist, dass die exakte Formatierung des Strings abweichen kann. \\
 
 Dieser eingelesene String wird an ein Objekt der Klasse \Code{JSONDataLoader} übergeben, welches die Übersetzung des
 JSON-Formats in ein \Code{Game}-Objekt - das wie in \Kapitel{sec:modellierung} beschrieben modelliert ist - zur Aufgabe
-hat.
+hat. \\
 
 Sobald das Spiel fertig aufgebaut wurde, wird ein \Code{GET}-Request an den Server geschickt, auf welchen als Antwort
 die aktuelle Server-Zeit erwartet wird und ebenfalls durch den \Code{JSONDataLoader} aus einem String in ein
@@ -88,7 +88,7 @@ etwas dauern kann und so die Aktion besser zu früh als zu spät übermittelt we
 
 Anschließend ist das Spiel in seinem aktuellen Zustand korrekt abgebildet.
 Als nächstes steht an, dass eine Entscheidung für die nächste Aktion getroffen werden muss.
-Dies ist allerdings nur notwendig, wenn der eigene Spieler noch aktiv ist.
+Dies ist allerdings nur notwendig, wenn der eigene Spieler noch aktiv ist. \\
 
 Die Berechnung und Festlegung auf die nächste Aktion wird von der \Code{OnlineConnection} an ein Objekt einer
 Subklasse der abstrakten Basisklasse \Code{ArtificialIntelligence} mit dem Aufruf der Methode
