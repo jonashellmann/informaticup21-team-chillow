@@ -6,13 +6,9 @@ import websockets
 
 from abc import ABCMeta, abstractmethod
 
-from chillow.ai.not_killing_itself_ai import NotKillingItselfAI, AIOptions
-from chillow.ai.pathfinding_ai import PathfindingAI
-from chillow.ai.pathfinding_search_tree_ai import PathfindingSearchTreeAI
-from chillow.ai.search_tree_ai import SearchTreeAI
+from chillow.ai import *
 from chillow.service.data_loader import DataLoader
 from chillow.service.data_writer import DataWriter
-from chillow.ai.random_ai import RandomWaitingAI
 from chillow.service.game_service import GameService
 from chillow.controller.monitoring import GraphicalMonitoring, ConsoleMonitoring
 from chillow.model.game import Game
@@ -36,7 +32,7 @@ class Connection(metaclass=ABCMeta):
 
 class OnlineConnection(Connection):
 
-    def __init__(self, url: str, key: str, data_loader: DataLoader, data_writer: DataWriter):
+    def __init__(self, url: str, key: str, data_loader: DataLoader, data_writer: DataWriter, ai_class: str, ai_params):
         super().__init__()
         self.url = url
         self.time_url = self.url.replace("wss://", "https://") + "_time"
@@ -44,10 +40,13 @@ class OnlineConnection(Connection):
         self.data_loader = data_loader
         self.data_writer = data_writer
         self.ai = None
+        self.ai_class = ai_class
+        self.ai_params = ai_params
 
     def play(self):
         asyncio.get_event_loop().run_until_complete(self.__play())
         self.monitoring.end()
+        self.ai = None
 
     async def __play(self):
         async with websockets.connect(f"{self.url}?key={self.key}") as websocket:
@@ -63,7 +62,7 @@ class OnlineConnection(Connection):
                 self.monitoring.update(game)
 
                 if self.ai is None:
-                    self.ai = RandomWaitingAI(game.you)
+                    self.ai = globals()[self.ai_class](game.you, *self.ai_params)
 
                 if game.you.active:
                     action = self.ai.create_next_action(game)
