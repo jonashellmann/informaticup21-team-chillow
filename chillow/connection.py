@@ -10,8 +10,8 @@ from chillow.ai.not_killing_itself_ai import NotKillingItselfAI, AIOptions
 from chillow.ai.pathfinding_ai import PathfindingAI
 from chillow.ai.pathfinding_search_tree_ai import PathfindingSearchTreeAI
 from chillow.ai.search_tree_ai import SearchTreeAI
-from chillow.service.data_loader import JSONDataLoader
-from chillow.service.data_writer import JSONDataWriter
+from chillow.service.data_loader import DataLoader
+from chillow.service.data_writer import DataWriter
 from chillow.ai.random_ai import RandomWaitingAI
 from chillow.service.game_service import GameService
 from chillow.controller.monitoring import GraphicalMonitoring, ConsoleMonitoring
@@ -36,13 +36,13 @@ class Connection(metaclass=ABCMeta):
 
 class OnlineConnection(Connection):
 
-    def __init__(self):
+    def __init__(self, url: str, key: str, data_loader: DataLoader, data_writer: DataWriter):
         super().__init__()
-        self.url = os.environ["URL"]
+        self.url = url
         self.time_url = self.url.replace("wss://", "https://") + "_time"
-        self.key = os.environ["KEY"]
-        self.data_loader = JSONDataLoader()
-        self.data_writer = JSONDataWriter()
+        self.key = key
+        self.data_loader = data_loader
+        self.data_writer = data_writer
         self.ai = None
 
     def play(self):
