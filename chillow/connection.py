@@ -1,5 +1,4 @@
 import asyncio
-import os
 import requests
 from datetime import datetime, timedelta
 import websockets
@@ -10,7 +9,7 @@ from chillow.ai import *
 from chillow.service.data_loader import DataLoader
 from chillow.service.data_writer import DataWriter
 from chillow.service.game_service import GameService
-from chillow.controller.monitoring import GraphicalMonitoring, ConsoleMonitoring
+from chillow.controller.monitoring import Monitoring
 from chillow.model.game import Game
 from chillow.model.player import Player
 from chillow.model.direction import Direction
@@ -19,11 +18,8 @@ from chillow.model.cell import Cell
 
 class Connection(metaclass=ABCMeta):
 
-    def __init__(self):
-        if not os.getenv("DEACTIVATE_PYGAME", False):
-            self.monitoring = GraphicalMonitoring()
-        else:
-            self.monitoring = ConsoleMonitoring()
+    def __init__(self, monitoring: Monitoring):
+        self.monitoring = monitoring
 
     @abstractmethod
     def play(self):
@@ -32,8 +28,9 @@ class Connection(metaclass=ABCMeta):
 
 class OnlineConnection(Connection):
 
-    def __init__(self, url: str, key: str, data_loader: DataLoader, data_writer: DataWriter, ai_class: str, ai_params):
-        super().__init__()
+    def __init__(self, monitoring: Monitoring, url: str, key: str, data_loader: DataLoader, data_writer: DataWriter,
+                 ai_class: str, ai_params):
+        super().__init__(monitoring)
         self.url = url
         self.time_url = self.url.replace("wss://", "https://") + "_time"
         self.key = key
@@ -72,8 +69,8 @@ class OnlineConnection(Connection):
 
 class OfflineConnection(Connection):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, monitoring: Monitoring):
+        super().__init__(monitoring)
 
     def play(self):
         player1 = Player(1, 5, 5, Direction.down, 1, True, "Human Player 1")
