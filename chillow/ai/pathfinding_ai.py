@@ -23,7 +23,7 @@ class PathfindingAI(ArtificialIntelligence):
     def create_next_action(self, game: Game) -> Action:
         self.turn_ctr += 1
 
-        actions: List[Tuple[Action, int]] = self.create_next_actions_ranked(game)
+        actions = self.create_next_actions_ranked(game)
 
         return actions[0][0] if len(actions) > 0 else Action.get_random_action()
 

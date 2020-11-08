@@ -1,3 +1,5 @@
+from typing import List
+
 from chillow.ai.search_tree_node import SearchTreeRoot
 from chillow.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.model.action import Action
@@ -21,4 +23,15 @@ class SearchTreeAI(ArtificialIntelligence):
                                        self.max_speed, self.__randomize)
         return action if action is not None else Action.get_random_action()
 
+    def _create_all_next_surviving_actions(self, game: Game) -> List[Action]:
+        root = SearchTreeRoot(game.copy())
+        combinations = Action.get_combinations(len(game.get_other_players(self.player)))
 
+        search_tree_actions = []
+
+        for action in Action.get_actions():
+            if root.calculate_action(self.player, combinations, self.__depth, self.turn_ctr, True, [action],
+                                     self.max_speed, True) is not None:
+                search_tree_actions.append(action)
+
+        return search_tree_actions

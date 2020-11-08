@@ -1,27 +1,21 @@
 from chillow.ai.pathfinding_ai import PathfindingAI
+from chillow.ai.search_tree_ai import SearchTreeAI
 from chillow.ai.search_tree_node import SearchTreeRoot
 from chillow.model.action import Action
 from chillow.model.game import Game
 from chillow.model.player import Player
 
 
-class SearchTreePathfindingAI(PathfindingAI):
+class SearchTreePathfindingAI(PathfindingAI, SearchTreeAI):
 
     def __init__(self, player: Player, max_speed: int, count_paths_to_check: int, depth: int):
-        super().__init__(player, max_speed, count_paths_to_check)
-        self.__depth = depth
+        PathfindingAI.__init__(self, player, max_speed, count_paths_to_check)
+        SearchTreeAI.__init__(self, player, depth, max_speed)
 
     def create_next_action(self, game: Game) -> Action:
         self.turn_ctr += 1
-        root = SearchTreeRoot(game.copy())
-        combinations = Action.get_combinations(len(game.get_other_players(self.player)))
 
-        surviving_actions = []
-
-        for action in Action.get_actions():
-            if root.calculate_action(self.player, combinations, self.__depth, self.turn_ctr, True, [action],
-                                     self.max_speed, True) is not None:
-                surviving_actions.append(action)
+        surviving_actions = super()._create_all_next_surviving_actions(game)
 
         return self.find_actions_by_best_path_connection(surviving_actions, game)[0][0] if len(
                 surviving_actions) > 0 else Action.get_random_action()
