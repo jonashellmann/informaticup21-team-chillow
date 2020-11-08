@@ -2,13 +2,23 @@
 \label{ch:weiterentwicklung}
 
 Wichtig war bei dem Projekt auch, stets sicherzustellen, dass das Projekt möglichst leicht weiterentwickelt werden kann.
-Was wir dazu unternommen haben, soll in diesem Kapitel erläutert werden.
+Was wir dazu unternommen haben, soll in diesem Kapitel erläutert werden, sowohl bei der Implementierung des Quell-Codes,
+als auch bei der Entwicklung des die Umsetzung dieses Projektes umfassenden Workflows.
 
 \section{Erweiterbarkeit des Codes}
 \label{sec:erweiterbarkeit}
 
-% Durch Nutzung von abstrakten Klassen kann einfach das JSON-Format ausgetauscht werden
-% Durch Nutzung von abstrakten Klassen kann einfach die KI ausgetauscht werden
+An vielen Stellen im Code haben wir durch die Nutzung allgemeiner Oberklassen eine leichte Austauschbarkeit
+gewährleistet.
+Die Verwendung von abstrakten Oberklassen durch Nutzung der \Code{abc}-Python-Bibliothek war notwendig, da Python
+als Programmiersprache keine Interfaces anbietet. \\
+
+Durch diese Entscheidung war es durch Dependency Injection möglich, zentral an einer Stelle in \Code{main.py}
+festzulegen, welche spezifische Implementierung der allgemeinen Oberklasse verwendet werden soll.
+Angewendet wurde dieses Vorgehen an oberster Stelle bei der \Code{Connection} und der zu verwendenden Oberfläche, aber
+auch beim Konvertieren zwischen einer String-Repräsentation und dem Modell im \Code{DataLoader} und \Code{DataWriter}
+ließe sich prinzipiell auch sehr leicht ein Umstieg von JSON auf ein beliebiges anderes Format ermöglichen.
+Auch ein Austausch der zu verwendenden \ac{KI}-Klasse lässt sich sehr einfach konfigurieren.
 
 \section{Einsatz von PRs im Git-Workflow}
 \label{sec:git-workflow}
