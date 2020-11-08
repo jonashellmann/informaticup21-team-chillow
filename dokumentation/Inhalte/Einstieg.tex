@@ -55,7 +55,7 @@ letztendlich wie in \Listing{lst:dockerfile} dargestellt aussieht.
 Um die zu entwickelnde \ac{KI} ohne die Server-Verbindung manuell testen zu können, haben wir bei der Implementierung
 damit begonnen, die Spiellogik nachzustellen.
 Dazu haben wir nach Erhalt des API-Keys anhand der bereitgestellten Dokumentation und der Möglichkeit, das Spiel in
-einer Online-Version im Browser testen zu können, begonnen, die Spiellogik zu analysieren.
+einer Online-Version im Browser testen zu können, begonnen, die Spiellogik zu analysieren. \\
 
 Diese Logik ist relativ einfach nachzuvollziehen.
 Nachdem alle Spieler ihre Aktion an den Server gesendet haben, wird jede Aktion eines Spielers in einer Runde zeitgleich
@@ -63,7 +63,7 @@ ausgeführt.
 Trifft der Spieler während seiner Aktion auf ein bereits belegtes Feld, so verliert dieser das Spiel und bewegt sich
 nicht weiter vorwärts, auch wenn seine Aktion dies normalerweise noch bewirkt hätte.
 Verhindert werden können solche Kollisionen mittels eines Sprung, der bei entsprechendem Tempo automatisch in jeder
-sechsten Runde des Spiels ausgeführt wird.
+sechsten Runde des Spiels ausgeführt wird. \\
 
 Wir haben diese Logik, auf die wir später noch genauer eingehen werden und die bei der Implementierung der \ac{KI}s
 wiederverwendet werden konnte, in einer Klasse \Code{GameService} implementiert.
