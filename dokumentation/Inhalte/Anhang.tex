@@ -6,7 +6,7 @@
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=13.5cm]{Bilder/Sequenzdiagramm_Implementierung_Spielzug.png}
+	\includegraphics[width=0.9\textwidth]{Bilder/Sequenzdiagramm_Implementierung_Spielzug.png}
 	\caption{Sequenzdiagramm zur Implementierung eines Spielzug}
 	\label{fig:sequenzdiagramm-spielzug}
 \end{figure}
@@ -20,4 +20,12 @@
 	\lstinputlisting[label=lst:get-and-visit-cells
 	,language=Python,caption=\Code{get\_and\_visit\_cells(player, action)}-Methode des \Code{GameService}]
 	{./Dokumente/Get_And_Visit_Cells_GameService.txt}
+\end{minipage}
+
+\section{Weiterentwicklung}
+\label{sec:anhang-weiterentwicklung}
+
+\begin{minipage}{\textwidth}
+	\lstinputlisting[label=lst:yaml-github-action,language=YAML,caption=YAML-Konfiguration der Gitgub Action]
+	{../.github/workflows/python-app.yml}
 \end{minipage}

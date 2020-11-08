@@ -1,20 +1,15 @@
 import asyncio
-import os
 import requests
 from datetime import datetime, timedelta
 import websockets
 
 from abc import ABCMeta, abstractmethod
 
-from chillow.ai.not_killing_itself_ai import NotKillingItselfAI, AIOptions
-from chillow.ai.pathfinding_ai import PathfindingAI
-from chillow.ai.search_tree_pathfinding_ai import SearchTreePathfindingAI
-from chillow.ai.search_tree_ai import SearchTreeAI
-from chillow.service.data_loader import JSONDataLoader
-from chillow.service.data_writer import JSONDataWriter
-from chillow.ai.random_ai import RandomWaitingAI
+from chillow.ai import *
+from chillow.service.data_loader import DataLoader
+from chillow.service.data_writer import DataWriter
 from chillow.service.game_service import GameService
-from chillow.controller.monitoring import GraphicalMonitoring, ConsoleMonitoring
+from chillow.controller.monitoring import Monitoring
 from chillow.model.game import Game
 from chillow.model.player import Player
 from chillow.model.direction import Direction
@@ -23,11 +18,8 @@ from chillow.model.cell import Cell
 
 class Connection(metaclass=ABCMeta):
 
-    def __init__(self):
-        if not os.getenv("DEACTIVATE_PYGAME", False):
-            self.monitoring = GraphicalMonitoring()
-        else:
-            self.monitoring = ConsoleMonitoring()
+    def __init__(self, monitoring: Monitoring):
+        self.monitoring = monitoring
 
     @abstractmethod
     def play(self):
@@ -36,18 +28,22 @@ class Connection(metaclass=ABCMeta):
 
 class OnlineConnection(Connection):
 
-    def __init__(self):
-        super().__init__()
-        self.url = os.environ["URL"]
+    def __init__(self, monitoring: Monitoring, url: str, key: str, data_loader: DataLoader, data_writer: DataWriter,
+                 ai_class: str, ai_params):
+        super().__init__(monitoring)
+        self.url = url
         self.time_url = self.url.replace("wss://", "https://") + "_time"
-        self.key = os.environ["KEY"]
-        self.data_loader = JSONDataLoader()
-        self.data_writer = JSONDataWriter()
+        self.key = key
+        self.data_loader = data_loader
+        self.data_writer = data_writer
         self.ai = None
+        self.ai_class = ai_class
+        self.ai_params = ai_params
 
     def play(self):
         asyncio.get_event_loop().run_until_complete(self.__play())
         self.monitoring.end()
+        self.ai = None
 
     async def __play(self):
         async with websockets.connect(f"{self.url}?key={self.key}") as websocket:
@@ -63,7 +59,7 @@ class OnlineConnection(Connection):
                 self.monitoring.update(game)
 
                 if self.ai is None:
-                    self.ai = RandomWaitingAI(game.you)
+                    self.ai = globals()[self.ai_class](game.you, *self.ai_params)
 
                 if game.you.active:
                     action = self.ai.create_next_action(game)
@@ -73,8 +69,8 @@ class OnlineConnection(Connection):
 
 class OfflineConnection(Connection):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, monitoring: Monitoring):
+        super().__init__(monitoring)
 
     def play(self):
         player1 = Player(1, 5, 5, Direction.down, 1, True, "Human Player 1")

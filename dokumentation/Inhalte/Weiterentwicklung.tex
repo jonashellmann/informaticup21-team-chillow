@@ -1,18 +1,65 @@
 \chapter{Weiterentwicklung}
 \label{ch:weiterentwicklung}
 
+Wichtig war bei dem Projekt auch, stets sicherzustellen, dass das Projekt möglichst leicht weiterentwickelt werden kann.
+Was wir dazu unternommen haben, soll in diesem Kapitel erläutert werden.
+Dazu betrachten wir sowohl die Implementierung des Quell-Codes als auch den Workflow, der zur Umsetzung dieses Projektes
+verwendet wurde.
+
 \section{Erweiterbarkeit des Codes}
 \label{sec:erweiterbarkeit}
 
-% Durch Nutzung von abstrakten Klassen kann einfach das JSON-Format ausgetauscht werden
-% Durch Nutzung von abstrakten Klassen kann einfach die KI ausgetauscht werden
+An vielen Stellen im Code haben wir durch die Nutzung allgemeiner Oberklassen eine leichte Austauschbarkeit
+gewährleistet.
+Die Verwendung von abstrakten Oberklassen durch Nutzung der \Code{abc}-Python-Bibliothek war notwendig, da Python
+als Programmiersprache keine Interfaces anbietet. \\
+
+Durch diese Entscheidung war es mithilfe von Dependency Injection möglich, zentral in der Datei \Code{main.py}
+festzulegen, welche spezifischen Implementierungen der allgemeinen Oberklassen verwendet werden sollen.
+Angewendet wurde dieses Vorgehen an oberster Stelle bei der \Code{Connection} und der zu verwendenden Oberfläche, aber
+auch beim Konvertieren zwischen einer String-Repräsentation und dem Modell im \Code{DataLoader} und \Code{DataWriter}
+ließe sich prinzipiell sehr leicht ein Umstieg von JSON auf ein beliebiges anderes Format ermöglichen.
+Auch ein Austausch der zu verwendenden \ac{KI}-Klasse lässt sich sehr einfach konfigurieren.
 
 \section{Einsatz von PRs im Git-Workflow}
 \label{sec:git-workflow}
 
-% Vorgehen bei der Entwicklung inkl. Reviews
+Wir haben uns dazu entschieden, als Versionsverwaltungs-Tool Git einzusetzen und Github als Plattform zu benutzen.
+Github ermöglicht die Konfiguration, das Pushen auf den Haupt-Branch, welcher in unserem Fall der \Code{main}-Branch war,
+zu unterbinden.
+So kann kein Code durch einen versehentlichen Push den aktuellen Produktiv-Code in seiner Funktionalität stören.
+Stattdessen können Änderungen in diesen Branch nur durch \ac{PR}s in den Haupt-Branch gemergt werden. \\
+
+Es gab somit für jede logische Einheit für Code-Änderungen einen neuen Branch, auf dem diese entwickelt und getestet
+wurden, bevor eine Überführung in \Code{main} möglich war.
+Es wäre möglich gewesen, die Aufgaben als sogenannte Issues zu pflegen und jeden Branch mit einem Issue zu verknüfen,
+allerdings haben wir dies nicht genutzt, da wir uns durch regelmäßige Absprachen auch so einen Überblick über die
+als nächstes zu erledigenden Aufgaben ohne ein Ticket-System machen konnten. \\
+
+Für \ac{PR}s wurden dann Kriterien festgelegt, die erfüllt sein müssen, um einen Merge durchführen zu können.
+Es wird automatisch von Github kontrolliert, ob mögliche Konflikte beim Mergen auftreten können.
+Falls dies so sein sollte, ist es notwendig, diese zuerst manuell zu beheben.
+Weiterhin haben wir eingestellt, dass mindestens ein Review notwendig ist.
+Da wir als Zweiergruppe an dem Projekt gearbeitet haben, konnten wir so sicherstellen, dass jeder zu jeder Zeit einen
+Überblick über den aktuellen Stand hat und jeder Code einem Review unterzogen wurde.
 
 \section{Nutzung von Github Actions}
 \label{sec:github-actions}
 
-% Continious Integration mit Github Action bei PRs stellt sicher, dass bei Weiterentwicklung alle Tests durchlaufen
+Als letzter Aspekt, der einen Merge potentiell verhindern konnte, wurde eine sogenannte Github Action bei dem Öffnen
+eines \ac{PR}s und bei dem Pushen auf einen Branch mit einem bereits geöffneten \ac{PR} ausgeführt. \\
+
+Eine solche Aktion wird nicht manuell in den Einstellungen hinterlegt, sondern nach dem
+Configuration-as-Code-Paradigma in einer Text-Datei verwaltet.
+Dazu muss lediglich in einem Unterordner \texttt{./.github/workflows} ausgehend vom Hauptverzeichnis des Repositorys
+eine Datei im YAML-Format abgelegt werden. \Vgl{github-actions-1} \Vgl{github-actions-2}. \\
+
+Die für unser Projekt verwendete Konfiguration wird in \Anhang{lst:yaml-github-action} gezeigt.
+Hier läuft nach der Installation aller notwendigen Packages eine Kompilierung und Code-Analyse über den
+Quellcode gefahren, wobei dieser auf Probleme hin untersucht wird.
+Im Anschluss werden alle Tests ausgeführt.
+Bei Kompilier-Fehlern oder fehlschlagenden Tests schlägt auch diese Aktion fehl und verhindert einen Merge. \\
+
+So wird durch Continious Integration automatisch eine Kontrolle vollzogen, die sicherstellt, dass durch Änderungen
+keine bestehende Logik beschädigt wird.
+Dies gab uns als Entwickler eine zusätzliche Sicherheit und verringerte die Risiken eines Merges.
