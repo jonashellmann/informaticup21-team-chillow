@@ -146,7 +146,7 @@ Sollte der Spieler seine erste Aktion in diesem Zug machen, wird er aus der List
 Aktionen ausgetragen und geprüft ob ein neuer Zug initialisiert werden muss, weil dies die letzte erwartet Aktion
 war. \\
 
-Wenn ein Spieler eine Aktion durchführen möchte, verschickt er in der Offline-Variante kein Paket an den spe\_ed-Server,
+Wenn ein Spieler eine Aktion durchführen möchte, verschickt er in der Offline-Variante keine Nachricht an den spe\_ed-Server,
 sondern ruft am \Code{GameService} die Methode \Code{do\_action(player: Player, action: Action)} auf.
 Die Methode manipuliert dabei das \Code{Game}-Objekt, sodass dies eine äquivalente Aktualisierung zum Erhalt des Spiels
 im JSON-Format durch den spe\_ed-Server ist.
