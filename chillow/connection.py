@@ -92,7 +92,7 @@ class OfflineConnection(Connection):
         game_service = GameService(game)
         ai0 = PathfindingAI(player1, 2, 75)
         ai1 = NotKillingItselfAI(player2, game, [AIOptions.max_distance], 1, 0)
-        ai2 = PathfindingSearchTreeAI(player3, 2, 75, 2)
+        ai2 = SearchTreePathfindingAI(player3, 2, 75, 2)
         ai3 = SearchTreeAI(player4, 2)
         ais = [ai0, ai1, ai2, ai3]
 
