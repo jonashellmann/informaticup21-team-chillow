@@ -120,7 +120,7 @@ Da wir keine Verbindung zum spe\_ed-Server herstellen, erhalten wir keine Aktual
 Auch müssen die errechneten Aktionen der \ac{KI} nicht versendet, sondern lokal verarbeitet werden.
 Daher haben wir die Spiellogik in der Klasse \Code{GameService} nachgebildet.
 Diese Klasse manipuliert das übergebene Spiel und ist somit der Ersatz zum spe\_ed-Server in der Offline-Variante.
-Die Klasse \Code{GameService} muss folglich in der oben genannten Methode \Code{play()}, der \Code{OfflineConnection},
+Die Klasse \Code{GameService} muss folglich in der oben genannten Methode \Code{play()} der \Code{OfflineConnection}
 initialisiert werden.
 Dazu müssen zunächst \Code{Player}-Objekte und das entsprechende \Code{Game}-Objekt erzeugt werden, welches dem
 \Code{GameService} übergeben wird.
