@@ -108,6 +108,28 @@ Daher wird die Aktion an die Klasse \Code{JSONDataWriter} überreicht, die einen
 \section{Implementierung des Offline-Spiels}
 \label{sec:offline-implementierung}
 
+Bei der Offline-Version des Spiels ging es darum, lokal die eigenen \ac{KI}s gegeneinander und
+als menschlicher Spieler gegen die \ac{KI} antreten zu können, ohne eine Verbindung zum spe\_ed-Server herzustellen.
+Dies ermöglichte uns lokal zu testen und unsere verschiedenen Lösungsansätzen (siehe \Kapitel{ch:loesungsansatz})
+gegeneinander spielen zu lassen, um zu beurteilen, welche die Beste ist.
+Die Implementierung des Offline-Spiels erfolgte in der Klasse \Code{OfflineConnection}, die entsprechend der Ober-Klasse
+\Code{Connection}, die Methode \Code{play()} implementiert. \\
+
+Da wir keine Verbindung zum spe\_ed-Server herstellen, erhalten wir keine Aktualisierung des Spiels.
+Auch müssen die errechneten Aktionen der \ac{KI} nicht versendet, sondern lokal verarbeitet werden.
+Daher haben wir die Spiellogik in der Klasse \Code{GameService} nachgebildet.
+Diese Klasse manipuliert das übergebene Spiel und ist somit der Ersatz zum spe\_ed-Server in der Offline-Variante.
+Die Klasse \Code{GameService} muss folglich in der oben genannten Methode \Code{play()}, der \Code{OfflineConnection},
+initialisiert werden.
+Dazu müssen zunächst \Code{Player}-Objekte und das entsprechende \Code{Game}-Objekt erzeugt werden, welches dem
+\Code{GameService} übergeben wird.
+Dieses \Code{Game}-Objekt wird dann im Spielverlauf durch den \Code{GameService} manipuliert.
+Zusätzlich werden die \ac{KI}s erzeugt und exklusiv einem Spieler zugeordnet, der sich im Spiel befindet.
+Solange das Spiel nun läuft - da mehr als ein Spieler aktiv ist - werden der Reihe nach die nächsten Aktionen der
+Spieler/\ac{KI}s abgefragt und an den \Code{GameService} weitergeleitet.
+Dieser Ablauf kann im folgenden Aktivitätsdiagramm nachvollzogen werden. \todo{Aktivitätsdiagramm einfügen}
+
+
 \todo{Kapitel ausformulieren}
 
 \section{Bereitstellung einer Oberfläche}
