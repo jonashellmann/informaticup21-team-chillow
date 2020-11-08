@@ -157,13 +157,11 @@ Bei dem \Code{Turn}-Objekt wird die Methode \Code{action(player: Player)} aufger
 Aktion machen darf und ob ein neuer Spielzug nach dieser Aktion beginnt.
 Nachfolgend wird dann die Aktion mit der Methode \Code{get\_and\_visit\_cells(player: Player, action: Action)}
 simuliert.
-Dabei wird der Spieler aktualisiert (x- und y-Koordinate, speed), der die Ausführung der Aktion eingeleitet hat.
-
-Das Spiel wird zunächst nicht verändert, sondern erst, wenn alle Spieler ihre Aktionen durchgeführt haben und ein neuer
-Spielzug durch das \Code{Turn}-Objekt eingeleitet wurde.
-Dies hilft dabei Kollisionen der Spieler besser zu erkennen.
-Sollte also ein neuer Spielzug durch die Aktion entstanden sein, werden die Spieler in die \Code{Cell}s eingetragen,
-Spieler mit Kollisionen inaktiv geschaltet und geprüft ob das Spiel beendet ist. \\
+Der Code der Methode befindet sich im \Anhang{lst:get-and-visit-cells}.
+Dabei wird der Spieler aktualisiert (x- und y-Koordinate, speed), der die Ausführung der Aktion eingeleitet hat und er
+wird im \Code{Game} in die \Code{Cell}s eingetragen, die er durch die Aktion neu besucht hat.
+Sollte ein neuer Spielzug durch die Aktion entstanden sein, werden Spieler mit Kollisionen inaktiv geschaltet und
+geprüft ob das Spiel beendet ist. \\
 
 Mithilfe dieser Logik des \Code{GameService} können wir Spiele autark durchführen.
 
