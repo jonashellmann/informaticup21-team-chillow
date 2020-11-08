@@ -18,8 +18,7 @@ class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
     def create_next_action(self, game: Game) -> Action:
         self.turn_ctr += 1
 
-        pathfinding_actions: List[Tuple[Action, int]] = self.create_next_actions_ranked(game)
-
+        pathfinding_actions = self.create_next_actions_ranked(game)
         search_tree_actions = super()._create_all_next_surviving_actions(game)
 
         best_action = self.get_best_action(pathfinding_actions, search_tree_actions)
