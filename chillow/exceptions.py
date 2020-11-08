@@ -7,7 +7,7 @@ class InvalidPlayerMoveException(Exception):
     pass
 
 
-class MultipleActionByPlayerError(InvalidPlayerMoveException):
+class MultipleActionByPlayerException(InvalidPlayerMoveException):
     def __init__(self, player: Player):
         super().__init__()
         logging.debug("Player " + str(player.name) + ", id "
