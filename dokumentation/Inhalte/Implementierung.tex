@@ -109,7 +109,8 @@ Daher wird die Aktion an die Klasse \Code{JSONDataWriter} überreicht, die einen
 \label{sec:offline-implementierung}
 
 Bei der Offline-Version des Spiels ging es darum, lokal die eigenen \ac{KI}s gegeneinander und
-als menschlicher Spieler gegen die \ac{KI} antreten zu können, ohne eine Verbindung zum spe\_ed-Server herzustellen.
+als menschlicher Spieler gegen die \ac{KI} antreten zu können, ohne eine Verbindung zum spe\_ed-Server herstellen zu
+müssen.
 Dies ermöglichte uns lokal zu testen und unsere verschiedenen Lösungsansätzen (siehe \Kapitel{ch:loesungsansatz})
 gegeneinander spielen zu lassen, um zu beurteilen, welche die Beste ist.
 Die Implementierung des Offline-Spiels erfolgte in der Klasse \Code{OfflineConnection}, die entsprechend der Ober-Klasse
@@ -124,10 +125,10 @@ initialisiert werden.
 Dazu müssen zunächst \Code{Player}-Objekte und das entsprechende \Code{Game}-Objekt erzeugt werden, welches dem
 \Code{GameService} übergeben wird.
 Dieses \Code{Game}-Objekt wird dann im Spielverlauf durch den \Code{GameService} manipuliert.
+
 Zusätzlich werden die \ac{KI}s erzeugt und exklusiv einem Spieler zugeordnet, der sich im Spiel befindet.
 Solange das Spiel nun läuft - da mehr als ein Spieler aktiv ist - werden der Reihe nach die nächsten Aktionen der
 Spieler/\ac{KI}s abgefragt und an den \Code{GameService} weitergeleitet.
-Dieser Ablauf kann im folgenden Aktivitätsdiagramm nachvollzogen werden. \todo{Aktivitätsdiagramm einfügen}
 
 \subsection{Implementierung des GameService}
 \label{subsec:game-service}
@@ -146,28 +147,30 @@ Aktionen ausgetragen und geprüft ob ein neuer Zug initialisiert werden muss, we
 war. \\
 
 Wenn ein Spieler eine Aktion durchführen möchte, verschickt er in der Offline-Variante kein Paket an den spe\_ed-Server,
-sondern ruft am \Code{GameService} die Methode \Code{do_action(player: Player, action: Action)} auf.
-Die Methode manipuliert dabei das \Code{Game}-Objekt, sodass dies eine äquivalente Aktualisierung zum erhalten des
-Spiels im JSON-Format durch den spe\_ed-Server ist.
-Der grobe Ablauf dieser Methode ist, dass bei dem \Code{Turn}-Objekt die Methode \Code{action(player: Player)}
-aufgerufen wird, um zu prüfen ob der Spieler eine Aktion machen darf und ob ein neuer Spielzug nach dieser Aktion
-beginnt.
-Nachfolgend wird dann die Aktion mit der Methode \Code{get_and_visit_cells(player: Player, action: Action)} durchgeführt
-und das \Code{Game} aktualisiert.
+sondern ruft am \Code{GameService} die Methode \Code{do\_action(player: Player, action: Action)} auf.
+Die Methode manipuliert dabei das \Code{Game}-Objekt, sodass dies eine äquivalente Aktualisierung zum Erhalt des Spiels
+im JSON-Format durch den spe\_ed-Server ist.
+
+Der grobe Ablauf dieser Methode ist wie folgt und kann genauer im Diagramm nachvollzogen werden.
+\todo{Diagramm einfügen}
+Bei dem \Code{Turn}-Objekt wird die Methode \Code{action(player: Player)} aufgerufen, um zu prüfen ob der Spieler eine
+Aktion machen darf und ob ein neuer Spielzug nach dieser Aktion beginnt.
+Nachfolgend wird dann die Aktion mit der Methode \Code{get\_and\_visit\_cells(player: Player, action: Action)}
+simuliert.
 Dabei wird der Spieler aktualisiert (x- und y-Koordinate, speed), der die Ausführung der Aktion eingeleitet hat.
+
 Das Spiel wird zunächst nicht verändert, sondern erst, wenn alle Spieler ihre Aktionen durchgeführt haben und ein neuer
 Spielzug durch das \Code{Turn}-Objekt eingeleitet wurde.
 Dies hilft dabei Kollisionen der Spieler besser zu erkennen.
-Sollte also ein neuer Spielzug durch die Aktion entstanden sind, werden die Spieler in die \Code{Cell}s eingetragen,
-Spieler mit Kollisionen inaktiv geschaltet und geprüft ob das Spiel beendet ist.
-Dieser Ablauf lässt sich genauer im Diagramm nachvollziehen. \todo{Diagramm einfügen} \\
+Sollte also ein neuer Spielzug durch die Aktion entstanden sein, werden die Spieler in die \Code{Cell}s eingetragen,
+Spieler mit Kollisionen inaktiv geschaltet und geprüft ob das Spiel beendet ist. \\
 
 Mithilfe dieser Logik des \Code{GameService} können wir Spiele autark durchführen.
+
 Bei der Implementierung der Logik wurde darauf geachtet, dass diese auch bei der Implementierung unserer \ac{KI}s
 helfen.
 Dadurch konnte der \Code{GameService} in den \ac{KI}s häufig genutzt werden, um beispielsweise Züge vorherzusagen oder
-zu
-prüfen, ob Aktionen zum Verlieren führen.
+zu prüfen, ob Aktionen zum Verlieren führen.
 
 \section{Bereitstellung einer Oberfläche}
 \label{sec:bereitstellung-oberflaeche}
