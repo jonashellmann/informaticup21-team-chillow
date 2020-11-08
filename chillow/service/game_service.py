@@ -140,7 +140,7 @@ class Turn:
 
     def action(self, player):
         if player not in self.playersWithPendingAction:
-            raise ex.MultipleActionByPlayerError(player)
+            raise ex.MultipleActionByPlayerException(player)
         # elif self.deadline < datetime.now():
         #    raise ex.DeadLineExceededException(player)
         else:

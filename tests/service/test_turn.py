@@ -29,7 +29,7 @@ class TurnTest(unittest.TestCase):
     def test_player_should_not_be_able_to_do_multiple_Actions_in_one_turn(self):
         self.sut.action(self.player1)
 
-        with self.assertRaises(ex.MultipleActionByPlayerError):
+        with self.assertRaises(ex.MultipleActionByPlayerException):
             self.sut.action(self.player1)
 
     def test_new_turn_should_be_initialized(self):
