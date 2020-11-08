@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 from chillow.ai.pathfinding_ai import PathfindingAI
 from chillow.ai.search_tree_node import SearchTreeRoot
@@ -30,10 +30,19 @@ class PathfindingSearchTreeAI(PathfindingAI):
                                      self.max_speed, True) is not None:
                 search_tree_actions.append(action)
 
-        return self.get_best_action(pathfinding_actions, search_tree_actions)
+        best_action = self.get_best_action(pathfinding_actions, search_tree_actions)
+
+        return best_action if best_action is not None else Action.get_random_action()
 
     def get_best_action(self, pathfinding_actions: List[Tuple[Action, int]],
-                        search_tree_actions: List[Action]) -> Action:
+                        search_tree_actions: List[Action]) -> Optional[Action]:
+        if search_tree_actions is None or len(search_tree_actions) == 0:
+            if pathfinding_actions is not None and len(pathfinding_actions) > 0:
+                return pathfinding_actions[0][0]
+            return None
+        elif pathfinding_actions is None or len(pathfinding_actions) == 0:
+            return search_tree_actions[0]
+
         for (action, possible_paths) in pathfinding_actions:
             if action in search_tree_actions:
                 if possible_paths == pathfinding_actions[0][1]:

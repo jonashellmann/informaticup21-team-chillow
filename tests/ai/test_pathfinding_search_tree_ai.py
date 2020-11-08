@@ -37,12 +37,12 @@ class PathfindingSearchTreeAITest(unittest.TestCase):
 
         self.assertEqual(action, Action.change_nothing)
 
-    def test_get_best_action_shoud_find_best_action_when_first_best_action_ist_not_in_search_tree_list(self):
+    def test_get_best_action_should_find_best_action_when_first_best_action_ist_not_in_search_tree_list(self):
         action = self.sut.get_best_action([(Action.change_nothing, 10), (Action.speed_up, 10)], [Action.speed_up])
 
         self.assertEqual(action, Action.speed_up)
 
-    def test_get_best_action_shoud_find_best_action_with_tolerance(self):
+    def test_get_best_action_should_find_best_action_with_tolerance(self):
         action = self.sut.get_best_action([(Action.change_nothing, 10), (Action.speed_up, 8)], [Action.speed_up])
 
         self.assertEqual(action, Action.speed_up)
@@ -51,3 +51,23 @@ class PathfindingSearchTreeAITest(unittest.TestCase):
         action = self.sut.get_best_action([(Action.change_nothing, 10), (Action.speed_up, 8)], [Action.slow_down])
 
         self.assertEqual(action, Action.change_nothing)
+
+    def test_get_best_pathfinding_action_return_None_when_lists_are_none(self):
+        action = self.sut.get_best_action(None, None)
+
+        self.assertIsNone(action)
+
+    def test_get_best_pathfinding_action_return_none_when_lists_are_empty(self):
+        action = self.sut.get_best_action([], [])
+
+        self.assertIsNone(action)
+
+    def test_get_best_pathfinding_action_return_search_tree_action_when_pathfinding_list_is_empty(self):
+        action = self.sut.get_best_action([], [Action.speed_up])
+
+        self.assertEqual(action, Action.speed_up)
+
+    def test_get_best_pathfinding_action_return_when_search_tree_list_is_empty(self):
+        action = self.sut.get_best_action([(Action.speed_up, 1)], [])
+
+        self.assertEqual(action, Action.speed_up)
