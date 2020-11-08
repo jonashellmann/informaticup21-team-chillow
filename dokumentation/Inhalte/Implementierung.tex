@@ -151,8 +151,8 @@ sondern ruft am \Code{GameService} die Methode \Code{do\_action(player: Player, 
 Die Methode manipuliert dabei das \Code{Game}-Objekt, sodass dies eine äquivalente Aktualisierung zum Erhalt des Spiels
 im JSON-Format durch den spe\_ed-Server ist.
 
-Der grobe Ablauf dieser Methode ist wie folgt und kann genauer im Diagramm nachvollzogen werden.
-\todo{Diagramm einfügen}
+Der grobe Ablauf dieser Methode ist wie nachfolgend beschrieben und kann im Diagramm genauer nachvollzogen werden.
+\todo{ggf. ein Diagramm einfügen ... Aktivitätsdiagramm?}
 Bei dem \Code{Turn}-Objekt wird die Methode \Code{action(player: Player)} aufgerufen, um zu prüfen ob der Spieler eine
 Aktion machen darf und ob ein neuer Spielzug nach dieser Aktion beginnt.
 Nachfolgend wird dann die Aktion mit der Methode \Code{get\_and\_visit\_cells(player: Player, action: Action)}
