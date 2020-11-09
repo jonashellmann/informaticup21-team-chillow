@@ -47,11 +47,11 @@ class Game:
                 return player
         raise Exception("No winner in ended game found")
 
-    def get_other_players(self, p: Player) -> List[Player]:
+    def get_other_player_ids(self, p: Player) -> List[int]:
         players = []
         for player in self.players:
             if player.id != p.id:
-                players.append(player)
+                players.append(player.id)
         return players
 
     def get_player_by_id(self, player_id: int) -> Player:
@@ -59,6 +59,13 @@ class Game:
             if player.id == player_id:
                 return player
         raise PlayerWithGivenIdNotAvailableException(player_id)
+
+    def get_players_by_ids(self, player_ids: List[int]) -> List[Player]:
+        players = []
+        for player in self.players:
+            if player.id in player_ids:
+                players.append(player)
+        return players
 
     def copy(self):
         players: List[Player] = []

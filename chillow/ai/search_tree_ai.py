@@ -17,21 +17,23 @@ class SearchTreeAI(ArtificialIntelligence):
     def create_next_action(self, game: Game) -> Action:
         self.turn_ctr += 1
         root = SearchTreeRoot(game.copy())
-        combinations = Action.get_combinations(len(game.get_other_players(self.player)))
+        player_ids_to_watch = game.get_other_player_ids(self.player)
+        combinations = Action.get_combinations(len(player_ids_to_watch))
 
-        action = root.calculate_action(self.player, combinations, self.__depth, self.turn_ctr, True, [],
-                                       self.max_speed, self.__randomize)
+        action = root.calculate_action(self.player, player_ids_to_watch, combinations, self.__depth, self.turn_ctr,
+                                       True, [], self.max_speed, self.__randomize)
         return action if action is not None else Action.get_random_action()
 
     def _create_all_next_surviving_actions(self, game: Game) -> List[Action]:
         root = SearchTreeRoot(game.copy())
-        combinations = Action.get_combinations(len(game.get_other_players(self.player)))
+        player_ids_to_watch = game.get_other_player_ids(self.player)
+        combinations = Action.get_combinations(len(player_ids_to_watch))
 
         search_tree_actions = []
 
         for action in Action.get_actions():
-            if root.calculate_action(self.player, combinations, self.__depth, self.turn_ctr, True, [action],
-                                     self.max_speed, True) is not None:
+            if root.calculate_action(self.player, player_ids_to_watch, combinations, self.__depth, self.turn_ctr, True,
+                                     [action], self.max_speed, True) is not None:
                 search_tree_actions.append(action)
 
         return search_tree_actions
