@@ -58,7 +58,7 @@ class Game:
 
     def __measure_shortest_distance(self, player_a: Player, player_b: Player) -> int:
         matrix = self.translate_cell_matrix_to_pathfinding_matrix()
-        matrix[player_b.y][player_b.x] = 1
+        matrix[player_b.y][player_b.x] = 1  # target field must be empty
         path_finder = BestFirst(diagonal_movement=DiagonalMovement.never)
         grid = Grid(matrix=matrix)
 
