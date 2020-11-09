@@ -174,11 +174,13 @@ class GameTest(unittest.TestCase):
         player2 = Player(2, 0, 1, Direction.down, 3, True, "")
         players = [player1, player2]
         cells = [[Cell([player1]), Cell()],
-                 [Cell([player2]), Cell()]]
+                 [Cell([player2]), Cell()],
+                 [Cell(), Cell()]]
 
-        game = Game(2, 2, cells, players, 2, True, datetime.now())
+        game = Game(2, 3, cells, players, 2, True, datetime.now())
         expected_matrix = [[0, 1],
-                           [0, 1]]
+                           [0, 1],
+                           [1, 1]]
 
         matrix = game.translate_cell_matrix_to_pathfinding_matrix()
 

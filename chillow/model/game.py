@@ -1,6 +1,9 @@
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import List
+from pathfinding.core.diagonal_movement import DiagonalMovement
+from pathfinding.core.grid import Grid
+from pathfinding.finder.best_first import BestFirst
 
 from chillow.model.player import Player
 from chillow.model.cell import Cell
@@ -49,12 +52,18 @@ class Game:
     def get_other_player_ids(self, p: Player, distance: int = 0) -> List[int]:
         players = []
         for player in self.players:
-            if player.id != p.id and (distance == 0 or self.__measure_shortest_distance(player, p) <= distance):
+            if player.id != p.id and (distance == 0 or self.__measure_shortest_distance(player, p) <= distance + 2):
                 players.append(player.id)
         return players
 
     def __measure_shortest_distance(self, player_a: Player, player_b: Player) -> int:
-        return 0
+        matrix = self.translate_cell_matrix_to_pathfinding_matrix()
+        matrix[player_b.y][player_b.x] = 1
+        path_finder = BestFirst(diagonal_movement=DiagonalMovement.never)
+        grid = Grid(matrix=matrix)
+
+        path, _ = path_finder.find_path(grid.node(player_a.x, player_a.y), grid.node(player_b.x, player_b.y), grid)
+        return len(path)
 
     def translate_cell_matrix_to_pathfinding_matrix(self) -> List[List[int]]:
         matrix = [[1 for _ in range(self.width)] for _ in range(self.height)]
