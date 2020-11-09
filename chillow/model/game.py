@@ -46,12 +46,23 @@ class Game:
                 return player
         raise Exception("No winner in ended game found")
 
-    def get_other_player_ids(self, p: Player) -> List[int]:
+    def get_other_player_ids(self, p: Player, distance: int = 0) -> List[int]:
         players = []
         for player in self.players:
-            if player.id != p.id:
+            if player.id != p.id and (distance == 0 or self.__measure_shortest_distance(player, p) <= distance):
                 players.append(player.id)
         return players
+
+    def __measure_shortest_distance(self, player_a: Player, player_b: Player) -> int:
+        return 0
+
+    def translate_cell_matrix_to_pathfinding_matrix(self) -> List[List[int]]:
+        matrix = [[1 for _ in range(self.width)] for _ in range(self.height)]
+        for i in range(len(self.cells)):
+            for j in range(len(self.cells[i])):
+                if self.cells[i][j].players is not None and len(self.cells[i][j].players) > 0:
+                    matrix[i][j] = 0  # Collision cell
+        return matrix
 
     def get_player_by_id(self, player_id: int) -> Player:
         for player in self.players:

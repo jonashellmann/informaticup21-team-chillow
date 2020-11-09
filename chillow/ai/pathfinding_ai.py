@@ -55,7 +55,7 @@ class PathfindingAI(ArtificialIntelligence):
             except InvalidPlayerMoveException:
                 continue
 
-            matrix = self.translate_cell_matrix_to_pathfinding_matrix(game_copy)
+            matrix = game_copy.translate_cell_matrix_to_pathfinding_matrix()
             current_possible_paths = 0
             length_free_cells = len(free_cells_for_pathfinding)
             for i in range(length_free_cells):
@@ -80,11 +80,3 @@ class PathfindingAI(ArtificialIntelligence):
         shuffle(free_cells)
         return free_cells[:min(self.count_paths_to_check, len(free_cells))]
 
-    @staticmethod
-    def translate_cell_matrix_to_pathfinding_matrix(game: Game) -> List[List[int]]:
-        matrix = [[1 for _ in range(game.width)] for _ in range(game.height)]
-        for i in range(len(game.cells)):
-            for j in range(len(game.cells[i])):
-                if game.cells[i][j].players is not None and len(game.cells[i][j].players) > 0:
-                    matrix[i][j] = 0  # Collision cell
-        return matrix
