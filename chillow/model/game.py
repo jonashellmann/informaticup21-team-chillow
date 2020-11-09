@@ -1,7 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import List
-import pickle
 
 from chillow.model.player import Player
 from chillow.model.cell import Cell
