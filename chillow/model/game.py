@@ -52,7 +52,7 @@ class Game:
     def get_other_player_ids(self, p: Player, distance: int = 0) -> List[int]:
         players = []
         for player in self.players:
-            if player.id != p.id and (distance == 0 or self.__measure_shortest_distance(player, p) <= distance + 2):
+            if player.id != p.id and (distance == 0 or self.__measure_shortest_distance(player, p) <= distance):
                 players.append(player.id)
         return players
 
@@ -63,7 +63,7 @@ class Game:
         grid = Grid(matrix=matrix)
 
         path, _ = path_finder.find_path(grid.node(player_a.x, player_a.y), grid.node(player_b.x, player_b.y), grid)
-        return len(path)
+        return len(path) - 1  # Subtract 1 to not count the starting position
 
     def translate_cell_matrix_to_pathfinding_matrix(self) -> List[List[int]]:
         matrix = [[1 for _ in range(self.width)] for _ in range(self.height)]
