@@ -19,7 +19,7 @@ class SearchTreeAI(ArtificialIntelligence):
     def create_next_action(self, game: Game) -> Action:
         self.turn_ctr += 1
         root = SearchTreeRoot(game.copy())
-        player_ids_to_watch = game.get_other_player_ids(self.player, self.__distance_to_check)
+        player_ids_to_watch = game.get_other_player_ids(self.player, self.__distance_to_check, True)
         combinations = Action.get_combinations(len(player_ids_to_watch))
 
         action = root.calculate_action(self.player, player_ids_to_watch, combinations, self.__depth, self.turn_ctr,
@@ -28,7 +28,7 @@ class SearchTreeAI(ArtificialIntelligence):
 
     def _create_all_next_surviving_actions(self, game: Game) -> List[Action]:
         root = SearchTreeRoot(game.copy())
-        player_ids_to_watch = game.get_other_player_ids(self.player, self.__distance_to_check)
+        player_ids_to_watch = game.get_other_player_ids(self.player, self.__distance_to_check, True)
         combinations = Action.get_combinations(len(player_ids_to_watch))
 
         search_tree_actions = []

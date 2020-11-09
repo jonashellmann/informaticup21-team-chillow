@@ -121,7 +121,7 @@ class GameTest(unittest.TestCase):
         with self.assertRaises(PlayerWithGivenIdNotAvailableException):
             game.get_player_by_id(100)
 
-    def test_return_all_players_except_one(self):
+    def test_return_all_other_players(self):
         player1 = Player(1, 1, 1, Direction.up, 0, True, "Name 1")
         player2 = Player(2, 1, 0, Direction.up, 0, True, "Name 2")
         player3 = Player(3, 0, 0, Direction.up, 0, True, "Name 3")
@@ -132,6 +132,18 @@ class GameTest(unittest.TestCase):
         result = game.get_other_player_ids(player2)
 
         self.assertEqual([1, 3], result)
+
+    def test_return_all_other_active_players(self):
+        player1 = Player(1, 1, 1, Direction.up, 0, True, "Name 1")
+        player2 = Player(2, 1, 0, Direction.up, 0, False, "Name 2")
+        player3 = Player(3, 0, 0, Direction.up, 0, True, "Name 3")
+        players = [player1, player2, player3]
+        cells = [[Cell([player3]), Cell([player2])], [Cell([]), Cell([player1])]]
+        game = Game(2, 2, cells, players, 1, True, datetime.now())
+
+        result = game.get_other_player_ids(player1, check_active=True)
+
+        self.assertEqual([3], result)
 
     def test_return_all_players_except_one_within_distance_1(self):
         player1 = Player(1, 3, 3, Direction.up, 0, True, "Name 1")

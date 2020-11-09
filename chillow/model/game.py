@@ -49,10 +49,12 @@ class Game:
                 return player
         raise Exception("No winner in ended game found")
 
-    def get_other_player_ids(self, p: Player, distance: int = 0) -> List[int]:
+    def get_other_player_ids(self, p: Player, distance: int = 0, check_active: bool = False) -> List[int]:
         players = []
         for player in self.players:
-            if player.id != p.id and (distance == 0 or self.__measure_shortest_distance(player, p) <= distance):
+            if player.id != p.id \
+                    and (distance == 0 or self.__measure_shortest_distance(player, p) <= distance) \
+                    and (not check_active or player.active):
                 players.append(player.id)
         return players
 
