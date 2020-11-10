@@ -121,7 +121,7 @@ class GameTest(unittest.TestCase):
         with self.assertRaises(PlayerWithGivenIdNotAvailableException):
             game.get_player_by_id(100)
 
-    def test_return_all_players_except_one(self):
+    def test_return_all_other_players(self):
         player1 = Player(1, 1, 1, Direction.up, 0, True, "Name 1")
         player2 = Player(2, 1, 0, Direction.up, 0, True, "Name 2")
         player3 = Player(3, 0, 0, Direction.up, 0, True, "Name 3")
@@ -129,9 +129,74 @@ class GameTest(unittest.TestCase):
         cells = [[Cell([player3]), Cell([player2])], [Cell([]), Cell([player1])]]
         game = Game(2, 2, cells, players, 2, True, datetime.now())
 
-        result = game.get_other_players(player2)
+        result = game.get_other_player_ids(player2)
 
-        self.assertEqual([player1, player3], result)
+        self.assertEqual([1, 3], result)
+
+    def test_return_all_other_active_players(self):
+        player1 = Player(1, 1, 1, Direction.up, 0, True, "Name 1")
+        player2 = Player(2, 1, 0, Direction.up, 0, False, "Name 2")
+        player3 = Player(3, 0, 0, Direction.up, 0, True, "Name 3")
+        players = [player1, player2, player3]
+        cells = [[Cell([player3]), Cell([player2])], [Cell([]), Cell([player1])]]
+        game = Game(2, 2, cells, players, 1, True, datetime.now())
+
+        result = game.get_other_player_ids(player1, check_active=True)
+
+        self.assertEqual([3], result)
+
+    def test_return_all_players_except_one_within_distance_1(self):
+        player1 = Player(1, 3, 3, Direction.up, 0, True, "Name 1")
+        player2 = Player(2, 1, 3, Direction.up, 0, True, "Name 2")
+        player3 = Player(3, 0, 0, Direction.up, 0, True, "Name 3")
+        players = [player1, player2, player3]
+        cells = [
+            [Cell([player3]), Cell(), Cell(), Cell(), Cell()],
+            [Cell(), Cell(), Cell(), Cell(), Cell()],
+            [Cell(), Cell(), Cell(), Cell(), Cell()],
+            [Cell(), Cell([player2]), Cell(), Cell([player1]), Cell()],
+            [Cell(), Cell(), Cell(), Cell(), Cell()]
+        ]
+        game = Game(5, 5, cells, players, 1, True, datetime.now())
+
+        result = game.get_other_player_ids(player1, 2)
+
+        self.assertEqual([2], result)
+
+    def test_return_all_players_except_one_within_distance_2(self):
+        player1 = Player(1, 4, 4, Direction.up, 0, True, "Name 1")
+        player2 = Player(2, 2, 3, Direction.up, 0, True, "Name 2")
+        player3 = Player(3, 1, 4, Direction.up, 0, True, "Name 3")
+        players = [player1, player2, player3]
+        cells = [
+            [Cell(), Cell(), Cell(), Cell(), Cell()],
+            [Cell(), Cell(), Cell(), Cell(), Cell()],
+            [Cell(), Cell(), Cell(), Cell(), Cell()],
+            [Cell(), Cell(), Cell([player2]), Cell(), Cell()],
+            [Cell(), Cell([player3]), Cell([player2]), Cell(), Cell([player1])]
+        ]
+        game = Game(5, 5, cells, players, 1, True, datetime.now())
+
+        result = game.get_other_player_ids(player1, 3)
+
+        self.assertEqual([2], result)
+
+    def test_translate_cell_matrix_to_pathfinding_matrix_should_be_correct(self):
+        player1 = Player(1, 0, 0, Direction.up, 1, True, "")
+        player2 = Player(2, 0, 1, Direction.down, 3, True, "")
+        players = [player1, player2]
+        cells = [[Cell([player1]), Cell()],
+                 [Cell([player2]), Cell()],
+                 [Cell(), Cell()]]
+
+        game = Game(2, 3, cells, players, 2, True, datetime.now())
+        expected_matrix = [[0, 1],
+                           [0, 1],
+                           [1, 1]]
+
+        matrix = game.translate_cell_matrix_to_pathfinding_matrix()
+
+        self.assertEqual(matrix, expected_matrix)
 
     def test_copying_a_game_should_return_same_game_but_different_identity(self):
         player1 = Player(1, 1, 1, Direction.up, 0, True, "Name")

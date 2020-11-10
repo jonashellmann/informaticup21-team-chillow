@@ -10,9 +10,9 @@ from chillow.model.player import Player
 class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
 
     def __init__(self, player: Player, max_speed: int, count_paths_to_check: int, depth: int,
-                 paths_tolerance: float = 0.75):
+                 paths_tolerance: float = 0.75, distance_to_check: int = 0):
         PathfindingAI.__init__(self, player, max_speed, count_paths_to_check)
-        SearchTreeAI.__init__(self, player, depth, max_speed)
+        SearchTreeAI.__init__(self, player, depth, max_speed, distance_to_check=distance_to_check)
         self.__paths_tolerance = paths_tolerance
 
     def create_next_action(self, game: Game) -> Action:

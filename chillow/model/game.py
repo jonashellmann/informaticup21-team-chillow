@@ -1,7 +1,9 @@
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import List
-import pickle
+from pathfinding.core.diagonal_movement import DiagonalMovement
+from pathfinding.core.grid import Grid
+from pathfinding.finder.best_first import BestFirst
 
 from chillow.model.player import Player
 from chillow.model.cell import Cell
@@ -47,18 +49,44 @@ class Game:
                 return player
         raise Exception("No winner in ended game found")
 
-    def get_other_players(self, p: Player) -> List[Player]:
+    def get_other_player_ids(self, p: Player, distance: int = 0, check_active: bool = False) -> List[int]:
         players = []
         for player in self.players:
-            if player.id != p.id:
-                players.append(player)
+            if player.id != p.id \
+                    and (distance == 0 or self.__measure_shortest_distance(player, p) <= distance) \
+                    and (not check_active or player.active):
+                players.append(player.id)
         return players
+
+    def __measure_shortest_distance(self, player_a: Player, player_b: Player) -> int:
+        matrix = self.translate_cell_matrix_to_pathfinding_matrix()
+        matrix[player_b.y][player_b.x] = 1  # target field must be empty
+        path_finder = BestFirst(diagonal_movement=DiagonalMovement.never)
+        grid = Grid(matrix=matrix)
+
+        path, _ = path_finder.find_path(grid.node(player_a.x, player_a.y), grid.node(player_b.x, player_b.y), grid)
+        return len(path) - 1  # Subtract 1 to not count the starting position
+
+    def translate_cell_matrix_to_pathfinding_matrix(self) -> List[List[int]]:
+        matrix = [[1 for _ in range(self.width)] for _ in range(self.height)]
+        for i in range(len(self.cells)):
+            for j in range(len(self.cells[i])):
+                if self.cells[i][j].players is not None and len(self.cells[i][j].players) > 0:
+                    matrix[i][j] = 0  # Collision cell
+        return matrix
 
     def get_player_by_id(self, player_id: int) -> Player:
         for player in self.players:
             if player.id == player_id:
                 return player
         raise PlayerWithGivenIdNotAvailableException(player_id)
+
+    def get_players_by_ids(self, player_ids: List[int]) -> List[Player]:
+        players = []
+        for player in self.players:
+            if player.id in player_ids:
+                players.append(player)
+        return players
 
     def copy(self):
         players: List[Player] = []

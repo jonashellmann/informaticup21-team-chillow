@@ -12,9 +12,12 @@ from chillow.service.game_service import GameService
 class SearchTreeRoot(object):
     _game: Game
 
-    def calculate_action(self, player: Player, combinations: List[Tuple[Any]], depth: int, turn_counter: int,
-                         root: bool, first_actions: List[Action], max_speed: int = 10, randomize: bool = False) \
+    def calculate_action(self, player: Player, player_ids_to_watch: List[int], combinations: List[Tuple[Any]],
+                         depth: int, turn_counter: int, root: bool, first_actions: List[Action], max_speed: int = 10,
+                         randomize: bool = False) \
             -> Optional[Action]:
+        assert len(player_ids_to_watch) == len(combinations[0])
+
         if depth <= 0:
             raise Exception
 
@@ -22,7 +25,8 @@ class SearchTreeRoot(object):
             for action in SearchTreeRoot.__get_actions(root, first_actions, randomize):
                 child = self.__create_child(player, action, turn_counter, max_speed)
                 if child is not None and child._game.get_player_by_id(player.id).active:
-                    if SearchTreeRoot.__try_combinations_for_child(child, player, combinations, turn_counter):
+                    if SearchTreeRoot.__try_combinations_for_child(child, player, player_ids_to_watch, combinations,
+                                                                   turn_counter):
                         return child.get_action()
             return None
 
@@ -30,10 +34,11 @@ class SearchTreeRoot(object):
             child = self.__create_child(player, action, turn_counter, max_speed)
             if child is not None and child._game.get_player_by_id(player.id).active:
                 for combination in combinations:
-                    node = SearchTreeRoot.__try_combination(child._game, player, combination, turn_counter)
+                    node = SearchTreeRoot.__try_combination(child._game, player_ids_to_watch, combination, turn_counter)
                     if node._game.get_player_by_id(player.id).active:
-                        node_action = node.calculate_action(player, combinations, depth - 1, turn_counter + 1,
-                                                            False, first_actions, max_speed, randomize)
+                        node_action = node.calculate_action(player, player_ids_to_watch, combinations, depth - 1,
+                                                            turn_counter + 1, False, first_actions, max_speed,
+                                                            randomize)
                         if node_action is not None:
                             return child.get_action()
 
@@ -58,22 +63,25 @@ class SearchTreeRoot(object):
     @staticmethod
     def __try_combinations_for_child(child: Type['SearchTreeRoot'],
                                      player: Player,
+                                     player_ids_to_watch: List[int],
                                      combinations: List[Tuple[Action]],
                                      turn_counter: int) -> bool:
         for combination in combinations:
-            node = SearchTreeRoot.__try_combination(child._game, player, combination, turn_counter)
+            node = SearchTreeRoot.__try_combination(child._game, player_ids_to_watch, combination, turn_counter)
             if not node._game.get_player_by_id(player.id).active:
                 return False
         return True
 
     @staticmethod
-    def __try_combination(game: Game, p: Player, combination: Tuple[Action], turn_counter: int):
+    def __try_combination(game: Game, player_ids_to_watch: List[int], combination: Tuple[Action],
+                          turn_counter: int):
         modified_game = game.copy()
         game_service = GameService(modified_game)
         game_service.turn.turn_ctr = turn_counter
+        players = modified_game.get_players_by_ids(player_ids_to_watch)
         for j in range(len(combination)):
             action = combination[j]
-            player = modified_game.get_other_players(p)[j]
+            player = players[j]
             SearchTreeRoot.__perform_simulation(game_service, action, player)
 
         game_service.check_and_set_died_players()
