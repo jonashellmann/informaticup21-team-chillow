@@ -9,7 +9,7 @@ from chillow.ai import *
 from chillow.service.data_loader import DataLoader
 from chillow.service.data_writer import DataWriter
 from chillow.service.game_service import GameService
-from chillow.controller.monitoring import Monitoring
+from chillow.view.view import View
 from chillow.model.game import Game
 from chillow.model.player import Player
 from chillow.model.direction import Direction
@@ -18,7 +18,7 @@ from chillow.model.cell import Cell
 
 class Connection(metaclass=ABCMeta):
 
-    def __init__(self, monitoring: Monitoring):
+    def __init__(self, monitoring: View):
         self.monitoring = monitoring
 
     @abstractmethod
@@ -28,7 +28,7 @@ class Connection(metaclass=ABCMeta):
 
 class OnlineConnection(Connection):
 
-    def __init__(self, monitoring: Monitoring, url: str, key: str, data_loader: DataLoader, data_writer: DataWriter,
+    def __init__(self, monitoring: View, url: str, key: str, data_loader: DataLoader, data_writer: DataWriter,
                  ai_class: str, ai_params):
         super().__init__(monitoring)
         self.url = url
@@ -69,7 +69,7 @@ class OnlineConnection(Connection):
 
 class OfflineConnection(Connection):
 
-    def __init__(self, monitoring: Monitoring):
+    def __init__(self, monitoring: View):
         super().__init__(monitoring)
 
     def play(self):
