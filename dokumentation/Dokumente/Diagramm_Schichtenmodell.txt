@@ -1,0 +1,5 @@
+// Erstellt mit https://yuml.me/diagram/plain/class/draw
+
+[Präsentations-Schicht]->[Logik-Schicht]
+[Logik-Schicht]->[Daten-Schicht]
+[Präsentations-Schicht]->[Daten-Schicht]
