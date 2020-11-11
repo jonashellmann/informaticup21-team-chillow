@@ -1,6 +1,6 @@
 import time
 
-from chillow.ai.artificial_intelligence import ArtificialIntelligence
+from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.model.action import Action
 from chillow.model.game import Game
 

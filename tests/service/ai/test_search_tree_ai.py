@@ -1,6 +1,6 @@
 import unittest
 
-from chillow.ai.search_tree_ai import SearchTreeAI
+from chillow.service.ai.search_tree_ai import SearchTreeAI
 from chillow.model.action import Action
 import tests
 from chillow.service.data_loader import JSONDataLoader

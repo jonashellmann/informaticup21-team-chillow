@@ -1,7 +1,7 @@
 import unittest
 
 import tests
-from chillow.ai.search_tree_pathfinding_ai import SearchTreePathfindingAI
+from chillow.service.ai.search_tree_pathfinding_ai import SearchTreePathfindingAI
 from chillow.model.action import Action
 from chillow.service.data_loader import JSONDataLoader
 

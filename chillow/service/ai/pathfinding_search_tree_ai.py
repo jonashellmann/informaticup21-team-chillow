@@ -1,7 +1,7 @@
 from typing import List, Tuple, Optional
 
-from chillow.ai.pathfinding_ai import PathfindingAI
-from chillow.ai.search_tree_ai import SearchTreeAI
+from chillow.service.ai.pathfinding_ai import PathfindingAI
+from chillow.service.ai.search_tree_ai import SearchTreeAI
 from chillow.model.action import Action
 from chillow.model.game import Game
 from chillow.model.player import Player
