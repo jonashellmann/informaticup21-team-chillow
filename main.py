@@ -3,7 +3,7 @@ import logging
 
 from chillow.service.ai import *
 from chillow.view import *
-from chillow.connection import OnlineConnection, OfflineConnection
+from chillow.controller import *
 from chillow.service.data_loader import JSONDataLoader
 from chillow.service.data_writer import JSONDataWriter
 
@@ -15,7 +15,7 @@ else:
     monitoring = ConsoleView()
 
 if not os.getenv('PLAY_ONLINE', False):
-    con = OfflineConnection(monitoring)
+    con = OfflineController(monitoring)
 else:
     url = os.environ["URL"]
     key = os.environ["KEY"]
@@ -24,6 +24,6 @@ else:
     ai_class = PathfindingAI.__name__
     ai_params = (2, 75)
 
-    con = OnlineConnection(monitoring, url, key, data_loader, data_writer, ai_class, ai_params)
+    con = OnlineController(monitoring, url, key, data_loader, data_writer, ai_class, ai_params)
 
 con.play()
