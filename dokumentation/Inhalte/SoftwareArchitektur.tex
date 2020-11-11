@@ -1,7 +1,7 @@
 \chapter{Software-Qualität}
 \label{ch:software-qualitaet}
 
-Um sicherzustellen, dass Software erwartungsgemäß funktioniert und eine Weiterentwicklung vereinfacht wird, macht es
+Um sicherzustellen, dass Software erwartungsgemäß funktioniert und eine Weiterentwicklung vereinfacht wird, ergibt es
 Sinn, verschiedene Aspekte zu berücksichten, die für eine verbesserte Qualität der Software sorgen.
 Die Wartbarkeit der Anwendung wird in \Kapitel{sec:erweiterbarkeit} noch genauer betrachtet.
 
@@ -11,7 +11,7 @@ Die Wartbarkeit der Anwendung wird in \Kapitel{sec:erweiterbarkeit} noch genauer
 Beim Aufbau der Software haben wir uns für ein dreischichtige Architektur und den Einsatz des \ac{MVC}-Patterns
 entschieden.
 Die Architektur ist in \Abbildung{fig:schichtenarchitektur} dargestellt und beinhaltet neben der Schicht zur Anzeige
-des Spiels in einer Oberfläche die Logik-Schicht, in der \ua die implementiert wurde, wie ein Spiel abläuft, wie
+des Spiels in einer Oberfläche die Logik-Schicht, in der \ua implementiert wurde, wie ein Spiel abläuft, wie
 die Daten zur Kommnuikation mit dem Server übersetzt werden können und auch wie die \ac{KI}s funktionieren sollen.
 Im Prinzip wird hier das Zusammenspiel der Klassen aus dem Modell umgesetzt.
 Die Modell-Schicht stellt die letzte und unterste Schicht dar und bietet die Klassen zur Datenhaltung und deren interne
@@ -53,9 +53,9 @@ Zuletzt bildet das Modell-Package die oben beschriebene Modell-Schicht ab.
 \label{sec:tests}
 
 Zur Sicherstellung der Korrektheit der Software wurden automatisierte Tests implementiert.
-Diese dienen während der Implementierung dazu, ein gewüncshtes Szenario abzubilden und anschließend den Code so zu
+Diese dienen während der Implementierung dazu, ein gewünschtes Szenario abzubilden und anschließend den Code so zu
 implementieren, dass der Test erfolgreich durchläuft.
-Anschließend ist eine Refaktorisierung möglich, \dasheisst der Code wird verändert, die Funktionalität sol laber gleich
+Anschließend ist eine Refaktorisierung möglich, \dasheisst der Code wird verändert, die Funktionalität soll aber gleich
 bleiben.
 Ein Beispiel dafür kann eine Verbesserung der Lesbarkeit oder Wartbarkeit durch eine Auslagerung einer großen in
 mehrere kleinere Methoden sein.
@@ -63,7 +63,7 @@ Diesen testgetriebenen Ansatz haben wir zwar nicht für alle Komponenten verwend
 durchaus hilfreich. \\
 
 Ein weiterer Vorteil von automatisierten Tests ist, dass bei einer Weiterentwicklung sichergestellt werden kann, dass
-durch eine Änderung keine ungewollten Nebeneffekte eintreten, sondern der Entwickler sicher sein kann, dass bei grünen
+durch eine Änderung keine ungewollten Nebeneffekte eintreten, sondern der Entwickler sicher sein kann, dass bei erfolgreich durchgelaufenen
 Tests alles weiterhin funktioniert.\\
 
 Ein Beispiel für einen Test ist in \Listing{lst:beispiel_unitttest} zu sehen.
@@ -77,17 +77,17 @@ geprüft, ob das gewünschte Resultat erzielt wurde.
 \section{Coding Conventions}
 \label{sec:code-conventions}
 
-Um sicherzustellen, dass unabhängig vom Autor der Code einheitlich und wartbar aufgebaut ist, wurde auf die Einhaltung
+Um sicherzustellen, dass der Code unabhängig vom Autor einheitlich und wartbar aufgebaut ist, wurde auf die Einhaltung
 von Konventionen beim Schreiben von Quell-Code beachtet.
 Viele solcher Vorgabe werden bereits durch die Programmiersprache geliefert und können daher automatisch überprüft
 werden.
 Dabei war Pylint als Tool hilfreich, dass sich als Plugin direkt in PyCharm-IDE von JetBrains integrieren ließ und somit
-bereits bei der Arbeit am Code unmittelbar Verbesserungsvorschläge machen konnte.
+bereits bei der Arbeit am Code unmittelbar Verbesserungsvorschläge macht.
 Außerdem wurde in einem automatischen Prozess, der nachfolgend noch in \Kapitel{sec:github-actions} beschrieben wird,
 das Tool Flake8 eingesetzt, sodass eine Überprüfung durch zwei verschiedene Programme erfolgte. \\
 
 Darüber hinaus haben wir auch eigene Punkte abgesprochen.
-Dazu zählt \bspw, dass wir an Methoden bei den Parametern und dem Rückgabewert jeweils eine Typangabe ergänzt, obwohl
-dies in Python nur optional ist.
+Dazu zählt \bspw, dass wir bei Parametern und dem Rückgabewert an Methoden die jeweilige Typangabe ergänzt haben, obwohl
+dies in Python optional ist.
 Der Vorteil, der sich daraus ergeben hat, war eine bessere Unterstützung bei der Autovervollständigung und Anzeige
 von möglichen Fehlern durch die IDE.
