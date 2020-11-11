@@ -48,18 +48,18 @@ Es wird mittels der Bibliothek \Code{asyncio} sichergestellt, dass diese asynchr
 wurde, bevor der Kontrollfluss im Programm weiterläuft.
 Sobald dies der Fall ist, ist das Spielende eingetreten und die Oberfläche wird beendet. \\
 
-\lstinputlisting[label=lst:online-play,language=Python,caption=\Code{play()}-Methode der \Code{OnlineConnection}]
-{./Dokumente/OnlineConnection-play.txt}
+\lstinputlisting[label=lst:online-play,language=Python,caption=\Code{play()}-Methode des \Code{OnlineController}s]
+{./Dokumente/OnlineController-play.txt}
 
-In der im vorherigen Absatz bereits erwähnten Methode \Code{\_\_play()} in der \Code{OnlineConnection} wird eine
+In der im vorherigen Absatz bereits erwähnten Methode \Code{\_\_play()} in dem \Code{OnlineController} wird eine
 Websocket-Verbindung zum Server aufgebaut.
 Anschließend wird in einer Endlosschleife die Logik zur Ausführung eines einzelnen Spielzugs ausgeführt.
 Wie ein solcher Spielzug abläuft, ist in \Anhang{fig:sequenzdiagramm-spielzug} in Form eines Sequenzdiagrammes
 nachvollziehbar und die Umsetzung in Python-Code kann zusammen mit dem Verbindungaufbau \Listing{lst:online-__play}
 entnommen werden.
 
-\lstinputlisting[label=lst:online-__play,language=Python,caption=\Code{\_\_play()}-Methode der \Code{OnlineConnection}]
-{./Dokumente/OnlineConnection-__play.txt}
+\lstinputlisting[label=lst:online-__play,language=Python,caption=\Code{\_\_play()}-Methode des \Code{OnlineController}s]
+{./Dokumente/OnlineController-__play.txt}
 
 \subsection{Einlesen des Spiel-Zustands}
 \label{subsec:einlesen-spielzustand}
@@ -90,7 +90,7 @@ Anschließend ist das Spiel in seinem aktuellen Zustand korrekt abgebildet.
 Als nächstes steht an, dass eine Entscheidung für die nächste Aktion getroffen werden muss.
 Dies ist allerdings nur notwendig, wenn der eigene Spieler noch aktiv ist. \\
 
-Die Berechnung und Festlegung auf die nächste Aktion wird von der \Code{OnlineConnection} an ein Objekt einer
+Die Berechnung und Festlegung auf die nächste Aktion wird von dem \Code{OnlineController} an ein Objekt einer
 Subklasse der abstrakten Basisklasse \Code{ArtificialIntelligence} mit dem Aufruf der Methode
 \Code{create\_next\_action(game: Game)} deligiert.
 Welche Art der im \Kapitel{ch:loesungsansatz} beschriebenen \ac{KI}s gewählt werden soll, steht dem Anwender
@@ -113,14 +113,14 @@ als menschlicher Spieler gegen die \ac{KI} antreten zu können, ohne eine Verbin
 müssen.
 Dies ermöglichte uns, lokal zu testen und unsere verschiedenen Lösungsansätzen (siehe \Kapitel{ch:loesungsansatz})
 gegeneinander auszuprobieren, um zu beurteilen, welche die beste Strategie ist.
-Die Implementierung des Offline-Spiels erfolgte in der Klasse \Code{OfflineConnection}, die entsprechend der Ober-Klasse
-\Code{Connection} die Methode \Code{play()} implementiert. \\
+Die Implementierung des Offline-Spiels erfolgte in der Klasse \Code{OfflineController}, die entsprechend der Ober-Klasse
+\Code{Controller} die Methode \Code{play()} implementiert. \\
 
 Da wir keine Verbindung zum spe\_ed-Server herstellen, erhalten wir keine Aktualisierung des Spiels.
 Auch müssen die errechneten Aktionen der \ac{KI} nicht versendet, sondern lokal verarbeitet werden.
 Daher haben wir die Spiellogik in der Klasse \Code{GameService} nachgebildet.
 Diese Klasse manipuliert das übergebene Spiel und ist somit der Ersatz zum spe\_ed-Server in der Offline-Variante.
-Die Klasse \Code{GameService} muss folglich in der oben genannten Methode \Code{play()} der \Code{OfflineConnection}
+Die Klasse \Code{GameService} muss folglich in der oben genannten Methode \Code{play()} des \Code{OfflineController}s
 initialisiert werden.
 Dazu müssen zunächst \Code{Player}-Objekte und das entsprechende \Code{Game}-Objekt erzeugt werden, welches dem
 \Code{GameService} übergeben wird.
