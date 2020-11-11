@@ -6,7 +6,7 @@ from pathfinding.core.diagonal_movement import DiagonalMovement
 from pathfinding.core.grid import Grid
 from pathfinding.finder.best_first import BestFirst
 
-from chillow.ai.artificial_intelligence import ArtificialIntelligence
+from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.exceptions import InvalidPlayerMoveException
 from chillow.model.action import Action
 from chillow.model.game import Game
@@ -79,4 +79,3 @@ class PathfindingAI(ArtificialIntelligence):
                     free_cells.append((x, y))
         shuffle(free_cells)
         return free_cells[:min(self.count_paths_to_check, len(free_cells))]
-

@@ -1,7 +1,7 @@
 import os
 import logging
 
-from chillow.ai import *
+from chillow.service.ai import *
 from chillow.view import *
 from chillow.connection import OnlineConnection, OfflineConnection
 from chillow.service.data_loader import JSONDataLoader

@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 
-from chillow.ai.pathfinding_ai import PathfindingAI
+from chillow.service.ai.pathfinding_ai import PathfindingAI
 from chillow.model.action import Action
 from chillow.model.cell import Cell
 from chillow.model.direction import Direction

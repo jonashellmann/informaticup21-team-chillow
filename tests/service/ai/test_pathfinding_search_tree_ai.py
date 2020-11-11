@@ -3,7 +3,7 @@ from datetime import datetime
 
 import tests
 from chillow.model.action import Action
-from chillow.ai.pathfinding_search_tree_ai import PathfindingSearchTreeAI
+from chillow.service.ai.pathfinding_search_tree_ai import PathfindingSearchTreeAI
 from chillow.model.cell import Cell
 from chillow.model.direction import Direction
 from chillow.model.game import Game
