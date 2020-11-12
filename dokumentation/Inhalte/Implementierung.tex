@@ -175,13 +175,58 @@ zu prüfen, ob Aktionen zum Verlieren führen.
 
 Unabhängig davon, ob ein Spiel online oder offline ausgeführt wird, gibt es die Möglichkeit, den Spielverlauf in zwei
 verschiedenen Formen dargestellt zu bekommen.
+Zum einen lässt sich das Spiel auf der Konsole darstellen und zum anderen als grafische Oberfläche mittels PyGame.
+Beide Dastellungsvarianten implementieren das Interface \Code{View}.
+
+\subsection{View-Interface}
+\label{subsec:interface-view}
+
+Das Interface \Code{View} deklariert 3 abstrakte Methoden, die durch die Unterklassen implementiert werden müssen.
+
+Die Methode \Code{update(game: Game)} ist dafür gedacht, dem Benutzer das Spielgeschehen fortlaufend mithilfe des
+übergebenen \Code{Game}-Objekts darzustellen, sodass immer der aktuelle Stand des Spiels angezeigt wird.
+Mit der Methode \Code{create\_next\_action()} soll die Funktionalität bereitgestellt werden, als menschlicher Spieler
+eine Aktion durchführen zu können.
+Die dritte Methode \Code{end()} ist dafür gedacht, möglicherweise notwendige Schritte zum Beenden der Oberfläche
+auszuführen.
 
 \subsection{Darstellung des Spiels in der Konsole}
 \label{subsec:oberflaeche-konsole}
 
-\todo{Kapitel ausformulieren}
+Die Umsetzung der konsolenbasierten View geschieht durch die Klasse \Code{ConsoleView}.
+Zur Darstellung des Spiels auf der Konsole haben wir uns für das Package \Code{tabulate} entschieden.
+Dadurch war es leicht, strukturierte Tabellen in der Konsole auszugeben, was in der Methode \Code{update(game: Game)}
+geschieht.
+Durch das Attribut \Code{cells} in dem Objekt eines Spiels haben wir bereits die Belegung der Felder auf dem Spielfeld
+durch die \Code{Cell}-Objekte.
+Dies wird dann ein ein zweidimensionales Array mit Strings überführt.
+Wenn sich kein Spieler auf dem Feld befindet, wird ein leerer String ausgegeben, andernfalls die ID des Spielers.
+Die Darstellung kann in \Kapitel{sec:nachstellung-spiel} eingesehen werden.\\
+
+Zur Implemenierung der Methode \Code{create\_next\_action()} wurde die Eingabe der Konsole durch die Methode \Code{input}
+genutzt und entsprechend der Eingabe wird die passende Aktion zurückgegeben.
 
 \subsection{Nutzung von PyGame als grafische Oberfläche}
 \label{subsec:oberflaeche-pygame}
 
-\todo{Kapitel ausformulieren}
+Die grafische Oberfläche wurde in der Klasse \Code{GraphicalView} umgesetzt.
+Bei der Darstellung des Spiels haben wir uns für die Nutzung der Bibliothek PyGame entschieden.
+Der Grund für die Entscheidung ist die leichte Implementierung eines zweidimensionalen Spiels, wie es das Spiel
+spe\_ed ist.
+Des Weiteren benötigt PyGame einen geringen Aufwand bei der Initialisierung, um ein Spiel rendern zu können. \\
+
+Zur Darstellung mittels PyGame durch die Methode \Code{update(game: Game)} wird dann in einem initialisiertem Fenster
+jeder Bereich in Form von Rechtecken farblich bestimmt und aktualisiert.
+Befindet sich kein Spieler auf dem Feld, wird es schwarz gezeichnet und andernfalls entsprechend einer festgelegten
+Farbe, die dem Spieler zugeordnet ist, befüllt.
+Die Darstellung kann in \Kapitel{sec:nachstellung-spiel} eingesehen werden.
+Die Implementierung der Methode befindet sich im \Anhang{lst:pygame_update}. \\
+
+Bei der Implementierung der Methode \Code{create\_next\_action()} für die Eingabe der menschlichen Spieler haben wir die
+Keylistener von PyGame genutzt.
+In einem Event sind alle zurzeit gedrückten Tasten gespeichert und somit können wir filtern, welche Aktion vom Spieler
+gewünscht ist und geben diese zurück. \\
+
+Die Methode \Code{end()} wird in der grafischen Oberfläche dazu genutzt, um das PyGame ordnungsgemäß zu beenden.
+Außerdem warten wir zehn Sekunden, sodass die letzte ausgeführte Runde des Spiels nachvollzogen werden kann und die
+View nicht sofort geschlossen wird.
