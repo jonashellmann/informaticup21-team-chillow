@@ -41,7 +41,7 @@ class GraphicalView(View):
                                   self.RECTANGLE_SIZE,
                                   self.RECTANGLE_SIZE))
                 if game.cells[row][col].get_player_id() != 0:
-                    for player in game.cells[row][col].players:
+                    for player in game.cells[row][col].players:  # print head
                         if player.x == col and player.y == row:
                             pygame.draw.rect(self.screen, self.playerColors[0],
                                              (col * self.RECTANGLE_SIZE + col + 2,
