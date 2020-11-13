@@ -15,18 +15,19 @@ class GraphicalView(View):
     CLOCK_TICK = 60
 
     def __init__(self):
+        super().__init__()
+
         self.clock = pygame.time.Clock()
         pygame.init()
         self.clock.tick(self.CLOCK_TICK)
         self.next_Action = True
 
-        self.interface_initialized = False
-        self.playerColors = {0: (0, 0, 0)}  # black if no Player is on the cell
+        self._colors = [(255, 61, 0), (156, 204, 101), (171, 71, 188), (38, 166, 154), (255, 238, 88), (66, 165, 245)]
         self.screen = None
 
     def update(self, game: Game):
-        if not self.interface_initialized:
-            self.initialize_interface(game)
+        if not self._interface_initialized:
+            self._initialize_interface(game)
 
         if not game.running:
             player = game.get_winner()
@@ -35,7 +36,8 @@ class GraphicalView(View):
         self.screen.fill((0, 0, 0))
         for row in range(game.height):
             for col in range(game.width):
-                pygame.draw.rect(self.screen, self.playerColors[game.cells[row][col].get_player_id()],
+                pygame.draw.rect(self.screen,
+                                 self._player_colors[game.cells[row][col].get_player_id()],
                                  (col * self.RECTANGLE_SIZE + col,
                                   row * self.RECTANGLE_SIZE + row,
                                   self.RECTANGLE_SIZE,
@@ -43,7 +45,7 @@ class GraphicalView(View):
                 if game.cells[row][col].get_player_id() != 0:
                     for player in game.cells[row][col].players:  # print head
                         if player.x == col and player.y == row:
-                            pygame.draw.rect(self.screen, self.playerColors[0],
+                            pygame.draw.rect(self.screen, self._player_colors[0],
                                              (col * self.RECTANGLE_SIZE + col + 2,
                                               row * self.RECTANGLE_SIZE + row + 2,
                                               self.RECTANGLE_SIZE - 4,
@@ -78,10 +80,7 @@ class GraphicalView(View):
         pygame.quit()
         sys.exit()
 
-    def initialize_interface(self, game: Game):
-        self.interface_initialized = True
-        colors = [(255, 61, 0), (156, 204, 101), (171, 71, 188), (38, 166, 154), (255, 238, 88), (66, 165, 245)]
-        for i in range(0, len(game.players)):
-            self.playerColors[int(game.players[i].id)] = colors[i]
+    def _initialize_interface(self, game: Game):
+        super()._initialize_interface(game)
         self.screen = pygame.display.set_mode(
             [game.width * self.RECTANGLE_SIZE + game.width, game.height * self.RECTANGLE_SIZE + game.height])

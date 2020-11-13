@@ -9,10 +9,15 @@ from chillow.view.view import View
 class ConsoleView(View):
 
     def __init__(self):
+        super().__init__()
+
         self.__round = 0
-        self.__colors = ['red', 'blue', 'green', 'yellow', 'magenta', 'cyan']
+        self._colors = ['red', 'blue', 'green', 'yellow', 'magenta', 'cyan']
 
     def update(self, game: Game):
+        if not self._interface_initialized:
+            self._initialize_interface(game)
+
         print("Round : ", self.__round)
         self.__round += 1
 
@@ -25,7 +30,7 @@ class ConsoleView(View):
                     row_cells.append(' ')
                 else:
                     player = game.get_player_by_id(cell.get_player_id())
-                    color = self.__colors[cell.get_player_id() - 1]
+                    color = self._player_colors[cell.get_player_id()]
                     if player.x == col and player.y == row:
                         row_cells.append(colored("o", color))
                     else:
