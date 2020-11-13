@@ -9,10 +9,9 @@ from chillow.view.view import View
 class ConsoleView(View):
 
     def __init__(self):
-        super().__init__()
-
+        colors = ['red', 'blue', 'green', 'yellow', 'magenta', 'cyan']
+        super().__init__(colors)
         self.__round = 0
-        self._colors = ['red', 'blue', 'green', 'yellow', 'magenta', 'cyan']
 
     def update(self, game: Game):
         if not self._interface_initialized:
