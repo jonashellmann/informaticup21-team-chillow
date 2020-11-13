@@ -1,4 +1,5 @@
 from tabulate import tabulate
+from termcolor import colored
 
 from chillow.model.action import Action
 from chillow.model.game import Game
@@ -8,15 +9,37 @@ from chillow.view.view import View
 class ConsoleView(View):
 
     def __init__(self):
-        self.round = 0
+        colors = ['red', 'blue', 'green', 'yellow', 'magenta', 'cyan']
+        super().__init__(colors)
+        self.__round = 0
 
     def update(self, game: Game):
-        print("Round : ", self.round)
-        self.round += 1
+        if not self._interface_initialized:
+            self._initialize_interface(game)
 
-        table_player_ids = \
-            [[' ' if cell.get_player_id() == 0 else cell.get_player_id() for cell in cells] for cells in game.cells]
-        print(tabulate(table_player_ids, tablefmt="presto"))
+        print("Round : ", self.__round)
+        self.__round += 1
+
+        table_player_ids = []
+        for row in range(len(game.cells)):
+            row_cells = []
+            for col in range(len(game.cells[0])):
+                cell = game.cells[row][col]
+                if cell.get_player_id() == 0:
+                    row_cells.append(' ')
+                else:
+                    player = game.get_player_by_id(cell.get_player_id())
+                    color = self._player_colors[cell.get_player_id()]
+                    if player.x == col and player.y == row:
+                        row_cells.append(colored("o", color))
+                    else:
+                        row_cells.append(colored(str(player.id), color))
+            table_player_ids.append(row_cells)
+
+        print(tabulate(table_player_ids, tablefmt="jira")
+              .replace(" ", "")
+              .replace("||", "| |")
+              .replace("||", "| |"))
 
         if not game.running:
             player = game.get_winner()

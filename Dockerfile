@@ -5,6 +5,7 @@ WORKDIR /app
 
 ENV DEACTIVATE_PYGAME=TRUE
 ENV PLAY_ONLINE=TRUE
+ENV TERM=xterm-256color
 
 RUN python -m pip install --upgrade pip
 RUN pip install poetry

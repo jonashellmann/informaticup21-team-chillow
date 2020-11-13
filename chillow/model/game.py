@@ -35,7 +35,7 @@ class Game:
 
             if player.active \
                     and (self.cells[player.y][player.x].players is None
-                         or self.cells[player.y][player.x].players[0] != player):
+                         or player not in self.cells[player.y][player.x].players):
                 raise PlayerPositionException(player.x, player.y)
 
         if not hasattr(self, 'you'):

@@ -25,7 +25,7 @@ class PathfindingAI(ArtificialIntelligence):
 
         actions = self.create_next_actions_ranked(game)
 
-        return actions[0][0] if len(actions) > 0 else Action.get_random_action()
+        return actions[0][0] if actions is not None and len(actions) > 0 else Action.get_random_action()
 
     def create_next_actions_ranked(self, game: Game) -> Optional[List[Tuple[Action, int]]]:
         game_service = GameService(game)
