@@ -75,8 +75,7 @@ class GameService:
         horizontal_multiplier, vertical_multiplier = GameService.get_horizontal_and_vertical_multiplier(player)
 
         for i in range(1, player.speed + 1):
-            visited_cells.append(
-                (player.x + i * horizontal_multiplier, player.y + i * vertical_multiplier))
+            visited_cells.append((player.x + i * horizontal_multiplier, player.y + i * vertical_multiplier))
 
         if self.turn.turn_ctr % 6 == 0 and len(visited_cells) > 1:  # Lücke, also nur ersten und letzten Punkt nehmen
             visited_cells = [visited_cells[0], visited_cells[-1]]
