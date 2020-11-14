@@ -10,7 +10,7 @@ class View(metaclass=ABCMeta):
         self._interface_initialized = False
         self._player_colors = {0: (0, 0, 0)}
 
-        assert self.__colors is not None and len(self.__colors) > 0, "No colors available for interface"
+        assert colors is not None and len(colors) > 0, "No colors available for interface"
         self.__colors = colors
 
     @abstractmethod
@@ -18,7 +18,7 @@ class View(metaclass=ABCMeta):
         raise NotImplementedError
 
     @abstractmethod
-    def create_next_action(self):
+    def read_next_action(self):
         raise NotImplementedError
 
     @abstractmethod

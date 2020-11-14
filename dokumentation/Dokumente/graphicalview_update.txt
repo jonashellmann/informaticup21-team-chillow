@@ -1,27 +1,32 @@
 def update(self, game: Game):
-    if not self.interface_initialized:
-        self.initialize_interface(game)
+    if not self._interface_initialized:
+        self._initialize_interface(game)
 
     if not game.running:
         player = game.get_winner()
-        print("Winner: Player " + str(player.id) + " (" + player.name + "). Your player ID was " + str(game.you.id))
+        print("Winner: Player " + str(player.id) + " ("
+              + player.name + "). Your player ID was " + str(game.you.id))
 
-    self.screen.fill((0, 0, 0))
+    self.__screen.fill((0, 0, 0))
     for row in range(game.height):
         for col in range(game.width):
-            pygame.draw.rect(self.screen,
-                             self.playerColors[game.cells[row][col].get_player_id()],
+            pygame.draw.rect(self.__screen,
+                             self._player_colors[game.cells[row][col].get_player_id()],
                              (col * self.RECTANGLE_SIZE + col,
                               row * self.RECTANGLE_SIZE + row,
                               self.RECTANGLE_SIZE,
                               self.RECTANGLE_SIZE))
             if game.cells[row][col].get_player_id() != 0:
-                for player in game.cells[row][col].players:  # print head
-                    if player.x == col and player.y == row:
-                        pygame.draw.rect(self.screen, self.playerColors[0],
-                                         (col * self.RECTANGLE_SIZE + col + 2,
-                                          row * self.RECTANGLE_SIZE + row + 2,
-                                          self.RECTANGLE_SIZE - 4,
-                                          self.RECTANGLE_SIZE - 4))
+                player = game.get_player_by_id(game.cells[row][col].get_player_id())
+                if player.x == col and player.y == row:  # print head
+                    border_width = 2
+                    if player == game.you:
+                        border_width = 4
+                    pygame.draw.rect(self.__screen,
+                                     self._player_colors[0],
+                                     (col * self.RECTANGLE_SIZE + col + border_width,
+                                      row * self.RECTANGLE_SIZE + row + border_width,
+                                      self.RECTANGLE_SIZE - (2 * border_width),
+                                      self.RECTANGLE_SIZE - (2 * border_width)))
     pygame.display.update()
-    self.clock.tick(60)
+    self.__clock.tick(60)
