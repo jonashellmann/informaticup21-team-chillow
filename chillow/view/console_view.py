@@ -31,7 +31,10 @@ class ConsoleView(View):
                     player = game.get_player_by_id(cell.get_player_id())
                     color = self._player_colors[cell.get_player_id()]
                     if player.x == col and player.y == row:
-                        row_cells.append(colored("o", color))
+                        if player == game.you:
+                            row_cells.append(colored("x", color))
+                        else:
+                            row_cells.append(colored("o", color))
                     else:
                         row_cells.append(colored(str(player.id), color))
             table_player_ids.append(row_cells)
