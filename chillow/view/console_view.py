@@ -39,10 +39,7 @@ class ConsoleView(View):
                         row_cells.append(colored(str(player.id), color))
             table_player_ids.append(row_cells)
 
-        print(tabulate(table_player_ids, tablefmt="jira")
-              .replace(" ", "")
-              .replace("||", "| |")
-              .replace("||", "| |"))
+        print(tabulate(table_player_ids, tablefmt="jira"))
 
         if not game.running:
             player = game.get_winner()
