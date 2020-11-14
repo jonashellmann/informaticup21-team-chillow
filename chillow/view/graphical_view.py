@@ -42,13 +42,17 @@ class GraphicalView(View):
                                   self.RECTANGLE_SIZE,
                                   self.RECTANGLE_SIZE))
                 if game.cells[row][col].get_player_id() != 0:
-                    for player in game.cells[row][col].players:  # print head
-                        if player.x == col and player.y == row:
-                            pygame.draw.rect(self.__screen, self._player_colors[0],
-                                             (col * self.RECTANGLE_SIZE + col + 2,
-                                              row * self.RECTANGLE_SIZE + row + 2,
-                                              self.RECTANGLE_SIZE - 4,
-                                              self.RECTANGLE_SIZE - 4))
+                    player = game.get_player_by_id(game.cells[row][col].get_player_id())
+                    if player.x == col and player.y == row:  # print head
+                        border_width = 2
+                        if player == game.you:
+                            border_width = 4
+                        pygame.draw.rect(self.__screen,
+                                         self._player_colors[0],
+                                         (col * self.RECTANGLE_SIZE + col + border_width,
+                                          row * self.RECTANGLE_SIZE + row + border_width,
+                                          self.RECTANGLE_SIZE - (2 * border_width),
+                                          self.RECTANGLE_SIZE - (2 * border_width)))
         pygame.display.update()
         self.__clock.tick(60)
 
