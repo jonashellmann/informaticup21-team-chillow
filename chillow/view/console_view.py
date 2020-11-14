@@ -48,7 +48,7 @@ class ConsoleView(View):
             player = game.get_winner()
             print("Winner: Player " + str(player.id) + " (" + player.name + "). Your player ID was " + str(game.you.id))
 
-    def create_next_action(self) -> Action:
+    def read_next_action(self) -> Action:
         user_input = input("Input Next Action (l:turn_left, r:turn_right, u:speed_up, d:slow_down, "
                            "n:change_nothing): ")
         if user_input == "u":

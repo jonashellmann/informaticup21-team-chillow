@@ -18,7 +18,7 @@ class View(metaclass=ABCMeta):
         raise NotImplementedError
 
     @abstractmethod
-    def create_next_action(self):
+    def read_next_action(self):
         raise NotImplementedError
 
     @abstractmethod

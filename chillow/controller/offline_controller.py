@@ -41,7 +41,7 @@ class OfflineController(Controller):
 
         while game.running:
             # if player1.active:
-            #     action = self.monitoring.create_next_action()
+            #     action = self.monitoring.read_next_action()
             #     game_service.do_action(player1, action)
 
             for ai in ais:

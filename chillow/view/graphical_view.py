@@ -56,7 +56,7 @@ class GraphicalView(View):
         pygame.display.update()
         self.__clock.tick(60)
 
-    def create_next_action(self) -> Action:
+    def read_next_action(self) -> Action:
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
