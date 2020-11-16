@@ -12,6 +12,7 @@ class ConsoleView(View):
         colors = ['red', 'blue', 'green', 'yellow', 'magenta', 'cyan']
         super().__init__(colors)
         self.__round = 0
+        self.__player_representation = {}
 
     def update(self, game: Game):
         if not self._interface_initialized:
@@ -36,7 +37,7 @@ class ConsoleView(View):
                         else:
                             row_cells.append(colored("o", color))
                     else:
-                        row_cells.append(colored(str(player.id), color))
+                        row_cells.append(colored(str(self.__player_representation[player.id]), color))
             table_player_ids.append(row_cells)
 
         print(tabulate(table_player_ids, tablefmt="jira")
@@ -46,7 +47,8 @@ class ConsoleView(View):
 
         if not game.running:
             player = game.get_winner()
-            print("Winner: Player " + str(player.id) + " (" + player.name + "). Your player ID was " + str(game.you.id))
+            print("Winner: Player " + str(self.__player_representation[player.id]) + " (" + player.name +
+                  "). Your player ID was " + str(self.__player_representation[game.you.id]))
 
     def read_next_action(self) -> Action:
         user_input = input("Input Next Action (l:turn_left, r:turn_right, u:speed_up, d:slow_down, "
@@ -64,3 +66,10 @@ class ConsoleView(View):
 
     def end(self):
         print("Game ended!")
+
+    def _initialize_interface(self, game: Game):
+        super()._initialize_interface(game)
+        player_counter = 0
+        for player in game.players:
+            player_counter += 1
+            self.__player_representation[player.id] = player_counter
