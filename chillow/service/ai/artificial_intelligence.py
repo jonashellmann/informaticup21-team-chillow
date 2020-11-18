@@ -16,6 +16,9 @@ class ArtificialIntelligence(metaclass=ABCMeta):
         self.turn_ctr = 0
         self.max_speed = max_speed
 
+    def get_information(self) -> str:
+        return self.__class__.__name__ + ", max_speed=" + str(self.max_speed)
+
     @abstractmethod
     def create_next_action(self, game: Game) -> Action:
         raise NotImplementedError
