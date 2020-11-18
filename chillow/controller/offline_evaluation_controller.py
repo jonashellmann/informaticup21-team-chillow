@@ -19,7 +19,9 @@ class OfflineEvaluationController(OfflineController):
         self.__runs = runs
 
     def play(self):
-        for _ in range(self.__runs):
+        for i in range(self.__runs):
+            print("Round: " + str(i + 1))
+
             super().play()
 
             winner_player = self._game.get_winner()
