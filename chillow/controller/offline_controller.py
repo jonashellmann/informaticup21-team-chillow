@@ -16,6 +16,24 @@ class OfflineController(Controller):
         super().__init__(monitoring)
 
     def play(self):
+        self._create_game()
+        game_service = GameService(self._game)
+
+        self.monitoring.update(self._game)
+
+        while self._game.running:
+            # if player1.active:
+            #     action = self.monitoring.read_next_action()
+            #     game_service.do_action(player1, action)
+
+            for ai in self._ais:
+                if ai.player.active:
+                    action = ai.create_next_action(self._game.copy())
+                    game_service.do_action(ai.player, action)
+
+            self.monitoring.update(self._game)
+
+    def _create_game(self) -> None:
         player1 = Player(1, 5, 5, Direction.down, 1, True, "Human Player 1")
         player2 = Player(2, 25, 5, Direction.down, 1, True, "AI Player 1")
         player3 = Player(3, 5, 15, Direction.up, 1, True, "AI Player 2")
@@ -28,25 +46,12 @@ class OfflineController(Controller):
         cells[player2.y][player2.x] = Cell([player2])
         cells[player3.y][player3.x] = Cell([player3])
         cells[player4.y][player4.x] = Cell([player4])
-        game = Game(width, height, cells, players, 1, True, datetime.now() + timedelta(0, 180))
 
-        self.monitoring.update(game)
+        self._game = Game(width, height, cells, players, 1, True, datetime.now() + timedelta(0, 180))
 
-        game_service = GameService(game)
         ai0 = PathfindingAI(player1, 2, 75)
-        ai1 = NotKillingItselfAI(player2, game, [AIOptions.max_distance], 1, 0)
+        ai1 = NotKillingItselfAI(player2, [AIOptions.max_distance], 1, 0)
         ai2 = SearchTreePathfindingAI(player3, 2, 75, 2)
         ai3 = SearchTreeAI(player4, 2)
-        ais = [ai0, ai1, ai2, ai3]
 
-        while game.running:
-            # if player1.active:
-            #     action = self.monitoring.read_next_action()
-            #     game_service.do_action(player1, action)
-
-            for ai in ais:
-                if ai.player.active:
-                    action = ai.create_next_action(game.copy())
-                    game_service.do_action(ai.player, action)
-
-            self.monitoring.update(game)
+        self._ais = [ai0, ai1, ai2, ai3]
