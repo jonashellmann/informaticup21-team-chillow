@@ -64,9 +64,20 @@ Pfaden entschieden.
 Dazu wird eine konfigurierbare Anzahl Koordinaten generiert, auf denen sich bisher kein Spieler befindet.
 Diese Koordinaten lassen sich sowohl gleichverteilt auf dem Spielfeld als auch zufällig generieren.
 Anschließend wird für jede Aktion geprüft, zu wie vielen der Koordinaten, nach der Ausführung der Aktion noch ein
-möglicher Pfad existiert. \todo{In einem Bild verdeutlichen warum das ein Bewertungskriterium darstellt}
+möglicher Pfad existiert.
 Die Aktion, die die höchste Anzahl Koordinaten erreichen kann, führt mit höchster Wahrscheinlichkeit
-nicht in eine Sackgasse und wird ausgewählt. \\
+nicht in eine Sackgasse und wird ausgewählt.
+In der \Abbildung{fig:sackgasse-pfade} wird dies grafisch verdeutlicht.
+Die gelben Quadrate stellen die zu erreichenden Koordinaten dar und somit ist nach der Aktion turn\_left nur noch ein
+Pfad erreichbar und nach Ausführung der Aktion turn\_right hingegen drei Pfade.
+Folglich wählt die \Code{PathfindingAI} die Aktion turn\_right.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics{Bilder/pathfinding_example.png}
+    \caption{Auswirkung unterschiedlicher Aktionen auf die erreichbaren Pfade}
+    \label{fig:sackgasse-pfade}
+\end{figure}
 
 Bei diesem Lösungsansatz arbeiten wir lediglich mit der Wahrscheinlichkeit, dass wir nicht in eine Sackgasse laufen.
 Dies liegt dem Problem zugrunde, dass wir die Implementierung eines Algorithmus zum tatsächtichen Erkennen von
