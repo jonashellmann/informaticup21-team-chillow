@@ -22,6 +22,10 @@ class NotKillingItselfAI(ArtificialIntelligence):
         self.options = options
         self.max_worse_distance = max_worse_distance
 
+    def get_information(self) -> str:
+        return super().get_information() \
+               + ", max_worse_distance=" + str(self.max_worse_distance)
+
     def create_next_action(self, game: Game) -> Action:
         self.turn_ctr += 1
 
