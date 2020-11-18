@@ -91,10 +91,33 @@ beliebige Tiefe mitgeben können, um entsprechend der Tiefe viele zukünftige Z�
 \subsection{PathfindingSearchTreeAI}
 \label{subsec:pathfinding-searchtree-ai}
 
+Die \Code{PathfindingSearchTreeAI} soll die Stärken der \Code{SearchTreeAI} und der \Code{PathfindingAI}
+kombinieren.
+Zudem wird die Entscheidung der \Code{PathfindingAI} priorisiert.
+Die \Code{PathfindingAI} erstellt zunächst eine Liste der Aktionen mit den erreichbaren Pfaden.
+Die Liste wird absteigend nach der Aktion sortiert, die die meisten Pfade erreichen kann.
+Die \Code{SearchTreeAI} berechnet ebenfalls eine Liste möglicher Aktionen.
+Aus diesen beiden Listen muss dann eine Aktion ausgewählt werden, die den beiden Ergebnissen der \ac{KI}s genügt.
 
+Die Priorisierung hinsichtlich der \Code{PathfindingAI} ist so zu verstehen, dass der \Code{PathfindingSearchTreeAI} bei
+der Initialisierung ein Parameter übergeben wird, der eine Toleranz (zwischen 0 und 1) darstellt.
+Eine mögliche Aktion der \Code{SearchTreeAI} muss mindestens, die Anzahl Pfade multipliziert mit der Toleranz, erreichen
+können, wie die beste Aktion der \Code{PathfindingAI}.
+
+\begin{equation}
+\label{eq:toleranz-pathfinding-searchtree-ai}
+Erreichbare\_Pfade * Toleranz >= Maximal\_erreichbare_Pfade
+\end{equation}
+
+Sofern keine Aktion gefunden wird, die in beiden Aktions-Listen vorhanden ist und dieser Formel entspricht, wird die
+beste Aktion der \Code{PathfindingAI} gewählt.
+Diese Strategie bewirkt, dass sich die \Code{PathfindingSearchTreeAI} nicht in zu kleine Gebiete durch die Gegner
+zwingen lässt, jedoch mit dem Risiko eine vermeidbare Kollision zu verursachen.
 
 \subsection{SearchTreePathfindingAI}
 \label{subsec:searchtree-pathfinding-ai}
+
+
 
 \section{Vorgehen zur Auswahl der besten Strategie}
 \label{sec:vorgehen-strategieauswahl}
