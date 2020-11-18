@@ -26,7 +26,7 @@ class NotKillingItselfAITest(unittest.TestCase):
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
         game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(player1, game, [], 3, 0)
+        sut = NotKillingItselfAI(player1, [], 3, 0)
 
         actions: List[Action] = sut.find_surviving_actions(game_service)
 
@@ -46,7 +46,7 @@ class NotKillingItselfAITest(unittest.TestCase):
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
         game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(player1, game, [], 3, 0)
+        sut = NotKillingItselfAI(player1, [], 3, 0)
 
         actions: List[Action] = sut.find_surviving_actions(game_service)
 
@@ -67,7 +67,7 @@ class NotKillingItselfAITest(unittest.TestCase):
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
         game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(player1, game, [], 3, 0)
+        sut = NotKillingItselfAI(player1, [], 3, 0)
 
         actions: List[Action] = sut.find_surviving_actions(game_service)
 
@@ -88,7 +88,7 @@ class NotKillingItselfAITest(unittest.TestCase):
         game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
         game_service.turn.turn_ctr = 6
-        sut = NotKillingItselfAI(player1, game, [], 4, 0)
+        sut = NotKillingItselfAI(player1, [], 4, 0)
 
         actions: List[Action] = sut.find_surviving_actions(game_service)
 
@@ -110,7 +110,7 @@ class NotKillingItselfAITest(unittest.TestCase):
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
         game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(player1, game, [], MAX_SPEED, 0)
+        sut = NotKillingItselfAI(player1, [], MAX_SPEED, 0)
 
         actions: List[Action] = sut.find_surviving_actions(game_service)
 
@@ -130,7 +130,7 @@ class NotKillingItselfAITest(unittest.TestCase):
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
         game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(player1, game, [], 3, 0)
+        sut = NotKillingItselfAI(player1, [], 3, 0)
 
         actions: List[Action] = sut.calc_action_with_max_distance_to_visited_cells(game_service, [Action.speed_up,
                                                                                                   Action.change_nothing,
@@ -152,7 +152,7 @@ class NotKillingItselfAITest(unittest.TestCase):
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
         game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(player1, game, [], 3, MAX_WORSE_DISTANCE)
+        sut = NotKillingItselfAI(player1, [], 3, MAX_WORSE_DISTANCE)
 
         actions: List[Action] = sut.calc_action_with_max_distance_to_visited_cells(game_service, [Action.speed_up,
                                                                                                   Action.change_nothing,
