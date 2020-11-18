@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Optional
 from pathfinding.core.diagonal_movement import DiagonalMovement
 from pathfinding.core.grid import Grid
 from pathfinding.finder.best_first import BestFirst
@@ -41,13 +41,13 @@ class Game:
         if not hasattr(self, 'you'):
             raise OwnPlayerMissingException()
 
-    def get_winner(self) -> Player:
+    def get_winner(self) -> Optional[Player]:
         if self.running:
             raise Exception("Game not ended and has no winner yet")
         for player in self.players:
             if player.active:
                 return player
-        raise Exception("No winner in ended game found")
+        return None
 
     def get_other_player_ids(self, p: Player, distance: int = 0, check_active: bool = False) -> List[int]:
         players = []
