@@ -15,7 +15,11 @@ else:
     monitoring = ConsoleView()
 
 if not os.getenv('PLAY_ONLINE', False):
-    con = OfflineController(monitoring)
+    evaluation_runs = os.getenv('AI_EVALUATION_RUNS', 0)
+    if evaluation_runs > 0:
+        con = OfflineEvaluationController(evaluation_runs)
+    else:
+        con = OfflineController(monitoring)
 else:
     url = os.environ["URL"]
     key = os.environ["KEY"]

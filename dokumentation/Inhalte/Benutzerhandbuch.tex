@@ -62,10 +62,12 @@ werden soll oder die Ausgabe wie im Docker-Container über die Konsole erfolgt.
 Wenn das Programm im Online-Modus gestartet wird, ist keine weitere Eingabe des Benutzers zu tätigen.
 Sobald der Server das Spiel startet, kann entweder auf der Konsole oder in der grafischen Oberfläche der Spielverlauf
 nachvollzogen werden.
+Hier muss die Umgebungsvariable \Code{PLAY\_ONLINE} auf \Code{TRUE} gesetzt werden.
 
 Bei einer Ausführung im Offline-Modus wird - je nach manueller Anpassung im \Code{OfflineController} - auf eine
 Eingabe von einem oder mehreren Spielern gewartet, bis die nächste Runde des Spiels gestartet wird.
 Der \Tabelle{tab:eingaben-oeberflaeche} kann entnommen werden, mit welchen Eingaben eine Aktion ausgeführt werden kann.
+Die Umgebungsvariable \Code{PLAY\_ONLINE} muss für diesen Modus auf \Code{FALSE} gesetzt werden.
 
 \begin{table}[htb]
     \centering
@@ -78,3 +80,8 @@ Der \Tabelle{tab:eingaben-oeberflaeche} kann entnommen werden, mit welchen Einga
     \caption{Steuerung der Oberflächen}
     \label{tab:eingaben-oeberflaeche}
 \end{table}
+
+Darüber hinaus ist zudem eine Offline-Simulation mehrerer Spieler hintereinander möglich, in dem \ac{KI}s mit zufälliger
+Konfiguration auf einem Spielfeld mit zufälliger Größe gegeneinander antreten, um die bestmögliche \ac{KI} zu ermitteln.
+Dazu ist es notwendig, dass zusätzlich zum normalen Offline-Spiel die Umgebungsvariable \Code{AI\_EVALUATION\_RUNS} auf
+eine Zahl größer als Null gesetzt wird.
