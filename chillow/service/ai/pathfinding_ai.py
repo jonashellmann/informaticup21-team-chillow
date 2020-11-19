@@ -7,7 +7,6 @@ from pathfinding.core.grid import Grid
 from pathfinding.finder.best_first import BestFirst
 
 from chillow.service.ai import NotKillingItselfAI
-from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.exceptions import InvalidPlayerMoveException
 from chillow.model.action import Action
 from chillow.model.game import Game
