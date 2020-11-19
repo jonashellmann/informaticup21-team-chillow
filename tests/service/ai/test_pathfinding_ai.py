@@ -119,7 +119,7 @@ class PathfindingAITest(unittest.TestCase):
     def test_get_information(self):
         player = Player(1, 0, 4, Direction.up, 1, True, "")
         sut = PathfindingAI(player, 2, 10)
-        expected = "PathfindingAI, max_speed=2, count_paths_to_check=10"
+        expected = "max_speed=2, count_paths_to_check=10"
 
         result = sut.get_information()
 

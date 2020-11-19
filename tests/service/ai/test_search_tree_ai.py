@@ -38,7 +38,7 @@ class SearchTreeAITest(unittest.TestCase):
     def test_get_information(self):
         game = self.data_loader.load(tests.read_test_file("ai/game_3.json"))
         sut = SearchTreeAI(game.you, 2, 3, True, 10)
-        expected = "SearchTreeAI, max_speed=3, depth=2, randomize=True, distance_to_check=10"
+        expected = "max_speed=3, depth=2, randomize=True, distance_to_check=10"
 
         result = sut.get_information()
 

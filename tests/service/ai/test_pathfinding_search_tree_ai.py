@@ -73,8 +73,7 @@ class PathfindingSearchTreeAITest(unittest.TestCase):
         self.assertEqual(action, Action.speed_up)
 
     def test_get_information(self):
-        expected = "PathfindingSearchTreeAI, max_speed=2, paths_tolerance=0.75, count_paths_to_check=100, depth=2, " \
-                   "distance_to_check=0"
+        expected = "max_speed=2, paths_tolerance=0.75, count_paths_to_check=100, depth=2, distance_to_check=0"
 
         result = self.sut.get_information()
 

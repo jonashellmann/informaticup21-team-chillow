@@ -166,7 +166,7 @@ class NotKillingItselfAITest(unittest.TestCase):
     def test_get_information(self):
         player = Player(1, 0, 4, Direction.up, 1, True, "")
         sut = NotKillingItselfAI(player, [], 3, 1)
-        expected = "NotKillingItselfAI, max_speed=3, max_worse_distance=1"
+        expected = "max_speed=3, max_worse_distance=1"
 
         result = sut.get_information()
 

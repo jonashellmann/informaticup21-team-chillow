@@ -22,7 +22,7 @@ class SearchTreePathfindingAITest(unittest.TestCase):
     def test_get_information(self):
         game = self.data_loader.load(tests.read_test_file("ai/game_4.json"))
         sut = SearchTreePathfindingAI(game.you, 3, 100, 2, 5)
-        expected = "SearchTreePathfindingAI, max_speed=3, count_paths_to_check=100, depth=2, distance_to_check=5"
+        expected = "max_speed=3, count_paths_to_check=100, depth=2, distance_to_check=5"
 
         result = sut.get_information()
 
