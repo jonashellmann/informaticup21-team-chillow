@@ -48,24 +48,25 @@ Wenn gegen eine andere KI gespielt werden soll als die, für die wir uns am Ende
 
 Um ein Online-Spiel der KI auf dem Server zu starten, müssen folgende Umgebungsvariablen verwendet werden, die im
 Docker-Container automatisch gesetzt bzw. als Parameter übergeben werden:
-- `PLAY_ONLINE=TRUE`
 - `URL=[SERVER_URL]`
 - `KEY=[API_KEY]`
 
-Mittels der Umgebungsvariable `DEACTIVATE_PYGAME` kann entschieden werden, ob eine grafische Oberfläche benutzt werden
-soll oder die Ausgabe wie im Docker-Container über die Konsole erfolgt.
+Mittels dem Kommandozeilen-Parameter `--deactivate-pygame` kann entschieden werden, ob eine grafische Oberfläche benutzt
+werden soll oder die Ausgabe wie im Docker-Container über die Konsole erfolgt.
+Wenn die Python-Bibliothek PyGame nicht vorhanden ist, muss dieser Wert entweder auf `False` gesetzt werden oder
+es ist eine manuelle Installation von PyGame bspw. mittels Pip notwendig.
 
 ## Benutzung
 
 Wenn das Programm im Online-Modus gestartet wird, ist keine weitere Eingabe des Benutzers zu tätigen.
 Sobald der Server das Spiel startet, kann entweder auf der Konsole oder in der grafischen Oberfläche der Spielverlauf
 nachvollzogen werden.
-Hier muss die Umgebungsvariable `PLAY_ONLINE` auf `TRUE` gesetzt werden.
+Hier muss der Parameter `--play-online` auf `TRUE` gesetzt werden.
 
 Bei einer Ausführung im Offline-Modus wird - je nach manueller Anpassung im `OfflineController` - auf eine
 Eingabe von einem oder mehreren Spielern gewartet, bis die nächste Runde des Spiels gestartet wird.
 Der Tabelle kann entnommen werden, mit welchen Eingaben eine Aktion ausgeführt werden kann.
-Die Umgebungsvariable `PLAY_ONLINE` muss für diesen Modus auf `FALSE` gesetzt werden.
+Der Parameter `--play-online` muss für diesen Modus auf `FALSE` gesetzt werden.
 
 <table>
     <tr>
@@ -96,11 +97,10 @@ Die Umgebungsvariable `PLAY_ONLINE` muss für diesen Modus auf `FALSE` gesetzt w
 
 Darüber hinaus ist eine Offline-Simulation mehrerer Spiele hintereinander möglich, in dem KIs mit zufälliger
 Konfiguration auf einem Spielfeld mit zufälliger Größe gegeneinander antreten, um die bestmögliche KI zu ermitteln.
-Dazu ist es notwendig, dass zusätzlich zum normalen Offline-Spiel die Umgebungsvariable `AI_EVALUATION_RUNS` auf eine
-Zahl größer als Null gesetzt wird.
-Mit der Umgebungsvariable `AI_EVALUATION_DB_PATH` kann statt dem Standardwert auch individuell der Pfad zu einer
-SQLite3-Datenbank festgelegt werden.
-
+Dazu ist es notwendig, dass zusätzlich zum normalen Offline-Spiel den Parameter `--ai-eval-runs` auf eine Zahl größer
+als Null gesetzt wird.
+Mit dem Parameter `--ai-eval-db-path` kann statt dem Standardwert auch individuell der Pfad zu einer SQLite3-Datenbank
+festgelegt werden.
 
 ## Contribution
 

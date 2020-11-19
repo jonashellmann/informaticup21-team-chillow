@@ -48,13 +48,14 @@ Um ein Online-Spiel der KI auf dem Server zu starten, müssen folgende Umgebungs
 Docker-Container automatisch gesetzt \bzw als Parameter übergeben werden:
 
 \begin{itemize}
-    \item \Code{PLAY\_ONLINE=TRUE}
 	\item \Code{URL=[SERVER\_URL]}
 	\item \Code{KEY=[API\_KEY]}
 \end{itemize}
 
-Mittels der Umgebungsvariable \Code{DEACTIVATE\_PYGAME} kann entschieden werden, ob eine grafische Oberfläche benutzt
-werden soll oder die Ausgabe wie im Docker-Container über die Konsole erfolgt.
+Mittels dem Kommandozeilen-Parameter \Code{--deactivate-pygame} kann entschieden werden, ob eine grafische Oberfläche
+benutzt werden soll oder die Ausgabe wie im Docker-Container über die Konsole erfolgt.
+Wenn die Python-Bibliothek PyGame nicht vorhanden ist, muss dieser Wert entweder auf \Code{False} gesetzt werden oder
+es ist eine manuelle Installation von PyGame \bspw mittels Pip notwendig.
 
 \section{Benutzung}
 \label{sec:benutzung}
@@ -62,12 +63,12 @@ werden soll oder die Ausgabe wie im Docker-Container über die Konsole erfolgt.
 Wenn das Programm im Online-Modus gestartet wird, ist keine weitere Eingabe des Benutzers zu tätigen.
 Sobald der Server das Spiel startet, kann entweder auf der Konsole oder in der grafischen Oberfläche der Spielverlauf
 nachvollzogen werden.
-Hier muss die Umgebungsvariable \Code{PLAY\_ONLINE} auf \Code{TRUE} gesetzt werden.
+Hier muss der Parameter \Code{--play-online} auf \Code{TRUE} gesetzt werden.
 
 Bei einer Ausführung im Offline-Modus wird - je nach manueller Anpassung im \Code{OfflineController} - auf eine
 Eingabe von einem oder mehreren Spielern gewartet, bis die nächste Runde des Spiels gestartet wird.
 Der \Tabelle{tab:eingaben-oeberflaeche} kann entnommen werden, mit welchen Eingaben eine Aktion ausgeführt werden kann.
-Die Umgebungsvariable \Code{PLAY\_ONLINE} muss für diesen Modus auf \Code{FALSE} gesetzt werden.
+Der Parameter \Code{--play-online} muss für diesen Modus auf \Code{FALSE} gesetzt werden.
 
 \begin{table}[htb]
     \centering
@@ -83,7 +84,7 @@ Die Umgebungsvariable \Code{PLAY\_ONLINE} muss für diesen Modus auf \Code{FALSE
 
 Darüber hinaus ist eine Offline-Simulation mehrerer Spiele hintereinander möglich, in dem \ac{KI}s mit zufälliger
 Konfiguration auf einem Spielfeld mit zufälliger Größe gegeneinander antreten, um die bestmögliche \ac{KI} zu ermitteln.
-Dazu ist es notwendig, dass zusätzlich zum normalen Offline-Spiel die Umgebungsvariable \Code{AI\_EVALUATION\_RUNS} auf
-eine Zahl größer als Null gesetzt wird.
-Mit der Umgebungsvariable \Code{AI\_EVALUATION\_DB\_PATH} kann statt dem Standardwert auch individuell der Pfad zu einer
+Dazu ist es notwendig, dass zusätzlich zum normalen Offline-Spiel dem Parameter \Code{--ai-eval-runs} auf eine Zahl
+größer als Null gesetzt wird.
+Mit dem Parameter \Code{--ai-eval-db-path} kann statt dem Standardwert auch individuell der Pfad zu einer
 SQLite3-Datenbank festgelegt werden.

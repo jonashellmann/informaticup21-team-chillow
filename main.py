@@ -1,24 +1,31 @@
 import os
 import logging
+import argparse
 
 from chillow.service.ai import *
-from chillow.view import *
-from chillow.controller import *
+from chillow.controller import OnlineController, OfflineController, AIEvaluationController
 from chillow.service.data_loader import JSONDataLoader
 from chillow.service.data_writer import JSONDataWriter
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', level=logging.WARNING)
 
-if not os.getenv("DEACTIVATE_PYGAME", False):
-    monitoring = GraphicalView()
-else:
-    monitoring = ConsoleView()
+parser = argparse.ArgumentParser()
+parser.add_argument('-o', '--play-online', type=bool, default=False)
+parser.add_argument('-d', '--deactivate-pygame', type=bool, default=False)
+parser.add_argument('-r', '--ai-eval-runs', type=int, default=0)
+parser.add_argument('-p', '--ai-eval-db-path', type=str, default="evaluation.db")
+args = parser.parse_args()
 
-if not os.getenv("PLAY_ONLINE", False):
-    evaluation_runs = os.getenv("AI_EVALUATION_RUNS", 0)
-    evaluation_db_path = os.getenv("AI_EVALUATION_DB_PATH", "evaluation.db")
-    if evaluation_runs > 0:
-        con = AIEvaluationController(evaluation_runs, evaluation_db_path)
+if args.deactivate_pygame:
+    from chillow.view.console_view import ConsoleView
+    monitoring = ConsoleView()
+else:
+    from chillow.view.graphical_view import GraphicalView
+    monitoring = GraphicalView()
+
+if not args.play_online:
+    if args.ai_eval_runs > 0:
+        con = AIEvaluationController(args.ai_eval_runs, args.ai_eval_db_path)
     else:
         con = OfflineController(monitoring)
 else:
