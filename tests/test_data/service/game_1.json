@@ -1,0 +1,37 @@
+{
+	"width": 5,
+	"height": 4,
+	"cells": [
+		[0, 2, 2, 2, 2],
+		[0, 0, 1, 0, 0],
+		[1, 1, -1, 0, 0],
+		[0, 0, 3, 3, 3]
+	],
+	"players": {
+		"1": {
+			"x": 2,
+			"y": 1,
+			"direction": "up",
+			"speed": 1,
+			"active": true
+		},
+		"2": {
+			"x": 4,
+			"y": 0,
+			"direction": "right",
+			"speed": 1,
+			"active": true
+		},
+		"3": {
+			"x": 2,
+			"y": 2,
+			"direction": "up",
+			"speed": 2,
+			"active": false,
+			"name": "Name 3"
+		}
+	},
+	"you": 2,
+	"running": true,
+	"deadline": "2020-10-01T12:05:13Z"
+}
