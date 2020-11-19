@@ -108,5 +108,5 @@ class Game:
         return Game(self.width, self.height, cells, players, self.you.id, self.running, self.deadline)
 
     def normalize_deadline(self, server_time: datetime, own_time: datetime) -> None:
-        seconds_delta = (server_time - own_time).total_seconds() + 3
+        seconds_delta = (server_time - own_time).total_seconds() + 1
         self.deadline -= timedelta(seconds=seconds_delta)
