@@ -1,3 +1,5 @@
+from typing import List
+
 from chillow.service.ai.pathfinding_ai import PathfindingAI
 from chillow.service.ai.search_tree_ai import SearchTreeAI
 from chillow.model.action import Action
@@ -18,10 +20,11 @@ class SearchTreePathfindingAI(PathfindingAI, SearchTreeAI):
                + ", depth=" + str(self.get_depth()) \
                + ", distance_to_check=" + str(self.get_distance_to_check())
 
-    def create_next_action(self, game: Game) -> Action:
+    def create_next_action(self, game: Game, return_value: List[Action]):
+        assert return_value is not None and len(return_value) == 0
         self.turn_ctr += 1
 
         surviving_actions = super()._create_all_next_surviving_actions(game)
 
-        return self.find_actions_by_best_path_connection(surviving_actions, game)[0][0] if len(
-                surviving_actions) > 0 else Action.get_random_action()
+        return_value.append(self.find_actions_by_best_path_connection(surviving_actions, game)[0][0]
+                            if len(surviving_actions) > 0 else Action.get_random_action())

@@ -22,7 +22,8 @@ class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
                + ", depth=" + str(self.get_depth()) \
                + ", distance_to_check=" + str(self.get_distance_to_check())
 
-    def create_next_action(self, game: Game) -> Action:
+    def create_next_action(self, game: Game, return_value: List[Action]):
+        assert return_value is not None and len(return_value) == 0
         self.turn_ctr += 1
 
         pathfinding_actions = self.create_next_actions_ranked(game)
@@ -30,7 +31,7 @@ class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
 
         best_action = self.get_best_action(pathfinding_actions, search_tree_actions)
 
-        return best_action if best_action is not None else Action.get_random_action()
+        return_value.append(best_action if best_action is not None else Action.get_random_action())
 
     def get_best_action(self, pathfinding_actions: List[Tuple[Action, int]],
                         search_tree_actions: List[Action]) -> Optional[Action]:
