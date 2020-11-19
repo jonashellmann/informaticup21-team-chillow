@@ -98,6 +98,9 @@ Darüber hinaus ist eine Offline-Simulation mehrerer Spiele hintereinander mögl
 Konfiguration auf einem Spielfeld mit zufälliger Größe gegeneinander antreten, um die bestmögliche KI zu ermitteln.
 Dazu ist es notwendig, dass zusätzlich zum normalen Offline-Spiel die Umgebungsvariable `AI_EVALUATION_RUNS` auf eine
 Zahl größer als Null gesetzt wird.
+Mit der Umgebungsvariable `AI_EVALUATION_DB_PATH` kann statt dem Standardwert auch individuell der Pfad zu einer
+SQLite3-Datenbank festgelegt werden.
+
 
 ## Contribution
 
