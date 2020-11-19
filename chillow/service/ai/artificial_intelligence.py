@@ -17,7 +17,7 @@ class ArtificialIntelligence(metaclass=ABCMeta):
         self.max_speed = max_speed
 
     def get_information(self) -> str:
-        return self.__class__.__name__ + ", max_speed=" + str(self.max_speed)
+        return "max_speed=" + str(self.max_speed)
 
     @abstractmethod
     def create_next_action(self, game: Game) -> Action:

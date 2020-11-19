@@ -16,8 +16,7 @@ class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
         self.__paths_tolerance = paths_tolerance
 
     def get_information(self) -> str:
-        return self.__class__.__name__ \
-               + ", max_speed=" + str(self.max_speed) \
+        return "max_speed=" + str(self.max_speed) \
                + ", paths_tolerance=" + str(self.__paths_tolerance) \
                + ", count_paths_to_check=" + str(self.count_paths_to_check) \
                + ", depth=" + str(self.get_depth()) \

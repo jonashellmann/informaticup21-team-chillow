@@ -12,7 +12,7 @@ class RandomAI(ArtificialIntelligence):
         return Action.get_random_action()
 
     def get_information(self) -> str:
-        return self.__class__.__name__
+        return ""
 
 
 class RandomWaitingAI(RandomAI):

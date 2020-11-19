@@ -13,8 +13,7 @@ class SearchTreePathfindingAI(PathfindingAI, SearchTreeAI):
         SearchTreeAI.__init__(self, player, depth, max_speed, distance_to_check=distance_to_check)
 
     def get_information(self) -> str:
-        return self.__class__.__name__ \
-               + ", max_speed=" + str(self.max_speed) \
+        return "max_speed=" + str(self.max_speed) \
                + ", count_paths_to_check=" + str(self.count_paths_to_check) \
                + ", depth=" + str(self.get_depth()) \
                + ", distance_to_check=" + str(self.get_distance_to_check())
