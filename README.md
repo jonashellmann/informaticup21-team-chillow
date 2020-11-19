@@ -48,12 +48,13 @@ Wenn gegen eine andere KI gespielt werden soll als die, für die wir uns am Ende
 
 Um ein Online-Spiel der KI auf dem Server zu starten, müssen folgende Umgebungsvariablen verwendet werden, die im
 Docker-Container automatisch gesetzt bzw. als Parameter übergeben werden:
-- `PLAY_ONLINE=TRUE`
 - `URL=[SERVER_URL]`
 - `KEY=[API_KEY]`
 
 Mittels dem Kommandozeilen-Parameter `--deactivate-pygame` kann entschieden werden, ob eine grafische Oberfläche benutzt
 werden soll oder die Ausgabe wie im Docker-Container über die Konsole erfolgt.
+Wenn die Python-Bibliothek PyGame nicht vorhanden ist, muss dieser Wert entweder auf `False` gesetzt werden oder
+es ist eine manuelle Installation von PyGame bspw. mittels Pip notwendig.
 
 ## Benutzung
 

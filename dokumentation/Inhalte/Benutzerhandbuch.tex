@@ -48,13 +48,14 @@ Um ein Online-Spiel der KI auf dem Server zu starten, müssen folgende Umgebungs
 Docker-Container automatisch gesetzt \bzw als Parameter übergeben werden:
 
 \begin{itemize}
-    \item \Code{PLAY\_ONLINE=TRUE}
 	\item \Code{URL=[SERVER\_URL]}
 	\item \Code{KEY=[API\_KEY]}
 \end{itemize}
 
 Mittels dem Kommandozeilen-Parameter \Code{--deactivate-pygame} kann entschieden werden, ob eine grafische Oberfläche
 benutzt werden soll oder die Ausgabe wie im Docker-Container über die Konsole erfolgt.
+Wenn die Python-Bibliothek PyGame nicht vorhanden ist, muss dieser Wert entweder auf \Code{False} gesetzt werden oder
+es ist eine manuelle Installation von PyGame \bspw mittels Pip notwendig.
 
 \section{Benutzung}
 \label{sec:benutzung}
