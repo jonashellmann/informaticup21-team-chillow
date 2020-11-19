@@ -7,6 +7,7 @@ from datetime import datetime
 from chillow.controller.controller import Controller
 from chillow.model.action import Action
 from chillow.model.game import Game
+from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.service.ai.return_value import ReturnValue
 from chillow.service.data_loader import DataLoader
 from chillow.service.data_writer import DataWriter
@@ -64,12 +65,15 @@ class OnlineController(Controller):
         own_time = datetime.now(timezone)
         seconds_for_calculation = (game.deadline - own_time).seconds
 
-        p = multiprocessing.Process(target=self.ai.create_next_action, args=(game, return_value))
-        p.start()
-        p.join(seconds_for_calculation - 1)
+        process = multiprocessing.Process(target=OnlineController.call_ai, args=(self.ai, game, return_value,))
+        process.start()
+        process.join(seconds_for_calculation - 1)
 
-        if p.is_alive():
-            p.terminate()
-            p.join()
+        if process.is_alive():
+            process.terminate()
 
         return return_value.action
+
+    @staticmethod
+    def call_ai(ai: ArtificialIntelligence, game: Game, return_value: ReturnValue):
+        ai.create_next_action(game, return_value)
