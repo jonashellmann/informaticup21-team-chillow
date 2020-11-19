@@ -1,9 +1,6 @@
-import os
 import sys
 import time
-
-if not os.getenv("DEACTIVATE_PYGAME", False):
-    import pygame
+import pygame
 
 from chillow.model.action import Action
 from chillow.model.game import Game
