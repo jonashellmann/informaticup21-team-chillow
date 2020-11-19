@@ -3,8 +3,7 @@ from typing import List, Tuple
 from datetime import datetime, timedelta
 
 import chillow.exceptions as ex
-from chillow.exceptions import InvalidPlayerMoveException, PlayerSpeedNotInRangeException, \
-    PlayerOutsidePlaygroundException
+from chillow.exceptions import InvalidPlayerMoveException, PlayerSpeedNotInRangeException
 from chillow.model.game import Game
 from chillow.model.action import Action
 from chillow.model.player import Player
@@ -83,7 +82,8 @@ class GameService:
         visited_cells_result = []
         for (x, y) in visited_cells:
             if x not in range(self.game.width) or y not in range(self.game.height):
-                raise PlayerOutsidePlaygroundException(player)
+                self.set_player_inactive(player)
+                break
             player.x = x
             player.y = y
             visited_cells_result.append((x, y))
@@ -91,7 +91,6 @@ class GameService:
                 self.game.cells[y][x].players = [player]
             else:
                 self.game.cells[y][x].players.append(player)
-                break
 
         return visited_cells_result
 

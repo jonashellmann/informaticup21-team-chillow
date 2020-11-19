@@ -26,12 +26,6 @@ class PlayerSpeedNotInRangeException(InvalidPlayerMoveException):
             "Player " + str(player.name) + ", id " + str(player.id) + " reached invalid speed and is inactive now")
 
 
-class PlayerOutsidePlaygroundException(InvalidPlayerMoveException):
-    def __init__(self, player: Player):
-        logging.debug(
-            "Player " + str(player.name) + ", id " + str(player.id) + " outside Playground and is inactive now")
-
-
 class WrongGameWidthException(Exception):
     def __init__(self, width: int, actual_width: int):
         logging.debug("Width of game should be " + str(width) + ", but is " + str(actual_width))
