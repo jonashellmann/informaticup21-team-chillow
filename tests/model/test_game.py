@@ -216,7 +216,7 @@ class GameTest(unittest.TestCase):
         server_time = datetime(2020, 11, 4, 14, 34, 43, 0, timezone.utc)
         own_time = datetime(2020, 11, 4, 14, 34, 40, 0, timezone.utc)
         game = JSONDataLoader().load(tests.read_test_file("ai/game_1.json"))
-        expected = datetime(2020, 10, 1, 12, 5, 7, 0, timezone.utc)
+        expected = datetime(2020, 10, 1, 12, 5, 9, 0, timezone.utc)
 
         game.normalize_deadline(server_time, own_time)
 
