@@ -117,7 +117,7 @@ class GameTest(unittest.TestCase):
         self.game.cells[self.player1.y][self.player1.x] = Cell([self.player1])
         self.game.cells[self.player1.y][1] = Cell([self.player1])
 
-        visited_cells = self.sut.get_and_visit_cells(self.player1, Action.speed_up)
+        self.sut.get_and_visit_cells(self.player1, Action.speed_up)
 
         self.assertEqual(self.player1.x, 0)
         self.assertEqual(self.player1.y, 0)
@@ -125,32 +125,32 @@ class GameTest(unittest.TestCase):
         self.assertTrue(self.player1 in self.game.cells[0][1].players)
         self.assertTrue(self.player1 in self.game.cells[0][2].players)
 
-        def test_visited_cells_should_be_correct_after_collision(self):
-            self.player1.direction = Direction.left
-            self.player1.speed = 4
-            self.player1.x = 2
-            self.player1.y = 0
-            self.game.cells[self.player1.y][self.player1.x] = Cell([self.player1])
-            self.game.cells[self.player1.y][1] = Cell([self.player1])
+    def test_visited_cells_should_be_correct_after_collision(self):
+        self.player1.direction = Direction.left
+        self.player1.speed = 4
+        self.player1.x = 2
+        self.player1.y = 0
+        self.game.cells[self.player1.y][self.player1.x] = Cell([self.player1])
+        self.game.cells[self.player1.y][1] = Cell([self.player1])
 
-            visited_cells = self.sut.get_and_visit_cells(self.player1, Action.speed_up)
+        visited_cells = self.sut.get_and_visit_cells(self.player1, Action.speed_up)
 
-            self.assertEqual(self.player1.x, 0)
-            self.assertEqual(self.player1.y, 0)
-            self.assertTrue((0, 0) in visited_cells)
-            self.assertTrue((0, 1) in visited_cells)
+        self.assertEqual(self.player1.x, 0)
+        self.assertEqual(self.player1.y, 0)
+        self.assertTrue((0, 0) in visited_cells)
+        self.assertTrue((1, 0) in visited_cells)
 
-        def test_visited_cells_should_be_correct_after_collision(self):
-            self.player1.direction = Direction.left
-            self.player1.speed = 2
-            self.player1.x = 1
-            self.player1.y = 0
-            self.game.cells[self.player1.y][self.player1.x] = Cell([self.player1])
+    def test_playerX_playerY_should_be_correct_after_collision(self):
+        self.player1.direction = Direction.left
+        self.player1.speed = 2
+        self.player1.x = 1
+        self.player1.y = 0
+        self.game.cells[self.player1.y][self.player1.x] = Cell([self.player1])
 
-            self.sut.get_and_visit_cells(self.player1, Action.speed_up)
+        self.sut.get_and_visit_cells(self.player1, Action.speed_up)
 
-            self.assertEqual(self.player1.x, 0)
-            self.assertEqual(self.player1.y, 0)
+        self.assertEqual(self.player1.x, 0)
+        self.assertEqual(self.player1.y, 0)
 
     def test_playerX_playerY_should_be_correct_without_collision(self):
         self.player1.direction = Direction.left

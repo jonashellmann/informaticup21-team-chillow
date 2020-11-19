@@ -79,18 +79,20 @@ class GameService:
         if self.turn.turn_ctr % 6 == 0 and len(visited_cells) > 1:  # Lücke, also nur ersten und letzten Punkt nehmen
             visited_cells = [visited_cells[0], visited_cells[-1]]
 
+        visited_cells_result = []
         for (x, y) in visited_cells:
             if x not in range(self.game.width) or y not in range(self.game.height):
                 self.set_player_inactive(player)
-                return visited_cells
+                break
             player.x = x
             player.y = y
+            visited_cells_result.append((x, y))
             if self.game.cells[y][x].players is None or len(self.game.cells[y][x].players) == 0:
                 self.game.cells[y][x].players = [player]
             else:
                 self.game.cells[y][x].players.append(player)
 
-        return visited_cells
+        return visited_cells_result
 
     @staticmethod
     def change_player_status_by_action(player: Player, action: Action):
