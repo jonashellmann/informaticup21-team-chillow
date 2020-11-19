@@ -1,6 +1,7 @@
 import unittest
 
 import tests
+from chillow.service.ai.return_value import ReturnValue
 from chillow.service.ai.search_tree_pathfinding_ai import SearchTreePathfindingAI
 from chillow.model.action import Action
 from chillow.service.data_loader import JSONDataLoader
@@ -15,10 +16,10 @@ class SearchTreePathfindingAITest(unittest.TestCase):
         game = self.data_loader.load(tests.read_test_file("ai/game_4.json"))
         sut = SearchTreePathfindingAI(game.you, 3, 100, 2)
 
-        result = []
+        result = ReturnValue()
         sut.create_next_action(game, result)
 
-        self.assertEqual(Action.turn_left, result[0])
+        self.assertEqual(Action.turn_left, result.action)
 
     def test_get_information(self):
         game = self.data_loader.load(tests.read_test_file("ai/game_4.json"))

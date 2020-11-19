@@ -1,9 +1,8 @@
 from abc import ABCMeta, abstractmethod
-from typing import List
 
-from chillow.model.action import Action
 from chillow.model.game import Game
 from chillow.model.player import Player
+from chillow.service.ai.return_value import ReturnValue
 
 
 class ArtificialIntelligence(metaclass=ABCMeta):
@@ -17,5 +16,5 @@ class ArtificialIntelligence(metaclass=ABCMeta):
         return "max_speed=" + str(self.max_speed)
 
     @abstractmethod
-    def create_next_action(self, game: Game, return_value: List[Action]):
+    def create_next_action(self, game: Game, return_value: ReturnValue):
         raise NotImplementedError

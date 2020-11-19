@@ -1,5 +1,6 @@
 from typing import List
 
+from chillow.service.ai.return_value import ReturnValue
 from chillow.service.ai.search_tree_node import SearchTreeRoot
 from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.model.action import Action
@@ -22,8 +23,7 @@ class SearchTreeAI(ArtificialIntelligence):
                + ", randomize=" + str(self.__randomize) \
                + ", distance_to_check=" + str(self.__distance_to_check)
 
-    def create_next_action(self, game: Game, return_value: List[Action]):
-        assert return_value is not None and len(return_value) == 0
+    def create_next_action(self, game: Game, return_value: ReturnValue):
         self.turn_ctr += 1
 
         root = SearchTreeRoot(game.copy())
@@ -32,7 +32,7 @@ class SearchTreeAI(ArtificialIntelligence):
 
         action = root.calculate_action(self.player, player_ids_to_watch, combinations, self.__depth, self.turn_ctr,
                                        True, [], self.max_speed, self.__randomize)
-        return_value.append(action if action is not None else Action.get_random_action())
+        return_value.action = action if action is not None else Action.get_random_action()
 
     def _create_all_next_surviving_actions(self, game: Game) -> List[Action]:
         root = SearchTreeRoot(game.copy())

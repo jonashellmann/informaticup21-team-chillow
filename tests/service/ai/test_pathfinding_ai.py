@@ -8,6 +8,7 @@ from chillow.model.cell import Cell
 from chillow.model.direction import Direction
 from chillow.model.game import Game
 from chillow.model.player import Player
+from chillow.service.ai.return_value import ReturnValue
 
 
 class PathfindingAITest(unittest.TestCase):
@@ -57,10 +58,10 @@ class PathfindingAITest(unittest.TestCase):
         game = Game(3, 3, cells, players, 2, True, datetime.now())
         sut = PathfindingAI(player1, 2, 10)
 
-        action = []
-        sut.create_next_action(game, action)
+        result = ReturnValue()
+        sut.create_next_action(game, result)
 
-        self.assertEqual(Action.turn_right, action[0])
+        self.assertEqual(Action.turn_right, result.action)
 
     def test_create_action_should_return_action_with_best_connection(self):
         player1 = Player(1, 0, 0, Direction.down, 1, True, "")
@@ -72,10 +73,10 @@ class PathfindingAITest(unittest.TestCase):
         game = Game(3, 3, cells, players, 2, True, datetime.now())
         sut = PathfindingAI(player1, 2, 10)
 
-        action = []
-        sut.create_next_action(game, action)
+        result = ReturnValue()
+        sut.create_next_action(game, result)
 
-        self.assertEqual(Action.turn_left, action[0])
+        self.assertEqual(Action.turn_left, result.action)
 
     def test_create_action_should_return_one_of_the_possible_action_with_best_connection(self):
         player1 = Player(1, 0, 0, Direction.right, 2, True, "")
