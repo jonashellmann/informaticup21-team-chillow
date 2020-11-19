@@ -3,8 +3,7 @@ from typing import List, Tuple
 from datetime import datetime, timedelta
 
 import chillow.exceptions as ex
-from chillow.exceptions import InvalidPlayerMoveException, PlayerSpeedNotInRangeException, \
-    PlayerOutsidePlaygroundException
+from chillow.exceptions import InvalidPlayerMoveException, PlayerSpeedNotInRangeException
 from chillow.model.game import Game
 from chillow.model.action import Action
 from chillow.model.player import Player
@@ -80,20 +79,18 @@ class GameService:
         if self.turn.turn_ctr % 6 == 0 and len(visited_cells) > 1:  # Lücke, also nur ersten und letzten Punkt nehmen
             visited_cells = [visited_cells[0], visited_cells[-1]]
 
-        visited_cells_result = []
         for (x, y) in visited_cells:
             if x not in range(self.game.width) or y not in range(self.game.height):
-                raise PlayerOutsidePlaygroundException(player)
+                self.set_player_inactive(player)
+                return visited_cells
             player.x = x
             player.y = y
-            visited_cells_result.append((x, y))
             if self.game.cells[y][x].players is None or len(self.game.cells[y][x].players) == 0:
                 self.game.cells[y][x].players = [player]
             else:
                 self.game.cells[y][x].players.append(player)
-                break
 
-        return visited_cells_result
+        return visited_cells
 
     @staticmethod
     def change_player_status_by_action(player: Player, action: Action):
