@@ -22,6 +22,10 @@ Bei dem Ansatz, Strategien fest in Code zu implementieren, hatten wir mehrere un
 die nachfolgend beschrieben werden.
 Ziel war es hierbei, Teilprobleme zu erkennen und zu lösen, mit der Intuition diese unterschiedlichen \ac{KI}s
 kombinieren zu können.
+Die nachfolgend beschriebenen \ac{KI}s und die Abhängigkeiten dieser können in \Anhang{fig:klassendiagramm-AIs}
+nachvollzogen werden.
+Die Mehrfachvererbungen, wie sie im UML-Klassendiagramm dargestellt werden, wurden in der Implementierung durch die
+Verwendung von Python als Programmiersprache genau so umgesetzt.
 
 \subsection{RandomAI}
 \label{subsec:random-ai}
@@ -125,6 +129,46 @@ der eigene Spieler unabhängig der ausgewählten Aktion von allen anderen Spiele
 Der Vorteil eines Suchbaums ist es, dass wir diesem eine
 beliebige Tiefe mitgeben können, um entsprechend der Tiefe viele zukünftige Züge vor zu berechnen.
 \todo{Besser ausformulieren, Problem der Komplexität benennen und Beispielskizze}
+
+\subsection{SearchTreePathfindingAI}
+\label{subsec:searchtree-pathfinding-ai}
+
+Die \Code{SearchTreePathfindingAI} kombiniert die Stärken der \Code{SearchTreeAI} und der \Code{Pathfinding\-AI}.
+Hierbei wird die Entscheidung der \Code{SearchTreeAI} priorisiert.
+Dazu werden der \Code{PathfindingAI} zur Berechnung der besten Aktionen nur noch die Aktionen zur Verfügung gestellt, die
+durch die \Code{SearchTreeAI} ermittelt wurden.
+Dadurch erreichen wir, dass die Aktion mit den meisten Pfaden gewählt wird, die in jedem Fall die nächsten Züge,
+entsprechend der gewählten Tiefe des Suchbaums, überleben wird.
+
+Ein Nachteil dieser Variante ist, dass die \Code{SearchTreePathfindingAI} sich durch andere gegnerische Spieler in
+seltenen Spielsituationen in Sackgassen zwingen lassen kann.
+
+\subsection{PathfindingSearchTreeAI}
+\label{subsec:pathfinding-searchtree-ai}
+
+Die \Code{PathfindingSearchTreeAI} kombiniert ebenso wie die \Code{PathfindingSearchTreeAI} die Stärken der
+\Code{SearchTreeAI} und der \Code{PathfindingAI}, priorisiert jedoch die Entscheidungsgrundlage der
+\Code{PathfindingAI}.
+
+Die \Code{PathfindingAI} erstellt zunächst eine Liste der Aktionen mit den erreichbaren Pfaden.
+Die Liste wird absteigend nach der Aktion sortiert, die die meisten Pfade erreichen kann.
+Die \Code{SearchTreeAI} berechnet ebenfalls eine Liste möglicher Aktionen.
+Aus diesen beiden Listen muss dann eine Aktion ausgewählt werden, die den beiden Ergebnissen der \ac{KI}s genügt.
+
+Die Priorisierung hinsichtlich der \Code{PathfindingAI} ist so umgesetzt, dass der \Code{PathfindingSearch\-TreeAI} bei
+der Initialisierung ein Parameter übergeben wird, der eine Toleranz zwischen 0 und 1 darstellt.
+Eine mögliche Aktion der \Code{SearchTreeAI} muss mindestens die maximal mögliche Anzahl an Pfaden multipliziert mit der
+Toleranz (\ref{eq:toleranz-pathfinding-searchtree-ai}) erreichen können.
+
+\begin{equation}
+\label{eq:toleranz-pathfinding-searchtree-ai}
+erreichbare\_Pfade >= maximal\_erreichbare\_Pfade * Toleranz
+\end{equation}
+
+Sofern keine Aktion gefunden wird, die in beiden Aktions-Listen vorhanden ist und dieser Formel entspricht, wird die
+beste Aktion der \Code{PathfindingAI} gewählt.
+Diese Strategie bewirkt, dass sich die \Code{PathfindingSearchTreeAI} nicht in zu kleine Gebiete durch die Gegner
+zwingen lässt. Jedoch besteht das Risiko, eine vermeidbare Kollision zu verursachen.
 
 \section{Vorgehen zur Auswahl der besten Strategie}
 \label{sec:vorgehen-strategieauswahl}

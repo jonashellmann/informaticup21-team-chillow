@@ -6,7 +6,7 @@ from pathfinding.core.diagonal_movement import DiagonalMovement
 from pathfinding.core.grid import Grid
 from pathfinding.finder.best_first import BestFirst
 
-from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
+from chillow.service.ai import NotKillingItselfAI
 from chillow.exceptions import InvalidPlayerMoveException
 from chillow.model.action import Action
 from chillow.model.game import Game
@@ -14,14 +14,14 @@ from chillow.model.player import Player
 from chillow.service.game_service import GameService
 
 
-class PathfindingAI(ArtificialIntelligence):
+class PathfindingAI(NotKillingItselfAI):
 
     def __init__(self, player: Player, max_speed: int, count_paths_to_check: int):
-        super().__init__(player, max_speed)
+        super().__init__(player, [], max_speed, 0)
         self.count_paths_to_check = count_paths_to_check
 
     def get_information(self) -> str:
-        return super().get_information() \
+        return "max_speed=" + str(self.max_speed) \
                + ", count_paths_to_check=" + str(self.count_paths_to_check)
 
     def create_next_action(self, game: Game) -> Action:
