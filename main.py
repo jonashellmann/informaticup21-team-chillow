@@ -15,15 +15,12 @@ parser.add_argument('-d', '--deactivate-pygame', type=bool, default=False)
 parser.add_argument('-r', '--ai-eval-runs', type=int, default=0)
 parser.add_argument('-p', '--ai-eval-db-path', type=str, default="evaluation.db")
 args = parser.parse_args()
-print(args)
-
-exit(10)
 
 if args.deactivate_pygame:
-    from chillow.view import ConsoleView
+    from chillow.view.console_view import ConsoleView
     monitoring = ConsoleView()
 else:
-    from chillow.view import GraphicalView
+    from chillow.view.graphical_view import GraphicalView
     monitoring = GraphicalView()
 
 if not args.play_online:
