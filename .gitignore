@@ -4,4 +4,4 @@
 __pycache__/
 /target
 /dist
-evaluation.db*
+*.db-journal
