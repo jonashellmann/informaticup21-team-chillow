@@ -16,6 +16,12 @@ class SearchTreeAI(ArtificialIntelligence):
         self.__randomize = randomize
         self.__distance_to_check = distance_to_check
 
+    def get_information(self) -> str:
+        return super().get_information() \
+               + ", depth=" + str(self.__depth) \
+               + ", randomize=" + str(self.__randomize) \
+               + ", distance_to_check=" + str(self.__distance_to_check)
+
     def create_next_action(self, game: Game) -> Action:
         self.turn_ctr += 1
         root = SearchTreeRoot(game.copy())
@@ -39,3 +45,9 @@ class SearchTreeAI(ArtificialIntelligence):
                 search_tree_actions.append(action)
 
         return search_tree_actions
+
+    def get_depth(self) -> int:
+        return self.__depth
+
+    def get_distance_to_check(self) -> int:
+        return self.__distance_to_check

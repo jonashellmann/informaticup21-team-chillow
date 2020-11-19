@@ -85,7 +85,7 @@ class GameTest(unittest.TestCase):
 
         result = game.get_winner()
 
-        self.assertEqual(game.get_winner(), result)
+        self.assertEqual(player2, result)
 
     def test_raise_exception_for_winner_in_running_game(self):
         player = Player(1, 0, 0, Direction.up, 0, True, "Name")
@@ -95,14 +95,15 @@ class GameTest(unittest.TestCase):
         with self.assertRaises(Exception):
             game.get_winner()
 
-    def test_raise_exception_for_no_winner_in_ended_game(self):
-        player1 = Player(1, 0, 0, Direction.up, 0, True, "Name")
-        player2 = Player(1, 1, 0, Direction.up, 0, True, "Name")
+    def test_return_no_winner_in_ended_game(self):
+        player1 = Player(1, 0, 0, Direction.up, 0, False, "Name")
+        player2 = Player(1, 1, 0, Direction.up, 0, False, "Name")
         cells = [[Cell([player1]), Cell([player2])]]
-        game = Game(2, 1, cells, [player1, player2], 1, True, datetime.now())
+        game = Game(2, 1, cells, [player1, player2], 1, False, datetime.now())
 
-        with self.assertRaises(Exception):
-            game.get_winner()
+        result = game.get_winner()
+
+        self.assertEqual(None, result)
 
     def test_player_with_id_should_be_returned(self):
         player1 = Player(1, 0, 0, Direction.up, 0, True, "Name")

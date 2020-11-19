@@ -11,6 +11,9 @@ class RandomAI(ArtificialIntelligence):
         self.turn_ctr += 1
         return Action.get_random_action()
 
+    def get_information(self) -> str:
+        return ""
+
 
 class RandomWaitingAI(RandomAI):
 
