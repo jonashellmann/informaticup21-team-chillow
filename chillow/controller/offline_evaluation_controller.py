@@ -1,3 +1,4 @@
+from contextlib import closing
 from datetime import datetime, timedelta, timezone
 from random import randint
 import sqlite3
@@ -17,37 +18,17 @@ class OfflineEvaluationController(OfflineController):
         super().__init__(HeadlessView())
         self.__runs = runs
 
-        self.__connection = sqlite3.connect("evaluation.db")
-        self.__cursor = self.__connection.cursor()
-        self.__cursor.execute("CREATE TABLE IF NOT EXISTS games (id INTEGER, width INTEGER, height INTEGER, date TEXT)")
-        self.__cursor.execute("CREATE TABLE IF NOT EXISTS participants (id INTEGER, game_id INTEGER, class TEXT,"
-                              "info TEXT)")
-        self.__cursor.execute("CREATE TABLE IF NOT EXISTS winners (id INTEGER, game_id INTEGER)")
-
     def play(self):
-        max_game_id = self.__cursor.execute("SELECT MAX(id) FROM games").fetchone()[0]
-        if max_game_id is None:
-            max_game_id = 0
+        with closing(sqlite3.connect("evaluation.db")) as connection:
+            with closing(connection.cursor()) as cursor:
+                OfflineEvaluationController.__create_db_tables(cursor)
 
-        for i in range(self.__runs):
-            super().play()
+                max_game_id = cursor.execute("SELECT MAX(id) FROM games").fetchone()[0]
+                if max_game_id is None:
+                    max_game_id = 0
 
-            game_id = i + 1 + max_game_id
-            self.__cursor.execute("INSERT INTO games VALUES ({}, {}, {}, '{}')"
-                                  .format(game_id, self._game.width, self._game.height, datetime.now(timezone.utc)))
-
-            winner_player = self._game.get_winner()
-            for ai in self._ais:
-                ai_class = ai.__class__.__name__
-                ai_info = ai.get_information()
-
-                # Save how often an AI configuration participated in a game
-                self.__cursor.execute("INSERT INTO participants VALUES ({}, {}, '{}', '{}')"
-                                      .format(ai.player.id, game_id, ai_class, ai_info))
-
-                # Save how often an AI configuration won a game
-                if ai.player == winner_player:
-                    self.__cursor.execute("INSERT INTO winners VALUES ({}, {})".format(ai.player.id, game_id))
+                self.__run_simulations(cursor, max_game_id)
+            connection.commit()
 
     def _create_game(self) -> None:
         height = randint(30, 70)
@@ -79,3 +60,30 @@ class OfflineEvaluationController(OfflineController):
                 self._ais.append(NotKillingItselfAI(players[4], [AIOptions.max_distance], randint(1, 3), 0))
                 if player_count > 5:
                     self._ais.append(RandomAI(players[5], randint(1, 3)))
+
+    def __run_simulations(self, cursor: sqlite3.Cursor, max_game_id):
+        for i in range(self.__runs):
+            super().play()
+
+            game_id = i + 1 + max_game_id
+            cursor.execute("INSERT INTO games VALUES ({}, {}, {}, '{}')"
+                           .format(game_id, self._game.width, self._game.height, datetime.now(timezone.utc)))
+
+            winner_player = self._game.get_winner()
+            for ai in self._ais:
+                ai_class = ai.__class__.__name__
+                ai_info = ai.get_information()
+
+                # Save how often an AI configuration participated in a game
+                cursor.execute("INSERT INTO participants VALUES ({}, {}, '{}', '{}')"
+                               .format(ai.player.id, game_id, ai_class, ai_info))
+
+                # Save how often an AI configuration won a game
+                if ai.player == winner_player:
+                    cursor.execute("INSERT INTO winners VALUES ({}, {})".format(ai.player.id, game_id))
+
+    @staticmethod
+    def __create_db_tables(cursor):
+        cursor.execute("CREATE TABLE IF NOT EXISTS games (id INTEGER, width INTEGER, height INTEGER, date TEXT)")
+        cursor.execute("CREATE TABLE IF NOT EXISTS participants (id INTEGER, game_id INTEGER, class TEXT, info TEXT)")
+        cursor.execute("CREATE TABLE IF NOT EXISTS winners (id INTEGER, game_id INTEGER)")
