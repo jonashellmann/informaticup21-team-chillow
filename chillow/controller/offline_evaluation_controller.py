@@ -50,10 +50,10 @@ class OfflineEvaluationController(OfflineController):
                     self.__cursor.execute("INSERT INTO winners VALUES ({}, {})".format(ai.player.id, game_id))
 
     def _create_game(self) -> None:
-        height = randint(15, 20)
-        width = randint(15, 20)
+        height = randint(30, 70)
+        width = randint(30, 70)
 
-        player_count = randint(3, 4)
+        player_count = randint(3, 6)
         players = []
         for i in range(player_count):
             player = Player(i, randint(0, width - 1), randint(0, height - 1), Direction.get_random_direction(), 1, True,
@@ -64,15 +64,17 @@ class OfflineEvaluationController(OfflineController):
         for player in players:
             cells[player.y][player.x] = Cell([player])
 
-        self._game = Game(width, height, cells, players, 1, True, datetime.now() + timedelta(10, 15))
+        self._game = Game(width, height, cells, players, 1, True, datetime.now() + timedelta(5, 15))
 
         self._ais = []
 
-        self._ais.append(PathfindingAI(players[0], 2, 75))
-        self._ais.append(NotKillingItselfAI(players[1], [AIOptions.max_distance], randint(1, 3), 0))
-        self._ais.append(NotKillingItselfAI(players[2], [AIOptions.max_distance], randint(1, 3), 0))
+        self._ais.append(PathfindingAI(players[0], randint(1, 3), randint(1, 3) * 5 + 70))
+        self._ais.append(PathfindingSearchTreeAI(players[1], randint(1, 3), randint(1, 3) * 5 + 70, randint(2, 4), 0.75,
+                                                 randint(1, 3) * 10))
+        self._ais.append(SearchTreePathfindingAI(players[2], randint(1, 3), randint(1, 3) * 5 + 70, randint(2, 4),
+                                                 randint(1, 3) * 10))
         if player_count > 3:
-            self._ais.append(NotKillingItselfAI(players[3], [AIOptions.max_distance], randint(1, 3), 0))
+            self._ais.append(SearchTreeAI(players[3], randint(1, 3), randint(2, 4), True, randint(1, 3) * 10))
             if player_count > 4:
                 self._ais.append(NotKillingItselfAI(players[4], [AIOptions.max_distance], randint(1, 3), 0))
                 if player_count > 5:
