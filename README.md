@@ -59,7 +59,8 @@ soll oder die Ausgabe wie im Docker-Container über die Konsole erfolgt.
 
 Wenn das Programm im Online-Modus gestartet wird, ist keine weitere Eingabe des Benutzers zu tätigen.
 Sobald der Server das Spiel startet, kann entweder auf der Konsole oder in der grafischen Oberfläche der Spielverlauf
-nachvollzogen werden. Hier muss die Umgebungsvariable `PLAY_ONLINE` auf `TRUE` gesetzt werden.
+nachvollzogen werden.
+Hier muss die Umgebungsvariable `PLAY_ONLINE` auf `TRUE` gesetzt werden.
 
 Bei einer Ausführung im Offline-Modus wird - je nach manueller Anpassung im `OfflineController` - auf eine
 Eingabe von einem oder mehreren Spielern gewartet, bis die nächste Runde des Spiels gestartet wird.
@@ -93,7 +94,7 @@ Die Umgebungsvariable `PLAY_ONLINE` muss für diesen Modus auf `FALSE` gesetzt w
     </tr>
 </table>
 
-Darüber hinaus ist zudem eine Offline-Simulation mehrerer Spieler hintereinander möglich, in dem KIs mit zufälliger
+Darüber hinaus ist eine Offline-Simulation mehrerer Spiele hintereinander möglich, in dem KIs mit zufälliger
 Konfiguration auf einem Spielfeld mit zufälliger Größe gegeneinander antreten, um die bestmögliche KI zu ermitteln.
 Dazu ist es notwendig, dass zusätzlich zum normalen Offline-Spiel die Umgebungsvariable `AI_EVALUATION_RUNS` auf eine
 Zahl größer als Null gesetzt wird.

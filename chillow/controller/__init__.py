@@ -1,3 +1,3 @@
 from chillow.controller.online_controller import OnlineController
 from chillow.controller.offline_controller import OfflineController
-from chillow.controller.offline_evaluation_controller import OfflineEvaluationController
+from chillow.controller.ai_evaluation_controller import AIEvaluationController

@@ -12,16 +12,17 @@ from chillow.service.ai import *
 from chillow.view.headless_view import HeadlessView
 
 
-class OfflineEvaluationController(OfflineController):
+class AIEvaluationController(OfflineController):
 
-    def __init__(self, runs: int):
+    def __init__(self, runs: int, db_path: str):
         super().__init__(HeadlessView())
         self.__runs = runs
+        self.__db_path = db_path
 
     def play(self):
-        with closing(sqlite3.connect("evaluation.db")) as connection:
+        with closing(sqlite3.connect(self.__db_path)) as connection:
             with closing(connection.cursor()) as cursor:
-                OfflineEvaluationController.__create_db_tables(cursor)
+                AIEvaluationController.__create_db_tables(cursor)
 
                 max_game_id = cursor.execute("SELECT MAX(id) FROM games").fetchone()[0]
                 if max_game_id is None:

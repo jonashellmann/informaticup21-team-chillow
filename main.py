@@ -17,7 +17,7 @@ else:
 if not os.getenv('PLAY_ONLINE', False):
     evaluation_runs = os.getenv('AI_EVALUATION_RUNS', 0)
     if evaluation_runs > 0:
-        con = OfflineEvaluationController(evaluation_runs)
+        con = AIEvaluationController(evaluation_runs, "evaluation.db")
     else:
         con = OfflineController(monitoring)
 else:
