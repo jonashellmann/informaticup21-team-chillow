@@ -47,8 +47,11 @@ class ConsoleView(View):
 
         if not game.running:
             player = game.get_winner()
-            print("Winner: Player " + str(self.__player_representation[player.id]) + " (" + player.name +
-                  "). Your player ID was " + str(self.__player_representation[game.you.id]))
+            if player is None:
+                print("No winner in game.")
+            else:
+                print("Winner: Player " + str(self.__player_representation[player.id]) + " (" + player.name +
+                      "). Your player ID was " + str(self.__player_representation[game.you.id]))
 
     def read_next_action(self) -> Action:
         user_input = input("Input Next Action (l:turn_left, r:turn_right, u:speed_up, d:slow_down, "

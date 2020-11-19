@@ -12,6 +12,12 @@ class SearchTreePathfindingAI(PathfindingAI, SearchTreeAI):
         PathfindingAI.__init__(self, player, max_speed, count_paths_to_check)
         SearchTreeAI.__init__(self, player, depth, max_speed, distance_to_check=distance_to_check)
 
+    def get_information(self) -> str:
+        return "max_speed=" + str(self.max_speed) \
+               + ", count_paths_to_check=" + str(self.count_paths_to_check) \
+               + ", depth=" + str(self.get_depth()) \
+               + ", distance_to_check=" + str(self.get_distance_to_check())
+
     def create_next_action(self, game: Game) -> Action:
         self.turn_ctr += 1
 

@@ -30,7 +30,11 @@ class GraphicalView(View):
 
         if not game.running:
             player = game.get_winner()
-            print("Winner: Player " + str(player.id) + " (" + player.name + "). Your player ID was " + str(game.you.id))
+            if player is None:
+                print("No winner in game.")
+            else:
+                print("Winner: Player " + str(player.id) + " (" + player.name + "). Your player ID was " +
+                      str(game.you.id))
 
         self.__screen.fill((0, 0, 0))
         for row in range(game.height):

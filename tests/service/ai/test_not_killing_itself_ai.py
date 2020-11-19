@@ -162,3 +162,12 @@ class NotKillingItselfAITest(unittest.TestCase):
         self.assertTrue(Action.change_nothing in actions)
         self.assertTrue(Action.turn_right in actions)
         self.assertTrue(len(actions) == 3)
+
+    def test_get_information(self):
+        player = Player(1, 0, 4, Direction.up, 1, True, "")
+        sut = NotKillingItselfAI(player, [], 3, 1)
+        expected = "max_speed=3, max_worse_distance=1"
+
+        result = sut.get_information()
+
+        self.assertEqual(expected, result)

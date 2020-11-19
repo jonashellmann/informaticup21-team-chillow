@@ -20,6 +20,10 @@ class PathfindingAI(NotKillingItselfAI):
         super().__init__(player, [], max_speed, 0)
         self.count_paths_to_check = count_paths_to_check
 
+    def get_information(self) -> str:
+        return super().get_information() \
+               + ", count_paths_to_check=" + str(self.count_paths_to_check)
+
     def create_next_action(self, game: Game) -> Action:
         self.turn_ctr += 1
 

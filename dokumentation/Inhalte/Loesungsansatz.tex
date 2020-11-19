@@ -65,16 +65,54 @@ verhindert.
 Genutzt wurde die Basis der \Code{NotKillingItselfAI}, sodass nur zwischen überlebenden Aktionen gewählt wird.
 Um die Aktionen zu finden, die nicht in eine Sackgasse läuft, haben wir uns für einen Lösungsansatz zum Finden von
 Pfaden entschieden.
-Dazu wird eine konfigurierbare Anzahl Koordinaten generiert, auf denen sich bisher kein Spieler befindet.
-Diese Koordinaten lassen sich sowohl gleichverteilt auf dem Spielfeld als auch zufällig generieren.
+Dazu wird eine konfigurierbare Anzahl zufälliger Koordinaten generiert, auf denen sich bisher kein Spieler befindet.
 Anschließend wird für jede Aktion geprüft, zu wie vielen der Koordinaten, nach der Ausführung der Aktion noch ein
-möglicher Pfad existiert. \todo{In einem Bild verdeutlichen warum das ein Bewertungskriterium darstellt}
+möglicher Pfad existiert.
 Die Aktion, die die höchste Anzahl Koordinaten erreichen kann, führt mit höchster Wahrscheinlichkeit
-nicht in eine Sackgasse und wird ausgewählt. \\
+nicht in eine Sackgasse und wird ausgewählt.
+In der \Abbildung{fig:sackgasse-pfade} wird dies grafisch verdeutlicht.
+Die gelben Quadrate stellen die zu erreichenden Koordinaten dar und somit ist nach der Aktion turn\_left nur noch ein
+Pfad erreichbar und nach Ausführung der Aktion turn\_right hingegen drei Pfade.
+Folglich wählt die \Code{PathfindingAI} die Aktion turn\_right.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics{Bilder/pathfinding_example.png}
+    \caption{Auswirkung unterschiedlicher Aktionen auf die erreichbaren Pfade}
+    \label{fig:sackgasse-pfade}
+\end{figure}
 
 Bei diesem Lösungsansatz arbeiten wir lediglich mit der Wahrscheinlichkeit, dass wir nicht in eine Sackgasse laufen.
 Dies liegt dem Problem zugrunde, dass wir die Implementierung eines Algorithmus zum tatsächtichen Erkennen von
-Sackgassen oder abgesperrten Gebieten als schwieriger erachteten.
+Sackgassen oder abgesperrten Gebieten als schwieriger erachteten. \\
+
+Wir haben die Python-Bibliothek \Code{pathfinding} verwendet, die bereits unterschiedliche Algorithmen zum Finden von
+Pfaden in einem Graphen bietet.
+Die Entscheidung, welcher Algorithmus zum Finden eines Pfades verwendet wird, hat eine große Auswirkung auf die
+Performance der \Code{PathfindingAI}.
+Der Algorithmus stellt den Flaschenhals dar, da dieser je nach Konfiguration mehrere hundert bis tausend mal pro
+Zug ausgeführt werden muss.
+Wir haben unterschiedliche Algorithmen, die die Bibliothek zur Verfügung stellt, hinsichtlich ihrer Ausführungsdauer verglichen und uns folglich für die
+Verwendung vom Best-First-Algorithmus entschieden. \todo{BestFirst erklären}
+Bei dem Vergleich wurde in 50 unterschiedlichen Spielsituationen jeweils 200 Pfade für jede mögliche Aktion gesucht, um
+den schnellsten Algorithmus zu finden.
+Die durchschnittlichen Ausführungzeiten auf unserem Testrechner können der
+\Tabelle{tab:ausfuehrungsdauer-pfadalgorithmen} entnommen werden.
+
+\begin{table}[htb]
+    \centering
+    \begin{tabular}{|l|l|}
+        \hline
+            \textbf{Algorithmus} & {\textbf{Durchschnittliche Ausführungsdauer in Sekunden}} \\ \hline
+            BestFirst 		    & 0.740099930763244 \\ \hline
+            BiAStarFinder 		& 0.994705820083618 \\ \hline
+            AStarFinder 		& 1.257498860359192 \\ \hline
+            BreadthFirstFinder  & 1.376600646972656 \\ \hline
+            DijkstraFinder		& 2.440193486213684 \\ \hline
+    \end{tabular}
+    \caption{Ausführungsdauer unterschiedlicher Algorithmen zum Finden von Pfaden}
+    \label{tab:ausfuehrungsdauer-pfadalgorithmen}
+\end{table}
 
 \subsection{SearchTreeAI}
 \label{subsec:searchtree-ai}

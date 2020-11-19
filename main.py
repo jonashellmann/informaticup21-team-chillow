@@ -14,8 +14,13 @@ if not os.getenv("DEACTIVATE_PYGAME", False):
 else:
     monitoring = ConsoleView()
 
-if not os.getenv('PLAY_ONLINE', False):
-    con = OfflineController(monitoring)
+if not os.getenv("PLAY_ONLINE", False):
+    evaluation_runs = os.getenv("AI_EVALUATION_RUNS", 0)
+    evaluation_db_path = os.getenv("AI_EVALUATION_DB_PATH", "evaluation.db")
+    if evaluation_runs > 0:
+        con = AIEvaluationController(evaluation_runs, evaluation_db_path)
+    else:
+        con = OfflineController(monitoring)
 else:
     url = os.environ["URL"]
     key = os.environ["KEY"]
