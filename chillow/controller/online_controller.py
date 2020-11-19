@@ -1,9 +1,13 @@
 import asyncio
 import requests
 import websockets
+import multiprocessing
 from datetime import datetime
 
 from chillow.controller.controller import Controller
+from chillow.model.action import Action
+from chillow.model.game import Game
+from chillow.service.ai.return_value import ReturnValue
 from chillow.service.data_loader import DataLoader
 from chillow.service.data_writer import DataWriter
 from chillow.view.view import View
@@ -21,6 +25,7 @@ class OnlineController(Controller):
         self.data_loader = data_loader
         self.data_writer = data_writer
         self.ai = None
+        self.default_ai = None
         self.ai_class = ai_class
         self.ai_params = ai_params
 
@@ -28,6 +33,7 @@ class OnlineController(Controller):
         asyncio.get_event_loop().run_until_complete(self.__play())
         self.monitoring.end()
         self.ai = None
+        self.default_ai = None
 
     async def __play(self):
         async with websockets.connect(f"{self.url}?key={self.key}") as websocket:
@@ -44,8 +50,26 @@ class OnlineController(Controller):
 
                 if self.ai is None:
                     self.ai = globals()[self.ai_class](game.you, *self.ai_params)
+                    self.default_ai = NotKillingItselfAI(game.you, [AIOptions.max_distance], 1, 0)
 
                 if game.you.active:
-                    action = self.ai.create_next_action(game)
+                    action = self.__choose_action(game, server_time.tzinfo)
                     data_out = self.data_writer.write(action)
                     await websocket.send(data_out)
+
+    def __choose_action(self, game: Game, timezone: datetime.tzinfo) -> Action:
+        return_value = ReturnValue()
+        self.default_ai.create_next_action(game, return_value)
+
+        own_time = datetime.now(timezone)
+        seconds_for_calculation = (game.deadline - own_time).seconds
+
+        p = multiprocessing.Process(target=self.ai.create_next_action, args=(game, return_value))
+        p.start()
+        p.join(seconds_for_calculation - 1)
+
+        if p.is_alive():
+            p.terminate()
+            p.join()
+
+        return return_value.action
