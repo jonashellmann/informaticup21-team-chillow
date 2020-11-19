@@ -44,10 +44,15 @@ class JSONDataLoader(DataLoader):
             row = []
             for json_cell in json_row:
                 cell = Cell()
-                if json_cell != "0":
-                    for player in players:
-                        if player.id == json_cell:
-                            cell = Cell([player])
+                if json_cell != 0:
+                    if json_cell == -1:
+                        # If there is a collision cell, it is not defined by which players this cell is occupied.
+                        # Therefore is it always filled with the first player so the cell is not empty.
+                        cell = Cell([players[0]])
+                    else:
+                        for player in players:
+                            if player.id == json_cell:
+                                cell = Cell([player])
                 row.append(cell)
             cells.append(row)
 

@@ -52,6 +52,15 @@ class JSONDataWriterTest(unittest.TestCase):
 
         self.assertEqual(expected, result)
 
+    def test_correctly_convert_game_with_collision_cells(self):
+        json = tests.read_test_file("service/game_1.json")
+        game = self.sut.load(json)
+
+        players = game.cells[2][2].players
+
+        self.assertIsNotNone(players)
+        self.assertNotEqual(0, len(players))
+
     def test_read_correct_time(self):
         time_data = '{"time":"2020-11-04T14:34:43Z"}'
         expected = datetime(2020, 11, 4, 14, 34, 43, 0, timezone.utc)
