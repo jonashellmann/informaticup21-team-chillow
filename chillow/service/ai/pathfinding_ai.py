@@ -21,7 +21,7 @@ class PathfindingAI(NotKillingItselfAI):
         self.count_paths_to_check = count_paths_to_check
 
     def get_information(self) -> str:
-        return super().get_information() \
+        return "max_speed=" + str(self.max_speed) \
                + ", count_paths_to_check=" + str(self.count_paths_to_check)
 
     def create_next_action(self, game: Game) -> Action:
