@@ -146,7 +146,8 @@ Ziel der \Code{SearchTreeAI} ist es, dass nur Aktionen berücksichtigt werden, b
 gegnerischen Aktionen und dessen Auswirkungen berücksichtigt werden und der eigene Spieler trotzdem überlebt. \\
 
 Unser Lösungsansatz für dieses Problem ist es, mithilfe eines Suchbaums alle möglichen gegnerischen und eigenen
-Aktions-Kombinationen eine bestimmte Anzahl an Zügen in Zukunft zu simulieren und einen Teilbaum zu finden, bei dem
+Aktions-Kombinationen eine bestimmte Anzahl Spielzüge in die Zukunft zu simulieren. 
+Dabei wird dann nach einem Teilbaum gesucht, bei dem
 vorhergesagt werden kann, dass der eigene Spieler unabhängig der von allen anderen Spielern ausgewählten Aktionen nicht
 im nächsten Zug stirbt.
 Für diese Simulation konnte viel von der in \Kapitel{sec:offline-implementierung} beschriebenen Implementierung
@@ -154,7 +155,7 @@ wiederverwendet werden. \\
 
 Diese Idee wird in \Abbildung{fig:SearchTreeAIVisualisierung} visualisiert, wobei es in diesem Beispiel neben dem
 eigenen Spieler noch die beiden weiteren Spieler mit den IDs 1 und 2 gibt.
-Die Buchstaben an den Pfaden sollen jeweils die simlulierte Aktion kennzeichnen.
+Die Buchstaben an den Pfaden sollen jeweils die simulierte Aktion kennzeichnen.
 Der Baum wird von links nach rechts aufgebaut und besteht pro Zug aus zwei Ebenen.
 Zuerst wird ausgehend vom aktuellen Spielstand die eigene Aktion des Spielers berechnet und abgebrochen, wenn hier schon
 kein Überleben mehr möglich ist.
@@ -168,8 +169,8 @@ Aktionen simuliert und wiederum das Überleben geprüft. \\
 \label{fig:SearchTreeAIVisualisierung}
 \end{figure}
 
-Gibt es einen Pfad bis zur vorletzten Ebene, nach der bei der Kombination aller gegnerischen Aktionen immer ein
-Überleben auf der untersten Ebene folgen, ist eine Ausgangsaktion gefunden, die in dem aktuellen Zu ausgeführt werden
+Gibt es einen Pfad bis zur vorletzten Ebene, nach dem bei der Kombination aller gegnerischen Aktionen immer ein
+Überleben auf der untersten Ebene folgt, ist eine Ausgangsaktion gefunden, die in dem aktuellen Zug ausgeführt werden
 kann, um in jedem Fall die Anzahl der nächsten berechneten Züge überleben zu können. \\
 
 Ein Problem stellt hierbei allerdings die für jeden Zug extrem stark steigende Anzahl zu berechnender Aktionen dar.
@@ -178,12 +179,12 @@ im schlimmsten Fall $(6 ^ 5) ^ 3 = 470.184.984.576$ Kombinationen umfasst, sind 
 $(6 ^ 5) ^ 4 = 3.656.158.440.062.976$. \\
 
 Da diese Anzahl an Berechnungen in der Zeit bis zum Ablaufen der Deadline nicht durchgeführt werden kann, wurde diese
-Anzahl reduziert, indem in die Simulation nicht mehr immer alle Spieler einberechnet werden, sondern nur noch solche,
+Anzahl reduziert, indem in die Simulation nicht immer alle Spieler einberechnet werden, sondern nur noch solche,
 die sich in einer gewissen Distanz zu dem eigenen Spieler befinden.
 Um die Entfernung zwischen dem eigenen und den anderen Spielern unter der Berücksichtigung der bereits belegten Felder
 zu errechnen, konnte der bereits beschriebene Algorithmus zum Finden von Pfaden wiederverwendet werden.
 Ist dann \bspw nur noch ein weiterer Spieler überhaupt in unmittelbarer Nähe, reduziert sich die Zahl von
-$470.184.984.576$ auf lediglich $(3 ^ 5) ^ 3 = 32.768$ Kombinationen.
+$470.184.984.576$ auf lediglich $(2 ^ 5) ^ 3 = 32.768$ Kombinationen.
 
 \subsection{SearchTreePathfindingAI}
 \label{subsec:searchtree-pathfinding-ai}
