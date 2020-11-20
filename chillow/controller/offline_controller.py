@@ -6,6 +6,7 @@ from chillow.model.direction import Direction
 from chillow.model.game import Game
 from chillow.model.player import Player
 from chillow.service.ai import *
+from chillow.service.ai.return_value import ReturnValue
 from chillow.service.game_service import GameService
 from chillow.view.view import View
 
@@ -28,8 +29,9 @@ class OfflineController(Controller):
 
             for ai in self._ais:
                 if ai.player.active:
-                    action = ai.create_next_action(self._game.copy())
-                    game_service.do_action(ai.player, action)
+                    action = ReturnValue()
+                    ai.create_next_action(self._game.copy(), action)
+                    game_service.do_action(ai.player, action.action)
 
             self.monitoring.update(self._game)
 
