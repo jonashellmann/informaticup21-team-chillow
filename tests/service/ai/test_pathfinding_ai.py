@@ -1,5 +1,5 @@
 import unittest
-import multiprocessing
+from multiprocessing import Value
 from datetime import datetime
 
 from chillow.service.ai.pathfinding_ai import PathfindingAI
@@ -8,7 +8,6 @@ from chillow.model.cell import Cell
 from chillow.model.direction import Direction
 from chillow.model.game import Game
 from chillow.model.player import Player
-from chillow.model.action import ActionValue
 
 
 class PathfindingAITest(unittest.TestCase):
@@ -58,10 +57,10 @@ class PathfindingAITest(unittest.TestCase):
         game = Game(3, 3, cells, players, 2, True, datetime.now())
         sut = PathfindingAI(player1, 2, 10)
 
-        result = ActionValue()
+        result = Value('i')
         sut.create_next_action(game, result)
 
-        self.assertEqual(Action.turn_right, result.action)
+        self.assertEqual(Action.turn_right, list(Action)[result.value])
 
     def test_create_action_should_return_action_with_best_connection(self):
         player1 = Player(1, 0, 0, Direction.down, 1, True, "")
@@ -73,10 +72,10 @@ class PathfindingAITest(unittest.TestCase):
         game = Game(3, 3, cells, players, 2, True, datetime.now())
         sut = PathfindingAI(player1, 2, 10)
 
-        result = ActionValue()
+        result = Value('i')
         sut.create_next_action(game, result)
 
-        self.assertEqual(Action.turn_left, result.action)
+        self.assertEqual(Action.turn_left, list(Action)[result.value])
 
     def test_create_action_should_return_one_of_the_possible_action_with_best_connection(self):
         player1 = Player(1, 0, 0, Direction.right, 2, True, "")

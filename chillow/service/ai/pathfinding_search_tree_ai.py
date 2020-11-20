@@ -1,7 +1,7 @@
 from typing import List, Tuple, Optional
+from multiprocessing import Value
 
 from chillow.service.ai.pathfinding_ai import PathfindingAI
-from chillow.model.action import ActionValue
 from chillow.service.ai.search_tree_ai import SearchTreeAI
 from chillow.model.action import Action
 from chillow.model.game import Game
@@ -23,7 +23,7 @@ class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
                + ", depth=" + str(self.get_depth()) \
                + ", distance_to_check=" + str(self.get_distance_to_check())
 
-    def create_next_action(self, game: Game, return_value: ActionValue):
+    def create_next_action(self, game: Game, return_value: Value):
         self.turn_ctr += 1
 
         pathfinding_actions = self.create_next_actions_ranked(game)
@@ -31,7 +31,8 @@ class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
 
         best_action = self.get_best_action(pathfinding_actions, search_tree_actions)
 
-        return_value.action = best_action if best_action is not None else Action.get_random_action()
+        action = best_action if best_action is not None else Action.get_random_action()
+        return_value.value = list(Action).index(action)
 
     def get_best_action(self, pathfinding_actions: List[Tuple[Action, int]],
                         search_tree_actions: List[Action]) -> Optional[Action]:

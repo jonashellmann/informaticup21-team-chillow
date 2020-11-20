@@ -1,6 +1,6 @@
 import unittest
+from multiprocessing import Value
 
-from chillow.model.action import ActionValue
 from chillow.service.ai.search_tree_ai import SearchTreeAI
 from chillow.model.action import Action
 import tests
@@ -16,28 +16,28 @@ class SearchTreeAITest(unittest.TestCase):
         game = self.data_loader.load(tests.read_test_file("ai/game_1.json"))
         sut = SearchTreeAI(game.you, 1, 3, True)
 
-        result = ActionValue()
+        result = Value('i')
         sut.create_next_action(game, result)
 
-        self.assertEqual(Action.turn_right, result.action)
+        self.assertEqual(Action.turn_right, list(Action)[result.value])
 
     def test_should_select_action_to_let_player_survive_next_two_rounds_1(self):
         game = self.data_loader.load(tests.read_test_file("ai/game_2.json"))
         sut = SearchTreeAI(game.you, 2)
 
-        result = ActionValue()
+        result = Value('i')
         sut.create_next_action(game, result)
 
-        self.assertEqual(Action.turn_right, result.action)
+        self.assertEqual(Action.turn_right, list(Action)[result.value])
 
     def test_should_select_action_to_let_player_survive_next_two_rounds_2(self):
         game = self.data_loader.load(tests.read_test_file("ai/game_3.json"))
         sut = SearchTreeAI(game.you, 2, 2)
 
-        result = ActionValue()
+        result = Value('i')
         sut.create_next_action(game, result)
 
-        self.assertEqual(Action.slow_down, result.action)
+        self.assertEqual(Action.slow_down, list(Action)[result.value])
 
     def test_get_information(self):
         game = self.data_loader.load(tests.read_test_file("ai/game_3.json"))

@@ -1,7 +1,7 @@
 import unittest
+from multiprocessing import Value
 
 import tests
-from chillow.model.action import ActionValue
 from chillow.service.ai.search_tree_pathfinding_ai import SearchTreePathfindingAI
 from chillow.model.action import Action
 from chillow.service.data_loader import JSONDataLoader
@@ -16,10 +16,10 @@ class SearchTreePathfindingAITest(unittest.TestCase):
         game = self.data_loader.load(tests.read_test_file("ai/game_4.json"))
         sut = SearchTreePathfindingAI(game.you, 3, 100, 2)
 
-        result = ActionValue()
+        result = Value('i')
         sut.create_next_action(game, result)
 
-        self.assertEqual(Action.turn_left, result.action)
+        self.assertEqual(Action.turn_left, list(Action)[result.value])
 
     def test_get_information(self):
         game = self.data_loader.load(tests.read_test_file("ai/game_4.json"))

@@ -1,4 +1,5 @@
 import operator
+from multiprocessing import Value
 from typing import List, Tuple, Optional
 from random import shuffle
 
@@ -11,7 +12,6 @@ from chillow.exceptions import InvalidPlayerMoveException
 from chillow.model.action import Action
 from chillow.model.game import Game
 from chillow.model.player import Player
-from chillow.model.action import ActionValue
 from chillow.service.game_service import GameService
 
 
@@ -25,10 +25,11 @@ class PathfindingAI(NotKillingItselfAI):
         return "max_speed=" + str(self.max_speed) \
                + ", count_paths_to_check=" + str(self.count_paths_to_check)
 
-    def create_next_action(self, game: Game, return_value: ActionValue):
+    def create_next_action(self, game: Game, return_value: Value):
         self.turn_ctr += 1
         actions = self.create_next_actions_ranked(game)
-        return_value.action = actions[0][0] if actions is not None and len(actions) > 0 else Action.get_random_action()
+        action = actions[0][0] if actions is not None and len(actions) > 0 else Action.get_random_action()
+        return_value.value = list(Action).index(action)
 
     def create_next_actions_ranked(self, game: Game) -> Optional[List[Tuple[Action, int]]]:
         game_service = GameService(game)
