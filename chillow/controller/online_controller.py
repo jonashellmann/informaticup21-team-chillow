@@ -49,7 +49,7 @@ class OnlineController(Controller):
 
                 time_data = requests.get(self.time_url).text
                 server_time = self.data_loader.read_server_time(time_data)
-                own_time = datetime.now(server_time.tzinfo).replace(microsecond=0)
+                own_time = datetime.now(server_time.tzinfo)
                 game.normalize_deadline(server_time, own_time)
 
                 if self.ai is None:
