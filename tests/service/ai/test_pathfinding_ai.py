@@ -8,7 +8,7 @@ from chillow.model.cell import Cell
 from chillow.model.direction import Direction
 from chillow.model.game import Game
 from chillow.model.player import Player
-from chillow.service.ai.return_value import ReturnValue
+from chillow.model.action import ActionValue
 
 
 class PathfindingAITest(unittest.TestCase):
@@ -58,7 +58,7 @@ class PathfindingAITest(unittest.TestCase):
         game = Game(3, 3, cells, players, 2, True, datetime.now())
         sut = PathfindingAI(player1, 2, 10)
 
-        result = ReturnValue()
+        result = ActionValue()
         sut.create_next_action(game, result)
 
         self.assertEqual(Action.turn_right, result.action)
@@ -73,7 +73,7 @@ class PathfindingAITest(unittest.TestCase):
         game = Game(3, 3, cells, players, 2, True, datetime.now())
         sut = PathfindingAI(player1, 2, 10)
 
-        result = ReturnValue()
+        result = ActionValue()
         sut.create_next_action(game, result)
 
         self.assertEqual(Action.turn_left, result.action)

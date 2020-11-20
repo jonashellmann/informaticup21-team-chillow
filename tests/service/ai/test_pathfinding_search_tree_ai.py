@@ -8,7 +8,7 @@ from chillow.model.cell import Cell
 from chillow.model.direction import Direction
 from chillow.model.game import Game
 from chillow.model.player import Player
-from chillow.service.ai.return_value import ReturnValue
+from chillow.model.action import ActionValue
 from chillow.service.data_loader import JSONDataLoader
 
 
@@ -30,7 +30,7 @@ class PathfindingSearchTreeAITest(unittest.TestCase):
     def test_should_select_action_to_let_player_survive_next_two_rounds(self):
         game = self.data_loader.load(tests.read_test_file("ai/game_4.json"))
 
-        result = ReturnValue()
+        result = ActionValue()
         self.sut.create_next_action(game, result)
 
         self.assertEqual(Action.turn_left, result.action)

@@ -1,6 +1,6 @@
 import unittest
 
-from chillow.service.ai.return_value import ReturnValue
+from chillow.model.action import ActionValue
 from chillow.service.ai.search_tree_ai import SearchTreeAI
 from chillow.model.action import Action
 import tests
@@ -16,7 +16,7 @@ class SearchTreeAITest(unittest.TestCase):
         game = self.data_loader.load(tests.read_test_file("ai/game_1.json"))
         sut = SearchTreeAI(game.you, 1, 3, True)
 
-        result = ReturnValue()
+        result = ActionValue()
         sut.create_next_action(game, result)
 
         self.assertEqual(Action.turn_right, result.action)
@@ -25,7 +25,7 @@ class SearchTreeAITest(unittest.TestCase):
         game = self.data_loader.load(tests.read_test_file("ai/game_2.json"))
         sut = SearchTreeAI(game.you, 2)
 
-        result = ReturnValue()
+        result = ActionValue()
         sut.create_next_action(game, result)
 
         self.assertEqual(Action.turn_right, result.action)
@@ -34,7 +34,7 @@ class SearchTreeAITest(unittest.TestCase):
         game = self.data_loader.load(tests.read_test_file("ai/game_3.json"))
         sut = SearchTreeAI(game.you, 2, 2)
 
-        result = ReturnValue()
+        result = ActionValue()
         sut.create_next_action(game, result)
 
         self.assertEqual(Action.slow_down, result.action)

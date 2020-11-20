@@ -1,7 +1,7 @@
 from typing import List, Tuple, Optional
 
 from chillow.service.ai.pathfinding_ai import PathfindingAI
-from chillow.service.ai.return_value import ReturnValue
+from chillow.model.action import ActionValue
 from chillow.service.ai.search_tree_ai import SearchTreeAI
 from chillow.model.action import Action
 from chillow.model.game import Game
@@ -23,7 +23,7 @@ class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
                + ", depth=" + str(self.get_depth()) \
                + ", distance_to_check=" + str(self.get_distance_to_check())
 
-    def create_next_action(self, game: Game, return_value: ReturnValue):
+    def create_next_action(self, game: Game, return_value: ActionValue):
         self.turn_ctr += 1
 
         pathfinding_actions = self.create_next_actions_ranked(game)

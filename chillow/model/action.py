@@ -1,4 +1,5 @@
 import random
+from dataclasses import dataclass
 from enum import Enum
 from itertools import product
 from typing import Any, List, Tuple
@@ -26,3 +27,9 @@ class Action(Enum):
     @staticmethod
     def get_combinations(player_count: int) -> List[Tuple[Any]]:
         return list(product(Action.get_actions(), repeat=player_count))
+
+
+@dataclass
+class ActionValue:
+    action: Action = None
+

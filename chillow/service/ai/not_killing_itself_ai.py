@@ -10,7 +10,7 @@ from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.model.action import Action
 from chillow.model.game import Game
 from chillow.model.player import Player
-from chillow.service.ai.return_value import ReturnValue
+from chillow.model.action import ActionValue
 from chillow.service.game_service import GameService
 
 
@@ -29,7 +29,7 @@ class NotKillingItselfAI(ArtificialIntelligence):
         return super().get_information() \
                + ", max_worse_distance=" + str(self.max_worse_distance)
 
-    def create_next_action(self, game: Game, return_value: ReturnValue):
+    def create_next_action(self, game: Game, return_value: ActionValue):
         self.turn_ctr += 1
 
         game_service = GameService(game)

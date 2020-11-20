@@ -1,6 +1,6 @@
 from typing import List
 
-from chillow.service.ai.return_value import ReturnValue
+from chillow.model.action import ActionValue
 from chillow.service.ai.search_tree_node import SearchTreeRoot
 from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.model.action import Action
@@ -23,7 +23,7 @@ class SearchTreeAI(ArtificialIntelligence):
                + ", randomize=" + str(self.__randomize) \
                + ", distance_to_check=" + str(self.__distance_to_check)
 
-    def create_next_action(self, game: Game, return_value: ReturnValue):
+    def create_next_action(self, game: Game, return_value: ActionValue):
         self.turn_ctr += 1
 
         root = SearchTreeRoot(game.copy())
