@@ -4,12 +4,15 @@ async def __play(self):
             game_data = await websocket.recv()
             game = self.data_loader.load(game_data)
 
+            self.monitoring.update(game)
+
+            if not game.running:
+                break
+
             time_data = requests.get(self.time_url).text
             server_time = self.data_loader.read_server_time(time_data)
-            own_time = datetime.now(server_time.tzinfo).replace(microsecond=0)
+            own_time = datetime.now(server_time.tzinfo)
             game.normalize_deadline(server_time, own_time)
-
-            self.monitoring.update(game)
 
             if self.ai is None:
                 self.ai = globals()[self.ai_class](game.you, *self.ai_params)
@@ -19,9 +22,9 @@ async def __play(self):
                 action = self.__choose_action(game, server_time.tzinfo)
                 data_out = self.data_writer.write(action)
                 await websocket.send(data_out)
-				
+
 def __choose_action(self, game: Game, timezone: datetime.tzinfo) -> Action:
-    return_value = ReturnValue()
+    return_value = ActionValue()
     self.default_ai.create_next_action(game, return_value)
 
     own_time = datetime.now(timezone)
