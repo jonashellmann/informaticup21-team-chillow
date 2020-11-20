@@ -8,7 +8,6 @@ from chillow.controller.controller import Controller
 from chillow.model.action import Action
 from chillow.model.game import Game
 from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
-from chillow.model.action import ActionValue
 from chillow.service.data_loader import DataLoader
 from chillow.service.data_writer import DataWriter
 from chillow.view.view import View
@@ -62,7 +61,7 @@ class OnlineController(Controller):
                     await websocket.send(data_out)
 
     def __choose_action(self, game: Game, timezone: datetime.tzinfo) -> Action:
-        return_value = ActionValue()
+        return_value = multiprocessing.Value('i')
         self.default_ai.create_next_action(game, return_value)
 
         own_time = datetime.now(timezone)
@@ -75,8 +74,8 @@ class OnlineController(Controller):
         if process.is_alive():
             process.terminate()
 
-        return return_value.action
+        return list(Action)[return_value.value]
 
     @staticmethod
-    def call_ai(ai: ArtificialIntelligence, game: Game, return_value: ActionValue):
+    def call_ai(ai: ArtificialIntelligence, game: Game, return_value: multiprocessing.Value):
         ai.create_next_action(game, return_value)
