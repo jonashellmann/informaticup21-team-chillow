@@ -94,8 +94,8 @@ Im ersten Schritt wird von einer vergleichsweise schnellen, aber eher schwächer
 nächsten Zug berechnet, durch die der Spieler nicht direkt sterben wird.
 Erst im Anschluss wird die Berechnung der eigentlich ausgewählten \ac{KI} in einem neuen Prozess gestartet. \\
 
-Hierbei kann die Berechnung länger dauern, als in der Spielrunde an Zeit zur Verfügung steht.
-Daher wird dieser Prozess eine Sekunde vor Ablauf der Deadline abgebroche, falls die Berechnung der \ac{KI} noch nicht
+Hierbei kann die Berechnung länger dauern, als in der Spielrunde zeitlich zur Verfügung steht.
+Daher wird dieser Prozess eine Sekunde vor Ablauf der Deadline abgebrochen, falls die Berechnung der \ac{KI} noch nicht
 beendet ist.
 Bei einem Abbrch wird dann die Standard-Aktion an den Server geschickt, andernfalls wird die Berechnung der stärkeren
 \ac{KI} verwendet.
