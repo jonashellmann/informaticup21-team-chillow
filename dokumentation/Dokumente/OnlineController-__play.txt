@@ -3,6 +3,7 @@ async def __play(self):
         while True:
             game_data = await websocket.recv()
             game = self.data_loader.load(game_data)
+
             time_data = requests.get(self.time_url).text
             server_time = self.data_loader.read_server_time(time_data)
             own_time = datetime.now(server_time.tzinfo).replace(microsecond=0)
@@ -10,6 +11,27 @@ async def __play(self):
 
             self.monitoring.update(game)
 
+            if self.ai is None:
+                self.ai = globals()[self.ai_class](game.you, *self.ai_params)
+                self.default_ai = NotKillingItselfAI(game.you, [AIOptions.max_distance], 1, 0)
+
             if game.you.active:
-                action = self.ai.create_next_action(game)
-                await websocket.send(self.data_writer.write(action))
+                action = self.__choose_action(game, server_time.tzinfo)
+                data_out = self.data_writer.write(action)
+                await websocket.send(data_out)
+				
+def __choose_action(self, game: Game, timezone: datetime.tzinfo) -> Action:
+    return_value = ReturnValue()
+    self.default_ai.create_next_action(game, return_value)
+
+    own_time = datetime.now(timezone)
+    seconds_for_calculation = (game.deadline - own_time).seconds
+
+    process = multiprocessing.Process(target=OnlineController.call_ai, args=(self.ai, game, return_value,))
+    process.start()
+    process.join(seconds_for_calculation - 1)
+
+    if process.is_alive():
+        process.terminate()
+
+    return return_value.action

@@ -55,11 +55,8 @@ In der im vorherigen Absatz bereits erwähnten Methode \Code{\_\_play()} in dem 
 Websocket-Verbindung zum Server aufgebaut.
 Anschließend wird in einer Endlosschleife die Logik zur Ausführung eines einzelnen Spielzugs ausgeführt.
 Wie ein solcher Spielzug abläuft, ist in \Anhang{fig:sequenzdiagramm-spielzug} in Form eines Sequenzdiagrammes
-nachvollziehbar und die Umsetzung in Python-Code kann zusammen mit dem Verbindungaufbau \Listing{lst:online-__play}
+nachvollziehbar und die Umsetzung im Python-Code kann zusammen mit dem Verbindungsaufbau dem \Anhang{lst:online-__play}
 entnommen werden.
-
-\lstinputlisting[label=lst:online-__play,language=Python,caption=\Code{\_\_play()}-Methode des \Code{OnlineController}s]
-{./Dokumente/OnlineController-__play.txt}
 
 \subsection{Einlesen des Spiel-Zustands}
 \label{subsec:einlesen-spielzustand}
@@ -92,9 +89,18 @@ Dies ist allerdings nur notwendig, wenn der eigene Spieler noch aktiv ist. \\
 
 Die Berechnung und Festlegung auf die nächste Aktion wird von dem \Code{OnlineController} an ein Objekt einer
 Subklasse der abstrakten Basisklasse \Code{ArtificialIntelligence} mit dem Aufruf der Methode
-\Code{read\_next\_action(game: Game)} deligiert.
-Welche Art der im \Kapitel{ch:loesungsansatz} beschriebenen \ac{KI}s gewählt werden soll, steht dem Anwender
-grundsätzlich vollkommen frei.
+\Code{create\_next\_action(game: Game)} delegiert.
+Im ersten Schritt wird von einer vergleichsweise schnellen, aber eher schwächeren \ac{KI} eine Standard-Aktion für den
+nächsten Zug berechnet, durch die der Spieler nicht direkt sterben wird.
+Erst im Anschluss wird die Berechnung der eigentlich ausgewählten \ac{KI} in einem neuen Prozess gestartet. \\
+
+Hierbei kann die Berechnung länger dauern, als in der Spielrunde an Zeit zur Verfügung steht.
+Daher wird dieser Prozess eine Sekunde vor Ablauf der Deadline abgebroche, falls die Berechnung der \ac{KI} noch nicht
+beendet ist.
+Bei einem Abbrch wird dann die Standard-Aktion an den Server geschickt, andernfalls wird die Berechnung der stärkeren
+\ac{KI} verwendet.
+Welche Art der im \Kapitel{ch:loesungsansatz} beschriebenen \ac{KI}s gewählt wird, steht dem Anwender grundsätzlich
+vollkommen frei.
 
 \subsection{Übergabe der Aktion an die Web-API}
 \label{subsec:uebergabe-aktion}
