@@ -44,7 +44,7 @@ class NotKillingItselfAI(ArtificialIntelligence):
             action = choice(surviving_actions) if surviving_actions is not None and len(
                 surviving_actions) > 0 else Action.change_nothing
 
-        return_value.value = list(Action).index(action)
+        return_value.value = action.get_index()
 
     def calc_action_with_max_distance_to_visited_cells(self, game_service: GameService,
                                                        actions: List[Action]) -> List[Action]:

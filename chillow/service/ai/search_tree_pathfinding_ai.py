@@ -27,4 +27,4 @@ class SearchTreePathfindingAI(PathfindingAI, SearchTreeAI):
 
         action = self.find_actions_by_best_path_connection(surviving_actions, game)[0][0]\
             if len(surviving_actions) > 0 else Action.get_random_action()
-        return_value.value = list(Action).index(action)
+        return_value.value = action.get_index()

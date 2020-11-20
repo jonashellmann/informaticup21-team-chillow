@@ -32,7 +32,7 @@ class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
         best_action = self.get_best_action(pathfinding_actions, search_tree_actions)
 
         action = best_action if best_action is not None else Action.get_random_action()
-        return_value.value = list(Action).index(action)
+        return_value.value = action.get_index()
 
     def get_best_action(self, pathfinding_actions: List[Tuple[Action, int]],
                         search_tree_actions: List[Action]) -> Optional[Action]:

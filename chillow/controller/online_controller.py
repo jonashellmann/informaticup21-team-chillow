@@ -74,7 +74,7 @@ class OnlineController(Controller):
         if process.is_alive():
             process.terminate()
 
-        return list(Action)[return_value.value]
+        return Action.get_by_index(return_value.value)
 
     @staticmethod
     def call_ai(ai: ArtificialIntelligence, game: Game, return_value: multiprocessing.Value):

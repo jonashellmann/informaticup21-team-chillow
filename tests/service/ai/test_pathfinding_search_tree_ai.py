@@ -33,7 +33,7 @@ class PathfindingSearchTreeAITest(unittest.TestCase):
         result = Value('i')
         self.sut.create_next_action(game, result)
 
-        self.assertEqual(Action.turn_left, list(Action)[result.value])
+        self.assertEqual(Action.turn_left, Action.get_by_index(result.value))
 
     def test_get_best_action_should_find_best_action(self):
         action = self.sut.get_best_action([(Action.change_nothing, 10), (Action.speed_up, 8)], [Action.change_nothing])

@@ -60,7 +60,7 @@ class PathfindingAITest(unittest.TestCase):
         result = Value('i')
         sut.create_next_action(game, result)
 
-        self.assertEqual(Action.turn_right, list(Action)[result.value])
+        self.assertEqual(Action.turn_right, Action.get_by_index(result.value))
 
     def test_create_action_should_return_action_with_best_connection(self):
         player1 = Player(1, 0, 0, Direction.down, 1, True, "")
@@ -75,7 +75,7 @@ class PathfindingAITest(unittest.TestCase):
         result = Value('i')
         sut.create_next_action(game, result)
 
-        self.assertEqual(Action.turn_left, list(Action)[result.value])
+        self.assertEqual(Action.turn_left, Action.get_by_index(result.value))
 
     def test_create_action_should_return_one_of_the_possible_action_with_best_connection(self):
         player1 = Player(1, 0, 0, Direction.right, 2, True, "")

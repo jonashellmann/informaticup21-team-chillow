@@ -32,7 +32,7 @@ class OfflineController(Controller):
                 if ai.player.active:
                     value = Value('i')
                     ai.create_next_action(self._game.copy(), value)
-                    game_service.do_action(ai.player, list(Action)[value.value])
+                    game_service.do_action(ai.player, Action.get_by_index(value.value))
 
             self.monitoring.update(self._game)
 

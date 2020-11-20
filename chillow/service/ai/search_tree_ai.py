@@ -32,7 +32,7 @@ class SearchTreeAI(ArtificialIntelligence):
 
         action = root.calculate_action(self.player, player_ids_to_watch, combinations, self.__depth, self.turn_ctr,
                                        True, [], self.max_speed, self.__randomize)
-        return_value.value = list(Action).index(action if action is not None else Action.get_random_action())
+        return_value.value = (action if action is not None else Action.get_random_action()).get_index()
 
     def _create_all_next_surviving_actions(self, game: Game) -> List[Action]:
         root = SearchTreeRoot(game.copy())

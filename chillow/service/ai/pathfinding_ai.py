@@ -29,7 +29,7 @@ class PathfindingAI(NotKillingItselfAI):
         self.turn_ctr += 1
         actions = self.create_next_actions_ranked(game)
         action = actions[0][0] if actions is not None and len(actions) > 0 else Action.get_random_action()
-        return_value.value = list(Action).index(action)
+        return_value.value = action.get_index()
 
     def create_next_actions_ranked(self, game: Game) -> Optional[List[Tuple[Action, int]]]:
         game_service = GameService(game)

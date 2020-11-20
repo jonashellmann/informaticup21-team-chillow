@@ -19,7 +19,7 @@ class SearchTreeAITest(unittest.TestCase):
         result = Value('i')
         sut.create_next_action(game, result)
 
-        self.assertEqual(Action.turn_right, list(Action)[result.value])
+        self.assertEqual(Action.turn_right, Action.get_by_index(result.value))
 
     def test_should_select_action_to_let_player_survive_next_two_rounds_1(self):
         game = self.data_loader.load(tests.read_test_file("ai/game_2.json"))
@@ -28,7 +28,7 @@ class SearchTreeAITest(unittest.TestCase):
         result = Value('i')
         sut.create_next_action(game, result)
 
-        self.assertEqual(Action.turn_right, list(Action)[result.value])
+        self.assertEqual(Action.turn_right, Action.get_by_index(result.value))
 
     def test_should_select_action_to_let_player_survive_next_two_rounds_2(self):
         game = self.data_loader.load(tests.read_test_file("ai/game_3.json"))
@@ -37,7 +37,7 @@ class SearchTreeAITest(unittest.TestCase):
         result = Value('i')
         sut.create_next_action(game, result)
 
-        self.assertEqual(Action.slow_down, list(Action)[result.value])
+        self.assertEqual(Action.slow_down, Action.get_by_index(result.value))
 
     def test_get_information(self):
         game = self.data_loader.load(tests.read_test_file("ai/game_3.json"))

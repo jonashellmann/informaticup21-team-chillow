@@ -26,3 +26,10 @@ class Action(Enum):
     @staticmethod
     def get_combinations(player_count: int) -> List[Tuple[Any]]:
         return list(product(Action.get_actions(), repeat=player_count))
+
+    @staticmethod
+    def get_by_index(index: int):
+        return Action.get_actions()[index]
+
+    def get_index(self):
+        return Action.get_actions().index(self)

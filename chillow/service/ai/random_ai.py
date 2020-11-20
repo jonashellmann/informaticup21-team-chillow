@@ -11,7 +11,7 @@ class RandomAI(ArtificialIntelligence):
     def create_next_action(self, game: Game, return_value: Value):
         self.turn_ctr += 1
         action = Action.get_random_action()
-        return_value.value = list(Action).index(action)
+        return_value.value = action.get_index()
 
     def get_information(self) -> str:
         return ""
