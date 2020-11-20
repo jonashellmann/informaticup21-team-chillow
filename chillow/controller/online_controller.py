@@ -42,12 +42,15 @@ class OnlineController(Controller):
                 game_data = await websocket.recv()
                 game = self.data_loader.load(game_data)
 
+                self.monitoring.update(game)
+
+                if not game.running:
+                    break
+
                 time_data = requests.get(self.time_url).text
                 server_time = self.data_loader.read_server_time(time_data)
                 own_time = datetime.now(server_time.tzinfo).replace(microsecond=0)
                 game.normalize_deadline(server_time, own_time)
-
-                self.monitoring.update(game)
 
                 if self.ai is None:
                     self.ai = globals()[self.ai_class](game.you, *self.ai_params)
