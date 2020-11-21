@@ -22,7 +22,7 @@ class GameService:
         try:
             new_turn = self.turn.action(player)
             action_to_perform = action \
-                if self.__ignore_deadline or datetime.now(timezone.utc) <= self.game.deadline \
+                if self.__ignore_deadline or datetime.now(self.game.deadline.tzinfo) <= self.game.deadline \
                 else Action.change_nothing
             self.visited_cells_by_player[player.id] = self.get_and_visit_cells(player, action_to_perform)
 
