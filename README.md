@@ -39,7 +39,9 @@ Neben der Docker-Installation kann das Projekt auch eigenständig gebaut werden.
 Dafür ist erforderlich, dass neben Python in der Version 3.8 auch [Poetry](https://python-poetry.org/) als Build-Tool
 installiert ist.
 
-Die erforderlichen Abhängigkeiten lassen sich anschließend mittels `poetry install` installieren.
+Die erforderlichen Abhängigkeiten lassen sich anschließend mittels `poetry install` installieren. Alternativ können
+bei einer fehlenden Poetry-Installation die notwendigen externen Bibliotheken auch mittels Pip installiert werden:
+`pip install -r requirements.txt`.
 
 Um ein Spiel mit einer simplen grafischen Oberfläche zu starten, in dem gegen die implementierte KI gespielt werden
 kann, genügt der Befehl `python ./main.py`.
@@ -107,6 +109,11 @@ festgelegt werden.
 Um das Projekt weiterzuentwickeln, können neue Issues geöffnet werden oder Pull Requests gegen den `main`-Branch zum
 Review geöffnet werden. Durch das Öffnen eines Pull Requests wird automatisch eine Code- und Test-Analyse mittels
 Github Actions durchgeführt.
+
+**Wichtig**: Um die `requirements.txt` aktuell zu halten, wird ein Git-Hook verwendet, welcher sich im Ordner .git-hooks
+befindet. Daher ist es wichtig, nach dem Klonen des Repos folgenden Befehl auszuführen:
+`git config core.hooksPath .git-hooks`. Damit diese Hook erfolgreich ausgeführt werden kann, ist es in jedem Fall
+notwendig, dass eine Poetry-Installation vorhanden ist.
 
 ## Lizenz
 
