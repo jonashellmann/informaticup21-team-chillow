@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from multiprocessing import Value
+from random import randint
 
 from chillow.controller.controller import Controller
 from chillow.model.action import Action
@@ -24,15 +25,18 @@ class OfflineController(Controller):
         self.monitoring.update(self._game)
 
         while self._game.running:
-            # if player1.active:
-            #     action = self.monitoring.read_next_action()
-            #     game_service.do_action(player1, action)
+            self._game.deadline = datetime.now() + timedelta(0, randint(5, 15))
 
             for ai in self._ais:
                 if ai.player.active:
                     value = Value('i')
                     ai.create_next_action(self._game.copy(), value)
                     game_service.do_action(ai.player, Action.get_by_index(value.value))
+                    self._game.deadline = datetime.now() + timedelta(0, randint(5, 15))
+
+            # if player1.active:
+            #     action = self.monitoring.read_next_action()
+            #     game_service.do_action(player1, action)
 
             self.monitoring.update(self._game)
 
@@ -50,7 +54,7 @@ class OfflineController(Controller):
         cells[player3.y][player3.x] = Cell([player3])
         cells[player4.y][player4.x] = Cell([player4])
 
-        self._game = Game(width, height, cells, players, 1, True, datetime.now() + timedelta(0, 180))
+        self._game = Game(width, height, cells, players, 1, True, datetime.now())
 
         ai0 = PathfindingAI(player1, 2, 75)
         ai1 = NotKillingItselfAI(player2, [AIOptions.max_distance], 1, 0)
