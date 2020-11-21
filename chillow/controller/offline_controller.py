@@ -28,14 +28,14 @@ class OfflineController(Controller):
         self.monitoring.update(self._game)
 
         while self._game.running:
-            self._game.deadline = datetime.now(time_zone) + timedelta(0, randint(5, 15))
+            self._game.deadline = datetime.now(time_zone) + timedelta(0, randint(3, 15))
 
             for ai in self._ais:
                 if ai.player.active:
                     value = Value('i')
                     ai.create_next_action(self._game.copy(), value)
                     game_service.do_action(ai.player, Action.get_by_index(value.value))
-                    self._game.deadline = datetime.now(time_zone) + timedelta(0, randint(5, 15))
+                    self._game.deadline = datetime.now(time_zone) + timedelta(0, randint(3, 15))
 
             # if player1.active:
             #     action = self.monitoring.read_next_action()
