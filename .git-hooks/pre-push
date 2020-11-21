@@ -1,0 +1,8 @@
+#!/bin/sh
+
+rm -f requirements.txt
+poetry export -f requirements.txt --output requirements.txt
+git add requirements.txt
+git commit -m "Update requirements.txt"
+
+exit 0
