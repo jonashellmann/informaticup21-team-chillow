@@ -20,7 +20,8 @@ class GameService:
     def do_action(self, player: Player, action: Action):
         try:
             new_turn = self.turn.action(player)
-            self.visited_cells_by_player[player.id] = self.get_and_visit_cells(player, action)
+            action_to_perform = action if datetime.now() <= self.game.deadline else Action.change_nothing
+            self.visited_cells_by_player[player.id] = self.get_and_visit_cells(player, action_to_perform)
 
             if new_turn:
                 self.check_and_set_died_players()
