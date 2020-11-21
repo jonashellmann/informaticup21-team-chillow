@@ -1,5 +1,6 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from multiprocessing import Value
+from random import randint
 
 from chillow.controller.controller import Controller
 from chillow.model.action import Action
@@ -12,6 +13,9 @@ from chillow.service.game_service import GameService
 from chillow.view.view import View
 
 
+time_zone = timezone.utc
+
+
 class OfflineController(Controller):
 
     def __init__(self, monitoring: View):
@@ -19,20 +23,24 @@ class OfflineController(Controller):
 
     def play(self):
         self._create_game()
-        game_service = GameService(self._game)
+        game_service = GameService(self._game, ignore_deadline=False)
 
         self.monitoring.update(self._game)
 
         while self._game.running:
-            # if player1.active:
-            #     action = self.monitoring.read_next_action()
-            #     game_service.do_action(player1, action)
+            time_to_react = randint(3, 15)
+            self._game.deadline = datetime.now(time_zone) + timedelta(0, time_to_react)
 
             for ai in self._ais:
                 if ai.player.active:
                     value = Value('i')
                     ai.create_next_action(self._game.copy(), value)
                     game_service.do_action(ai.player, Action.get_by_index(value.value))
+                    self._game.deadline = datetime.now(time_zone) + timedelta(0, time_to_react)
+
+            # if player1.active:
+            #     action = self.monitoring.read_next_action()
+            #     game_service.do_action(player1, action)
 
             self.monitoring.update(self._game)
 
@@ -50,7 +58,7 @@ class OfflineController(Controller):
         cells[player3.y][player3.x] = Cell([player3])
         cells[player4.y][player4.x] = Cell([player4])
 
-        self._game = Game(width, height, cells, players, 1, True, datetime.now() + timedelta(0, 180))
+        self._game = Game(width, height, cells, players, 1, True, datetime.now(time_zone))
 
         ai0 = PathfindingAI(player1, 2, 75)
         ai1 = NotKillingItselfAI(player2, [AIOptions.max_distance], 1, 0)

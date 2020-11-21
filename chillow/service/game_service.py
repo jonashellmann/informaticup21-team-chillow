@@ -1,6 +1,6 @@
 import logging
 from typing import List, Tuple
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import chillow.exceptions as ex
 from chillow.exceptions import InvalidPlayerMoveException, PlayerSpeedNotInRangeException
@@ -12,15 +12,19 @@ from chillow.model.direction import Direction
 
 class GameService:
 
-    def __init__(self, game: Game):
+    def __init__(self, game: Game, ignore_deadline: bool = True):
         self.game = game
         self.turn = Turn(self.game.players, game.deadline)
         self.visited_cells_by_player = {}
+        self.__ignore_deadline = ignore_deadline
 
     def do_action(self, player: Player, action: Action):
         try:
             new_turn = self.turn.action(player)
-            self.visited_cells_by_player[player.id] = self.get_and_visit_cells(player, action)
+            action_to_perform = action \
+                if self.__ignore_deadline or datetime.now(self.game.deadline.tzinfo) <= self.game.deadline \
+                else Action.change_nothing
+            self.visited_cells_by_player[player.id] = self.get_and_visit_cells(player, action_to_perform)
 
             if new_turn:
                 self.check_and_set_died_players()
