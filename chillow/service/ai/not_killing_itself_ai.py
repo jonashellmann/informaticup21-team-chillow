@@ -4,6 +4,7 @@ import pickle
 from enum import Enum
 from random import choice
 from typing import List, Dict
+from multiprocessing import Value
 
 from chillow.exceptions import InvalidPlayerMoveException
 from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
@@ -28,7 +29,7 @@ class NotKillingItselfAI(ArtificialIntelligence):
         return super().get_information() \
                + ", max_worse_distance=" + str(self.max_worse_distance)
 
-    def create_next_action(self, game: Game) -> Action:
+    def create_next_action(self, game: Game, return_value: Value):
         self.turn_ctr += 1
 
         game_service = GameService(game)
@@ -37,11 +38,13 @@ class NotKillingItselfAI(ArtificialIntelligence):
         surviving_actions = self.find_surviving_actions(game_service)
         if AIOptions.max_distance in self.options:
             max_distance_actions = self.calc_action_with_max_distance_to_visited_cells(game_service, surviving_actions)
-            return choice(max_distance_actions) if max_distance_actions is not None and len(
+            action = choice(max_distance_actions) if max_distance_actions is not None and len(
                 max_distance_actions) > 0 else Action.change_nothing
         else:
-            return choice(surviving_actions) if surviving_actions is not None and len(
+            action = choice(surviving_actions) if surviving_actions is not None and len(
                 surviving_actions) > 0 else Action.change_nothing
+
+        return_value.value = action.get_index()
 
     def calc_action_with_max_distance_to_visited_cells(self, game_service: GameService,
                                                        actions: List[Action]) -> List[Action]:

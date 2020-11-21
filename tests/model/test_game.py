@@ -212,11 +212,23 @@ class GameTest(unittest.TestCase):
         self.assertEqual(game, result)
         self.assertNotEqual(id(game), id(result))
 
-    def test_normalize_game_deadline(self):
-        server_time = datetime(2020, 11, 4, 14, 34, 43, 0, timezone.utc)
-        own_time = datetime(2020, 11, 4, 14, 34, 40, 0, timezone.utc)
-        game = JSONDataLoader().load(tests.read_test_file("ai/game_1.json"))
-        expected = datetime(2020, 10, 1, 12, 5, 7, 0, timezone.utc)
+    def test_normalize_game_deadline_1(self):
+        server_time = datetime(2020, 11, 20, 10, 33, 11, 0, timezone.utc)
+        own_time = datetime(2020, 11, 20, 10, 33, 12, 941748, timezone.utc)
+        game = JSONDataLoader().load(tests.read_test_file("model/game_1.json"))
+        game.deadline = datetime(2020, 11, 20, 10, 33, 18, 0, timezone.utc)
+        expected = datetime(2020, 11, 20, 10, 33, 19, 941748, timezone.utc)
+
+        game.normalize_deadline(server_time, own_time)
+
+        self.assertEqual(expected, game.deadline)
+
+    def test_normalize_game_deadline_2(self):
+        server_time = datetime(2020, 11, 20, 10, 33, 12, 941748, timezone.utc)
+        own_time = datetime(2020, 11, 20, 10, 33, 11, 0, timezone.utc)
+        game = JSONDataLoader().load(tests.read_test_file("model/game_1.json"))
+        game.deadline = datetime(2020, 11, 20, 10, 33, 18, 941748, timezone.utc)
+        expected = datetime(2020, 11, 20, 10, 33, 17, 0, timezone.utc)
 
         game.normalize_deadline(server_time, own_time)
 

@@ -1,4 +1,5 @@
 from typing import List
+from multiprocessing import Value
 
 from chillow.service.ai.search_tree_node import SearchTreeRoot
 from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
@@ -22,15 +23,16 @@ class SearchTreeAI(ArtificialIntelligence):
                + ", randomize=" + str(self.__randomize) \
                + ", distance_to_check=" + str(self.__distance_to_check)
 
-    def create_next_action(self, game: Game) -> Action:
+    def create_next_action(self, game: Game, return_value: Value):
         self.turn_ctr += 1
+
         root = SearchTreeRoot(game.copy())
         player_ids_to_watch = game.get_other_player_ids(self.player, self.__distance_to_check, True)
         combinations = Action.get_combinations(len(player_ids_to_watch))
 
         action = root.calculate_action(self.player, player_ids_to_watch, combinations, self.__depth, self.turn_ctr,
                                        True, [], self.max_speed, self.__randomize)
-        return action if action is not None else Action.get_random_action()
+        return_value.value = (action if action is not None else Action.get_random_action()).get_index()
 
     def _create_all_next_surviving_actions(self, game: Game) -> List[Action]:
         root = SearchTreeRoot(game.copy())

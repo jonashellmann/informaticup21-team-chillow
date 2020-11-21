@@ -34,10 +34,23 @@ space
 deactivate Monitoring
 
 opt own player is active
+OnlineConnection->OnlineConnection:__chose_action(game, timezone): Action
+activate OnlineConnection
 OnlineConnection->AI:create_next_action(game): Action
 activate AI
+note over AI: Call to a faster but weaker AI
+AI-->OnlineConnection:default_action
+deactivate AI
+alt calculation ends before server deadline
+OnlineConnection->AI:create_next_action(game): Action
+activate AI
+note over AI: Call to a slower but stronger AI
 AI-->OnlineConnection:action
 deactivate AI
+else else
+OnlineConnection-->OnlineConnection:action = default_action
+end
+deactivate OnlineConnection
 
 OnlineConnection->DataWriter:write(action): String
 activate DataWriter

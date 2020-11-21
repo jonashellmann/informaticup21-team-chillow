@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta
+from multiprocessing import Value
 
 from chillow.controller.controller import Controller
+from chillow.model.action import Action
 from chillow.model.cell import Cell
 from chillow.model.direction import Direction
 from chillow.model.game import Game
@@ -28,8 +30,9 @@ class OfflineController(Controller):
 
             for ai in self._ais:
                 if ai.player.active:
-                    action = ai.create_next_action(self._game.copy())
-                    game_service.do_action(ai.player, action)
+                    value = Value('i')
+                    ai.create_next_action(self._game.copy(), value)
+                    game_service.do_action(ai.player, Action.get_by_index(value.value))
 
             self.monitoring.update(self._game)
 

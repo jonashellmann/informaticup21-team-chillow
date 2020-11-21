@@ -1,5 +1,6 @@
 import unittest
 from datetime import datetime
+from multiprocessing import Value
 
 import tests
 from chillow.model.action import Action
@@ -28,9 +29,11 @@ class PathfindingSearchTreeAITest(unittest.TestCase):
 
     def test_should_select_action_to_let_player_survive_next_two_rounds(self):
         game = self.data_loader.load(tests.read_test_file("ai/game_4.json"))
-        result = self.sut.create_next_action(game)
 
-        self.assertEqual(Action.turn_left, result)
+        result = Value('i')
+        self.sut.create_next_action(game, result)
+
+        self.assertEqual(Action.turn_left, Action.get_by_index(result.value))
 
     def test_get_best_action_should_find_best_action(self):
         action = self.sut.get_best_action([(Action.change_nothing, 10), (Action.speed_up, 8)], [Action.change_nothing])
