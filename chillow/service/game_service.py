@@ -12,15 +12,18 @@ from chillow.model.direction import Direction
 
 class GameService:
 
-    def __init__(self, game: Game):
+    def __init__(self, game: Game, ignore_deadline: bool = True):
         self.game = game
         self.turn = Turn(self.game.players, game.deadline)
         self.visited_cells_by_player = {}
+        self.__ignore_deadline = ignore_deadline
 
     def do_action(self, player: Player, action: Action):
         try:
             new_turn = self.turn.action(player)
-            action_to_perform = action if datetime.now(timezone.utc) <= self.game.deadline else Action.change_nothing
+            action_to_perform = action \
+                if self.__ignore_deadline or datetime.now(timezone.utc) <= self.game.deadline \
+                else Action.change_nothing
             self.visited_cells_by_player[player.id] = self.get_and_visit_cells(player, action_to_perform)
 
             if new_turn:

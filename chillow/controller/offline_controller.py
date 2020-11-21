@@ -20,7 +20,7 @@ class OfflineController(Controller):
 
     def play(self):
         self._create_game()
-        game_service = GameService(self._game)
+        game_service = GameService(self._game, ignore_deadline=False)
 
         self.monitoring.update(self._game)
 
