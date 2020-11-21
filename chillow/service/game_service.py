@@ -1,6 +1,6 @@
 import logging
 from typing import List, Tuple
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import chillow.exceptions as ex
 from chillow.exceptions import InvalidPlayerMoveException, PlayerSpeedNotInRangeException
@@ -20,7 +20,7 @@ class GameService:
     def do_action(self, player: Player, action: Action):
         try:
             new_turn = self.turn.action(player)
-            action_to_perform = action if datetime.now() <= self.game.deadline else Action.change_nothing
+            action_to_perform = action if datetime.now(timezone.utc) <= self.game.deadline else Action.change_nothing
             self.visited_cells_by_player[player.id] = self.get_and_visit_cells(player, action_to_perform)
 
             if new_turn:

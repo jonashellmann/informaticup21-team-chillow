@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from multiprocessing import Value
 from random import randint
 
@@ -32,7 +32,7 @@ class OfflineController(Controller):
                     value = Value('i')
                     ai.create_next_action(self._game.copy(), value)
                     game_service.do_action(ai.player, Action.get_by_index(value.value))
-                    self._game.deadline = datetime.now() + timedelta(0, randint(5, 15))
+                    self._game.deadline = datetime.now(timezone.utc) + timedelta(0, randint(5, 15))
 
             # if player1.active:
             #     action = self.monitoring.read_next_action()
