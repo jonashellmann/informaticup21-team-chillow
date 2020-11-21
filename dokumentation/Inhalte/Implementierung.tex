@@ -139,10 +139,16 @@ Spieler/\ac{KI}s abgefragt und an den \Code{GameService} weitergeleitet.
 \subsection{Implementierung des GameService}
 \label{subsec:game-service}
 
+Die Ausführung einer Spieler-Aktion, die Verwaltung der Spielzüge, sowie das Manipulieren des \Code{Game}-Objekts sind
+die Hauptaufgabe des \Code{GameService}.
+Im \Anhang{fig:aktivitaetsdiagramm-spieleraktion-gameservice} kann der Ablauf einer Spieler-Aktion durch den
+\Code{GameService} und die damit verbundenen Änderungen des Spiels nachvollzogen werden.
+Diese Abfolge der Aktivitäten diente als Vorlage zur Implementierung des \Code{GameService}.
+Die daraus entstandene Implementierung wurde wie nachfolgend beschrieben umgesetzt. \\
+
 Bei dem Aufruf des Konstruktors wird dem \Code{GameService} ein \Code{Game}-Objekt übergeben, welches abgespeichert
 wird.
-Zusätzlich erzeugt der \Code{GameService} eine Instanz der Klasse \Code{Turn}, die einen Spielzug repräsentiert. \\
-
+Zusätzlich erzeugt der \Code{GameService} eine Instanz der Klasse \Code{Turn}, die einen Spielzug repräsentiert.
 In einem \Code{Turn}-Objekt ist die aktuelle Nummer des Spielzugs und alle Spieler des Spiels enthalten.
 Außerdem wird eine Liste mit den Spielern gepflegt, die in diesem Zug noch eine Aktionen durchführen müssen.
 Damit ein Spieler seine Aktion durchführen kann, ruft er die Methode \Code{action(player: Player)} auf.
@@ -155,10 +161,9 @@ in dieser Spielrunde war. \\
 Wenn ein Spieler eine Aktion durchführen möchte, verschickt er in der Offline-Variante keine Nachricht an den spe\_ed-Server,
 sondern ruft am \Code{GameService} die Methode \Code{do\_action(player: Player, action: Action)} auf.
 Die Methode manipuliert dabei das \Code{Game}-Objekt, sodass dies eine äquivalente Aktualisierung zum Erhalt des Spiels
-im JSON-Format durch den spe\_ed-Server ist.
+im JSON-Format durch den spe\_ed-Server ist. \\
 
-Der grobe Ablauf dieser Methode ist wie nachfolgend beschrieben und kann im Diagramm genauer nachvollzogen werden.
-\todo{ggf. ein Diagramm einfügen ... Aktivitätsdiagramm?}
+Der grobe Ablauf dieser Methode ist wie nachfolgend beschrieben.
 Bei dem \Code{Turn}-Objekt wird die Methode \Code{action(player: Player)} aufgerufen, um zu prüfen ob der Spieler eine
 Aktion machen darf und ob ein neuer Spielzug nach dieser Aktion beginnt.
 Nachfolgend wird dann die Aktion mit der Methode \Code{get\_and\_visit\_cells(player: Player, action: Action)}
