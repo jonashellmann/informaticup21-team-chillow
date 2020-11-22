@@ -1,8 +1,32 @@
 #!/bin/sh
 
-rm -f requirements.txt
-poetry export -f requirements.txt --output requirements.txt
-git add requirements.txt
-git commit -m "Update requirements.txt"
+z40=0000000000000000000000000000000000000000
+
+while read -r local_ref local_sha remote_ref remote_sha
+do
+	if [ "$local_sha" = $z40 ]
+	then
+		# Handle delete
+		:
+	else
+		if [ "$remote_sha" = $z40 ]
+		then
+			# New branch, examine all commits
+			range="$local_sha"
+		else
+			# Update to existing branch, examine new commits
+			range="$remote_sha..$local_sha"
+		fi
+
+    commit=$(git rev-list -n 1 --grep '^WIP' "$range")
+    if [ -n "$commit" ]
+		then
+      rm -f requirements.txt
+      poetry export -f requirements.txt --output requirements.txt
+      git add requirements.txt
+      git commit --amend --no-edit
+		fi
+	fi
+done
 
 exit 0
