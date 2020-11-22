@@ -1,5 +1,8 @@
+// Erstellt mit https://yuml.me/diagram/plain/class/draw
+
 //Chaining
 [ArtificialIntelligence]^[RandomAI]
+[RandomAI]^[RandomWaitingAI]
 [ArtificialIntelligence]^[NotKillingItselfAI]^[PathfindingAI]
 [ArtificialIntelligence]^[SearchTreeAI]++1-> root    1[SearchTreeRoot]^[SearchTreeNode]
 [PathfindingAI]^[PathfindingSearchTreeAI]
@@ -9,9 +12,10 @@
 [SearchTreeAI]^[SearchTreePathfindingAI]
 
 // Classes
-[≪interface≫;ArtificialIntelligence|+ player: Player;+ turn_ctr: int; + max_speed: int| + create_next_action(game: Game)]
+[≪abstract≫;ArtificialIntelligence|+ player: Player;+ turn_ctr: int; + max_speed: int| + create_next_action(game: Game, return_value: Value); + get_information(): str]
 
 [RandomAI| | ]
+[RandomWaitingAI| | ]
 
 [NotKillingItselfAI| + options: AIOptions; + max_worse_distance: int|+ calc_action_with_max_distance_to_visited_cells(); + find_surviving_actions()]
 
