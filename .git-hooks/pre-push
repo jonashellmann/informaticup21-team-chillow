@@ -2,12 +2,8 @@
 
 z40=0000000000000000000000000000000000000000
 
-echo "A"
-
 while read -r local_ref local_sha remote_ref remote_sha
 do
-  echo "B"
-
   if [ "$local_sha" = $z40 ]
   then
     # Handle delete
@@ -22,16 +18,10 @@ do
       range="$remote_sha..$local_sha"
     fi
 
-    echo "C $range"
-
     commit=$(git rev-list -n 1 "$range")
-
-    echo "D $commit"
 
     if [ -n "$commit" ]
     then
-      echo "E"
-
       rm -f requirements.txt
       poetry export -f requirements.txt --output requirements.txt
       git add requirements.txt
