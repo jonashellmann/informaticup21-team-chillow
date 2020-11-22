@@ -4,14 +4,14 @@
 \section{Selbstlernende KI mithilfe von Trainingsdaten}
 \label{sec:selbstlernende-ki-trainingsdaten}
 
-Zunächst war eine Überlegung, eine \ac{KI} mithilfe von generierten Daten trainiert werden kann, je nach vorliegender
-Spielsituation eigene Entscheidungen treffen zu können, \bspw unter Einsatz von neuronalen Netzen.
+Zunächst war eine Überlegung, ob eine \ac{KI} mithilfe generierter Daten trainiert werden kann.
+Je nach vorliegender Spielsituation würde die \ac{KI}, \bspw unter Einsatz von neuronalen Netzen, eigene Entscheidungen treffen können.
 Dieser Ansatz bringt jedoch das Problem mit sich, gute Trainingsdatensätze besitzen zu müssen.
 Bei einer maximalen Anzahl von sechs Spielern im Spiel \texttt{spe\_ed} und fünf unterschiedlichen Aktionen gibt
 es sehr viele Möglichkeiten, wie ein Spiel verlaufen kann.
 Dabei entsteht das Problem, beurteilen zu müssen, welche Spielsituationen und welche Spielverläufe als Trainingsdaten
 gut geeignet sind, sodass die gesamte Komplexität des Spiels in den Trainingsdaten abgebildet wird.
-Ist es nicht möglich, ein ausreichend umfangreiche Menge an Daten generieren zu können, besteht die Gefahr, dass eine
+Ist es nicht möglich, eine ausreichend umfangreiche Menge an Daten generieren zu können, besteht die Gefahr, dass eine
 damit trainierte \ac{KI} deutlich schlechtere Entscheidungen trifft als eine Implementierung, die auf simpleren und
 programmatisch vorgegebenen Heuristiken basiert.
 Aufgrund dessen fiel die Entscheidung, zunächst Lösungsansätze ohne eine selbstlernende \ac{KI} zu implementieren.
