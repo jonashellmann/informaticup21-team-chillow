@@ -58,7 +58,7 @@ In der \Abbildung{fig:Geschwindigkeit-Problem} kann das Problem nachvollzogen we
 Links ist die Ausgangssituation des Beispiels zu sehen und im mittleren Bild wurde dann anstelle der ebenfalls möglichen
 Aktionen change\_nothing und turn\_right, die Aktion speed\_up gewählt und dadurch die Geschwindigkeit zwei erreicht.
 Die \Code{NotKillingItselfAI} hat nun zwar eine Aktion gewäht, die sie nicht direkt in diesem Zug verlieren lässt,
-jedoch im direkt darauf foldenen Spielzug.
+jedoch im direkt darauf folgenden Spielzug.
 
 \begin{figure}[htb]
     \centering
@@ -73,7 +73,7 @@ führt.
 Das sorgt dafür, dass die \ac{KI} entsprechend der Tiefe in die Zukunft vorausschaut und nicht verlieren wird.
 Dabei bleiben die gegnerischen Aktionsmöglichkeiten jedoch unberücksicht. \\
 
-Außerdem hat die \Code{NotKillingItselfAI} das Problem, dass die sie sich zwar nicht mehr im unmittelbar
+Außerdem hat die \Code{NotKillingItselfAI} das Problem, dass sie sich zwar nicht mehr im unmittelbar
 folgenden Zug tötete, jedoch häufig in Sackgassen läuft.
 Dieses Problem wird in der \Abbildung{fig:Sackgassen-Problem} verdeutlicht.
 
