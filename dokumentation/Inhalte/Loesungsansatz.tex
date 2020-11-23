@@ -227,12 +227,55 @@ erreichbare\_Pfade >= maximal\_erreichbare\_Pfade * Toleranz
 Sofern keine Aktion gefunden wird, die in beiden Aktions-Listen vorhanden ist und dieser Formel entspricht, wird die
 beste Aktion der \Code{PathfindingAI} gewählt.
 Diese Strategie bewirkt, dass sich die \Code{PathfindingSearchTreeAI} nicht in zu kleine Gebiete durch die Gegner
-zwingen lässt. Jedoch besteht das Risiko, eine vermeidbare Kollision zu verursachen.
+zwingen lässt.
+Jedoch besteht das Risiko, eine vermeidbare Kollision zu verursachen.
 
 \subsection{Weitere nicht umgesetzte Lösungsansätze}
 \label{subsec:weitere-loesungsansaetze}
 
-\todo{Kapitel ausformulieren}
+Alle bisher beschriebenen Lösungsansätze haben die Eigenschaft, dass sie so lange wie möglich überleben wollen.
+Dabei wird jedoch nicht der Ansatz verfolgt, die anderen Mitspieler gezielt dazu zu bringen, kürzer zu überleben als man
+selbst.
+Nachfolgend werden derartige Lösungsideen beschrieben und erklärt, warum wir uns gegen die Implementierung dieser
+entschieden haben. \\
+
+Als ein möglicher Lösungsansatz stand zur Diskussion, die gegnerischen Spieler an den Spielfeldrand zu drängen und ihn somit
+zum Verlieren zu zwingen.
+Bei diesem Ansatz muss die eigene KI dicht an die gegnerische \ac{KI} fahren, damit diese zu Entscheidungen gezwungen
+wird, die nicht optimal sind und ein vorzeitiges Verlieren bedeuten.
+
+Problematisch bei einer zu kleinen Distanz zu den gegnerischen Spielern ist jedoch, dass man den Aktionen der Mitspieler
+vertrauen muss.
+Es ist notwendig, dass der Gegner kein Risiko eingeht und immer nur Aktionen wählt, die unter Berücksichtigung der
+möglichen Aktionen unserer \ac{KI} nicht zum Verlieren führen.
+Würde die \ac{KI} nicht dicht an den Gegner heranfahren und einen Sicherheitsabstand einhalten, wäre diese Strategie
+unwirksam, denn es bleiben zu viele gute Optionen für den Gegner übrig. \\
+
+Resultierend aus dem Problem, nicht absichtlich zu dicht an Mitspieler heranfahren zu wollen, entstand der Lösungsansatz,
+einen Gegner zu umkreisen und somit in ein kleines Gebiet einzusperren.
+Dadurch würde man dazu beitragen, dass der Gegner entweder nur noch wenige Züge zur Verfügung hat und den verbleibenden
+Platz nutzt, oder einen sechsten Zug mit einer Geschwindigkeit größer zwei nutzen muss, um aus dem begrenzten Feld
+wieder heraus zu kommen.
+Die Berechnung mit einem sechsten Zug über die umkreisenden Spur zu kommen ist nicht trivial und zudem existiert dazu in
+einigen Spielsituationen keine mögliche Option.
+Diese Vorteile sprechen zunächst für diesen Lösungsansatz, jedoch bringt er wiederum auch eine erhöhte Gefahr für das
+Ausscheiden der eigenen \ac{KI} mit sich.
+
+Um einen gegnerischen Spieler umkreisen zu können, muss eine solche aggressive \ac{KI} in den meisten Fällen schneller sein als
+der Gegenspieler.
+Dies bedeutet aber auch, dass Geschwindigkeiten erreicht werden müssen, die Löcher in der Spur in jedem sechsten Zug
+hinterlassen, wodurch das Umkreisen an Wirkung verlieren würde.
+Außerdem hat sich ein hohe Geschwindigkeit bei der Evaluation unserer implementierten Lösungsansätze bereits als
+riskant herausgestellt.
+Die erhöhte Geschwindigkeit sorgt dafür, dass häufig nur wenige oder keine Aktion zur Auswahl stehen, die im
+nächsten Spielzug nicht zum Verlieren führen.
+
+Daher steigt die Wahrscheinlichkeit, dass die eigene \ac{KI} durch ihr agressives Verhalten frühzeitig ausscheidet.
+Dieses Risiko gepaart mit dem Problem der Löcher in der Umkreisung hat dafür gesorgt, dass auch dieser Lösungsansatz
+nicht implmentiert wurde. \\
+
+Aufgrund der genannten Probleme haben wir uns dagegen entscheiden, eine \ac{KI} zu implementieren, die proaktiv für das
+Ausscheiden anderer Spieler sorgt, da sich das Risiko für das eigene Ausscheiden zu stark erhöht.
 
 \section{Vorgehen zur Auswahl der besten Strategie}
 \label{sec:vorgehen-strategieauswahl}
