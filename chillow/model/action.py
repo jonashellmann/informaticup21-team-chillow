@@ -33,3 +33,7 @@ class Action(Enum):
 
     def get_index(self):
         return Action.get_actions().index(self)
+
+    @staticmethod
+    def get_default():
+        return Action.change_nothing

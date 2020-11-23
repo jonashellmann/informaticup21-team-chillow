@@ -31,16 +31,24 @@ class OfflineController(Controller):
             time_to_react = randint(3, 15)
             self._game.deadline = datetime.now(time_zone) + timedelta(0, time_to_react)
 
+            # Read input from user if there is a human player
+            action = None
+            if self.__you is not None:
+                action = self.monitoring.read_next_action()
+                if datetime.now(time_zone) > self._game.deadline:
+                    action = Action.get_default()
+                self._game.deadline = datetime.now(time_zone) + timedelta(0, time_to_react)
+
             for ai in self._ais:
-                if ai.player.active:
+                if ai is not None and ai.player.active:
                     value = Value('i')
                     ai.create_next_action(self._game.copy(), value)
                     game_service.do_action(ai.player, Action.get_by_index(value.value))
                     self._game.deadline = datetime.now(time_zone) + timedelta(0, time_to_react)
 
-            # if player1.active:
-            #     action = self.monitoring.read_next_action()
-            #     game_service.do_action(player1, action)
+            # Perform action of human player after AIs finished their calculations
+            if self.__you is not None:
+                game_service.do_action(self.__you, action)
 
             self.monitoring.update(self._game)
 
@@ -60,8 +68,13 @@ class OfflineController(Controller):
 
         self._game = Game(width, height, cells, players, 1, True, datetime.now(time_zone))
 
-        ai0 = PathfindingAI(player1, 2, 75)
-        ai1 = NotKillingItselfAI(player2, [AIOptions.max_distance], 1, 0)
+        self.__you = None
+        ai0 = NotKillingItselfAI(player1, [AIOptions.max_distance], 1, 0)
+        # Comment out next two lines if you want to play on your own.
+        # self.__you = player1
+        # ai0 = None
+
+        ai1 = PathfindingAI(player2, 2, 75)
         ai2 = SearchTreePathfindingAI(player3, 2, 75, 2)
         ai3 = SearchTreeAI(player4, 2)
 
