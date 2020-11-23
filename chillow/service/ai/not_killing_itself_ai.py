@@ -85,10 +85,9 @@ class NotKillingItselfAI(ArtificialIntelligence):
         return list(best_actions.keys())
 
     def find_surviving_actions(self, game_service: GameService, depth: int = 1) -> List[Action]:
-        result: List[Action] = []
-
         assert depth > 0, "depth must be greater than 0"
 
+        result: List[Action] = []
         for action in Action:  # select a surviving action
             gs_copy = pickle.loads(pickle.dumps(game_service))
             try:
@@ -105,5 +104,15 @@ class NotKillingItselfAI(ArtificialIntelligence):
                     interim_result = self.find_surviving_actions(gs_copy, depth - 1)
                 if len(interim_result) > 0 or depth == 1:
                     result += [action]
+
+        return result
+
+    def find_surviving_actions_with_best_depth(self, game_service: GameService, depth: int) -> List[Action]:
+        assert depth > 0, "depth must be greater than 0"
+        result: List[Action] = []
+        for current_depth in reversed(range(1, depth + 1)):
+            result = self.find_surviving_actions(game_service, current_depth)
+            if len(result) > 0:
+                break
 
         return result
