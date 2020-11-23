@@ -1,3 +1,4 @@
+import multiprocessing
 from datetime import datetime, timedelta, timezone
 from multiprocessing import Value
 from random import randint
@@ -9,6 +10,7 @@ from chillow.model.direction import Direction
 from chillow.model.game import Game
 from chillow.model.player import Player
 from chillow.service.ai import *
+from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.service.game_service import GameService
 from chillow.view.view import View
 
@@ -31,16 +33,26 @@ class OfflineController(Controller):
             time_to_react = randint(3, 15)
             self._game.deadline = datetime.now(time_zone) + timedelta(0, time_to_react)
 
+            actions = {}
+            processes = []
             for ai in self._ais:
                 if ai.player.active:
                     value = Value('i')
-                    ai.create_next_action(self._game.copy(), value)
-                    game_service.do_action(ai.player, Action.get_by_index(value.value))
-                    self._game.deadline = datetime.now(time_zone) + timedelta(0, time_to_react)
+                    actions[ai] = value
+                    process = multiprocessing.Process(target=OfflineController.call_ai, args=(ai, self._game, value,))
+                    processes.append(process)
+                    process.start()
 
-            # if player1.active:
-            #     action = self.monitoring.read_next_action()
-            #     game_service.do_action(player1, action)
+            if self._you is not None and self._you.active:
+                action = self.monitoring.read_next_action()
+                game_service.do_action(self._you, action)
+                self.monitoring.update(self._game)
+
+            for proc in processes:
+                proc.join()
+
+            for ai, value in actions.items():
+                game_service.do_action(ai.player, Action.get_by_index(value.value))
 
             self.monitoring.update(self._game)
 
@@ -60,9 +72,16 @@ class OfflineController(Controller):
 
         self._game = Game(width, height, cells, players, 1, True, datetime.now(time_zone))
 
+        # self._you = player1
+        self._you = None
+
         ai0 = PathfindingAI(player1, 2, 75)
         ai1 = NotKillingItselfAI(player2, [AIOptions.max_distance], 1, 0)
         ai2 = SearchTreePathfindingAI(player3, 2, 75, 2)
         ai3 = SearchTreeAI(player4, 2)
 
         self._ais = [ai0, ai1, ai2, ai3]
+
+    @staticmethod
+    def call_ai(ai: ArtificialIntelligence, game: Game, return_value: multiprocessing.Value):
+        ai.create_next_action(game, return_value)
