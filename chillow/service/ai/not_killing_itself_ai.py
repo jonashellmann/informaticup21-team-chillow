@@ -20,10 +20,12 @@ class AIOptions(Enum):
 
 class NotKillingItselfAI(ArtificialIntelligence):
 
-    def __init__(self, player: Player, options: List[AIOptions], max_speed: int, max_worse_distance: int):
+    def __init__(self, player: Player, options: List[AIOptions], max_speed: int, max_worse_distance: int,
+                 depth: int = 3):
         super().__init__(player, max_speed)
         self.options = options
         self.max_worse_distance = max_worse_distance
+        self.depth = depth
 
     def get_information(self) -> str:
         return super().get_information() \
@@ -35,7 +37,7 @@ class NotKillingItselfAI(ArtificialIntelligence):
         game_service = GameService(game)
         game_service.turn.turn_ctr = self.turn_ctr
 
-        surviving_actions = self.find_surviving_actions_with_best_depth(game_service, 3)
+        surviving_actions = self.find_surviving_actions_with_best_depth(game_service, self.depth)
         if AIOptions.max_distance in self.options:
             max_distance_actions = self.calc_action_with_max_distance_to_visited_cells(game_service, surviving_actions)
             action = choice(max_distance_actions) if max_distance_actions is not None and len(

@@ -49,15 +49,39 @@ Dazu wird für jede mögliche Aktion die Spur berechnet, die entstehen würde un
 Aktionen die eine Kollision hervorrufen werden nicht ausgeführt.
 Hierbei bleiben mögliche Aktionen der Gegenspieler zunächst unberücksichtigt. \\
 
-Durch die Implementierung der \Code{NotKillingItselfAI} fiel auf, dass die \ac{KI} sich zwar nicht mehr im unmittelbar
+Durch die Implementierung der \Code{NotKillingItselfAI} fiel auf, dass weiterhin schlechte Entscheidungen bei
+Geschwindigkeiten größer 1 getroffen werden.
+Die erhöhte Geschwindigkeit kann dafür sorgen, dass die \ac{KI} im nächsten Zug durch die Geschwindigkeit keine
+verbleibende Aktion hat, bei der sie nicht verlieren wird.
+in vielen Spielsituation ist dies vermeidbar, indem die Geschwindigkeit nicht erhöht oder sogar verringert wird.
+In der \Abbildung{fig:Geschwindigkeit-Problem} kann das Problem nachvollzogen werden.
+Links ist die Ausgangssituation des Beispiels zu sehen und im mittleren Bild wurde dann anstelle der ebenfalls möglichen
+Aktionen change\_nothing und turn\_right, die Aktion speed\_up gewählt und dadurch die Geschwindigkeit zwei erreicht.
+Die \Code{NotKillingItselfAI} hat nun zwar eine Aktion gewäht, die sie nicht direkt in diesem Zug verlieren lässt,
+jedoch im direkt darauf foldenen Spielzug.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.6\textwidth]{Bilder/geschwindigkeit_problem.png}
+    \caption{\Code{NotKillingItselfAI} Fehlentscheidung bei Geschwindigkeit größer eins}
+    \label{fig:Geschwindigkeit-Problem}
+\end{figure}
+
+Dieses Problem haben wir bei der Implementierung berücksichtigt und der \Code{NotKillingItselfAI} kann optional eine
+Tiefe übergeben werden, mit der die Anzahl Spielzüge festgelegt wird, in denen die gewählte Aktion nicht zum Verlieren
+führt.
+Das sorgt dafür, dass die \ac{KI} entsprechend der Tiefe in die Zukunft vorausschaut und nicht verlieren wird.
+Dabei bleiben die gegnerischen Aktionsmöglichkeiten jedoch unberücksicht. \\
+
+Außerdem hat die \Code{NotKillingItselfAI} das Problem, dass die sie sich zwar nicht mehr im unmittelbar
 folgenden Zug tötete, jedoch häufig in Sackgassen läuft.
-Dieses Problem wird in der \Abbildung{fig:Sackgassen_Problem} verdeutlicht.
+Dieses Problem wird in der \Abbildung{fig:Sackgassen-Problem} verdeutlicht.
 
 \begin{figure}[htb]
     \centering
     \includegraphics[width=0.6\textwidth]{Bilder/Sackgassen_Problem.png}
     \caption{\Code{NotKillingItselfAI} unten rechts in einer Sackgasse}
-    \label{fig:Sackgassen_Problem}
+    \label{fig:Sackgassen-Problem}
 \end{figure}
 
 \subsection{PathfindingAI}
