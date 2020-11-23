@@ -28,8 +28,7 @@ class AIEvaluationController(OfflineController):
                 if max_game_id is None:
                     max_game_id = 0
 
-                self.__run_simulations(cursor, max_game_id)
-            connection.commit()
+                self.__run_simulations(connection, cursor, max_game_id)
 
     def _create_game(self) -> None:
         height = randint(30, 70)
@@ -62,7 +61,7 @@ class AIEvaluationController(OfflineController):
                 if player_count > 5:
                     self._ais.append(RandomAI(players[5], randint(1, 3)))
 
-    def __run_simulations(self, cursor: sqlite3.Cursor, max_game_id):
+    def __run_simulations(self, connection: sqlite3.Connection, cursor: sqlite3.Cursor, max_game_id):
         for i in range(self.__runs):
             super().play()
 
@@ -82,6 +81,8 @@ class AIEvaluationController(OfflineController):
                 # Save how often an AI configuration won a game
                 if ai.player == winner_player:
                     cursor.execute("INSERT INTO winners VALUES ({}, {})".format(ai.player.id, game_id))
+
+            connection.commit()
 
     @staticmethod
     def __create_db_tables(cursor):
