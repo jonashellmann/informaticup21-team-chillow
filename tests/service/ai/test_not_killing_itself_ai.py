@@ -26,9 +26,9 @@ class NotKillingItselfAITest(unittest.TestCase):
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
         game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(player1, [], 3, 0)
+        sut = NotKillingItselfAI(player1, [], 3, 0, 3)
 
-        actions: List[Action] = sut.find_surviving_actions(game_service)
+        actions: List[Action] = sut.find_surviving_actions(game_service, 3)
 
         self.assertTrue(Action.turn_right in actions)
         self.assertTrue(len(actions) == 1)
@@ -46,9 +46,9 @@ class NotKillingItselfAITest(unittest.TestCase):
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
         game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(player1, [], 3, 0)
+        sut = NotKillingItselfAI(player1, [], 3, 0, 3)
 
-        actions: List[Action] = sut.find_surviving_actions(game_service)
+        actions: List[Action] = sut.find_surviving_actions(game_service, 3)
 
         self.assertTrue(Action.change_nothing in actions)
         self.assertTrue(Action.turn_right in actions)
@@ -67,9 +67,9 @@ class NotKillingItselfAITest(unittest.TestCase):
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
         game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(player1, [], 3, 0)
+        sut = NotKillingItselfAI(player1, [], 3, 0, 3)
 
-        actions: List[Action] = sut.find_surviving_actions(game_service)
+        actions: List[Action] = sut.find_surviving_actions(game_service, 3)
 
         self.assertTrue(Action.turn_left in actions)
         self.assertTrue(Action.turn_right in actions)
@@ -88,9 +88,9 @@ class NotKillingItselfAITest(unittest.TestCase):
         game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
         game_service.turn.turn_ctr = 6
-        sut = NotKillingItselfAI(player1, [], 4, 0)
+        sut = NotKillingItselfAI(player1, [], 4, 0, 3)
 
-        actions: List[Action] = sut.find_surviving_actions(game_service)
+        actions: List[Action] = sut.find_surviving_actions(game_service, 1)
 
         self.assertTrue(Action.slow_down in actions)
         self.assertTrue(Action.turn_right in actions)
@@ -110,9 +110,9 @@ class NotKillingItselfAITest(unittest.TestCase):
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
         game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(player1, [], MAX_SPEED, 0)
+        sut = NotKillingItselfAI(player1, [], MAX_SPEED, 0, 3)
 
-        actions: List[Action] = sut.find_surviving_actions(game_service)
+        actions: List[Action] = sut.find_surviving_actions(game_service, 1)
 
         self.assertTrue(Action.slow_down in actions)
         self.assertTrue(Action.turn_right in actions)
@@ -130,7 +130,7 @@ class NotKillingItselfAITest(unittest.TestCase):
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
         game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(player1, [], 3, 0)
+        sut = NotKillingItselfAI(player1, [], 3, 0, 3)
 
         actions: List[Action] = sut.calc_action_with_max_distance_to_visited_cells(game_service, [Action.speed_up,
                                                                                                   Action.change_nothing,
@@ -152,7 +152,7 @@ class NotKillingItselfAITest(unittest.TestCase):
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
         game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(player1, [], 3, MAX_WORSE_DISTANCE)
+        sut = NotKillingItselfAI(player1, [], 3, MAX_WORSE_DISTANCE, 3)
 
         actions: List[Action] = sut.calc_action_with_max_distance_to_visited_cells(game_service, [Action.speed_up,
                                                                                                   Action.change_nothing,
@@ -165,7 +165,7 @@ class NotKillingItselfAITest(unittest.TestCase):
 
     def test_get_information(self):
         player = Player(1, 0, 4, Direction.up, 1, True, "")
-        sut = NotKillingItselfAI(player, [], 3, 1)
+        sut = NotKillingItselfAI(player, [], 3, 1, 3)
         expected = "max_speed=3, max_worse_distance=1"
 
         result = sut.get_information()
@@ -185,7 +185,7 @@ class NotKillingItselfAITest(unittest.TestCase):
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
         game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(player1, [], 3, 0)
+        sut = NotKillingItselfAI(player1, [], 3, 0, 2)
 
         actions: List[Action] = sut.find_surviving_actions(game_service, 2)
 
@@ -205,7 +205,7 @@ class NotKillingItselfAITest(unittest.TestCase):
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
         game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(player1, [], 3, 0)
+        sut = NotKillingItselfAI(player1, [], 3, 0, 2)
 
         actions: List[Action] = sut.find_surviving_actions(game_service, 2)
 
@@ -224,7 +224,7 @@ class NotKillingItselfAITest(unittest.TestCase):
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
         game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(player1, [], 3, 0)
+        sut = NotKillingItselfAI(player1, [], 3, 0, 3)
 
         actions: List[Action] = sut.find_surviving_actions(game_service, 3)
 
@@ -244,7 +244,7 @@ class NotKillingItselfAITest(unittest.TestCase):
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
         game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(player1, [], 3, 0)
+        sut = NotKillingItselfAI(player1, [], 3, 0, 3)
 
         actions: List[Action] = sut.find_surviving_actions(game_service, 3)
 
@@ -263,9 +263,9 @@ class NotKillingItselfAITest(unittest.TestCase):
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
         game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(player1, [], 3, 0)
+        sut = NotKillingItselfAI(player1, [], 3, 0, 5)
 
-        actions: List[Action] = sut.find_surviving_actions_with_best_depth(game_service, 5)
+        actions: List[Action] = sut.find_surviving_actions_with_best_depth(game_service)
 
         self.assertTrue(Action.turn_right in actions)
         self.assertTrue(len(actions) == 1)
@@ -283,9 +283,9 @@ class NotKillingItselfAITest(unittest.TestCase):
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
         game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(player1, [], 3, 0)
+        sut = NotKillingItselfAI(player1, [], 3, 0, 5)
 
-        actions: List[Action] = sut.find_surviving_actions_with_best_depth(game_service, 5)
+        actions: List[Action] = sut.find_surviving_actions_with_best_depth(game_service)
 
         self.assertTrue(Action.turn_right in actions)
         self.assertTrue(len(actions) == 1)
@@ -303,9 +303,9 @@ class NotKillingItselfAITest(unittest.TestCase):
         time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
         game = Game(5, 5, cells, players, 2, True, time)
         game_service = GameService(game)
-        sut = NotKillingItselfAI(player1, [], 3, 0)
+        sut = NotKillingItselfAI(player1, [], 3, 0, 5)
 
-        actions: List[Action] = sut.find_surviving_actions_with_best_depth(game_service, 5)
+        actions: List[Action] = sut.find_surviving_actions_with_best_depth(game_service)
 
         self.assertTrue(Action.turn_left in actions)
         self.assertTrue(Action.turn_right in actions)
