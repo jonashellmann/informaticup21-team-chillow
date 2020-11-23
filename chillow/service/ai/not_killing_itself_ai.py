@@ -35,7 +35,7 @@ class NotKillingItselfAI(ArtificialIntelligence):
         game_service = GameService(game)
         game_service.turn.turn_ctr = self.turn_ctr
 
-        surviving_actions = self.find_surviving_actions(game_service)
+        surviving_actions = self.find_surviving_actions_with_best_depth(game_service, 3)
         if AIOptions.max_distance in self.options:
             max_distance_actions = self.calc_action_with_max_distance_to_visited_cells(game_service, surviving_actions)
             action = choice(max_distance_actions) if max_distance_actions is not None and len(

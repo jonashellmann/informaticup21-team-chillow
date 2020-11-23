@@ -35,7 +35,7 @@ class PathfindingAI(NotKillingItselfAI):
         game_service = GameService(game)
         game_service.turn.turn_ctr = self.turn_ctr
 
-        surviving_actions = self.find_surviving_actions(game_service)
+        surviving_actions = self.find_surviving_actions_with_best_depth(game_service, 3)
 
         return self.find_actions_by_best_path_connection(surviving_actions, game)
 
