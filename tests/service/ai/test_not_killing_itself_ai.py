@@ -229,7 +229,7 @@ class NotKillingItselfAITest(unittest.TestCase):
         actions: List[Action] = sut.find_surviving_actions(game_service, 3)
 
         self.assertTrue(Action.turn_right in actions)
-        self.assertTrue(len(actions) == 2)
+        self.assertTrue(len(actions) == 1)
 
     def test_ai_should_choose_empty_list_with_depth_three_and_no_surviving_action(self):
         player1 = Player(1, 1, 2, Direction.up, 1, True, "")
@@ -249,3 +249,64 @@ class NotKillingItselfAITest(unittest.TestCase):
         actions: List[Action] = sut.find_surviving_actions(game_service, 3)
 
         self.assertTrue(len(actions) == 0)
+
+    def test_ai_should_choose_best_list_of_actions_by_depth_from_lower_depth(self):
+        player1 = Player(1, 1, 2, Direction.up, 1, True, "")
+        player2 = Player(2, 1, 1, Direction.down, 3, True, "")
+        players = [player1, player2]
+        cells = [[Cell(),           Cell(),          Cell(),            Cell(),             Cell()],
+                 [Cell([player2]),  Cell([player2]), Cell([player2]),   Cell(),             Cell()],
+                 [Cell(),           Cell([player1]), Cell(),            Cell([player2]),    Cell()],
+                 [Cell([player2]),  Cell([player2]), Cell(),            Cell([player2]),    Cell()],
+                 [Cell(),           Cell(),          Cell([player2]),   Cell(),             Cell()]]
+
+        time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
+        game = Game(5, 5, cells, players, 2, True, time)
+        game_service = GameService(game)
+        sut = NotKillingItselfAI(player1, [], 3, 0)
+
+        actions: List[Action] = sut.find_surviving_actions_with_best_depth(game_service, 5)
+
+        self.assertTrue(Action.turn_right in actions)
+        self.assertTrue(len(actions) == 1)
+
+    def test_ai_should_choose_best_list_of_actions_by_depth(self):
+        player1 = Player(1, 1, 2, Direction.up, 1, True, "")
+        player2 = Player(2, 1, 1, Direction.down, 3, True, "")
+        players = [player1, player2]
+        cells = [[Cell(),           Cell(),          Cell(),            Cell(),             Cell()],
+                 [Cell([player2]),  Cell([player2]), Cell([player2]),   Cell(),             Cell()],
+                 [Cell(),           Cell([player1]), Cell(),            Cell([player2]),    Cell()],
+                 [Cell([player2]),  Cell(), Cell(),            Cell([player2]),    Cell()],
+                 [Cell(),           Cell(),          Cell([player2]),   Cell(),             Cell()]]
+
+        time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
+        game = Game(5, 5, cells, players, 2, True, time)
+        game_service = GameService(game)
+        sut = NotKillingItselfAI(player1, [], 3, 0)
+
+        actions: List[Action] = sut.find_surviving_actions_with_best_depth(game_service, 5)
+
+        self.assertTrue(Action.turn_right in actions)
+        self.assertTrue(len(actions) == 1)
+
+    def test_ai_should_choose_best_list_of_actions_by_depth(self):
+        player1 = Player(1, 1, 2, Direction.up, 1, True, "")
+        player2 = Player(2, 1, 1, Direction.down, 3, True, "")
+        players = [player1, player2]
+        cells = [[Cell(),           Cell(),          Cell(),            Cell(),             Cell()],
+                 [Cell([player2]),  Cell([player2]), Cell([player2]),   Cell(),             Cell()],
+                 [Cell(),           Cell([player1]), Cell(),            Cell([player2]),    Cell()],
+                 [Cell([player2]),  Cell(),          Cell([player2]),    Cell([player2]),    Cell()],
+                 [Cell(),           Cell(),          Cell([player2]),   Cell(),             Cell()]]
+
+        time = datetime(2020, 10, 1, 12, 5, 13, 0, timezone.utc)
+        game = Game(5, 5, cells, players, 2, True, time)
+        game_service = GameService(game)
+        sut = NotKillingItselfAI(player1, [], 3, 0)
+
+        actions: List[Action] = sut.find_surviving_actions_with_best_depth(game_service, 5)
+
+        self.assertTrue(Action.turn_left in actions)
+        self.assertTrue(Action.turn_right in actions)
+        self.assertTrue(len(actions) == 2)
