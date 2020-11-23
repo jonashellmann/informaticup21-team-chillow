@@ -290,7 +290,7 @@ class NotKillingItselfAITest(unittest.TestCase):
         self.assertTrue(Action.turn_right in actions)
         self.assertTrue(len(actions) == 1)
 
-    def test_ai_should_choose_best_list_of_actions_by_depth(self):
+    def test_ai_should_choose_best_list_of_actions_in_lowest_possible_depth(self):
         player1 = Player(1, 1, 2, Direction.up, 1, True, "")
         player2 = Player(2, 1, 1, Direction.down, 3, True, "")
         players = [player1, player2]
