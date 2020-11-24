@@ -53,7 +53,7 @@ class OnlineController(Controller):
 
                 if self.ai is None:
                     self.ai = globals()[self.ai_class](game.you, *self.ai_params)
-                    self.default_ai = NotKillingItselfAI(game.you, [AIOptions.max_distance], 1, 0)
+                    self.default_ai = NotKillingItselfAI(game.you, [AIOptions.max_distance], 1, 0, 3)
 
                 if game.you.active:
                     action = self.__choose_action(game, server_time.tzinfo)
