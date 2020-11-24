@@ -27,12 +27,15 @@ class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
         self.turn_ctr += 1
 
         pathfinding_actions = self.create_next_actions_ranked(game)
+        self.set_best_action(pathfinding_actions, [], return_value)
         search_tree_actions = super()._create_all_next_surviving_actions(game)
+        self.set_best_action(pathfinding_actions, search_tree_actions, return_value)
 
+    def set_best_action(self, pathfinding_actions: List[Tuple[Action, int]], search_tree_actions: List[Action],
+                        return_value: Value):
         best_action = self.get_best_action(pathfinding_actions, search_tree_actions)
 
-        action = best_action if best_action is not None else Action.get_random_action()
-        return_value.value = action.get_index()
+        return_value.value = best_action.get_index() if best_action is not None else return_value.value
 
     def get_best_action(self, pathfinding_actions: List[Tuple[Action, int]],
                         search_tree_actions: List[Action]) -> Optional[Action]:
