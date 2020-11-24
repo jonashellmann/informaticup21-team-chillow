@@ -18,7 +18,7 @@ from chillow.service.game_service import GameService
 class PathfindingAI(NotKillingItselfAI):
 
     def __init__(self, player: Player, max_speed: int, count_paths_to_check: int):
-        super().__init__(player, [], max_speed, 0)
+        super().__init__(player, [], max_speed, 0, 3)
         self.count_paths_to_check = count_paths_to_check
 
     def get_information(self) -> str:
@@ -35,7 +35,7 @@ class PathfindingAI(NotKillingItselfAI):
         game_service = GameService(game)
         game_service.turn.turn_ctr = self.turn_ctr
 
-        surviving_actions = self.find_surviving_actions(game_service)
+        surviving_actions = self.find_surviving_actions_with_best_depth(game_service)
 
         return self.find_actions_by_best_path_connection(surviving_actions, game)
 

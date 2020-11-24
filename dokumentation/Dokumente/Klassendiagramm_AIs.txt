@@ -17,7 +17,7 @@
 [RandomAI| | ]
 [RandomWaitingAI| | ]
 
-[NotKillingItselfAI| + options: AIOptions; + max_worse_distance: int|+ calc_action_with_max_distance_to_visited_cells(); + find_surviving_actions()]
+[NotKillingItselfAI| + options: AIOptions; + max_worse_distance: int|+ calc_action_with_max_distance_to_visited_cells(); + find_surviving_actions(); + find_surviving_actions_with_best_depth()]
 
 [PathfindingAI| + count_paths_to_check: int| + create_next_actions_ranked; + find_actions_by_best_path_connection(); + get_random_free_cells_from_playground()]
 

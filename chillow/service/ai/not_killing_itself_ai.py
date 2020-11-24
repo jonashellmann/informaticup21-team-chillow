@@ -20,10 +20,14 @@ class AIOptions(Enum):
 
 class NotKillingItselfAI(ArtificialIntelligence):
 
-    def __init__(self, player: Player, options: List[AIOptions], max_speed: int, max_worse_distance: int):
+    def __init__(self, player: Player, options: List[AIOptions], max_speed: int, max_worse_distance: int,
+                 depth: int):
         super().__init__(player, max_speed)
         self.options = options
         self.max_worse_distance = max_worse_distance
+
+        assert depth > 0, "depth must be greater than 0"
+        self.depth = depth
 
     def get_information(self) -> str:
         return super().get_information() \
@@ -35,7 +39,7 @@ class NotKillingItselfAI(ArtificialIntelligence):
         game_service = GameService(game)
         game_service.turn.turn_ctr = self.turn_ctr
 
-        surviving_actions = self.find_surviving_actions(game_service)
+        surviving_actions = self.find_surviving_actions_with_best_depth(game_service)
         if AIOptions.max_distance in self.options:
             max_distance_actions = self.calc_action_with_max_distance_to_visited_cells(game_service, surviving_actions)
             action = choice(max_distance_actions) if max_distance_actions is not None and len(
@@ -84,7 +88,7 @@ class NotKillingItselfAI(ArtificialIntelligence):
 
         return list(best_actions.keys())
 
-    def find_surviving_actions(self, game_service: GameService) -> List[Action]:
+    def find_surviving_actions(self, game_service: GameService, depth: int) -> List[Action]:
         result: List[Action] = []
         for action in Action:  # select a surviving action
             gs_copy = pickle.loads(pickle.dumps(game_service))
@@ -97,6 +101,19 @@ class NotKillingItselfAI(ArtificialIntelligence):
                 continue
             gs_copy.check_and_set_died_players()
             if player.active:
-                result += [action]
+                interim_result = []
+                if depth > 1:
+                    interim_result = self.find_surviving_actions(gs_copy, depth - 1)
+                if len(interim_result) > 0 or depth == 1:
+                    result += [action]
+
+        return result
+
+    def find_surviving_actions_with_best_depth(self, game_service: GameService) -> List[Action]:
+        result: List[Action] = []
+        for current_depth in reversed(range(1, self.depth + 1)):
+            result = self.find_surviving_actions(game_service, current_depth)
+            if len(result) > 0:
+                break
 
         return result
