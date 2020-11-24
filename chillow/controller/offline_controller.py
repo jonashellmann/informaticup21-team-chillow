@@ -20,6 +20,7 @@ class OfflineController(Controller):
 
     def __init__(self, monitoring: View):
         super().__init__(monitoring)
+        self.__you = None
 
     def play(self):
         self._create_game()

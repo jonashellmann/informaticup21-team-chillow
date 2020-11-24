@@ -49,15 +49,16 @@ class AIEvaluationController(OfflineController):
 
         self._ais = []
 
-        self._ais.append(PathfindingAI(players[0], randint(1, 3), randint(1, 3) * 5 + 70))
-        self._ais.append(PathfindingSearchTreeAI(players[1], randint(1, 3), randint(1, 3) * 5 + 70, randint(2, 4), 0.75,
+        self._ais.append(PathfindingAI(players[0], randint(1, 3), randint(1, 3) * 25))
+        self._ais.append(PathfindingSearchTreeAI(players[1], randint(1, 3), randint(1, 3) * 25, randint(2, 4), 0.75,
                                                  randint(1, 3) * 10))
-        self._ais.append(SearchTreePathfindingAI(players[2], randint(1, 3), randint(1, 3) * 5 + 70, randint(2, 4),
+        self._ais.append(SearchTreePathfindingAI(players[2], randint(1, 3), randint(1, 3) * 25, randint(2, 4),
                                                  randint(1, 3) * 10))
         if player_count > 3:
             self._ais.append(SearchTreeAI(players[3], randint(1, 3), randint(2, 4), True, randint(1, 3) * 10))
             if player_count > 4:
-                self._ais.append(NotKillingItselfAI(players[4], [AIOptions.max_distance], randint(1, 3), 0))
+                self._ais.append(NotKillingItselfAI(players[4], [AIOptions.max_distance], randint(1, 3), 0,
+                                                    randint(1, 3)))
                 if player_count > 5:
                     self._ais.append(RandomAI(players[5], randint(1, 3)))
 
