@@ -69,7 +69,7 @@ class OfflineController(Controller):
         self._game = Game(width, height, cells, players, 1, True, datetime.now(time_zone))
 
         self.__you = None
-        ai0 = NotKillingItselfAI(player1, [AIOptions.max_distance], 1, 0)
+        ai0 = NotKillingItselfAI(player1, [AIOptions.max_distance], 1, 0, 3)
         # Comment out next two lines if you want to play on your own.
         # self.__you = player1
         # ai0 = None
