@@ -9,7 +9,10 @@ from chillow.model.player import Player
 
 
 class SearchTreeAI(ArtificialIntelligence):
-    """TODO
+    """The SearchTreeAI tries to create a tree by simulating different actions for all player for the next rounds.
+
+    If there is an initial action that lets the player survive for the next rounds not depending on which action
+    the other players will make, this action will be chosen.
 
     Attributes:
         player: The player associated with this AI.
@@ -40,13 +43,14 @@ class SearchTreeAI(ArtificialIntelligence):
         return_value.value = (action if action is not None else Action.get_random_action()).get_index()
 
     def _create_all_next_surviving_actions(self, game: Game) -> List[Action]:
-        """TODO
+        """Calculates for every possible action whether the player will survive the next rounds taking into account
+        the actions of the other players.
 
         Args:
-            game:
+            game: The game state used as the starting point for the simulation.
 
         Returns:
-
+            All actions which won't kill the player.
         """
 
         root = SearchTreeRoot(game.copy())

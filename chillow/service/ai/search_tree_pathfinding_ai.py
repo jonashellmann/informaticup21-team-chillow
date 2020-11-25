@@ -9,7 +9,10 @@ from chillow.model.player import Player
 
 
 class SearchTreePathfindingAI(PathfindingAI, SearchTreeAI):
-    """TODO
+    """This AI combines the SearchTreeAI and the PathfindingAI by favoring the former.
+
+    Therefore it finds all actions that let the player survive the next rounds by using the SearchTreeAI and
+    afterwards lets the PathfindingAI check which of these is the best action to perform.
 
     Attributes:
         player: The player associated with this AI.
