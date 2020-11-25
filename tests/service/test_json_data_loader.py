@@ -61,9 +61,17 @@ class JSONDataWriterTest(unittest.TestCase):
         self.assertIsNotNone(players)
         self.assertNotEqual(0, len(players))
 
-    def test_read_correct_time(self):
-        time_data = '{"time":"2020-11-04T14:34:43Z"}'
+    def test_read_correct_time_1(self):
+        time_data = '{"time":"2020-11-04T14:34:43Z", "milliseconds":0}'
         expected = datetime(2020, 11, 4, 14, 34, 43, 0, timezone.utc)
+
+        result = self.sut.read_server_time(time_data)
+
+        self.assertEqual(expected, result)
+
+    def test_read_correct_time_2(self):
+        time_data = '{"time":"2020-11-04T14:34:43Z", "milliseconds":157}'
+        expected = datetime(2020, 11, 4, 14, 34, 43, 157000, timezone.utc)
 
         result = self.sut.read_server_time(time_data)
 

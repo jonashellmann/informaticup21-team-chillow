@@ -1,7 +1,7 @@
 import json
 import iso8601
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from abc import ABCMeta, abstractmethod
 
 from chillow.model.direction import Direction
@@ -110,4 +110,4 @@ class JSONDataLoader(DataLoader):
         """
 
         json_data = json.loads(time_data)
-        return iso8601.parse_date(json_data["time"])
+        return iso8601.parse_date(json_data["time"]) + timedelta(milliseconds=int(json_data["milliseconds"]))
