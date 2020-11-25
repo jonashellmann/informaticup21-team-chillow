@@ -17,8 +17,7 @@ class DataWriter(metaclass=ABCMeta):
         Returns:
             The action as a string.
         """
-
-        raise NotImplementedError
+        pass
 
 
 class JSONDataWriter(DataWriter):
