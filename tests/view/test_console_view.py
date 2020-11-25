@@ -29,7 +29,6 @@ class ConsoleViewTest(unittest.TestCase):
     def test_read_next_action_should_return_correct_action_input_r(self, _):
         self.assertTrue(self.sut.read_next_action(), Action.turn_right)
 
-
     @patch('chillow.view.console_view.ConsoleView.get_input', return_value='l')
     def test_read_next_action_should_return_correct_action_input_l(self, _):
         self.assertTrue(self.sut.read_next_action(), Action.turn_left)
@@ -48,7 +47,7 @@ class ConsoleViewTest(unittest.TestCase):
         self.assertTrue("Game ended!" in str(mock_stdout.getvalue()))
 
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
-    def test_correct_output_round(self,  mock_stdout):
+    def test_correct_output_round_1(self,  mock_stdout):
         player1 = Player(1, 0, 0, Direction.up, 1, True, "p1")
         player2 = Player(2, 0, 1, Direction.down, 3, True, "")
         cells = [[Cell([player1])],
@@ -59,10 +58,10 @@ class ConsoleViewTest(unittest.TestCase):
         self.assertTrue("Round :  0" in str(mock_stdout.getvalue()))
 
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
-    def test_correct_output_roundnumber(self,  mock_stdout):
+    def test_correct_output_round_2(self,  mock_stdout):
         player1 = Player(1, 0, 0, Direction.up, 1, True, "p1")
         player2 = Player(2, 0, 1, Direction.down, 3, True, "")
-        cells = [[Cell([player1]), Cell()],
+        cells = [[Cell([player1]), Cell([player1])],
                  [Cell([player2]), Cell()]]
         game = Game(2, 2, cells, [player1, player2], 2, True, datetime.now())
 
