@@ -10,12 +10,33 @@ from chillow.service.game_service import GameService
 
 @dataclass
 class SearchTreeRoot(object):
+    """TODO
+
+    """
+
     _game: Game
 
     def calculate_action(self, player: Player, player_ids_to_watch: List[int], combinations: List[Tuple[Any]],
                          depth: int, turn_counter: int, root: bool, first_actions: List[Action], max_speed: int = 10,
                          randomize: bool = False) \
             -> Optional[Action]:
+        """TODO
+
+        Args:
+            player:
+            player_ids_to_watch:
+            combinations:
+            depth:
+            turn_counter:
+            root:
+            first_actions:
+            max_speed:
+            randomize:
+
+        Returns:
+
+        """
+
         assert len(player_ids_to_watch) == len(combinations[0])
 
         if depth <= 0:
@@ -44,11 +65,34 @@ class SearchTreeRoot(object):
 
     @staticmethod
     def __get_actions(root: bool, first_actions: List[Action], randomize: bool) -> List[Action]:
+        """TODO
+
+        Args:
+            root:
+            first_actions:
+            randomize:
+
+        Returns:
+
+        """
+
         if root and first_actions is not None and len(first_actions) >= 1:
             return first_actions
         return Action.get_actions(randomize)
 
     def __create_child(self, player: Player, action: Action, turn_counter: int, max_speed: int):
+        """TODO
+
+        Args:
+            player:
+            action:
+            turn_counter:
+            max_speed:
+
+        Returns:
+
+        """
+
         if player.speed == max_speed and action == Action.speed_up:
             return
 
@@ -66,6 +110,19 @@ class SearchTreeRoot(object):
                                      player_ids_to_watch: List[int],
                                      combinations: List[Tuple[Action]],
                                      turn_counter: int) -> bool:
+        """ TODO
+
+        Args:
+            child:
+            player:
+            player_ids_to_watch:
+            combinations:
+            turn_counter:
+
+        Returns:
+
+        """
+
         for combination in combinations:
             node = SearchTreeRoot.__try_combination(child._game, player_ids_to_watch, combination, turn_counter)
             if not node._game.get_player_by_id(player.id).active:
@@ -75,6 +132,18 @@ class SearchTreeRoot(object):
     @staticmethod
     def __try_combination(game: Game, player_ids_to_watch: List[int], combination: Tuple[Action],
                           turn_counter: int):
+        """TODO
+
+        Args:
+            game:
+            player_ids_to_watch:
+            combination:
+            turn_counter:
+
+        Returns:
+
+        """
+
         modified_game = game.copy()
         game_service = GameService(modified_game)
         game_service.turn.turn_ctr = turn_counter
@@ -89,6 +158,17 @@ class SearchTreeRoot(object):
 
     @staticmethod
     def __perform_simulation(game_service: GameService, action: Action, player: Player):
+        """ TODO
+
+        Args:
+            game_service:
+            action:
+            player:
+
+        Returns:
+
+        """
+
         if player.active:
             try:
                 game_service.visited_cells_by_player[player.id] = \
@@ -102,6 +182,10 @@ class SearchTreeRoot(object):
 
 @dataclass
 class SearchTreeNode(SearchTreeRoot):
+    """TODO
+
+    """
+
     __action: Action
 
     def get_action(self):

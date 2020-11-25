@@ -16,24 +16,38 @@ from chillow.service.game_service import GameService
 
 
 class PathfindingAI(NotKillingItselfAI):
+    """TODO
+
+    Attributes:
+        player: The player associated with this AI.
+    """
 
     def __init__(self, player: Player, max_speed: int, count_paths_to_check: int):
         super().__init__(player, [], max_speed, 0, 3)
-        self.count_paths_to_check = count_paths_to_check
+        self.__count_paths_to_check = count_paths_to_check
 
     def get_information(self) -> str:
-        return "max_speed=" + str(self.max_speed) \
-               + ", count_paths_to_check=" + str(self.count_paths_to_check)
+        return "max_speed=" + str(self._max_speed) \
+               + ", count_paths_to_check=" + str(self.__count_paths_to_check)
 
     def create_next_action(self, game: Game, return_value: Value):
-        self.turn_ctr += 1
+        self._turn_ctr += 1
         actions = self.create_next_actions_ranked(game)
         action = actions[0][0] if actions is not None and len(actions) > 0 else Action.get_random_action()
         return_value.value = action.get_index()
 
     def create_next_actions_ranked(self, game: Game) -> Optional[List[Tuple[Action, int]]]:
+        """TODO
+
+        Args:
+            game:
+
+        Returns:
+
+        """
+
         game_service = GameService(game)
-        game_service.turn.turn_ctr = self.turn_ctr
+        game_service.turn.turn_ctr = self._turn_ctr
 
         surviving_actions = self.find_surviving_actions_with_best_depth(game_service)
 
@@ -41,6 +55,15 @@ class PathfindingAI(NotKillingItselfAI):
 
     def find_actions_by_best_path_connection(self, actions: List[Action], game: Game) -> Optional[
             List[Tuple[Action, int]]]:
+        """TODO
+
+        Args:
+            actions:
+            game:
+
+        Returns:
+
+        """
         if actions is None or len(actions) == 0:
             return None
 
@@ -76,10 +99,21 @@ class PathfindingAI(NotKillingItselfAI):
         return actions_with_possible_paths
 
     def get_random_free_cells_from_playground(self, game: Game) -> List[Tuple[int, int]]:
+        """TODO
+
+        Args:
+            game:
+
+        Returns:
+
+        """
         free_cells: List[(int, int)] = []
         for x in range(game.width):
             for y in range(game.height):
                 if game.cells[y][x].players is None or len(game.cells[y][x].players) == 0:
                     free_cells.append((x, y))
         shuffle(free_cells)
-        return free_cells[:min(self.count_paths_to_check, len(free_cells))]
+        return free_cells[:min(self.__count_paths_to_check, len(free_cells))]
+
+    def _get_count_paths_to_check(self) -> int:
+        return self.__count_paths_to_check

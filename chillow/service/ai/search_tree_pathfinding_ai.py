@@ -9,6 +9,11 @@ from chillow.model.player import Player
 
 
 class SearchTreePathfindingAI(PathfindingAI, SearchTreeAI):
+    """TODO
+
+    Attributes:
+        player: The player associated with this AI.
+    """
 
     def __init__(self, player: Player, max_speed: int, count_paths_to_check: int, depth: int,
                  distance_to_check: int = 0):
@@ -16,13 +21,13 @@ class SearchTreePathfindingAI(PathfindingAI, SearchTreeAI):
         SearchTreeAI.__init__(self, player, depth, max_speed, distance_to_check=distance_to_check)
 
     def get_information(self) -> str:
-        return "max_speed=" + str(self.max_speed) \
-               + ", count_paths_to_check=" + str(self.count_paths_to_check) \
-               + ", depth=" + str(self.get_depth()) \
-               + ", distance_to_check=" + str(self.get_distance_to_check())
+        return "max_speed=" + str(self._max_speed) \
+               + ", count_paths_to_check=" + str(self._get_count_paths_to_check()) \
+               + ", depth=" + str(self._get_depth()) \
+               + ", distance_to_check=" + str(self._get_distance_to_check())
 
     def create_next_action(self, game: Game, return_value: Value):
-        self.turn_ctr += 1
+        self._turn_ctr += 1
 
         surviving_actions = super()._create_all_next_surviving_actions(game)
         if surviving_actions is not None and len(surviving_actions) > 0:

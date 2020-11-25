@@ -9,6 +9,11 @@ from chillow.model.player import Player
 
 
 class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
+    """TODO
+
+    Attributes:
+        player: The player associated with this AI.
+    """
 
     def __init__(self, player: Player, max_speed: int, count_paths_to_check: int, depth: int,
                  paths_tolerance: float = 0.75, distance_to_check: int = 0):
@@ -17,14 +22,14 @@ class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
         self.__paths_tolerance = paths_tolerance
 
     def get_information(self) -> str:
-        return "max_speed=" + str(self.max_speed) \
+        return "max_speed=" + str(self._max_speed) \
                + ", paths_tolerance=" + str(self.__paths_tolerance) \
-               + ", count_paths_to_check=" + str(self.count_paths_to_check) \
-               + ", depth=" + str(self.get_depth()) \
-               + ", distance_to_check=" + str(self.get_distance_to_check())
+               + ", count_paths_to_check=" + str(self._get_count_paths_to_check()) \
+               + ", depth=" + str(self._get_depth()) \
+               + ", distance_to_check=" + str(self._get_distance_to_check())
 
     def create_next_action(self, game: Game, return_value: Value):
-        self.turn_ctr += 1
+        self._turn_ctr += 1
 
         pathfinding_actions = self.create_next_actions_ranked(game)
         self.set_best_action(pathfinding_actions, [], return_value)
@@ -33,12 +38,32 @@ class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
 
     def set_best_action(self, pathfinding_actions: List[Tuple[Action, int]], search_tree_actions: List[Action],
                         return_value: Value):
+        """TODO
+
+        Args:
+            pathfinding_actions:
+            search_tree_actions:
+            return_value:
+
+        Returns:
+
+        """
         best_action = self.get_best_action(pathfinding_actions, search_tree_actions)
 
         return_value.value = best_action.get_index() if best_action is not None else return_value.value
 
     def get_best_action(self, pathfinding_actions: List[Tuple[Action, int]],
                         search_tree_actions: List[Action]) -> Optional[Action]:
+        """TODO
+
+        Args:
+            pathfinding_actions:
+            search_tree_actions:
+
+        Returns:
+
+        """
+
         if search_tree_actions is None or len(search_tree_actions) == 0:
             if pathfinding_actions is not None and len(pathfinding_actions) > 0:
                 return pathfinding_actions[0][0]

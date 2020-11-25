@@ -10,14 +10,12 @@ class ArtificialIntelligence(metaclass=ABCMeta):
 
     Attributes:
         player: The player associated with this AI.
-        turn_ctr: The current turn the AI needs to calculate in the game.
-        max_speed: The maximum speed the player of this AI should get.
     """
 
     def __init__(self, player: Player, max_speed: int = 10):
         self.player = player
-        self.turn_ctr = 0
-        self.max_speed = max_speed
+        self._turn_ctr = 0
+        self._max_speed = max_speed
 
     def get_information(self) -> str:
         """Creates a string containing information about the attributes of the AI.
@@ -26,7 +24,7 @@ class ArtificialIntelligence(metaclass=ABCMeta):
             A string containing information about the attributes of the AI.
         """
 
-        return "max_speed=" + str(self.max_speed)
+        return "max_speed=" + str(self._max_speed)
 
     @abstractmethod
     def create_next_action(self, game: Game, return_value: Value):
