@@ -2,7 +2,7 @@ import asyncio
 import requests
 import websockets
 import multiprocessing
-from datetime import datetime
+from datetime import datetime, timezone
 from requests import RequestException
 
 from chillow.controller.controller import Controller
@@ -22,21 +22,13 @@ class OnlineController(Controller):
         super().__init__(monitoring)
         self.__url = url
         self.__key = key
+        self.__server_time_url = server_time_url
         self.__data_loader = data_loader
         self.__data_writer = data_writer
         self.__ai = None
         self.__default_ai = None
         self.__ai_class = ai_class
         self.__ai_params = ai_params
-
-        # Check if the given url to request the server time is valid
-        try:
-            time_data = requests.get(server_time_url).text
-            self.__data_loader.read_server_time(time_data)
-
-            self.__time_url = server_time_url
-        except (RequestException, ValueError):
-            self.__time_url = None
 
     def play(self):
         asyncio.get_event_loop().run_until_complete(self.__play())
@@ -55,11 +47,13 @@ class OnlineController(Controller):
                 if not game.running:
                     break
 
-                if self.__time_url is not None:
-                    time_data = requests.get(self.__time_url).text
+                try:
+                    time_data = requests.get(self.__server_time_url).text
                     server_time = self.__data_loader.read_server_time(time_data)
-                    own_time = datetime.now(server_time.tzinfo)
-                    game.normalize_deadline(server_time, own_time)
+                except (RequestException, ValueError):
+                    server_time = datetime.now(timezone.utc)
+                own_time = datetime.now(server_time.tzinfo)
+                game.normalize_deadline(server_time, own_time)
 
                 if self.__ai is None:
                     self.__ai = globals()[self.__ai_class](game.you, *self.__ai_params)
@@ -70,11 +64,11 @@ class OnlineController(Controller):
                     data_out = self.__data_writer.write(action)
                     await websocket.send(data_out)
 
-    def __choose_action(self, game: Game, timezone: datetime.tzinfo) -> Action:
+    def __choose_action(self, game: Game, time_zone: datetime.tzinfo) -> Action:
         return_value = multiprocessing.Value('i')
         self.__default_ai.create_next_action(game, return_value)
 
-        own_time = datetime.now(timezone)
+        own_time = datetime.now(time_zone)
         seconds_for_calculation = (game.deadline - own_time).seconds
 
         process = multiprocessing.Process(target=OnlineController.call_ai, args=(self.__ai, game, return_value,))
