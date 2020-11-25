@@ -69,6 +69,15 @@ class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
 
     def get_best_action(self, pathfinding_actions: List[Tuple[Action, int]],
                         search_tree_actions: List[Action]) -> Optional[Action]:
+        """ Calculates the best action from the list of actions from PathfindingAI and SearchTreeAI.
+
+        Args:
+            pathfinding_actions: List of actions calculated by PathfindingAI.
+            search_tree_actions: List of actions calculated by SearchTreeAI
+
+        Returns:
+            Best action.
+        """
         if search_tree_actions is None or len(search_tree_actions) == 0:
             if pathfinding_actions is not None and len(pathfinding_actions) > 0:
                 return pathfinding_actions[0][0]
