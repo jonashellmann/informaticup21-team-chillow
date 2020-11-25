@@ -1,7 +1,7 @@
 \chapter{Einstieg in das Projekt}
 \label{ch:planung}
 
-Bevor mit der Implementierung der \ac{KI} begonnen werden konnte, mussten zuerst noch einge andere Punkte geklärt
+Bevor mit der Implementierung der \ac{KI} begonnen werden konnte, mussten zuerst noch einige andere Punkte geklärt
 \bzw erledigt werden.
 Diese ersten Schritte werden im Folgenden erläutert.
 
@@ -24,7 +24,7 @@ Machine Learning gesehen haben und Python in diesem Bereich oft empfohlen wird. 
 \label{subsec:poetry}
 
 Der einfachste Weg, um Abhängigkeiten in Python zu verwalten, ist, eine Datei mit dem Namen \Code{requirements.txt} zu
-verwenden und in dieser die eingesetzten Bibliotheken aufzulosten.
+verwenden und in dieser die eingesetzten Bibliotheken aufzulisten.
 Wir haben uns allerdings für die Verwendung von Poetry als vollständiges Build-Tool entschieden, da dieses zum Einen
 sehr einfach zum Einstieg ist und simple Kommandozeilen-Befehle bereitstellt, aber auch weitere Funktionen wie das
 Ausführen von Tests und Erstellen eines fertigen Pakets anbietet.
@@ -36,7 +36,7 @@ Zudem funktioniert die Auflösung komplexerer Abhängigkeiten von Paketen durch 
 Zum Start haben wir ein minimales Python-Skript erstellt, das lediglich die
 an den Docker-Container übergebenen Parameter für die Server-URL und den API-Key ausgibt.
 Zwar mussten bis hierhin noch keine Abhängigkeiten hinzugefügt werden, aber bei der Konzeption des Dockerfiles sollte
-bereits die Installtion zusätzlicher Bibliotheken berücksichtigt werden.
+bereits die Installation zusätzlicher Bibliotheken berücksichtigt werden.
 Mit der Nutzung des Standard-Python-Containers von Docker Hub wird bereits ein vorgefertigter Container bereitgestellt,
 in dem Python und Pip installiert ist.
 Anschließend wird mittels Pip die Installation von Poetry durchgeführt.
@@ -62,7 +62,7 @@ Nachdem alle Spieler ihre Aktion an den Server gesendet haben, wird jede Aktion 
 ausgeführt.
 Trifft der Spieler während seiner Aktion auf ein bereits belegtes Feld, so verliert dieser das Spiel und bewegt sich
 nicht weiter vorwärts, auch wenn seine Aktion dies normalerweise noch bewirkt hätte.
-Verhindert werden können solche Kollisionen mittels eines Sprung, der bei entsprechendem Tempo automatisch in jeder
+Verhindert werden können solche Kollisionen mithilfe eines Sprungs, der bei entsprechendem Tempo automatisch in jeder
 sechsten Runde des Spiels ausgeführt wird. \\
 
 Wir haben diese Logik, auf die wir später noch genauer eingehen werden und die bei der Implementierung der \ac{KI}s
