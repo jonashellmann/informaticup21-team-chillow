@@ -31,7 +31,7 @@ class OfflineController(Controller):
 
         while self._game.running:
             time_to_react = randint(3, 15)
-            self._game.deadline = datetime.now(time_zone) + timedelta(0, time_to_react)
+            self.__reset_game_deadline(time_to_react)
 
             # Read input from user if there is a human player
             action = None
@@ -39,7 +39,7 @@ class OfflineController(Controller):
                 action = self.monitoring.read_next_action()
                 if datetime.now(time_zone) > self._game.deadline:
                     action = Action.get_default()
-                self._game.deadline = datetime.now(time_zone) + timedelta(0, time_to_react)
+                self.__reset_game_deadline(time_to_react)
 
             for ai in self._ais:
                 if ai is not None and ai.player.active:
@@ -50,7 +50,7 @@ class OfflineController(Controller):
                     self._log_execution_time(ai, (datetime.now(time_zone) - start).total_seconds())
 
                     game_service.do_action(ai.player, Action.get_by_index(value.value))
-                    self._game.deadline = datetime.now(time_zone) + timedelta(0, time_to_react)
+                    self.__reset_game_deadline(time_to_react)
 
             # Perform action of human player after AIs finished their calculations
             if self.__you is not None:
@@ -88,3 +88,6 @@ class OfflineController(Controller):
 
     def _log_execution_time(self, ai: ArtificialIntelligence, execution_time: float):
         pass
+
+    def __reset_game_deadline(self, time_to_react: int):
+        self._game.deadline = datetime.now(time_zone) + timedelta(0, time_to_react)
