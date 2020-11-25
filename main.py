@@ -15,6 +15,7 @@ if __name__ == "__main__":
     parser.add_argument('-d', '--deactivate-pygame', type=bool, default=False)
     parser.add_argument('-r', '--ai-eval-runs', type=int, default=0)
     parser.add_argument('-p', '--ai-eval-db-path', type=str, default="evaluation.db")
+    parser.add_argument('-s', '--server-time-url', type=str, default=None)
     args = parser.parse_args()
 
     if args.deactivate_pygame:
@@ -32,11 +33,12 @@ if __name__ == "__main__":
     else:
         url = os.environ["URL"]
         key = os.environ["KEY"]
+        server_time_url = args.server_time_url
         data_loader = JSONDataLoader()
         data_writer = JSONDataWriter()
         ai_class = PathfindingAI.__name__
         ai_params = (2, 75)
 
-        con = OnlineController(monitoring, url, key, data_loader, data_writer, ai_class, ai_params)
+        con = OnlineController(monitoring, url, key, server_time_url, data_loader, data_writer, ai_class, ai_params)
 
     con.play()
