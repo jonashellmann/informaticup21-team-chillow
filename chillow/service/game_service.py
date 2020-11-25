@@ -190,14 +190,34 @@ class GameService:
 
 
 class Turn:
+    """ Class that represents a game turn. """
 
     def __init__(self, players: List[Player], deadline):
+        """ Constructor that initializes the necessary attributes.
+
+        Args:
+            players: List of players that are in the game.
+            deadline: Deadline of the game turn.
+        """
         self.players = players.copy()
         self.playersWithPendingAction = players.copy()
         self.deadline = deadline
         self.turn_ctr = 1
 
     def action(self, player):
+        """ Checks if the player is allowed to take an action and if so, removes him from the list of players who must
+            take an action this turn.
+            In addition a new turn is started when all players have taken an action.
+
+        Args:
+            player: Player who wants to perform an action this turn.
+
+        Returns:
+            True if the Turn is ended otherwise False.
+
+        Raises:
+            MultipleActionByPlayerException: Raised if the player did more than one action this turn.
+        """
         if player not in self.playersWithPendingAction:
             raise ex.MultipleActionByPlayerException(player)
         # elif self.deadline < datetime.now():
