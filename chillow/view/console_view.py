@@ -54,8 +54,8 @@ class ConsoleView(View):
                       "). Your player ID was " + str(self.__player_representation[game.you.id]))
 
     def read_next_action(self) -> Action:
-        user_input = input("Input Next Action (l:turn_left, r:turn_right, u:speed_up, d:slow_down, "
-                           "n:change_nothing): ")
+        user_input = self.\
+            get_input("Input Next Action (l:turn_left, r:turn_right, u:speed_up, d:slow_down, n:change_nothing): ")
         if user_input == "u":
             return Action.speed_up
         elif user_input == "d":
@@ -66,6 +66,13 @@ class ConsoleView(View):
             return Action.turn_left
         elif user_input == "n":
             return Action.change_nothing
+        else:
+            print("Wrong input: Action change_nothing returned")
+            return Action.change_nothing
+
+
+    def get_input(self, text: str):
+        return input(text)
 
     def end(self):
         print("Game ended!")
