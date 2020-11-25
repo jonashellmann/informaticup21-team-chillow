@@ -9,6 +9,7 @@ from chillow.model.direction import Direction
 from chillow.model.game import Game
 from chillow.model.player import Player
 from chillow.service.ai import *
+from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.view.headless_view import HeadlessView
 
 
@@ -18,17 +19,22 @@ class AIEvaluationController(OfflineController):
         super().__init__(HeadlessView())
         self.__runs = runs
         self.__db_path = db_path
+        self.__connection = None
+        self.__cursor = None
 
     def play(self):
         with closing(sqlite3.connect(self.__db_path)) as connection:
             with closing(connection.cursor()) as cursor:
-                AIEvaluationController.__create_db_tables(cursor)
+                self.__connection = connection
+                self.__cursor = cursor
 
-                max_game_id = cursor.execute("SELECT MAX(id) FROM games").fetchone()[0]
+                self.__create_db_tables()
+
+                max_game_id = self.__cursor.execute("SELECT MAX(id) FROM games").fetchone()[0]
                 if max_game_id is None:
                     max_game_id = 0
 
-                self.__run_simulations(connection, cursor, max_game_id)
+                self.__run_simulations(max_game_id)
 
     def _create_game(self) -> None:
         height = randint(30, 70)
@@ -62,31 +68,58 @@ class AIEvaluationController(OfflineController):
                 if player_count > 5:
                     self._ais.append(RandomAI(players[5], randint(1, 3)))
 
-    def __run_simulations(self, connection: sqlite3.Connection, cursor: sqlite3.Cursor, max_game_id):
+    def __run_simulations(self, max_game_id):
         for i in range(self.__runs):
+            self.__current_game_id = i + 1 + max_game_id
             super().play()
 
-            game_id = i + 1 + max_game_id
-            cursor.execute("INSERT INTO games VALUES ({}, {}, {}, '{}')"
-                           .format(game_id, self._game.width, self._game.height, datetime.now(timezone.utc)))
+            self.__cursor.execute("INSERT INTO games VALUES ({}, {}, {}, '{}')"
+                                  .format(self.__current_game_id, self._game.width, self._game.height,
+                                          datetime.now(timezone.utc)))
 
             winner_player = self._game.get_winner()
             for ai in self._ais:
                 ai_class = ai.__class__.__name__
                 ai_info = ai.get_information()
+                player_id = self.__get_player_id(ai_class, ai_info)
 
                 # Save how often an AI configuration participated in a game
-                cursor.execute("INSERT INTO participants VALUES ({}, {}, '{}', '{}')"
-                               .format(ai.player.id, game_id, ai_class, ai_info))
+                self.__cursor.execute("INSERT INTO participants VALUES ({}, {})"
+                                      .format(player_id, self.__current_game_id))
 
                 # Save how often an AI configuration won a game
                 if ai.player == winner_player:
-                    cursor.execute("INSERT INTO winners VALUES ({}, {})".format(ai.player.id, game_id))
+                    self.__cursor.execute("INSERT INTO winners VALUES ({}, {})"
+                                          .format(player_id, self.__current_game_id))
 
-            connection.commit()
+            self.__connection.commit()
 
-    @staticmethod
-    def __create_db_tables(cursor):
-        cursor.execute("CREATE TABLE IF NOT EXISTS games (id INTEGER, width INTEGER, height INTEGER, date TEXT)")
-        cursor.execute("CREATE TABLE IF NOT EXISTS participants (id INTEGER, game_id INTEGER, class TEXT, info TEXT)")
-        cursor.execute("CREATE TABLE IF NOT EXISTS winners (id INTEGER, game_id INTEGER)")
+    def __create_db_tables(self):
+        self.__cursor.execute("CREATE TABLE IF NOT EXISTS games (id INTEGER, width INTEGER, height INTEGER, date TEXT)")
+        self.__cursor.execute("CREATE TABLE IF NOT EXISTS players (id INTEGER, class TEXT, info TEXT)")
+        self.__cursor.execute("CREATE TABLE IF NOT EXISTS participants (player_id INTEGER, game_id INTEGER)")
+        self.__cursor.execute("CREATE TABLE IF NOT EXISTS winners (player_id INTEGER, game_id INTEGER)")
+        self.__cursor.execute("CREATE TABLE IF NOT EXISTS execution_times (player_id INTEGER, game_id INTEGER,"
+                              "execution REAL)")
+
+    def _log_execution_time(self, ai: ArtificialIntelligence, execution_time: float):
+        ai_class = ai.__class__.__name__
+        ai_info = ai.get_information()
+        player_id = self.__get_player_id(ai_class, ai_info)
+
+        self.__cursor.execute("INSERT INTO execution_times VALUES ({}, {}, {})"
+                              .format(player_id, self.__current_game_id, execution_time))
+
+    def __get_player_id(self, ai_class: str, ai_info: str) -> int:
+        player_id = self.__cursor.execute(
+            "SELECT MAX(id) FROM players p WHERE p.class = '{}' AND p.info = '{}'"
+            .format(ai_class, ai_info)).fetchone()[0]
+
+        if player_id is None:
+            max_player_id = self.__cursor.execute("SELECT MAX(id) FROM players").fetchone()[0]
+            if max_player_id is None:
+                max_player_id = 0
+            player_id = max_player_id + 1
+            self.__cursor.execute("INSERT INTO players VALUES ({}, '{}', '{}')".format(player_id, ai_class, ai_info))
+
+        return player_id

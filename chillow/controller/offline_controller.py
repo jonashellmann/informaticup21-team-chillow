@@ -9,6 +9,7 @@ from chillow.model.direction import Direction
 from chillow.model.game import Game
 from chillow.model.player import Player
 from chillow.service.ai import *
+from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.service.game_service import GameService
 from chillow.view.view import View
 
@@ -30,7 +31,7 @@ class OfflineController(Controller):
 
         while self._game.running:
             time_to_react = randint(3, 15)
-            self._game.deadline = datetime.now(time_zone) + timedelta(0, time_to_react)
+            self.__reset_game_deadline(time_to_react)
 
             # Read input from user if there is a human player
             action = None
@@ -38,14 +39,18 @@ class OfflineController(Controller):
                 action = self.monitoring.read_next_action()
                 if datetime.now(time_zone) > self._game.deadline:
                     action = Action.get_default()
-                self._game.deadline = datetime.now(time_zone) + timedelta(0, time_to_react)
+                self.__reset_game_deadline(time_to_react)
 
             for ai in self._ais:
                 if ai is not None and ai.player.active:
                     value = Value('i')
+
+                    start = datetime.now(time_zone)
                     ai.create_next_action(self._game.copy(), value)
+                    self._log_execution_time(ai, (datetime.now(time_zone) - start).total_seconds())
+
                     game_service.do_action(ai.player, Action.get_by_index(value.value))
-                    self._game.deadline = datetime.now(time_zone) + timedelta(0, time_to_react)
+                    self.__reset_game_deadline(time_to_react)
 
             # Perform action of human player after AIs finished their calculations
             if self.__you is not None:
@@ -80,3 +85,9 @@ class OfflineController(Controller):
         ai3 = SearchTreeAI(player4, 2)
 
         self._ais = [ai0, ai1, ai2, ai3]
+
+    def _log_execution_time(self, ai: ArtificialIntelligence, execution_time: float):
+        pass
+
+    def __reset_game_deadline(self, time_to_react: int):
+        self._game.deadline = datetime.now(time_zone) + timedelta(0, time_to_react)
