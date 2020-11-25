@@ -61,11 +61,9 @@ class ConsoleViewTest(unittest.TestCase):
     def test_correct_output_round(self,  mock_stdout):
         player1 = Player(1, 0, 0, Direction.up, 1, True, "p1")
         player2 = Player(2, 0, 1, Direction.down, 3, True, "")
-        players = [player1, player2]
-        cells = [[Cell([player1]), Cell(), Cell()],
-                 [Cell([player2]), Cell(), Cell()],
-                 [Cell(), Cell(), Cell()]]
-        game = Game(3, 3, cells, players, 2, True, datetime.now())
+        cells = [[Cell([player1])],
+                 [Cell([player2])]]
+        game = Game(1, 2, cells, [player1, player2], 2, True, datetime.now())
         sut = ConsoleView()
 
         sut.update(game)
@@ -75,11 +73,9 @@ class ConsoleViewTest(unittest.TestCase):
     def test_correct_output_winner(self, mock_stdout):
         player1 = Player(1, 0, 0, Direction.up, 1, True, "p1")
         player2 = Player(2, 0, 1, Direction.down, 3, False, "")
-        players = [player1, player2]
-        cells = [[Cell([player1]), Cell(), Cell()],
-                 [Cell([player2]), Cell(), Cell()],
-                 [Cell(), Cell(), Cell()]]
-        game = Game(3, 3, cells, players, 2, False, datetime.now())
+        cells = [[Cell([player1])],
+                 [Cell([player2])]]
+        game = Game(1, 2, cells, [player1, player2], 2, False, datetime.now())
 
         sut = ConsoleView()
         sut.update(game)
@@ -90,11 +86,9 @@ class ConsoleViewTest(unittest.TestCase):
     def test_correct_output_no_winner(self, mock_stdout):
         player1 = Player(1, 0, 0, Direction.up, 1, False, "p1")
         player2 = Player(2, 0, 1, Direction.down, 3, False, "")
-        players = [player1, player2]
-        cells = [[Cell([player1]), Cell(), Cell()],
-                 [Cell([player2]), Cell(), Cell()],
-                 [Cell(), Cell(), Cell()]]
-        game = Game(3, 3, cells, players, 2, False, datetime.now())
+        cells = [[Cell([player1])],
+                 [Cell([player2])]]
+        game = Game(1, 2, cells, [player1, player2], 2, False, datetime.now())
 
         sut = ConsoleView()
         sut.update(game)
