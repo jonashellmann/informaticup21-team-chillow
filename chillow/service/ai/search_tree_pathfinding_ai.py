@@ -20,6 +20,18 @@ class SearchTreePathfindingAI(PathfindingAI, SearchTreeAI):
 
     def __init__(self, player: Player, max_speed: int, count_paths_to_check: int, depth: int,
                  distance_to_check: int = 0):
+        """ Creates a new object of the SearchTreePathfindingAI.
+
+        Args:
+            player: The player assigned to the AI.
+            max_speed: The maximum speed the AI can reach.
+            count_paths_to_check: The number of paths used to avoid dead ends.
+            depth: Number of pre-calculating actions.
+            distance_to_check:
+                Distance an enemy player is allowed to be at maximum distance, so that he is taken into
+                account in the calculations.
+        """
+
         PathfindingAI.__init__(self, player, max_speed, count_paths_to_check)
         SearchTreeAI.__init__(self, player, depth, max_speed, distance_to_check=distance_to_check)
 

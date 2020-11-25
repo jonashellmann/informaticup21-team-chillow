@@ -19,7 +19,8 @@ class AIOptions(Enum):
 
 
 class NotKillingItselfAI(ArtificialIntelligence):
-    """AI implementation to choose an action that simply does not kill the player.
+    """AI implementation to choose an action that simply does not kill the player for the next rounds without
+    considering the opponent's player actions.
 
     Attributes:
         player: The player associated with this AI.
@@ -27,6 +28,17 @@ class NotKillingItselfAI(ArtificialIntelligence):
 
     def __init__(self, player: Player, options: List[AIOptions], max_speed: int, max_worse_distance: int,
                  depth: int):
+        """ Creates a new object of the NotKillingItselfAI.
+
+        Args:
+            player: The player assigned to the AI.
+            options: List of possible options to change the behavior of the AI.
+            max_speed: The maximum speed the AI can reach.
+            max_worse_distance: A tolerance, whereby more than just the best action is calculated. Actions which are
+            worse, but within this tolerance, are also considered.
+            depth: Number of player actions that are looked into the future.
+        """
+
         super().__init__(player, max_speed)
         self.__options = options
         self.__max_worse_distance = max_worse_distance
@@ -56,16 +68,15 @@ class NotKillingItselfAI(ArtificialIntelligence):
 
     def calc_action_with_max_distance_to_visited_cells(self, game_service: GameService,
                                                        actions: List[Action]) -> List[Action]:
-        """Finds the action which creates the maximum distance to already visited cells.
-
-        Therefore it takes possible actions as an argument and finds the one with the longest path to a visited cell.
+        """ Calculates a list of actions that have the property to have as many free cells as possible in front of them
+        while running straight after the action has been executed.
 
         Args:
             game_service: The game service used for simulation of actions.
             actions: The actions to be checked
 
         Returns:
-            The best actions based on the maximum distance to already visited cells.
+            List of best actions with the property having as many free cells as possible in front of the player.
         """
 
         max_straight_distance = 0
@@ -105,7 +116,7 @@ class NotKillingItselfAI(ArtificialIntelligence):
         return list(best_actions.keys())
 
     def find_surviving_actions(self, game_service: GameService, depth: int) -> List[Action]:
-        """Finds all actions that will let the player survive for the next rounds.
+        """ Finds all actions that will let the player survive for the next rounds.
 
         Args:
             game_service: The game service used for simulation of actions.
@@ -137,6 +148,7 @@ class NotKillingItselfAI(ArtificialIntelligence):
 
     def find_surviving_actions_with_best_depth(self, game_service: GameService) -> List[Action]:
         """Finds all actions that won't kill the player in the next rounds.
+        The number of pre-calculated player moves is reduced until surviving actions are found.
 
         Args:
             game_service: The game service used for simulation of actions.

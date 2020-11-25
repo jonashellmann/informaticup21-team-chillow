@@ -13,6 +13,12 @@ class ArtificialIntelligence(metaclass=ABCMeta):
     """
 
     def __init__(self, player: Player, max_speed: int = 10):
+        """ Creates a new object of an AI.
+        Args:
+            player: The player assigned to the AI.
+            max_speed: The maximum speed the AI can reach.
+        """
+
         self.player = player
         self._turn_ctr = 0
         self._max_speed = max_speed

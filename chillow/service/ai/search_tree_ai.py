@@ -20,6 +20,18 @@ class SearchTreeAI(ArtificialIntelligence):
 
     def __init__(self, player: Player, depth: int, max_speed: int = 10, randomize: bool = False,
                  distance_to_check: int = 0):
+        """ Creates a new object of the SearchTreeAI.
+
+        Args:
+            player: The player assigned to the AI.
+            max_speed: The maximum speed the AI can reach.
+            depth: Depth pre-calculating actions.
+            randomize: Indicating whether to calculate actions in tree in random order.
+            distance_to_check:
+                Distance an enemy player is allowed to be at maximum distance, so that he is taken into
+                account in the calculations.
+        """
+
         super().__init__(player, max_speed)
         self.__depth = depth
         self.__randomize = randomize
