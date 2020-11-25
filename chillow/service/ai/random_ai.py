@@ -7,10 +7,10 @@ from chillow.model.game import Game
 
 
 class RandomAI(ArtificialIntelligence):
-    """ AI making random decisions. """
+    """AI making random decisions."""
 
     def create_next_action(self, game: Game, return_value: Value):
-        """ Calculates a random action and returns it.
+        """Calculates a random action and returns it.
 
         Args:
             game: The game object in which the AI is located and contains the current status of the game.
@@ -28,7 +28,7 @@ class RandomAI(ArtificialIntelligence):
 
 
 class RandomWaitingAI(RandomAI):
-    """ Variant of RandomAI, but waiting a time after the action. """
+    """Variant of RandomAI, but waiting a time after the action."""
 
     def create_next_action(self, game: Game, return_value: Value):
         time.sleep(5)

@@ -11,11 +11,11 @@ from chillow.model.direction import Direction
 
 
 class GameService:
-    """ Class that manipulates a game object by performing the actions of players. """
+    """Class that manipulates a game object by performing the actions of players."""
 
     def __init__(self, game: Game, ignore_deadline: bool = True):
-        """ Constructor that initializes the necessary attributes.
-            It also creates a turn object that represents the play moves.
+        """Constructor that initializes the necessary attributes.
+        It also creates a turn object that represents the play moves.
 
         Args:
             game: The game object in which the AI is located and contains the current status of the game.
@@ -27,8 +27,8 @@ class GameService:
         self.__ignore_deadline = ignore_deadline
 
     def do_action(self, player: Player, action: Action):
-        """ Performs the action for a player and checks if the game is finished and which players have died when a
-            new turn starts.
+        """Performs the action for a player and checks if the game is finished and which players have died when a
+        new turn starts.
 
         Args:
             player: The player who wants to perform the action.
@@ -55,7 +55,7 @@ class GameService:
         self.game.running = self.is_game_running()
 
     def check_and_set_died_players(self):
-        """ Checks which players have died this turn and sets them to inactive. """
+        """Checks which players have died this turn and sets them to inactive. """
         for row in range(len(self.game.cells)):
             for col in range(len(self.game.cells[row])):
                 cell = self.game.cells[row][col]
@@ -70,7 +70,7 @@ class GameService:
                                                       + " had a collision and is inactive now")
 
     def is_game_running(self) -> bool:
-        """ Checks if the game is still running.
+        """Checks if the game is still running.
 
         Returns:
             Returns True if the game is still running otherwise False
@@ -83,7 +83,7 @@ class GameService:
 
     @staticmethod
     def get_horizontal_and_vertical_multiplier(player: Player) -> Tuple[int, int]:
-        """ Calculates a vertical and horizontal multiplier that can be used to calculate player movement.
+        """Calculates a vertical and horizontal multiplier that can be used to calculate player movement.
 
         Args:
             player: The player whose movement is calculated.
@@ -106,7 +106,7 @@ class GameService:
         return horizontal_multiplier, vertical_multiplier
 
     def get_and_visit_cells(self, player: Player, action: Action) -> List[Tuple[int, int]]:
-        """ The player who performs the action
+        """The player who performs the action
 
         Args:
             player: The player who performs the action.
@@ -144,7 +144,7 @@ class GameService:
 
     @staticmethod
     def change_player_status_by_action(player: Player, action: Action):
-        """ Changes the direction of the player based on the action.
+        """Changes the direction of the player based on the action.
 
         Args:
             player: The player whose direction is to be changed.
@@ -178,7 +178,7 @@ class GameService:
             raise PlayerSpeedNotInRangeException(player)
 
     def set_player_inactive(self, player: Player):
-        """ Set a player inactive.
+        """Set a player inactive.
 
         Args:
             player: The player to be set inactive.
@@ -190,10 +190,10 @@ class GameService:
 
 
 class Turn:
-    """ Class that represents a game turn. """
+    """Class that represents a game turn."""
 
     def __init__(self, players: List[Player], deadline):
-        """ Constructor that initializes the necessary attributes.
+        """Constructor that initializes the necessary attributes.
 
         Args:
             players: List of players that are in the game.
@@ -205,9 +205,9 @@ class Turn:
         self.turn_ctr = 1
 
     def action(self, player):
-        """ Checks if the player is allowed to take an action and if so, removes him from the list of players who must
-            take an action this turn.
-            In addition a new turn is started when all players have taken an action.
+        """Checks if the player is allowed to take an action and if so, removes him from the list of players who must
+        take an action this turn.
+        In addition a new turn is started when all players have taken an action.
 
         Args:
             player: Player who wants to perform an action this turn.

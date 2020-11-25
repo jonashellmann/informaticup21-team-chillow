@@ -15,12 +15,11 @@ from chillow.service.game_service import GameService
 
 
 class PathfindingAI(NotKillingItselfAI):
-    """ This class represents an AI that chooses actions that will allow it to survive a certain number of moves without
-        considering enemy actions. Furthermore, the AI avoids running into too small areas or dead ends.
-    """
+    """This class represents an AI that chooses actions that will allow it to survive a certain number of moves without
+    considering enemy actions. Furthermore, the AI avoids running into too small areas or dead ends."""
 
     def __init__(self, player: Player, max_speed: int, count_paths_to_check: int):
-        """ Constructor that initializes the necessary attributes.
+        """Constructor that initializes the necessary attributes.
 
         Args:
             player: The player assigned to the AI.
@@ -41,7 +40,7 @@ class PathfindingAI(NotKillingItselfAI):
         return_value.value = action.get_index()
 
     def create_next_actions_ranked(self, game: Game) -> Optional[List[Tuple[Action, int]]]:
-        """ Calculates all actions with the number of reachable paths, with which the AI does not lose in the next turn.
+        """Calculates all actions with the number of reachable paths, with which the AI does not lose in the next turn.
 
         Args:
             game: The game object in which the AI is located and contains the current status of the game.
@@ -59,7 +58,7 @@ class PathfindingAI(NotKillingItselfAI):
 
     def find_actions_by_best_path_connection(self, actions: List[Action], game: Game) -> Optional[
             List[Tuple[Action, int]]]:
-        """ Calculates for the passed actions how many paths are still accessible after the execution of the action.
+        """Calculates for the passed actions how many paths are still accessible after the execution of the action.
             For this purpose, points are randomly generated on the playing field and an algorithm for finding paths is
             used to check whether the point can be reached.
 
@@ -105,7 +104,7 @@ class PathfindingAI(NotKillingItselfAI):
         return actions_with_possible_paths
 
     def get_random_free_cells_from_playground(self, game: Game) -> List[Tuple[int, int]]:
-        """ Calculates up to count_paths_to_check many points of all free fields on the playing field.
+        """Calculates up to count_paths_to_check many points of all free fields on the playing field.
 
         Args:
             game: The game that contains the current state of the game.

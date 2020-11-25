@@ -9,11 +9,11 @@ from chillow.model.player import Player
 
 
 class SearchTreePathfindingAI(PathfindingAI, SearchTreeAI):
-    """ combination of the SearchTreeAI and the PathfindingAI, whereby the SearchTreeAI is prioritized. """
+    """combination of the SearchTreeAI and the PathfindingAI, whereby the SearchTreeAI is prioritized. """
 
     def __init__(self, player: Player, max_speed: int, count_paths_to_check: int, depth: int,
                  distance_to_check: int = 0):
-        """ Constructor that initializes the necessary attributes.
+        """Constructor that initializes the necessary attributes.
 
         Args:
             player: The player assigned to the AI.
@@ -33,8 +33,8 @@ class SearchTreePathfindingAI(PathfindingAI, SearchTreeAI):
                + ", distance_to_check=" + str(self.get_distance_to_check())
 
     def create_next_action(self, game: Game, return_value: Value):
-        """ Creates the next action the AI will take. Saves the best result of the SearchTreeAI in the return_value
-            already in between.
+        """Creates the next action the AI will take. Saves the best result of the SearchTreeAI in the return_value
+        already in between.
 
         Args:
             game: The game object in which the AI is located and contains the current status of the game.
