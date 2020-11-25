@@ -34,7 +34,7 @@ class AIEvaluationController(OfflineController):
                 if max_game_id is None:
                     max_game_id = 0
 
-                self.__run_simulations(connection, cursor, max_game_id)
+                self.__run_simulations(max_game_id)
 
     def _create_game(self) -> None:
         height = randint(30, 70)
