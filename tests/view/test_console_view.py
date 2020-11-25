@@ -14,47 +14,37 @@ from chillow.view.console_view import ConsoleView
 
 class ConsoleViewTest(unittest.TestCase):
 
+    def setUp(self) -> None:
+        self.sut = ConsoleView()
+
     @patch('chillow.view.console_view.ConsoleView.get_input', return_value='u')
     def test_read_next_action_should_return_correct_action_input_u(self, input):
-        sut = ConsoleView()
-
-        self.assertTrue(sut.read_next_action(), Action.speed_up)
+        self.assertTrue(self.sut.read_next_action(), Action.speed_up)
 
     @patch('chillow.view.console_view.ConsoleView.get_input', return_value='d')
     def test_read_next_action_should_return_correct_action_input_d(self, input):
-        sut = ConsoleView()
-
-        self.assertTrue(sut.read_next_action(), Action.slow_down)
+        self.assertTrue(self.sut.read_next_action(), Action.slow_down)
 
     @patch('chillow.view.console_view.ConsoleView.get_input', return_value='r')
     def test_read_next_action_should_return_correct_action_input_r(self, input):
-        sut = ConsoleView()
-
-        self.assertTrue(sut.read_next_action(), Action.turn_right)
+        self.assertTrue(self.sut.read_next_action(), Action.turn_right)
 
 
     @patch('chillow.view.console_view.ConsoleView.get_input', return_value='l')
     def test_read_next_action_should_return_correct_action_input_l(self, input):
-        sut = ConsoleView()
-
-        self.assertTrue(sut.read_next_action(), Action.turn_left)
+        self.assertTrue(self.sut.read_next_action(), Action.turn_left)
 
     @patch('chillow.view.console_view.ConsoleView.get_input', return_value='n')
     def test_read_next_action_should_return_correct_action_input_n(self, input):
-        sut = ConsoleView()
-
-        self.assertTrue(sut.read_next_action(), Action.change_nothing)
+        self.assertTrue(self.sut.read_next_action(), Action.change_nothing)
 
     @patch('chillow.view.console_view.ConsoleView.get_input', return_value='wrong')
     def test_read_next_action_should_return_change_nothing_on_wrong_input(self, input):
-        sut = ConsoleView()
-
-        self.assertTrue(sut.read_next_action(), Action.change_nothing)
+        self.assertTrue(self.sut.read_next_action(), Action.change_nothing)
 
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
     def test_correct_output_on_end(self,  mock_stdout):
-        sut = ConsoleView()
-        sut.end()
+        self.sut.end()
         self.assertTrue("Game ended!" in str(mock_stdout.getvalue()))
 
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
@@ -64,9 +54,8 @@ class ConsoleViewTest(unittest.TestCase):
         cells = [[Cell([player1])],
                  [Cell([player2])]]
         game = Game(1, 2, cells, [player1, player2], 2, True, datetime.now())
-        sut = ConsoleView()
 
-        sut.update(game)
+        self.sut.update(game)
         self.assertTrue("Round :  0" in str(mock_stdout.getvalue()))
 
     @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
@@ -76,9 +65,7 @@ class ConsoleViewTest(unittest.TestCase):
         cells = [[Cell([player1])],
                  [Cell([player2])]]
         game = Game(1, 2, cells, [player1, player2], 2, False, datetime.now())
-
-        sut = ConsoleView()
-        sut.update(game)
+        self.sut.update(game)
 
         self.assertTrue("Winner: Player 1 (p1). Your player ID was 2" in str(mock_stdout.getvalue()))
 
@@ -89,8 +76,6 @@ class ConsoleViewTest(unittest.TestCase):
         cells = [[Cell([player1])],
                  [Cell([player2])]]
         game = Game(1, 2, cells, [player1, player2], 2, False, datetime.now())
-
-        sut = ConsoleView()
-        sut.update(game)
+        self.sut.update(game)
 
         self.assertTrue("No winner in game." in str(mock_stdout.getvalue()))
