@@ -10,7 +10,7 @@ die Online-Verbindung gerichtet ist, da es sich hierbei um die Umsetzung der eig
 \section{Modellierung des Spiels}
 \label{sec:modellierung}
 
-Um eine Grundlage zu haben, auf der die Implmentierung aufgebaut werden konnte, wurde zunächst die Modellierung des
+Um eine Grundlage zu haben, auf der die Implementierung aufgebaut werden konnte, wurde zunächst die Modellierung des
 Spiels vorgenommen.
 Dazu haben wir geschaut, welche Informationen benötigt und vom Server bereitgestellt werden und wie man diese dann
 mithilfe eines objektorientierten Ansatzes abbilden kann. \\
@@ -19,7 +19,7 @@ Das Ergebnis der Modellierung ist in \Abbildung{fig:klassendiagramm-modell} zu s
 Das \Code{Game} hat Zugriff auf die eigenen Eigenschaften, kennt aber auch alle \Code{Player}, die an diesem Spiel
 teilnehmen.
 Zudem besteht ein \Code{Game} aus einem zweidimensionalen Array aus \Code{Cells}, die das Spielfeld repräsentieren.
-In einer \Code{Cell} können sich dann kein, ein oder nach einer Kollision auch mehrere Spieler befinden. \\
+In einer \Code{Cell} befinden sich dann alle Spieler, die dieses Spielfeld bereits besucht haben. \\
 
 \begin{figure}[htb]
 \centering
@@ -72,8 +72,8 @@ Dieser eingelesene String wird an ein Objekt der Klasse \Code{JSONDataLoader} ü
 JSON-Formats in ein \Code{Game}-Objekt - das wie in \Kapitel{sec:modellierung} beschrieben modelliert ist - zur Aufgabe
 hat. \\
 
-Sobald das Spiel fertig aufgebaut wurde, wird ein \Code{GET}-Request an den Server geschickt, auf welchen als Antwort
-die aktuelle Server-Zeit erwartet wird und ebenfalls durch den \Code{JSONDataLoader} aus einem String in ein
+Sobald das Spiel fertig aufgebaut wurde, wird ein \Code{GET}-Request an den Server geschickt, auf welchen
+die aktuelle Server-Zeit als Antwort erwartet wird und ebenfalls durch den \Code{JSONDataLoader} aus einem String in ein
 \Code{datetime}-Objekt geparst wird.
 Diese Server-Zeit wird dann verwendet, um durch einen Abgleich mit der Zeit des eigenen Systems gegebenenfalls die
 Deadline für die Festlegung auf die nächste Aktion zu verschieben, da diese sich immer nach der Server-Zeit richtet.
@@ -84,7 +84,7 @@ etwas dauern kann und so die Aktion besser zu früh als zu spät übermittelt we
 \label{subsec:ermitteln-aktion}
 
 Anschließend ist das Spiel in seinem aktuellen Zustand korrekt abgebildet.
-Als nächstes steht an, dass eine Entscheidung für die nächste Aktion getroffen werden muss.
+Als Nächstes steht an, dass eine Entscheidung für die nächste Aktion getroffen werden muss.
 Dies ist allerdings nur notwendig, wenn der eigene Spieler noch aktiv ist. \\
 
 Die Berechnung und Festlegung auf die nächste Aktion wird von dem \Code{OnlineController} an ein Objekt einer
@@ -97,7 +97,7 @@ Erst im Anschluss wird die Berechnung der eigentlich ausgewählten \ac{KI} in ei
 Hierbei kann die Berechnung länger dauern, als in der Spielrunde zeitlich zur Verfügung steht.
 Daher wird dieser Prozess eine Sekunde vor Ablauf der Deadline abgebrochen, falls die Berechnung der \ac{KI} noch nicht
 beendet ist.
-Bei einem Abbrch wird dann die Standard-Aktion an den Server geschickt, andernfalls wird die Berechnung der stärkeren
+Bei einem Abbruch wird dann die Standard-Aktion an den Server geschickt, andernfalls wird die Berechnung der stärkeren
 \ac{KI} verwendet.
 Welche Art der im \Kapitel{ch:loesungsansatz} beschriebenen \ac{KI}s gewählt wird, steht dem Anwender grundsätzlich
 vollkommen frei.
@@ -106,10 +106,10 @@ vollkommen frei.
 \label{subsec:uebergabe-aktion}
 
 Sobald eine Aktion ausgewählt wurde, muss diese dem Server noch mitgeteilt werden.
-In der Dokumentation für die diesjährige Aufgabestellung wurde festgehalten, dass auch hier wieder das JSON-Format
+In der Dokumentation für die diesjährige Aufgabenstellung wurde festgehalten, dass auch hier wieder das JSON-Format
 verwendet werden soll.
 Daher wird die Aktion an die Klasse \Code{JSONDataWriter} überreicht, die einen String folgender Form erstellt:
-\texttt{\{\dq action\dq : \dq speed\_up\dq \}}, welcher dann über die Websocket-Verbindung an der Server gesendet wird.
+\texttt{\{\dq action\dq : \dq speed\_up\dq \}}, welcher dann über die Websocket-Verbindung an den Server gesendet wird.
 
 \section{Implementierung des Offline-Spiels}
 \label{sec:offline-implementierung}
@@ -117,7 +117,7 @@ Daher wird die Aktion an die Klasse \Code{JSONDataWriter} überreicht, die einen
 Bei der Offline-Version des Spiels ging es darum, lokal die eigenen \ac{KI}s gegeneinander spielen zu lassen und
 als menschlicher Spieler gegen die \ac{KI} antreten zu können, ohne eine Verbindung zum spe\_ed-Server herstellen zu
 müssen.
-Dies ermöglichte uns, lokal zu testen und unsere verschiedenen Lösungsansätzen (siehe \Kapitel{ch:loesungsansatz})
+Dies ermöglichte uns, lokal zu testen und unsere verschiedenen Lösungsansätze (siehe \Kapitel{ch:loesungsansatz})
 gegeneinander auszuprobieren, um zu beurteilen, welche die beste Strategie ist.
 Die Implementierung des Offline-Spiels erfolgte in der Klasse \Code{OfflineController}, die entsprechend der Ober-Klasse
 \Code{Controller} die Methode \Code{play()} implementiert. \\
@@ -133,13 +133,13 @@ Dazu müssen zunächst \Code{Player}-Objekte und das entsprechende \Code{Game}-O
 Dieses \Code{Game}-Objekt wird dann im Spielverlauf durch den \Code{GameService} manipuliert.
 
 Zusätzlich werden die \ac{KI}s erzeugt und exklusiv einem Spieler zugeordnet, der sich im Spiel befindet.
-Solange das Spiel nun läuft, werden der Reihe nach die nächsten Aktionen der
+Solange das Spiel läuft, werden der Reihe nach die nächsten Aktionen der
 Spieler/\ac{KI}s abgefragt und an den \Code{GameService} weitergeleitet.
 
 \subsection{Implementierung des GameService}
 \label{subsec:game-service}
 
-Die Ausführung einer Spieler-Aktion, die Verwaltung der Spielzüge, sowie das Manipulieren des \Code{Game}-Objekts sind
+Die Ausführung einer Spieler-Aktion, die Verwaltung der Spielzüge sowie das Manipulieren des \Code{Game}-Objekts sind
 die Hauptaufgabe des \Code{GameService}.
 Im \Anhang{fig:aktivitaetsdiagramm-spieleraktion-gameservice} kann der Ablauf einer Spieler-Aktion durch den
 \Code{GameService} und die damit verbundenen Änderungen des Spiels nachvollzogen werden.
@@ -150,12 +150,12 @@ Bei dem Aufruf des Konstruktors wird dem \Code{GameService} ein \Code{Game}-Obje
 wird.
 Zusätzlich erzeugt der \Code{GameService} eine Instanz der Klasse \Code{Turn}, die einen Spielzug repräsentiert.
 In einem \Code{Turn}-Objekt ist die aktuelle Nummer des Spielzugs und alle Spieler des Spiels enthalten.
-Außerdem wird eine Liste mit den Spielern gepflegt, die in diesem Zug noch eine Aktionen durchführen müssen.
+Außerdem wird eine Liste mit den Spielern gepflegt, die in diesem Zug noch eine Aktion durchführen müssen.
 Damit ein Spieler seine Aktion durchführen kann, ruft er die Methode \Code{action(player: Player)} auf.
 Das Turn-Objekt prüft dann, ob dieser Spieler bereits eine Aktion gemacht hat und wirft in dem Fall eine
 \Code{MultipleActionByPlayerException}, sodass dieser Spieler durch den \Code{GameService} aus dem Spiel ausscheidet.
 Sollte der Spieler seine erste Aktion in diesem Zug machen, wird er aus der Liste der Spieler mit den ausstehenden
-Aktionen ausgetragen und geprüft ob ein neuer Zug initialisiert werden muss, weil dies die letzte erwartete Aktion
+Aktionen ausgetragen und geprüft, ob ein neuer Zug initialisiert werden muss, weil dies die letzte erwartete Aktion
 in dieser Spielrunde war. \\
 
 Wenn ein Spieler eine Aktion durchführen möchte, verschickt er in der Offline-Variante keine Nachricht an den spe\_ed-Server,
@@ -164,7 +164,7 @@ Die Methode manipuliert dabei das \Code{Game}-Objekt, sodass dies eine äquivale
 im JSON-Format durch den spe\_ed-Server ist. \\
 
 Der grobe Ablauf dieser Methode ist wie nachfolgend beschrieben.
-Bei dem \Code{Turn}-Objekt wird die Methode \Code{action(player: Player)} aufgerufen, um zu prüfen ob der Spieler eine
+Bei dem \Code{Turn}-Objekt wird die Methode \Code{action(player: Player)} aufgerufen, um zu prüfen, ob der Spieler eine
 Aktion machen darf und ob ein neuer Spielzug nach dieser Aktion beginnt.
 Nachfolgend wird dann die Aktion mit der Methode \Code{get\_and\_visit\_cells(player: Player, action: Action)}
 simuliert.
@@ -172,7 +172,7 @@ Der Code der Methode befindet sich im \Anhang{lst:get-and-visit-cells}.
 Dabei wird der Spieler aktualisiert (x- und y-Koordinate, speed), der die Ausführung der Aktion eingeleitet hat und er
 wird im \Code{Game} in die \Code{Cell}s eingetragen, die er durch die Aktion neu besucht hat.
 Sollte ein neuer Spielzug durch die Aktion entstanden sein, werden Spieler mit Kollisionen inaktiv geschaltet und
-geprüft ob das Spiel beendet ist. \\
+geprüft, ob das Spiel beendet ist. \\
 
 Mithilfe dieser Logik des \Code{GameService} können wir Spiele autark durchführen.
 
@@ -187,7 +187,7 @@ zu prüfen, ob Aktionen zum Verlieren führen.
 Unabhängig davon, ob ein Spiel online oder offline ausgeführt wird, gibt es die Möglichkeit, den Spielverlauf in zwei
 verschiedenen Formen dargestellt zu bekommen.
 Zum einen lässt sich das Spiel auf der Konsole darstellen und zum anderen als grafische Oberfläche mittels PyGame.
-Beide Dastellungsvarianten implementieren das Interface \Code{View}.
+Beide Darstellungsvarianten implementieren das Interface \Code{View}.
 
 \subsection{View-Interface}
 \label{subsec:interface-view}
@@ -210,9 +210,9 @@ Dadurch war es leicht, strukturierte Tabellen in der Konsole auszugeben, was in 
 geschieht.
 Durch das Attribut \Code{cells} in dem Objekt eines Spiels haben wir bereits die Belegung der Felder auf dem Spielfeld
 durch die \Code{Cell}-Objekte.
-Dies wird dann ein ein zweidimensionales Array mit Strings überführt.
+Dies wird dann in ein zweidimensionales Array mit Strings überführt.
 Wenn sich kein Spieler auf dem Feld befindet, wird ein leerer String ausgegeben, andernfalls die ID des Spielers.
-Die Darstellung kann in \Kapitel{sec:nachstellung-spiel} eingesehen werden.\\
+Die Darstellung kann in \Kapitel{sec:nachstellung-spiel} eingesehen werden. \\
 
 Zur Implementierung der Methode \Code{read\_next\_action()} wurde die Eingabe der Konsole durch die Methode \Code{input}
 genutzt und entsprechend der Eingabe wird die passende Aktion zurückgegeben.
@@ -226,7 +226,7 @@ Der Grund für die Entscheidung ist die leichte Implementierung eines zweidimens
 spe\_ed ist.
 Des Weiteren benötigt PyGame einen geringen Aufwand bei der Initialisierung, um ein Spiel rendern zu können. \\
 
-Zur Darstellung mittels PyGame durch die Methode \Code{update(game: Game)} wird dann in einem initialisiertem Fenster
+Zur Darstellung mittels PyGame durch die Methode \Code{update(game: Game)} wird dann in einem initialisierten Fenster
 jeder Bereich in Form von Rechtecken farblich bestimmt und aktualisiert.
 Befindet sich kein Spieler auf dem Feld, wird es schwarz gezeichnet und andernfalls entsprechend einer festgelegten
 Farbe, die dem Spieler zugeordnet ist, befüllt.
