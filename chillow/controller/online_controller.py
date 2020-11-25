@@ -3,6 +3,7 @@ import requests
 import websockets
 import multiprocessing
 from datetime import datetime
+from requests import RequestException
 
 from chillow.controller.controller import Controller
 from chillow.model.action import Action
@@ -16,11 +17,10 @@ from chillow.service.ai import *
 
 class OnlineController(Controller):
 
-    def __init__(self, monitoring: View, url: str, key: str, data_loader: DataLoader, data_writer: DataWriter,
-                 ai_class: str, ai_params):
+    def __init__(self, monitoring: View, url: str, key: str, server_time_url: str, data_loader: DataLoader,
+                 data_writer: DataWriter, ai_class: str, ai_params):
         super().__init__(monitoring)
         self.url = url
-        self.time_url = self.url.replace("wss://", "https://") + "_time"
         self.key = key
         self.data_loader = data_loader
         self.data_writer = data_writer
@@ -28,6 +28,15 @@ class OnlineController(Controller):
         self.default_ai = None
         self.ai_class = ai_class
         self.ai_params = ai_params
+
+        # Check if the given url to request the server time is valid
+        try:
+            time_data = requests.get(server_time_url).text
+            self.data_loader.read_server_time(time_data)
+
+            self.time_url = server_time_url
+        except (RequestException, ValueError):
+            self.time_url = None
 
     def play(self):
         asyncio.get_event_loop().run_until_complete(self.__play())
@@ -46,10 +55,11 @@ class OnlineController(Controller):
                 if not game.running:
                     break
 
-                time_data = requests.get(self.time_url).text
-                server_time = self.data_loader.read_server_time(time_data)
-                own_time = datetime.now(server_time.tzinfo)
-                game.normalize_deadline(server_time, own_time)
+                if self.time_url is not None:
+                    time_data = requests.get(self.time_url).text
+                    server_time = self.data_loader.read_server_time(time_data)
+                    own_time = datetime.now(server_time.tzinfo)
+                    game.normalize_deadline(server_time, own_time)
 
                 if self.ai is None:
                     self.ai = globals()[self.ai_class](game.you, *self.ai_params)
