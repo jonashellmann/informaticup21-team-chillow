@@ -182,6 +182,24 @@ class GameTest(unittest.TestCase):
 
         self.assertEqual([2], result)
 
+    def test_return_no_player_who_is_not_reachable(self):
+        player1 = Player(1, 4, 4, Direction.up, 0, True, "Name 1")
+        player2 = Player(2, 2, 3, Direction.up, 0, True, "Name 2")
+        player3 = Player(3, 1, 4, Direction.up, 0, True, "Name 3")
+        players = [player1, player2, player3]
+        cells = [
+            [Cell(), Cell(), Cell([player2]), Cell(), Cell()],
+            [Cell(), Cell(), Cell([player2]), Cell(), Cell()],
+            [Cell(), Cell(), Cell([player2]), Cell(), Cell()],
+            [Cell(), Cell(), Cell([player2]), Cell(), Cell()],
+            [Cell(), Cell([player3]), Cell([player2]), Cell(), Cell([player1])]
+        ]
+        game = Game(5, 5, cells, players, 1, True, datetime.now())
+
+        result = game.get_other_player_ids(player1, 3)
+
+        self.assertEqual([2], result)
+
     def test_translate_cell_matrix_to_pathfinding_matrix_should_be_correct(self):
         player1 = Player(1, 0, 0, Direction.up, 1, True, "")
         player2 = Player(2, 0, 1, Direction.down, 3, True, "")

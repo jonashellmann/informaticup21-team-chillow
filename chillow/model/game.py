@@ -53,7 +53,7 @@ class Game:
         players = []
         for player in self.players:
             if player.id != p.id \
-                    and (distance == 0 or self.__measure_shortest_distance(player, p) <= distance) \
+                    and (distance == 0 or (0 < self.__measure_shortest_distance(player, p) <= distance)) \
                     and (not check_active or player.active):
                 players.append(player.id)
         return players
