@@ -81,21 +81,11 @@ class AIEvaluationController(OfflineController):
             for ai in self._ais:
                 ai_class = ai.__class__.__name__
                 ai_info = ai.get_information()
-
-                player_id = self.__cursor.execute(
-                    "SELECT id FROM players p WHERE p.class = '{}' AND p.info = '{}'"
-                    .format(ai_class, ai_info)).fetchone()[0]
-                if player_id is None:
-                    max_player_id = self.__cursor.execute("SELECT MAX(id) FROM players").fetchone()[0]
-                    if max_player_id is None:
-                        max_player_id = 0
-                    player_id = max_player_id + 1
-                    self.__cursor.execute("INSERT INTO players VALUES ({}, '{}', '{}')"
-                                          .format(player_id, ai_class, ai_info))
+                player_id = self.__get_player_id(ai_class, ai_info)
 
                 # Save how often an AI configuration participated in a game
-                self.__cursor.execute("INSERT INTO participants VALUES ({}, {}, '{}', '{}')"
-                                      .format(player_id, self.__current_game_id, ai_class, ai_info))
+                self.__cursor.execute("INSERT INTO participants VALUES ({}, {})"
+                                      .format(player_id, self.__current_game_id))
 
                 # Save how often an AI configuration won a game
                 if ai.player == winner_player:
@@ -107,12 +97,29 @@ class AIEvaluationController(OfflineController):
     def __create_db_tables(self):
         self.__cursor.execute("CREATE TABLE IF NOT EXISTS games (id INTEGER, width INTEGER, height INTEGER, date TEXT)")
         self.__cursor.execute("CREATE TABLE IF NOT EXISTS players (id INTEGER, class TEXT, info TEXT)")
-        self.__cursor.execute("CREATE TABLE IF NOT EXISTS participants (player_id INTEGER, game_id INTEGER, class TEXT,"
-                              "info TEXT)")
+        self.__cursor.execute("CREATE TABLE IF NOT EXISTS participants (player_id INTEGER, game_id INTEGER)")
         self.__cursor.execute("CREATE TABLE IF NOT EXISTS winners (player_id INTEGER, game_id INTEGER)")
         self.__cursor.execute("CREATE TABLE IF NOT EXISTS execution_times (player_id INTEGER, game_id INTEGER,"
                               "execution REAL)")
 
     def _log_execution_time(self, ai: ArtificialIntelligence, execution_time: float):
+        ai_class = ai.__class__.__name__
+        ai_info = ai.get_information()
+        player_id = self.__get_player_id(ai_class, ai_info)
+
         self.__cursor.execute("INSERT INTO execution_times VALUES ({}, {}, {})"
-                              .format(ai.player.id, self.__current_game_id, execution_time))
+                              .format(player_id, self.__current_game_id, execution_time))
+
+    def __get_player_id(self, ai_class: str, ai_info: str) -> int:
+        player_id = self.__cursor.execute(
+            "SELECT MAX(id) FROM players p WHERE p.class = '{}' AND p.info = '{}'"
+            .format(ai_class, ai_info)).fetchone()[0]
+
+        if player_id is None:
+            max_player_id = self.__cursor.execute("SELECT MAX(id) FROM players").fetchone()[0]
+            if max_player_id is None:
+                max_player_id = 0
+            player_id = max_player_id + 1
+            self.__cursor.execute("INSERT INTO players VALUES ({}, '{}', '{}')".format(player_id, ai_class, ai_info))
+
+        return player_id
