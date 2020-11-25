@@ -6,7 +6,7 @@ from chillow.view.view import View
 class Controller(metaclass=ABCMeta):
 
     def __init__(self, monitoring: View):
-        self.monitoring = monitoring
+        self._monitoring = monitoring
 
     @abstractmethod
     def play(self):
