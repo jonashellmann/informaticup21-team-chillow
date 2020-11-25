@@ -98,9 +98,9 @@ class AIEvaluationController(OfflineController):
         self.__cursor.execute("CREATE TABLE IF NOT EXISTS participants (id INTEGER, game_id INTEGER, class TEXT,"
                               "info TEXT)")
         self.__cursor.execute("CREATE TABLE IF NOT EXISTS winners (id INTEGER, game_id INTEGER)")
-        self.__cursor.execute("CREATE TABLE IF NOT EXISTS execution (player_id INTEGER, game_id INTEGER,"
+        self.__cursor.execute("CREATE TABLE IF NOT EXISTS execution_times (player_id INTEGER, game_id INTEGER,"
                               "execution REAL)")
 
     def _log_execution_time(self, ai: ArtificialIntelligence, execution_time: float):
-        self.__cursor.execute("INSERT INTO execution VALUES ({}, {}, {})"
+        self.__cursor.execute("INSERT INTO execution_times VALUES ({}, {}, {})"
                               .format(ai.player.id, self.__current_game_id, execution_time))
