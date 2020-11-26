@@ -14,13 +14,13 @@ class HeadlessView(View):
         super().__init__(colors)
 
     def update(self, game: Game):
-        """See base class"""
+        """See base class."""
         pass
 
     def read_next_action(self):
-        """See base class"""
+        """See base class."""
         pass
 
     def end(self):
-        """See base class"""
+        """See base class."""
         pass

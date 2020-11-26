@@ -25,7 +25,7 @@ class GraphicalView(View):
         self.__screen = None
 
     def update(self, game: Game):
-        """See base class"""
+        """See base class."""
         if not self._interface_initialized:
             self._initialize_interface(game)
 
@@ -62,7 +62,7 @@ class GraphicalView(View):
         self.__clock.tick(60)
 
     def read_next_action(self) -> Action:
-        """See base class"""
+        """See base class."""
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -84,7 +84,7 @@ class GraphicalView(View):
                     self.__next_action = True
 
     def end(self):
-        """See base class"""
+        """See base class."""
         time.sleep(10)
         pygame.display.quit()
         pygame.quit()
