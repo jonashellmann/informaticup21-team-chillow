@@ -19,6 +19,19 @@ class OnlineController(Controller):
 
     def __init__(self, view: View, url: str, key: str, server_time_url: str, data_loader: DataLoader,
                  data_writer: DataWriter, ai_class: str, ai_params):
+        """Creates a new online controller.
+
+        Args:
+            view: The UI that should be used.
+            url: The URL of the spe_ed server.
+            key: The API key.
+            server_time_url: The URL to request the current time of the server.
+            data_loader: Object to load data.
+            data_writer: Object to write data.
+            ai_class: The name of the AI class to be used.
+            ai_params: The parameters of the AI.
+        """
+
         super().__init__(view)
         self.__url = url
         self.__key = key
@@ -31,6 +44,7 @@ class OnlineController(Controller):
         self.__ai_params = ai_params
 
     def play(self):
+        """See base class."""
         asyncio.get_event_loop().run_until_complete(self.__play())
         self._view.end()
         self.__ai = None

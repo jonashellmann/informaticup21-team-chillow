@@ -20,10 +20,16 @@ time_zone = timezone.utc
 class OfflineController(Controller):
 
     def __init__(self, view: View):
+        """Creates a new offline controller.
+
+        Args:
+            view: The UI that should be used.
+        """
         super().__init__(view)
         self.__you = None
 
     def play(self):
+        """See base class."""
         self._create_game()
         game_service = GameService(self._game, ignore_deadline=False)
 
