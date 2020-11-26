@@ -90,4 +90,10 @@ Darüber hinaus haben wir auch eigene Punkte abgesprochen.
 Dazu zählt \bspw, dass wir bei Parametern und dem Rückgabewert an Methoden die jeweilige Typangabe ergänzt haben, obwohl
 dies in Python optional ist.
 Der Vorteil, der sich daraus ergeben hat, war eine bessere Unterstützung bei der Autovervollständigung und Anzeige
-von möglichen Fehlern durch die IDE.
+von möglichen Fehlern durch die IDE\@.
+Darüber hinaus wurde insbesondere für die Dokumentation des Codes mit Hilfe von Docstrings der Python-Styleguide von
+Google \Vgl{google-pyguide} verwendet.
+Dieser beschreibt unter anderem, dass alle öffentlich sichtbaren und nicht trivialen Methoden sowie alle Klassen
+dokumentiert werden sollen und gibt vor, wie die Formatierung dieses Strings auszusehen hat.
+Durch den oben beschriebenen Einsatz von Pylint wurden automatisiert viele Konventionen aus diesem Styleguide überprüft,
+die über die Code-Dokumentation hinausgehen.
