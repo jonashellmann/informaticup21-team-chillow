@@ -8,10 +8,13 @@ from chillow.view.view import View
 
 
 class GraphicalView(View):
+    """Provides a graphical UI using PyGame."""
+
     RECTANGLE_SIZE = 10
     CLOCK_TICK = 60
 
     def __init__(self):
+        """Creates a new graphical view."""
         colors = [(255, 61, 0), (156, 204, 101), (171, 71, 188), (38, 166, 154), (255, 238, 88), (66, 165, 245)]
         super().__init__(colors)
 
@@ -22,6 +25,7 @@ class GraphicalView(View):
         self.__screen = None
 
     def update(self, game: Game):
+        """See base class"""
         if not self._interface_initialized:
             self._initialize_interface(game)
 
@@ -58,6 +62,7 @@ class GraphicalView(View):
         self.__clock.tick(60)
 
     def read_next_action(self) -> Action:
+        """See base class"""
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -79,6 +84,7 @@ class GraphicalView(View):
                     self.__next_action = True
 
     def end(self):
+        """See base class"""
         time.sleep(10)
         pygame.display.quit()
         pygame.quit()

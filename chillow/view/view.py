@@ -5,8 +5,20 @@ from chillow.model.game import Game
 
 
 class View(metaclass=ABCMeta):
+    """Provides an UI to show the game progress."""
 
     def __init__(self, colors: List[Any]):
+        """Creates a new view.
+
+        Args:
+            colors:
+                A list of values that define colors in the specific view.
+                This may be human readable strings or strings with hex values.
+                The list may not be empty.
+
+        Raises:
+            AssertionError: The parameter list is empty.
+        """
         self._interface_initialized = False
         self._player_colors = {0: (0, 0, 0)}
 
@@ -15,15 +27,22 @@ class View(metaclass=ABCMeta):
 
     @abstractmethod
     def update(self, game: Game):
-        raise NotImplementedError
+        """Updates the view with the new game state.
+
+        Args:
+            game: The state of the game that should be shown in the view.
+        """
+        pass
 
     @abstractmethod
     def read_next_action(self):
-        raise NotImplementedError
+        """Reads the next action to be performed by a human player."""
+        pass
 
     @abstractmethod
     def end(self):
-        raise NotImplementedError
+        """Performs actions to shut down the view."""
+        pass
 
     def _initialize_interface(self, game: Game):
         self._interface_initialized = True

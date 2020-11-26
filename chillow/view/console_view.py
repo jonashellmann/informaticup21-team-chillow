@@ -7,14 +7,17 @@ from chillow.view.view import View
 
 
 class ConsoleView(View):
+    """Uses the console as an UI and every output goes there."""
 
     def __init__(self):
+        """Creates a new console view."""
         colors = ['red', 'blue', 'green', 'yellow', 'magenta', 'cyan']
         super().__init__(colors)
         self.__round = 0
         self.__player_representation = {}
 
     def update(self, game: Game):
+        """See base class"""
         if not self._interface_initialized:
             self._initialize_interface(game)
 
@@ -54,6 +57,7 @@ class ConsoleView(View):
                       "). Your player ID was " + str(self.__player_representation[game.you.id]))
 
     def read_next_action(self) -> Action:
+        """See base class"""
         user_input = self.\
             get_input("Input Next Action (l:turn_left, r:turn_right, u:speed_up, d:slow_down, n:change_nothing): ")
         if user_input == "u":
@@ -75,6 +79,7 @@ class ConsoleView(View):
         return input(text)
 
     def end(self):
+        """See base class"""
         print("Game ended!")
 
     def _initialize_interface(self, game: Game):
