@@ -21,8 +21,9 @@ if __name__ == "__main__":
         from chillow.view.console_view import ConsoleView
         monitoring = ConsoleView()
     else:
+        import pygame
         from chillow.view.graphical_view import GraphicalView
-        monitoring = GraphicalView()
+        monitoring = GraphicalView(pygame)
 
     if not args.play_online:
         if args.ai_eval_runs > 0:
