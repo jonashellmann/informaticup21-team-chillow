@@ -36,7 +36,7 @@ class GraphicalView(View):
                 print("No winner in game.")
             else:
                 print("Winner: Player " + str(player.id) + " (" + player.name + "). Your player ID was " +
-                      str(game.you.id))
+                      str(game.you.id) + ".")
 
         self.__screen.fill((0, 0, 0))  # black background
         for row in range(game.height):
@@ -68,6 +68,7 @@ class GraphicalView(View):
             for event in self.__pygame.event.get():
                 if event.type == self.__pygame.QUIT:  # Allows to close the pygame-window
                     self.end()
+                    return Action.get_default()
                 elif event.type == self.__pygame.KEYDOWN:
                     pressed_key = self.__pygame.key.get_pressed()
                     self.__next_action = False
