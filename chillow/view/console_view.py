@@ -33,7 +33,7 @@ class ConsoleView(View):
                     row_cells.append(' ')
                 else:
                     player = game.get_player_by_id(cell.get_player_id())
-                    color = self._player_colors[cell.get_player_id()]
+                    color = self._player_colors[self.__player_representation[cell.get_player_id()]]
                     if player.x == col and player.y == row:
                         if player == game.you:
                             row_cells.append(colored("x", color))

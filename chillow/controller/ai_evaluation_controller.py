@@ -2,6 +2,7 @@ from contextlib import closing
 from datetime import datetime, timedelta, timezone
 from random import randint
 import sqlite3
+from typing import List, Tuple
 
 from chillow.controller import OfflineController
 from chillow.model.cell import Cell
@@ -52,8 +53,13 @@ class AIEvaluationController(OfflineController):
 
         player_count = randint(3, 6)
         players = []
-        for i in range(player_count):
-            player = Player(i, randint(0, width - 1), randint(0, height - 1), Direction.get_random_direction(), 1, True,
+        occupied_coordinates = []
+        for i in range(1, player_count + 1):
+            next_coordinate = (randint(0, width - 1), randint(0, height - 1))
+            while next_coordinate in occupied_coordinates:
+                next_coordinate = (randint(0, width - 1), randint(0, height - 1))
+            occupied_coordinates.append(next_coordinate)
+            player = Player(i, next_coordinate[0], next_coordinate[1], Direction.get_random_direction(), 1, True,
                             str(i))
             players.append(player)
 
