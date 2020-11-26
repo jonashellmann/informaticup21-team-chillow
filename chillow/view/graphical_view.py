@@ -13,7 +13,11 @@ class GraphicalView(View):
     CLOCK_TICK = 60
 
     def __init__(self, pygame):
-        """Creates a new graphical view."""
+        """Creates a new graphical view.
+
+        Args:
+            pygame: The PyGame library.
+        """
         colors = [(255, 61, 0), (156, 204, 101), (171, 71, 188), (38, 166, 154), (255, 238, 88), (66, 165, 245)]
         super().__init__(colors)
 
