@@ -21,7 +21,8 @@ class GraphicalView(View):
         self.__clock = pygame.time.Clock()
         pygame.init()
         self.__clock.tick(self.CLOCK_TICK)
-        self.__next_action = True
+        self.__next_action = True  # Flag to wait for a KEYUP event.
+        # Otherwise the user is doing multiple actions with one click.
         self.__screen = None
 
     def update(self, game: Game):
@@ -37,7 +38,7 @@ class GraphicalView(View):
                 print("Winner: Player " + str(player.id) + " (" + player.name + "). Your player ID was " +
                       str(game.you.id))
 
-        self.__screen.fill((0, 0, 0))
+        self.__screen.fill((0, 0, 0))  # black background
         for row in range(game.height):
             for col in range(game.width):
                 pygame.draw.rect(self.__screen,
@@ -51,7 +52,7 @@ class GraphicalView(View):
                     if player.x == col and player.y == row:  # print head
                         border_width = 2
                         if player == game.you:
-                            border_width = 4
+                            border_width = 4  # head of the own player has a smaller dot
                         pygame.draw.rect(self.__screen,
                                          self._player_colors[0],
                                          (col * self.RECTANGLE_SIZE + col + border_width,
@@ -65,7 +66,7 @@ class GraphicalView(View):
         """See base class."""
         while True:
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+                if event.type == pygame.QUIT:  # Allows to close the pygame-window
                     self.end()
                 elif event.type == pygame.KEYDOWN:
                     pressed_key = pygame.key.get_pressed()

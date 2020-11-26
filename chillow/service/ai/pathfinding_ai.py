@@ -78,7 +78,8 @@ class PathfindingAI(NotKillingItselfAI):
         """
         if actions is None or len(actions) == 0:
             return None
-
+        # shuffle the actions, so that different actions are chosen if they have the same quality and the AI is not so
+        # easily predictable.
         shuffle(actions)
         actions_with_possible_paths: List[Tuple[Action, int]] = []
         free_cells_for_pathfinding = self.get_random_free_cells_from_playground(game)
@@ -102,11 +103,11 @@ class PathfindingAI(NotKillingItselfAI):
                 start = grid.node(player.x, player.y)
                 end = grid.node(free_cells_for_pathfinding[i][0], free_cells_for_pathfinding[i][1])
                 path, runs = path_finder.find_path(start, end, grid)
-                if len(path) > 0:
+                if len(path) > 0:  # a path exists
                     current_possible_paths += 1
 
             actions_with_possible_paths.append((action, current_possible_paths))
-
+        # Action with most accessible paths at index 0
         actions_with_possible_paths.sort(key=operator.itemgetter(1), reverse=True)
         return actions_with_possible_paths
 
@@ -124,7 +125,7 @@ class PathfindingAI(NotKillingItselfAI):
             for y in range(game.height):
                 if game.cells[y][x].players is None or len(game.cells[y][x].players) == 0:
                     free_cells.append((x, y))
-        shuffle(free_cells)
+        shuffle(free_cells)  # shuffle the coordinates to get a random distribution
         return free_cells[:min(self.__count_paths_to_check, len(free_cells))]
 
     def _get_count_paths_to_check(self) -> int:

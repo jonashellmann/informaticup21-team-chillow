@@ -1,8 +1,6 @@
 import unittest
 
 import chillow.exceptions as ex
-from datetime import datetime
-from datetime import timedelta
 
 from chillow.model.direction import Direction
 from chillow.model.player import Player
@@ -15,8 +13,7 @@ class TurnTest(unittest.TestCase):
         self.player1 = Player(1, 2, 2, Direction.up, 1, True, "")
         self.player2 = Player(2, 1, 0, Direction.down, 3, True, "")
         self.players = [self.player1, self.player2]
-        date = datetime.now() + timedelta(0, 180)
-        self.sut = Turn(self.players, date)
+        self.sut = Turn(self.players)
 
     def test_turn_not_ended(self):
         self.assertEqual(self.sut.action(self.player1), False)
