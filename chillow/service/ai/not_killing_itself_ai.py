@@ -38,7 +38,6 @@ class NotKillingItselfAI(ArtificialIntelligence):
             worse, but within this tolerance, are also considered.
             depth: Number of player actions that are looked into the future.
         """
-
         super().__init__(player, max_speed)
         self.__options = options
         self.__max_worse_distance = max_worse_distance
@@ -47,9 +46,11 @@ class NotKillingItselfAI(ArtificialIntelligence):
         self.__depth = depth
 
     def get_information(self) -> str:
+        """See base class."""
         return super().get_information() + ", max_worse_distance=" + str(self.__max_worse_distance)
 
     def create_next_action(self, game: Game, return_value: Value):
+        """See base class."""
         self._turn_ctr += 1
 
         game_service = GameService(game)
@@ -78,7 +79,6 @@ class NotKillingItselfAI(ArtificialIntelligence):
         Returns:
             List of best actions with the property having as many free cells as possible in front of the player.
         """
-
         max_straight_distance = 0
         best_actions: Dict[Action, int] = {}
         for action in actions:
@@ -125,9 +125,8 @@ class NotKillingItselfAI(ArtificialIntelligence):
         Returns:
             Actions that will not kill the player in the next rounds.
         """
-
         result: List[Action] = []
-        for action in Action:  # select a surviving action
+        for action in Action:
             gs_copy = pickle.loads(pickle.dumps(game_service))
             try:
                 player = gs_copy.game.get_player_by_id(self.player.id)
@@ -156,7 +155,6 @@ class NotKillingItselfAI(ArtificialIntelligence):
         Returns:
             Actions that will not kill the player in the next rounds.
         """
-
         result: List[Action] = []
         for current_depth in reversed(range(1, self.__depth + 1)):
             result = self.find_surviving_actions(game_service, current_depth)

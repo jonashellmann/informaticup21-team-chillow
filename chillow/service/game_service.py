@@ -22,7 +22,6 @@ class GameService:
             game: The game object in which the AI is located and contains the current status of the game.
             ignore_deadline: Flag to ignore the deadline.
         """
-
         self.game = game
         self.turn = Turn(self.game.players, game.deadline)
         self.visited_cells_by_player = {}
@@ -40,7 +39,6 @@ class GameService:
                 The player is outside the field, has reached an invalid player speed or was not
                 allowed to take any further action this turn.
         """
-
         try:
             new_turn = self.turn.action(player)
             action_to_perform = action \
@@ -58,7 +56,6 @@ class GameService:
 
     def check_and_set_died_players(self):
         """Checks which players have died this turn and sets them to inactive. """
-
         for row in range(len(self.game.cells)):
             for col in range(len(self.game.cells[row])):
                 cell = self.game.cells[row][col]
@@ -78,7 +75,6 @@ class GameService:
         Returns:
             True if the game is still running otherwise False.
         """
-
         active_player_ctr = 0
         for player in self.game.players:
             if player.active:
@@ -95,7 +91,6 @@ class GameService:
         Returns:
             Horizontal and vertical multiplier.
         """
-
         vertical_multiplier = 0
         horizontal_multiplier = 0
         if player.direction == Direction.up:
@@ -119,11 +114,8 @@ class GameService:
         Returns:
             List of field coordinates that the player has visited.
         """
-
         visited_cells = []
-
         GameService.change_player_status_by_action(player, action)
-
         horizontal_multiplier, vertical_multiplier = GameService.get_horizontal_and_vertical_multiplier(player)
 
         for i in range(1, player.speed + 1):
@@ -155,7 +147,6 @@ class GameService:
             player: The player whose direction is to be changed.
             action: The Action to perform.
         """
-
         if action == action.turn_left:
             if player.direction == Direction.up:
                 player.direction = Direction.left
@@ -188,7 +179,6 @@ class GameService:
         Args:
             player: The player to be set inactive.
         """
-
         if player in self.turn.playersWithPendingAction:
             self.turn.playersWithPendingAction.remove(player)
         player.active = False
@@ -204,7 +194,6 @@ class Turn:
             players: List of players that are in the game.
             deadline: Deadline of the game turn.
         """
-
         self.players = players.copy()
         self.playersWithPendingAction = players.copy()
         self.deadline = deadline
@@ -225,7 +214,6 @@ class Turn:
         Raises:
             MultipleActionByPlayerException: Raised if the player did more than one action this turn.
         """
-
         if player not in self.playersWithPendingAction:
             raise ex.MultipleActionByPlayerException(player)
         # elif self.deadline < datetime.now():

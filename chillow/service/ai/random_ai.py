@@ -14,11 +14,13 @@ class RandomAI(ArtificialIntelligence):
     """
 
     def create_next_action(self, game: Game, return_value: Value):
+        """See base class."""
         self._turn_ctr += 1
         action = Action.get_random_action()
         return_value.value = action.get_index()
 
     def get_information(self) -> str:
+        """See base class."""
         return ""
 
 

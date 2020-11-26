@@ -30,12 +30,12 @@ class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
             distance_to_check: Distance an enemy player is allowed to be at maximum distance, so that he is taken into
                 account in the calculations.
         """
-
         PathfindingAI.__init__(self, player, max_speed, count_paths_to_check)
         SearchTreeAI.__init__(self, player, depth, max_speed, distance_to_check=distance_to_check)
         self.__paths_tolerance = paths_tolerance
 
     def get_information(self) -> str:
+        """See base class."""
         return "max_speed=" + str(self._max_speed) \
                + ", paths_tolerance=" + str(self.__paths_tolerance) \
                + ", count_paths_to_check=" + str(self._get_count_paths_to_check()) \
@@ -43,6 +43,7 @@ class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
                + ", distance_to_check=" + str(self._get_distance_to_check())
 
     def create_next_action(self, game: Game, return_value: Value):
+        """See base class."""
         self._turn_ctr += 1
 
         pathfinding_actions = self.create_next_actions_ranked(game)
@@ -59,7 +60,6 @@ class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
             search_tree_actions: List of actions calculated by SearchTreeAI
             return_value: Object to save the result of the calculation.
         """
-
         best_action = self.get_best_action(pathfinding_actions, search_tree_actions)
 
         return_value.value = best_action.get_index() if best_action is not None else return_value.value
@@ -75,7 +75,6 @@ class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
         Returns:
             Best action if there is any.
         """
-
         if search_tree_actions is None or len(search_tree_actions) == 0:
             if pathfinding_actions is not None and len(pathfinding_actions) > 0:
                 return pathfinding_actions[0][0]

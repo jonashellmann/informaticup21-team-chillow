@@ -36,7 +36,6 @@ class SearchTreeRoot(object):
         Returns:
             An action that lets the player survive for the next rounds based on the parameters.
         """
-
         assert len(player_ids_to_watch) == len(combinations[0])
 
         if depth <= 0:

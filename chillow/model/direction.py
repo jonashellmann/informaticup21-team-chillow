@@ -13,5 +13,4 @@ class Direction(Enum):
         Returns:
             A random direction.
         """
-
         return random.choice(list(Direction))

@@ -31,17 +31,18 @@ class SearchTreePathfindingAI(PathfindingAI, SearchTreeAI):
                 Distance an enemy player is allowed to be at maximum distance, so that he is taken into
                 account in the calculations.
         """
-
         PathfindingAI.__init__(self, player, max_speed, count_paths_to_check)
         SearchTreeAI.__init__(self, player, depth, max_speed, distance_to_check=distance_to_check)
 
     def get_information(self) -> str:
+        """See base class."""
         return "max_speed=" + str(self._max_speed) \
                + ", count_paths_to_check=" + str(self._get_count_paths_to_check()) \
                + ", depth=" + str(self._get_depth()) \
                + ", distance_to_check=" + str(self._get_distance_to_check())
 
     def create_next_action(self, game: Game, return_value: Value):
+        """See base class."""
         self._turn_ctr += 1
 
         surviving_actions = super()._create_all_next_surviving_actions(game)

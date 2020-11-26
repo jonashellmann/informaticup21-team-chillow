@@ -48,7 +48,6 @@ class Game:
             PlayerPositionException: The current position of the player is not represented in the game.
             OwnPlayerMissingException: No player representing the own player was found in the game.
         """
-
         if len(self.cells) != self.height:
             raise WrongGameHeightException(len(self.cells), self.height)
 
@@ -76,7 +75,6 @@ class Game:
         Returns:
             The winner of the game if there is one. The return vale may be empty.
         """
-
         if self.running:
             raise Exception("Game not ended and has no winner yet")
         for player in self.players:
@@ -95,7 +93,6 @@ class Game:
         Returns:
             List of ids matching the above criteria.
         """
-
         players = []
         for player in self.players:
             if player.id != p.id \
@@ -120,7 +117,6 @@ class Game:
             Two-dimensional array of integers, where an empty cell is represented by 1 and cells which were already
             visited by a player are represented by 0.
         """
-
         matrix = [[1 for _ in range(self.width)] for _ in range(self.height)]
         for i in range(len(self.cells)):
             for j in range(len(self.cells[i])):
@@ -140,7 +136,6 @@ class Game:
         Raises:
              PlayerWithGivenIdNotAvailableException: Raised when no player with this ID is in this game.
         """
-
         for player in self.players:
             if player.id == player_id:
                 return player
@@ -155,7 +150,6 @@ class Game:
         Returns:
             A list of players identified by the given IDs.
         """
-
         players = []
         for player in self.players:
             if player.id in player_ids:
@@ -168,7 +162,6 @@ class Game:
         Returns:
             A copy of the game.
         """
-
         players: List[Player] = []
         for player in self.players:
             players.append(
@@ -194,7 +187,6 @@ class Game:
             server_time: The current time of the game server.
             own_time: The current time of the system where the program is executed.
         """
-
         time_delta = own_time - server_time
         multiplier = 1
 

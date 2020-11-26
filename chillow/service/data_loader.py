@@ -42,18 +42,7 @@ class JSONDataLoader(DataLoader):
     """Class used to convert a JSON string to a python object"""
 
     def load(self, game_data: str) -> Game:
-        """Converts a string to a game
-
-        Args:
-            game_data:
-                The string containing the game data.
-                The string needs to be in JSON format.
-                The exact format is described here: https://github.com/informatiCup/InformatiCup2021/
-
-        Returns:
-            The game created based on the information from the JSON string.
-        """
-
+        """See base class."""
         json_data = json.loads(game_data)
         players = []
         cells = []
@@ -97,17 +86,6 @@ class JSONDataLoader(DataLoader):
         )
 
     def read_server_time(self, time_data: str) -> datetime:
-        """Parses a string to a Python datetime
-
-        Args:
-            time_data:
-                The string containing the time data.
-                The string needs to be in JSON format and has to look like following:
-                {"time":"2020-11-25T16:06:51Z","milliseconds":190}
-
-        Returns:
-            The Python datetime created based on the information from the string.
-        """
-
+        """See base class."""
         json_data = json.loads(time_data)
         return iso8601.parse_date(json_data["time"]) + timedelta(milliseconds=int(json_data["milliseconds"]))

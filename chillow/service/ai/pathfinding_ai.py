@@ -30,15 +30,16 @@ class PathfindingAI(NotKillingItselfAI):
             max_speed: The maximum speed the AI can reach.
             count_paths_to_check: The number of paths used to avoid dead ends.
         """
-
         super().__init__(player, [], max_speed, 0, 3)
         self.__count_paths_to_check = count_paths_to_check
 
     def get_information(self) -> str:
+        """See base class."""
         return "max_speed=" + str(self._max_speed) \
                + ", count_paths_to_check=" + str(self.__count_paths_to_check)
 
     def create_next_action(self, game: Game, return_value: Value):
+        """See base class."""
         self._turn_ctr += 1
         actions = self.create_next_actions_ranked(game)
         action = actions[0][0] if actions is not None and len(actions) > 0 else Action.get_random_action()
@@ -53,7 +54,6 @@ class PathfindingAI(NotKillingItselfAI):
         Returns:
             A list with actions and the corresponding number of accessible paths.
         """
-
         game_service = GameService(game)
         game_service.turn.turn_ctr = self._turn_ctr
 
@@ -75,7 +75,6 @@ class PathfindingAI(NotKillingItselfAI):
         Returns:
             List of actions with the accessible paths.
         """
-
         if actions is None or len(actions) == 0:
             return None
 
@@ -119,7 +118,6 @@ class PathfindingAI(NotKillingItselfAI):
         Returns:
             List of coordinates with x- and y-value.
         """
-
         free_cells: List[(int, int)] = []
         for x in range(game.width):
             for y in range(game.height):

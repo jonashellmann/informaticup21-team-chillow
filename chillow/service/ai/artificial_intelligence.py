@@ -29,7 +29,6 @@ class ArtificialIntelligence(metaclass=ABCMeta):
         Returns:
             A string containing information about the attributes of the AI.
         """
-
         return "max_speed=" + str(self._max_speed)
 
     @abstractmethod
