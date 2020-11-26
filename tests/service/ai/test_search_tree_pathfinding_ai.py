@@ -39,7 +39,6 @@ class SearchTreePathfindingAITest(unittest.TestCase):
 
         self.assertEqual(Action.get_default(), Action.get_by_index(result.value))
 
-
     def test_get_information(self):
         game = self.data_loader.load(tests.read_test_file("ai/game_4.json"))
         sut = SearchTreePathfindingAI(game.you, 3, 100, 2, 5)
