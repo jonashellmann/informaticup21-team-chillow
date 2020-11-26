@@ -39,6 +39,14 @@ class SearchTreeAITest(unittest.TestCase):
 
         self.assertEqual(Action.slow_down, Action.get_by_index(result.value))
 
+    def test_find_no_surviving_action(self):
+        game = self.data_loader.load(tests.read_test_file("ai/game_5.json"))
+        sut = SearchTreeAI(game.you, 2, 10, False, 10)
+
+        result = sut.create_all_next_surviving_actions(game)
+
+        self.assertEqual([], result)
+
     def test_get_information(self):
         game = self.data_loader.load(tests.read_test_file("ai/game_3.json"))
         sut = SearchTreeAI(game.you, 2, 3, True, 10)
