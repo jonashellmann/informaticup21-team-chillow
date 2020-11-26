@@ -6,6 +6,7 @@ from chillow.service.ai.search_tree_ai import SearchTreeAI
 from chillow.model.action import Action
 from chillow.model.game import Game
 from chillow.model.player import Player
+from chillow.service.game_service import GameService
 
 
 class SearchTreePathfindingAI(PathfindingAI, SearchTreeAI):
@@ -49,6 +50,10 @@ class SearchTreePathfindingAI(PathfindingAI, SearchTreeAI):
         if surviving_actions is not None and len(surviving_actions) > 0:
             return_value.value = choice(surviving_actions).get_index()
 
-        action = self.find_actions_by_best_path_connection(surviving_actions, game)[0][0]\
-            if len(surviving_actions) > 0 else Action.get_random_action()
-        return_value.value = action.get_index()
+        if len(surviving_actions) > 0:
+            return_value.value = self.find_actions_by_best_path_connection(surviving_actions, game)[0][0].get_index()
+        else:
+            surviving_pathfinding_actions = self.find_actions_by_best_path_connection(
+                self.find_surviving_actions(GameService(game), 1), game)
+            return_value.value = surviving_pathfinding_actions[0][0].get_index() \
+                if len(surviving_pathfinding_actions) > 0 else Action.get_random_action().get_index()
