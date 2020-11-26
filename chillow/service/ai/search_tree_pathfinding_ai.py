@@ -20,7 +20,7 @@ class SearchTreePathfindingAI(PathfindingAI, SearchTreeAI):
 
     def __init__(self, player: Player, max_speed: int, count_paths_to_check: int, depth: int,
                  distance_to_check: int = 0):
-        """ Creates a new object of the SearchTreePathfindingAI.
+        """Creates a new object of the SearchTreePathfindingAI.
 
         Args:
             player: The player assigned to the AI.

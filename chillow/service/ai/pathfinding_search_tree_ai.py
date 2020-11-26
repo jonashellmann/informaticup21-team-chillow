@@ -20,7 +20,7 @@ class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
 
     def __init__(self, player: Player, max_speed: int, count_paths_to_check: int, depth: int,
                  paths_tolerance: float = 0.75, distance_to_check: int = 0):
-        """ Creates a new object of the PathfindingSearchTreeAI.
+        """Creates a new object of the PathfindingSearchTreeAI.
 
         Args:
             player: The player assigned to the AI.
@@ -56,7 +56,7 @@ class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
 
     def set_best_action(self, pathfinding_actions: List[Tuple[Action, int]], search_tree_actions: List[Action],
                         return_value: Value):
-        """ Saves the best action from the list of actions from PathfindingAI and SearchTreeAI.
+        """Saves the best action from the list of actions from PathfindingAI and SearchTreeAI.
 
         Args:
             pathfinding_actions: List of actions calculated by PathfindingAI.
@@ -68,7 +68,7 @@ class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
 
     def get_best_action(self, pathfinding_actions: List[Tuple[Action, int]],
                         search_tree_actions: List[Action]) -> Optional[Action]:
-        """ Calculates the best action from the list of actions from PathfindingAI and SearchTreeAI.
+        """Calculates the best action from the list of actions from PathfindingAI and SearchTreeAI.
 
         Args:
             pathfinding_actions: List of actions calculated by PathfindingAI.
