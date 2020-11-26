@@ -1,0 +1,27 @@
+{
+	"width": 4,
+	"height": 3,
+	"cells": [
+      	[0, 1, 0, 2],
+      	[0, 2, 2, 2],
+      	[2, 2, 2, 2]],
+	"players": {
+		"1": {
+			"x": 1,
+			"y": 0,
+			"direction": "down",
+			"speed": 1,
+			"active": true
+		},
+		"2": {
+			"x": 1,
+			"y": 1,
+			"direction": "left",
+			"speed": 1,
+			"active": true
+		}
+	},
+	"you": 1,
+	"running": true,
+	"deadline": "2020-10-01T12:05:13Z"
+}

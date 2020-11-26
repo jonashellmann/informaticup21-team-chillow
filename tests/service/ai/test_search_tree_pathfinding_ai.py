@@ -21,6 +21,24 @@ class SearchTreePathfindingAITest(unittest.TestCase):
 
         self.assertEqual(Action.turn_left, Action.get_by_index(result.value))
 
+    def test_should_select_action_of_pathfinding_ai_if_surviving_next_two_rounds_is_not_possible(self):
+        game = self.data_loader.load(tests.read_test_file("ai/game_5.json"))
+        sut = SearchTreePathfindingAI(game.you, 3, 50, 10)
+
+        result = Value('i')
+        sut.create_next_action(game, result)
+
+        self.assertEqual(Action.turn_right, Action.get_by_index(result.value))
+
+    def test_should_select_default_action(self):
+        game = self.data_loader.load(tests.read_test_file("ai/game_6.json"))
+        sut = SearchTreePathfindingAI(game.you, 3, 50, 10)
+
+        result = Value('i')
+        sut.create_next_action(game, result)
+
+        self.assertEqual(Action.get_default(), Action.get_by_index(result.value))
+
     def test_get_information(self):
         game = self.data_loader.load(tests.read_test_file("ai/game_4.json"))
         sut = SearchTreePathfindingAI(game.you, 3, 100, 2, 5)
@@ -29,4 +47,3 @@ class SearchTreePathfindingAITest(unittest.TestCase):
         result = sut.get_information()
 
         self.assertEqual(expected, result)
-
