@@ -50,6 +50,7 @@ Um ein Online-Spiel der KI auf dem Server zu starten, müssen folgende Umgebungs
 Docker-Container automatisch gesetzt bzw. als Parameter übergeben werden:
 - `URL=[SERVER_URL]`
 - `KEY=[API_KEY]`
+- `TIME_URL=[TIME_URL]` (optional)
 
 Mittels dem Kommandozeilen-Parameter `--deactivate-pygame` kann entschieden werden, ob eine grafische Oberfläche benutzt
 werden soll oder die Ausgabe wie im Docker-Container über die Konsole erfolgt.

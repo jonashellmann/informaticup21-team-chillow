@@ -30,13 +30,17 @@ if __name__ == "__main__":
         else:
             con = OfflineController(monitoring)
     else:
-        url = os.environ["URL"]
-        key = os.environ["KEY"]
+        url = os.getenv("URL")
+        key = os.getenv("KEY")
+        assert url is not None, "URL is not set as environment variable"
+        assert key is not None, "KEY is not set as environment variable"
+
+        server_time_url = os.getenv("TIME_URL")
         data_loader = JSONDataLoader()
         data_writer = JSONDataWriter()
         ai_class = PathfindingAI.__name__
         ai_params = (2, 75)
 
-        con = OnlineController(monitoring, url, key, data_loader, data_writer, ai_class, ai_params)
+        con = OnlineController(monitoring, url, key, server_time_url, data_loader, data_writer, ai_class, ai_params)
 
     con.play()

@@ -19,15 +19,15 @@ time_zone = timezone.utc
 
 class OfflineController(Controller):
 
-    def __init__(self, monitoring: View):
-        super().__init__(monitoring)
+    def __init__(self, view: View):
+        super().__init__(view)
         self.__you = None
 
     def play(self):
         self._create_game()
         game_service = GameService(self._game, ignore_deadline=False)
 
-        self.monitoring.update(self._game)
+        self._view.update(self._game)
 
         while self._game.running:
             time_to_react = randint(3, 15)
@@ -36,7 +36,7 @@ class OfflineController(Controller):
             # Read input from user if there is a human player
             action = None
             if self.__you is not None:
-                action = self.monitoring.read_next_action()
+                action = self._view.read_next_action()
                 if datetime.now(time_zone) > self._game.deadline:
                     action = Action.get_default()
                 self.__reset_game_deadline(time_to_react)
@@ -56,7 +56,7 @@ class OfflineController(Controller):
             if self.__you is not None:
                 game_service.do_action(self.__you, action)
 
-            self.monitoring.update(self._game)
+            self._view.update(self._game)
 
     def _create_game(self) -> None:
         player1 = Player(1, 5, 5, Direction.down, 1, True, "Human Player 1")
