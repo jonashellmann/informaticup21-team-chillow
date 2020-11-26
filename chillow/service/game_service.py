@@ -14,7 +14,7 @@ class GameService:
     """Class that manipulates a game object by performing the actions of players."""
 
     def __init__(self, game: Game, ignore_deadline: bool = True):
-        """Create a new game service.
+        """Creates a new game service.
 
         It also creates a turn object that represents the play moves.
 

@@ -29,7 +29,7 @@ class NotKillingItselfAI(ArtificialIntelligence):
 
     def __init__(self, player: Player, options: List[AIOptions], max_speed: int, max_worse_distance: int,
                  depth: int):
-        """ Creates a new object of the NotKillingItselfAI.
+        """Creates a new object of the NotKillingItselfAI.
 
         Args:
             player: The player assigned to the AI.
@@ -70,7 +70,7 @@ class NotKillingItselfAI(ArtificialIntelligence):
 
     def calc_action_with_max_distance_to_visited_cells(self, game_service: GameService,
                                                        actions: List[Action]) -> List[Action]:
-        """ Calculates a list of actions that have the property to have as many free cells as possible in front of them
+        """Calculates a list of actions that have the property to have as many free cells as possible in front of them
         while running straight after the action has been executed.
 
         Args:
@@ -117,7 +117,7 @@ class NotKillingItselfAI(ArtificialIntelligence):
         return list(best_actions.keys())
 
     def find_surviving_actions(self, game_service: GameService, depth: int) -> List[Action]:
-        """ Finds all actions that will let the player survive for the next rounds.
+        """Finds all actions that will let the player survive for the next rounds.
 
         Args:
             game_service: The game service used for simulation of actions.

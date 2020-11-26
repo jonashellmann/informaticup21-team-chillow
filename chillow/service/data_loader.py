@@ -15,7 +15,7 @@ class DataLoader(metaclass=ABCMeta):
 
     @abstractmethod
     def load(self, game_data: str) -> Game:
-        """Converts a string to a game
+        """Converts a string to a game.
 
         Args:
             game_data: The string containing the game data.
@@ -27,7 +27,7 @@ class DataLoader(metaclass=ABCMeta):
 
     @abstractmethod
     def read_server_time(self, time_data: str) -> datetime:
-        """Parses a string to a Python datetime
+        """Parses a string to a Python datetime.
 
         Args:
             time_data: The string containing the time data.
@@ -39,7 +39,7 @@ class DataLoader(metaclass=ABCMeta):
 
 
 class JSONDataLoader(DataLoader):
-    """Class used to convert a JSON string to a python object"""
+    """Class used to convert a JSON string to a python object."""
 
     def load(self, game_data: str) -> Game:
         """See base class."""
