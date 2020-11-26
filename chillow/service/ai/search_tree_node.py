@@ -35,11 +35,13 @@ class SearchTreeRoot(object):
 
         Returns:
             An action that lets the player survive for the next rounds based on the parameters.
+
+        Raises:
+            AssertionError:
+                Depth is smaller than 1 or different amount of players to be watched than players in one combination.
         """
         assert len(player_ids_to_watch) == len(combinations[0])
-
-        if depth <= 0:
-            raise Exception
+        assert depth >= 1
 
         if depth == 1:
             for action in SearchTreeRoot.__get_actions(root, first_actions, randomize):
@@ -53,14 +55,23 @@ class SearchTreeRoot(object):
         for action in SearchTreeRoot.__get_actions(root, first_actions, randomize):
             child = self.__create_child(player, action, turn_counter, max_speed)
             if child is not None and child._game.get_player_by_id(player.id).active:
+                surviving_subtree = True
                 for combination in combinations:
                     node = SearchTreeRoot.__try_combination(child._game, player_ids_to_watch, combination, turn_counter)
                     if node._game.get_player_by_id(player.id).active:
                         node_action = node.calculate_action(player, player_ids_to_watch, combinations, depth - 1,
                                                             turn_counter + 1, False, first_actions, max_speed,
                                                             randomize)
-                        if node_action is not None:
-                            return child.get_action()
+                        if node_action is None:
+                            surviving_subtree = False
+                            break
+
+                    else:
+                        surviving_subtree = False
+                        break
+                if surviving_subtree:
+                    return child.get_action()
+        return None
 
     @staticmethod
     def __get_actions(root: bool, first_actions: List[Action], randomize: bool) -> List[Action]:
