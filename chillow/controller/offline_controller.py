@@ -89,7 +89,7 @@ class OfflineController(Controller):
         self._game.deadline = datetime.now(time_zone) + timedelta(0, time_to_react)
 
     def __choose_ai_action(self, ai: ArtificialIntelligence) -> Action:
-        return_value = multiprocessing.Value('i')
+        return_value = multiprocessing.Value('i', Action.get_default().get_index())
 
         process = multiprocessing.Process(target=Controller.call_ai, args=(ai, self._game.copy(), return_value,))
         start = datetime.now(time_zone)
