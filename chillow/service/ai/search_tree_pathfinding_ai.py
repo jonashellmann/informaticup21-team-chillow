@@ -56,4 +56,5 @@ class SearchTreePathfindingAI(PathfindingAI, SearchTreeAI):
             surviving_pathfinding_actions = self.find_actions_by_best_path_connection(
                 self.find_surviving_actions(GameService(game), 1), game)
             return_value.value = surviving_pathfinding_actions[0][0].get_index() \
-                if len(surviving_pathfinding_actions) > 0 else Action.get_random_action().get_index()
+                if surviving_pathfinding_actions is not None and len(surviving_pathfinding_actions) > 0 \
+                else Action.get_default().get_index()
