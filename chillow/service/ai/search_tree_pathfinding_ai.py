@@ -46,11 +46,9 @@ class SearchTreePathfindingAI(PathfindingAI, SearchTreeAI):
         """See base class."""
         self._turn_ctr += 1
 
-        surviving_actions = super()._create_all_next_surviving_actions(game)
+        surviving_actions = self._create_all_next_surviving_actions(game)
         if surviving_actions is not None and len(surviving_actions) > 0:
             return_value.value = choice(surviving_actions).get_index()
-
-        if len(surviving_actions) > 0:
             return_value.value = self.find_actions_by_best_path_connection(surviving_actions, game)[0][0].get_index()
         else:
             surviving_pathfinding_actions = self.find_actions_by_best_path_connection(
