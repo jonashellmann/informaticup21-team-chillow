@@ -19,28 +19,46 @@ class AIOptions(Enum):
 
 
 class NotKillingItselfAI(ArtificialIntelligence):
+    """AI implementation to choose an action that simply does not kill the player for the next rounds.
+
+    It does not consider the opponent's player actions.
+
+    Attributes:
+        player: The player associated with this AI.
+    """
 
     def __init__(self, player: Player, options: List[AIOptions], max_speed: int, max_worse_distance: int,
                  depth: int):
+        """Creates a new object of the NotKillingItselfAI.
+
+        Args:
+            player: The player assigned to the AI.
+            options: List of possible options to change the behavior of the AI.
+            max_speed: The maximum speed the AI can reach.
+            max_worse_distance: A tolerance, whereby more than just the best action is calculated. Actions which are
+            worse, but within this tolerance, are also considered.
+            depth: Number of player actions that are looked into the future.
+        """
         super().__init__(player, max_speed)
-        self.options = options
-        self.max_worse_distance = max_worse_distance
+        self.__options = options
+        self.__max_worse_distance = max_worse_distance
 
         assert depth > 0, "depth must be greater than 0"
-        self.depth = depth
+        self.__depth = depth
 
     def get_information(self) -> str:
-        return super().get_information() \
-               + ", max_worse_distance=" + str(self.max_worse_distance)
+        """See base class."""
+        return super().get_information() + ", max_worse_distance=" + str(self.__max_worse_distance)
 
     def create_next_action(self, game: Game, return_value: Value):
-        self.turn_ctr += 1
+        """See base class."""
+        self._turn_ctr += 1
 
         game_service = GameService(game)
-        game_service.turn.turn_ctr = self.turn_ctr
+        game_service.turn.turn_ctr = self._turn_ctr
 
         surviving_actions = self.find_surviving_actions_with_best_depth(game_service)
-        if AIOptions.max_distance in self.options:
+        if AIOptions.max_distance in self.__options:
             max_distance_actions = self.calc_action_with_max_distance_to_visited_cells(game_service, surviving_actions)
             action = choice(max_distance_actions) if max_distance_actions is not None and len(
                 max_distance_actions) > 0 else Action.change_nothing
@@ -52,6 +70,16 @@ class NotKillingItselfAI(ArtificialIntelligence):
 
     def calc_action_with_max_distance_to_visited_cells(self, game_service: GameService,
                                                        actions: List[Action]) -> List[Action]:
+        """Calculates a list of actions that have the property to have as many free cells as possible in front of them
+        while running straight after the action has been executed.
+
+        Args:
+            game_service: The game service used for simulation of actions.
+            actions: The actions to be checked
+
+        Returns:
+            List of best actions with the property having as many free cells as possible in front of the player.
+        """
         max_straight_distance = 0
         best_actions: Dict[Action, int] = {}
         for action in actions:
@@ -77,10 +105,10 @@ class NotKillingItselfAI(ArtificialIntelligence):
                     best_actions[action] = straight_distance
                     updated_best_actions: Dict[Action, int] = {}
                     for (act, dist) in best_actions.items():  # new max_straight_distance. Remove worth options
-                        if dist >= max_straight_distance - self.max_worse_distance:
+                        if dist >= max_straight_distance - self.__max_worse_distance:
                             updated_best_actions[act] = dist
                     best_actions = updated_best_actions
-                elif straight_distance >= max_straight_distance - self.max_worse_distance:  # still good option
+                elif straight_distance >= max_straight_distance - self.__max_worse_distance:  # still good option
                     best_actions[action] = straight_distance
             except Exception as ex:
                 logging.warning(ex)
@@ -89,12 +117,21 @@ class NotKillingItselfAI(ArtificialIntelligence):
         return list(best_actions.keys())
 
     def find_surviving_actions(self, game_service: GameService, depth: int) -> List[Action]:
+        """Finds all actions that will let the player survive for the next rounds.
+
+        Args:
+            game_service: The game service used for simulation of actions.
+            depth: The number of rounds the player should survive at least.
+
+        Returns:
+            Actions that will not kill the player in the next rounds.
+        """
         result: List[Action] = []
-        for action in Action:  # select a surviving action
+        for action in Action:
             gs_copy = pickle.loads(pickle.dumps(game_service))
             try:
                 player = gs_copy.game.get_player_by_id(self.player.id)
-                if player.speed == self.max_speed and action == Action.speed_up:
+                if player.speed == self._max_speed and action == Action.speed_up:
                     continue
                 gs_copy.visited_cells_by_player[player.id] = gs_copy.get_and_visit_cells(player, action)
             except InvalidPlayerMoveException:
@@ -110,8 +147,17 @@ class NotKillingItselfAI(ArtificialIntelligence):
         return result
 
     def find_surviving_actions_with_best_depth(self, game_service: GameService) -> List[Action]:
+        """Finds all actions that won't kill the player in the next rounds.
+        The number of pre-calculated player moves is reduced until surviving actions are found.
+
+        Args:
+            game_service: The game service used for simulation of actions.
+
+        Returns:
+            Actions that will not kill the player in the next rounds.
+        """
         result: List[Action] = []
-        for current_depth in reversed(range(1, self.depth + 1)):
+        for current_depth in reversed(range(1, self.__depth + 1)):
             result = self.find_surviving_actions(game_service, current_depth)
             if len(result) > 0:
                 break

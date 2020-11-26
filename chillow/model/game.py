@@ -48,7 +48,6 @@ class Game:
             PlayerPositionException: The current position of the player is not represented in the game.
             OwnPlayerMissingException: No player representing the own player was found in the game.
         """
-
         if len(self.cells) != self.height:
             raise WrongGameHeightException(len(self.cells), self.height)
 
@@ -76,7 +75,6 @@ class Game:
         Returns:
             The winner of the game if there is one. The return vale may be empty.
         """
-
         if self.running:
             raise Exception("Game not ended and has no winner yet")
         for player in self.players:
@@ -95,7 +93,6 @@ class Game:
         Returns:
             List of ids matching the above criteria.
         """
-
         players = []
         for player in self.players:
             if player.id != p.id \
@@ -105,20 +102,6 @@ class Game:
         return players
 
     def __measure_shortest_distance(self, player_a: Player, player_b: Player) -> int:
-        """Measures the shortest distance between two players in a game.
-
-        Cells that are already occupied cannot be visited when calculating the shortest path.
-
-        Args:
-            player_a: The first player indicating the starting position.
-            player_b: The second player indicating the end position.
-
-        Returns:
-            The minimum number of cells between these two players.
-            -1 is returned if there is no connection between these players.
-            0 is returned if both players are located in the same cell.
-        """
-
         matrix = self.translate_cell_matrix_to_pathfinding_matrix()
         matrix[player_b.y][player_b.x] = 1  # target field must be empty
         path_finder = BestFirst(diagonal_movement=DiagonalMovement.never)
@@ -134,7 +117,6 @@ class Game:
             Two-dimensional array of integers, where an empty cell is represented by 1 and cells which were already
             visited by a player are represented by 0.
         """
-
         matrix = [[1 for _ in range(self.width)] for _ in range(self.height)]
         for i in range(len(self.cells)):
             for j in range(len(self.cells[i])):
@@ -154,7 +136,6 @@ class Game:
         Raises:
              PlayerWithGivenIdNotAvailableException: Raised when no player with this ID is in this game.
         """
-
         for player in self.players:
             if player.id == player_id:
                 return player
@@ -169,7 +150,6 @@ class Game:
         Returns:
             A list of players identified by the given IDs.
         """
-
         players = []
         for player in self.players:
             if player.id in player_ids:
@@ -182,7 +162,6 @@ class Game:
         Returns:
             A copy of the game.
         """
-
         players: List[Player] = []
         for player in self.players:
             players.append(
@@ -208,7 +187,6 @@ class Game:
             server_time: The current time of the game server.
             own_time: The current time of the system where the program is executed.
         """
-
         time_delta = own_time - server_time
         multiplier = 1
 

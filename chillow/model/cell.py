@@ -21,5 +21,4 @@ class Cell:
             Returns the ID of the first player who visited this cell.
             If no player visited this cell yet, the return value is 0.
         """
-
         return 0 if self.players is None or len(self.players) == 0 else self.players[0].id

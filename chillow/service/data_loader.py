@@ -11,19 +11,38 @@ from chillow.model.cell import Cell
 
 
 class DataLoader(metaclass=ABCMeta):
+    """Class used to convert a string to a python object"""
 
     @abstractmethod
-    def load(self, data: str) -> Game:
-        raise NotImplementedError
+    def load(self, game_data: str) -> Game:
+        """Converts a string to a game.
+
+        Args:
+            game_data: The string containing the game data.
+
+        Returns:
+            The game created based on the information from the string.
+        """
+        pass
 
     @abstractmethod
     def read_server_time(self, time_data: str) -> datetime:
-        raise NotImplementedError
+        """Parses a string to a Python datetime.
+
+        Args:
+            time_data: The string containing the time data.
+
+        Returns:
+            The Python datetime created based on the information from the string.
+        """
+        pass
 
 
 class JSONDataLoader(DataLoader):
+    """Class used to convert a JSON string to a python object."""
 
     def load(self, game_data: str) -> Game:
+        """See base class."""
         json_data = json.loads(game_data)
         players = []
         cells = []
@@ -67,5 +86,6 @@ class JSONDataLoader(DataLoader):
         )
 
     def read_server_time(self, time_data: str) -> datetime:
+        """See base class."""
         json_data = json.loads(time_data)
         return iso8601.parse_date(json_data["time"]) + timedelta(milliseconds=int(json_data["milliseconds"]))

@@ -1,6 +1,6 @@
 import logging
 from typing import List, Tuple
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 
 import chillow.exceptions as ex
 from chillow.exceptions import InvalidPlayerMoveException, PlayerSpeedNotInRangeException
@@ -11,14 +11,35 @@ from chillow.model.direction import Direction
 
 
 class GameService:
+    """Class that manipulates a game object by performing the actions of players."""
 
     def __init__(self, game: Game, ignore_deadline: bool = True):
+        """Creates a new game service.
+
+        It also creates a turn object that represents the play moves.
+
+        Args:
+            game: The game object in which the AI is located and contains the current status of the game.
+            ignore_deadline: Flag to ignore the deadline.
+        """
         self.game = game
         self.turn = Turn(self.game.players, game.deadline)
         self.visited_cells_by_player = {}
         self.__ignore_deadline = ignore_deadline
 
     def do_action(self, player: Player, action: Action):
+        """Performs the action for a player.
+
+        Additionally it checks if the game is finished and which players have died when a new turn starts.
+
+        Args:
+            player: The player who wants to perform the action.
+            action: The action to perform.
+        Raises:
+            InvalidPlayerMoveException:
+                The player is outside the field, has reached an invalid player speed or was not
+                allowed to take any further action this turn.
+        """
         try:
             new_turn = self.turn.action(player)
             action_to_perform = action \
@@ -35,6 +56,7 @@ class GameService:
         self.game.running = self.is_game_running()
 
     def check_and_set_died_players(self):
+        """Checks which players have died this turn and sets them to inactive. """
         for row in range(len(self.game.cells)):
             for col in range(len(self.game.cells[row])):
                 cell = self.game.cells[row][col]
@@ -49,6 +71,11 @@ class GameService:
                                                       + " had a collision and is inactive now")
 
     def is_game_running(self) -> bool:
+        """Checks if the game is still running.
+
+        Returns:
+            True if the game is still running otherwise False.
+        """
         active_player_ctr = 0
         for player in self.game.players:
             if player.active:
@@ -57,6 +84,14 @@ class GameService:
 
     @staticmethod
     def get_horizontal_and_vertical_multiplier(player: Player) -> Tuple[int, int]:
+        """Calculates a vertical and horizontal multiplier that can be used to calculate player movement.
+
+        Args:
+            player: The player whose movement is calculated.
+
+        Returns:
+            Horizontal and vertical multiplier.
+        """
         vertical_multiplier = 0
         horizontal_multiplier = 0
         if player.direction == Direction.up:
@@ -71,10 +106,17 @@ class GameService:
         return horizontal_multiplier, vertical_multiplier
 
     def get_and_visit_cells(self, player: Player, action: Action) -> List[Tuple[int, int]]:
+        """Simulation of a player performing an action.
+
+        Args:
+            player: The player who performs the action.
+            action: The Action to perform.
+
+        Returns:
+            List of field coordinates that the player has visited.
+        """
         visited_cells = []
-
         GameService.change_player_status_by_action(player, action)
-
         horizontal_multiplier, vertical_multiplier = GameService.get_horizontal_and_vertical_multiplier(player)
 
         for i in range(1, player.speed + 1):
@@ -100,6 +142,12 @@ class GameService:
 
     @staticmethod
     def change_player_status_by_action(player: Player, action: Action):
+        """Changes the direction of the player based on the action.
+
+        Args:
+            player: The player whose direction is to be changed.
+            action: The Action to perform.
+        """
         if action == action.turn_left:
             if player.direction == Direction.up:
                 player.direction = Direction.left
@@ -127,20 +175,46 @@ class GameService:
             raise PlayerSpeedNotInRangeException(player)
 
     def set_player_inactive(self, player: Player):
+        """Sets a player inactive.
+
+        Args:
+            player: The player to be set inactive.
+        """
         if player in self.turn.playersWithPendingAction:
             self.turn.playersWithPendingAction.remove(player)
         player.active = False
 
 
 class Turn:
+    """Class that represents a game turn."""
 
     def __init__(self, players: List[Player], deadline):
+        """Creates a new game turn.
+
+        Args:
+            players: List of players that are in the game.
+            deadline: Deadline of the game turn.
+        """
         self.players = players.copy()
         self.playersWithPendingAction = players.copy()
         self.deadline = deadline
         self.turn_ctr = 1
 
     def action(self, player):
+        """Checks if the player is allowed to take an action.
+
+        If so, removes him from the list of players who must take an action this turn.
+        In addition a new turn is started when all players have taken an action.
+
+        Args:
+            player: Player who wants to perform an action this turn.
+
+        Returns:
+            True if the Turn is ended otherwise False.
+
+        Raises:
+            MultipleActionByPlayerException: Raised if the player did more than one action this turn.
+        """
         if player not in self.playersWithPendingAction:
             raise ex.MultipleActionByPlayerException(player)
         # elif self.deadline < datetime.now():
@@ -153,5 +227,5 @@ class Turn:
                 for player in self.players:
                     if player.active:
                         self.playersWithPendingAction.append(player)
-                return True  # Turn ended
-            return False  # Turn not ended
+                return True
+            return False

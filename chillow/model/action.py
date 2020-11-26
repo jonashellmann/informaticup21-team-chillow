@@ -19,7 +19,6 @@ class Action(Enum):
         Returns:
             Returns all actions defined in this enum.
         """
-
         if randomize:
             return Action.__get_random_actions()
         return list(Action)
@@ -31,16 +30,10 @@ class Action(Enum):
         Returns:
             A random action.
         """
-
         return random.choice(Action.get_actions())
 
     @staticmethod
     def __get_random_actions():
-        """Randomly shuffles a list of all actions.
-
-        Returns:
-            A list containing all action in random order.
-        """
         actions = Action.get_actions()
         random.shuffle(actions)
         return actions
@@ -58,7 +51,6 @@ class Action(Enum):
         Returns:
             A list of tuples with all possible combinations of actions.
         """
-
         return list(product(Action.get_actions(), repeat=player_count))
 
     @staticmethod
@@ -71,7 +63,6 @@ class Action(Enum):
         Returns:
             The enum element at the index.
         """
-
         return Action.get_actions()[index]
 
     def get_index(self):
@@ -80,7 +71,6 @@ class Action(Enum):
         Returns:
             The index of an element in the enum
         """
-
         return Action.get_actions().index(self)
 
     @staticmethod
@@ -90,5 +80,4 @@ class Action(Enum):
         Returns:
             The defined default action.
         """
-
         return Action.change_nothing

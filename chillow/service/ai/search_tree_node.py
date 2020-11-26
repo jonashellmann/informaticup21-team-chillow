@@ -10,12 +10,32 @@ from chillow.service.game_service import GameService
 
 @dataclass
 class SearchTreeRoot(object):
+    """A node of a search tree where no action of the viewed player is performed but by all others."""
+
     _game: Game
 
     def calculate_action(self, player: Player, player_ids_to_watch: List[int], combinations: List[Tuple[Any]],
                          depth: int, turn_counter: int, root: bool, first_actions: List[Action], max_speed: int = 10,
                          randomize: bool = False) \
             -> Optional[Action]:
+        """Checks for an action that lets the player survive for the next rounds based on the parameters.
+
+        Args:
+            player: The viewed player
+            player_ids_to_watch: The ID of the player's which should be considered in this calculation.
+            combinations: The possible combinations for all actions.
+            depth: The amount of rounds to be calculated in the future.
+            turn_counter: The turn number.
+            root: Indicating whether this is the initial call to the starting node.
+            first_actions:
+                The actions that can be performed in the first simulated round.
+                If empty, all actions are possible.
+            max_speed: The maximum acceptable speed for the player.
+            randomize: Indicates whether the actions should be calculated in random order in the tree.
+
+        Returns:
+            An action that lets the player survive for the next rounds based on the parameters.
+        """
         assert len(player_ids_to_watch) == len(combinations[0])
 
         if depth <= 0:
@@ -102,6 +122,8 @@ class SearchTreeRoot(object):
 
 @dataclass
 class SearchTreeNode(SearchTreeRoot):
+    """A node of a search tree where only an action of the viewed player is performed."""
+
     __action: Action
 
     def get_action(self):
