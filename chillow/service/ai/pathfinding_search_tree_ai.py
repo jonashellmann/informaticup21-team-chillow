@@ -51,7 +51,7 @@ class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
 
         pathfinding_actions = self.create_next_actions_ranked(game)
         self.set_best_action(pathfinding_actions, [], return_value)
-        search_tree_actions = super()._create_all_next_surviving_actions(game)
+        search_tree_actions = self.create_all_next_surviving_actions(game)
         self.set_best_action(pathfinding_actions, search_tree_actions, return_value)
 
     def set_best_action(self, pathfinding_actions: List[Tuple[Action, int]], search_tree_actions: List[Action],
