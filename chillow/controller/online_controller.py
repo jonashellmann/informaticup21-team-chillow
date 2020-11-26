@@ -17,9 +17,9 @@ from chillow.service.ai import *
 
 class OnlineController(Controller):
 
-    def __init__(self, monitoring: View, url: str, key: str, server_time_url: str, data_loader: DataLoader,
+    def __init__(self, view: View, url: str, key: str, server_time_url: str, data_loader: DataLoader,
                  data_writer: DataWriter, ai_class: str, ai_params):
-        super().__init__(monitoring)
+        super().__init__(view)
         self.__url = url
         self.__key = key
         self.__server_time_url = server_time_url
@@ -32,7 +32,7 @@ class OnlineController(Controller):
 
     def play(self):
         asyncio.get_event_loop().run_until_complete(self.__play())
-        self._monitoring.end()
+        self._view.end()
         self.__ai = None
         self.__default_ai = None
 
@@ -42,7 +42,7 @@ class OnlineController(Controller):
                 game_data = await websocket.recv()
                 game = self.__data_loader.load(game_data)
 
-                self._monitoring.update(game)
+                self._view.update(game)
 
                 if not game.running:
                     break
