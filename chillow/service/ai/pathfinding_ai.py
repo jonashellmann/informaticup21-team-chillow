@@ -78,9 +78,9 @@ class PathfindingAI(NotKillingItselfAI):
         """
         if actions is None or len(actions) == 0:
             return None
-
-        shuffle(actions)  # shuffle the actions, so that different actions are chosen if they have the same quality and
-        # the AI is not so easily predictable.
+        # shuffle the actions, so that different actions are chosen if they have the same quality and the AI is not so
+        # easily predictable.
+        shuffle(actions)
         actions_with_possible_paths: List[Tuple[Action, int]] = []
         free_cells_for_pathfinding = self.get_random_free_cells_from_playground(game)
 
@@ -107,9 +107,8 @@ class PathfindingAI(NotKillingItselfAI):
                     current_possible_paths += 1
 
             actions_with_possible_paths.append((action, current_possible_paths))
-
-        actions_with_possible_paths.sort(key=operator.itemgetter(1), reverse=True)  # Action with most accessible paths
-        # at index 0
+        # Action with most accessible paths at index 0
+        actions_with_possible_paths.sort(key=operator.itemgetter(1), reverse=True)
         return actions_with_possible_paths
 
     def get_random_free_cells_from_playground(self, game: Game) -> List[Tuple[int, int]]:
