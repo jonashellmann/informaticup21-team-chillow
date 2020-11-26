@@ -14,8 +14,17 @@ from chillow.view.headless_view import HeadlessView
 
 
 class AIEvaluationController(OfflineController):
+    """Executes multiple games after each other with randomly created games and players.
+
+    The result of every game and the execution time for each player in each round is saved in an SQLite database."""
 
     def __init__(self, runs: int, db_path: str):
+        """ Creates a new AI evaluation controller.
+
+        Args:
+            runs: The number of games to be simulated.
+            db_path: The path of the SQLite database file.
+        """
         super().__init__(HeadlessView())
         self.__runs = runs
         self.__db_path = db_path
@@ -23,6 +32,7 @@ class AIEvaluationController(OfflineController):
         self.__cursor = None
 
     def play(self):
+        """See base class."""
         with closing(sqlite3.connect(self.__db_path)) as connection:
             with closing(connection.cursor()) as cursor:
                 self.__connection = connection
