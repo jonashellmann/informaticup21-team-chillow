@@ -36,11 +36,6 @@ class Action(Enum):
 
     @staticmethod
     def __get_random_actions():
-        """Randomly shuffles a list of all actions.
-
-        Returns:
-            A list containing all action in random order.
-        """
         actions = Action.get_actions()
         random.shuffle(actions)
         return actions

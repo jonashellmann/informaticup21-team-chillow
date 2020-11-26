@@ -105,20 +105,6 @@ class Game:
         return players
 
     def __measure_shortest_distance(self, player_a: Player, player_b: Player) -> int:
-        """Measures the shortest distance between two players in a game.
-
-        Cells that are already occupied cannot be visited when calculating the shortest path.
-
-        Args:
-            player_a: The first player indicating the starting position.
-            player_b: The second player indicating the end position.
-
-        Returns:
-            The minimum number of cells between these two players.
-            -1 is returned if there is no connection between these players.
-            0 is returned if both players are located in the same cell.
-        """
-
         matrix = self.translate_cell_matrix_to_pathfinding_matrix()
         matrix[player_b.y][player_b.x] = 1  # target field must be empty
         path_finder = BestFirst(diagonal_movement=DiagonalMovement.never)

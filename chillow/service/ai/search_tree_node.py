@@ -65,34 +65,11 @@ class SearchTreeRoot(object):
 
     @staticmethod
     def __get_actions(root: bool, first_actions: List[Action], randomize: bool) -> List[Action]:
-        """Checks which actions should be considered as possible.
-
-        Args:
-            root: Indicating whether this is the initial call to the starting node.
-            first_actions: The actions that can be performed in the first simulated round.
-            randomize: Indicates whether the actions should be calculated in random order in the tree.
-
-        Returns:
-            A list of actions.
-        """
-
         if root and first_actions is not None and len(first_actions) >= 1:
             return first_actions
         return Action.get_actions(randomize)
 
     def __create_child(self, player: Player, action: Action, turn_counter: int, max_speed: int):
-        """Creates a child node after the viewed player has performed his action.
-
-        Args:
-            player: The view player.
-            action: The action performed by the player.
-            turn_counter: The turn number.
-            max_speed: The maximum acceptable speed for the player.
-
-        Returns:
-            A new node with the game state after the viewed player has performed his action.
-        """
-
         if player.speed == max_speed and action == Action.speed_up:
             return
 
@@ -110,19 +87,6 @@ class SearchTreeRoot(object):
                                      player_ids_to_watch: List[int],
                                      combinations: List[Tuple[Action]],
                                      turn_counter: int) -> bool:
-        """ Calculates all possible combinations starting from a base node.
-
-        Args:
-            child: The base root for which the children should be calculated.
-            player: The viewed player.
-            player_ids_to_watch: The ID of the player's which should be considered in this calculation.
-            combinations: The possible combinations for all actions.
-            turn_counter: The turn number.
-
-        Returns:
-            A flag whether the viewed player survived all simulations.
-        """
-
         for combination in combinations:
             node = SearchTreeRoot.__try_combination(child._game, player_ids_to_watch, combination, turn_counter)
             if not node._game.get_player_by_id(player.id).active:
@@ -132,18 +96,6 @@ class SearchTreeRoot(object):
     @staticmethod
     def __try_combination(game: Game, player_ids_to_watch: List[int], combination: Tuple[Action],
                           turn_counter: int):
-        """Creates a child node after all player but the viewed one have performed their actions.
-
-        Args:
-            game: The game state.
-            player_ids_to_watch: The ID of the player's which should be considered in this calculation.
-            combination: The combination of actions that should be performed.
-            turn_counter: The turn number.
-
-        Returns:
-            A new node with the game state after all player but the viewed one have performed their actions.
-        """
-
         modified_game = game.copy()
         game_service = GameService(modified_game)
         game_service.turn.turn_ctr = turn_counter
@@ -158,14 +110,6 @@ class SearchTreeRoot(object):
 
     @staticmethod
     def __perform_simulation(game_service: GameService, action: Action, player: Player):
-        """ Simulate the action for a player.
-
-        Args:
-            game_service: The game service used for the simulation.
-            action: The action to be performed.
-            player: The player who performs the action.
-        """
-
         if player.active:
             try:
                 game_service.visited_cells_by_player[player.id] = \

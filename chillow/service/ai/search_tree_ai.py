@@ -55,16 +55,6 @@ class SearchTreeAI(ArtificialIntelligence):
         return_value.value = (action if action is not None else Action.get_random_action()).get_index()
 
     def _create_all_next_surviving_actions(self, game: Game) -> List[Action]:
-        """Calculates for every possible action whether the player will survive the next rounds taking into account
-        the actions of the other players.
-
-        Args:
-            game: The game state used as the starting point for the simulation.
-
-        Returns:
-            All actions which won't kill the player.
-        """
-
         root = SearchTreeRoot(game.copy())
         player_ids_to_watch = game.get_other_player_ids(self.player, self.__distance_to_check, True)
         combinations = Action.get_combinations(len(player_ids_to_watch))
