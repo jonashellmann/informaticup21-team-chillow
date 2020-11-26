@@ -1,3 +1,4 @@
+import multiprocessing
 from datetime import datetime, timedelta, timezone
 from multiprocessing import Value
 from random import randint
@@ -49,13 +50,8 @@ class OfflineController(Controller):
 
             for ai in self._ais:
                 if ai is not None and ai.player.active:
-                    value = Value('i')
-
-                    start = datetime.now(time_zone)
-                    ai.create_next_action(self._game.copy(), value)
-                    self._log_execution_time(ai, (datetime.now(time_zone) - start).total_seconds())
-
-                    game_service.do_action(ai.player, Action.get_by_index(value.value))
+                    action = self.__choose_ai_action(ai)
+                    game_service.do_action(ai.player, action)
                     self.__reset_game_deadline(time_to_react)
 
             # Perform action of human player after AIs finished their calculations
@@ -97,3 +93,18 @@ class OfflineController(Controller):
 
     def __reset_game_deadline(self, time_to_react: int):
         self._game.deadline = datetime.now(time_zone) + timedelta(0, time_to_react)
+
+    def __choose_ai_action(self, ai: ArtificialIntelligence) -> Action:
+        return_value = multiprocessing.Value('i', Action.get_default().get_index())
+
+        process = multiprocessing.Process(target=Controller.call_ai, args=(ai, self._game.copy(), return_value,))
+        start = datetime.now(time_zone)
+        process.start()
+        process.join(20)  # wait 20 seconds for the calculation to be finished
+
+        if process.is_alive():
+            start -= timedelta(seconds=40)  # If an execution is terminated, the execution time is set to 1 minute.
+            process.terminate()
+
+        self._log_execution_time(ai, (datetime.now(time_zone) - start).total_seconds())
+        return Action.get_by_index(return_value.value)

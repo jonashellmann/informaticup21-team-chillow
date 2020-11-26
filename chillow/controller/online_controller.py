@@ -85,7 +85,7 @@ class OnlineController(Controller):
         own_time = datetime.now(time_zone)
         seconds_for_calculation = (game.deadline - own_time).seconds
 
-        process = multiprocessing.Process(target=OnlineController.call_ai, args=(self.__ai, game, return_value,))
+        process = multiprocessing.Process(target=Controller.call_ai, args=(self.__ai, game, return_value,))
         process.start()
         process.join(seconds_for_calculation - 1)
 
@@ -93,7 +93,3 @@ class OnlineController(Controller):
             process.terminate()
 
         return Action.get_by_index(return_value.value)
-
-    @staticmethod
-    def call_ai(ai: ArtificialIntelligence, game: Game, return_value: multiprocessing.Value):
-        ai.create_next_action(game, return_value)
