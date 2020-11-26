@@ -8,7 +8,7 @@ class Player:
     """Represents a player in a game.
 
     Attributes:
-        id (int): The ID of the player in a game.
+        id: The ID of the player in a game.
         x: The position on the x axis.
         y: The position on the y axis.
         direction: The direction to which the player is looking at.
