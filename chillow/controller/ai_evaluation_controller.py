@@ -53,9 +53,9 @@ class AIEvaluationController(OfflineController):
 
         player_count = randint(3, 6)
         players = []
-        occupied_coordinates: List[Tuple[int, int]] = [(-1, -1)]
+        occupied_coordinates = []
         for i in range(1, player_count + 1):
-            next_coordinate = (-1, -1)
+            next_coordinate = (randint(0, width - 1), randint(0, height - 1))
             while next_coordinate in occupied_coordinates:
                 next_coordinate = (randint(0, width - 1), randint(0, height - 1))
             occupied_coordinates.append(next_coordinate)
