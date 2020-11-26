@@ -15,8 +15,9 @@ from chillow.service.game_service import GameService
 
 
 class PathfindingAI(NotKillingItselfAI):
-    """AI implementation that chooses actions which will allow it to survive a certain number of moves without
-    considering enemy actions. Furthermore, the AI avoids running into too small areas or dead ends.
+    """AI implementation that chooses actions which will allow it to survive a certain number of moves.
+
+    It does not consider enemy actions. Furthermore, the AI avoids running into too small areas or dead ends.
 
     Attributes:
         player: The player associated with this AI.

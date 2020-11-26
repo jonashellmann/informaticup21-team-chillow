@@ -19,8 +19,9 @@ class AIOptions(Enum):
 
 
 class NotKillingItselfAI(ArtificialIntelligence):
-    """AI implementation to choose an action that simply does not kill the player for the next rounds without
-    considering the opponent's player actions.
+    """AI implementation to choose an action that simply does not kill the player for the next rounds.
+
+    It does not consider the opponent's player actions.
 
     Attributes:
         player: The player associated with this AI.

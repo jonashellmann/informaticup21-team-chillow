@@ -9,7 +9,10 @@ from chillow.model.player import Player
 
 
 class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
-    """ Combination of the PathfindingAI and the SearchTreeAI, whereby the PathfindingAi is prioritized.
+    """This AI combines the PathfindingAI and the SearchTreeAI by favoring the former.
+
+    Therefore it ranks all actions based on the PathfindingAI and checks finds the first surviving action with the
+    SearchTreeAI.
 
     Attributes:
         player: The player associated with this AI.
@@ -61,7 +64,6 @@ class PathfindingSearchTreeAI(PathfindingAI, SearchTreeAI):
             return_value: Object to save the result of the calculation.
         """
         best_action = self.get_best_action(pathfinding_actions, search_tree_actions)
-
         return_value.value = best_action.get_index() if best_action is not None else return_value.value
 
     def get_best_action(self, pathfinding_actions: List[Tuple[Action, int]],
