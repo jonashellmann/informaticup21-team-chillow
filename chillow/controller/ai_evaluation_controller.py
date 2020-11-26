@@ -52,7 +52,7 @@ class AIEvaluationController(OfflineController):
 
         player_count = randint(3, 6)
         players = []
-        for i in range(player_count):
+        for i in range(1, player_count + 1):
             player = Player(i, randint(0, width - 1), randint(0, height - 1), Direction.get_random_direction(), 1, True,
                             str(i))
             players.append(player)
