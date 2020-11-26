@@ -15,7 +15,6 @@ if __name__ == "__main__":
     parser.add_argument('-d', '--deactivate-pygame', type=bool, default=False)
     parser.add_argument('-r', '--ai-eval-runs', type=int, default=0)
     parser.add_argument('-p', '--ai-eval-db-path', type=str, default="evaluation.db")
-    parser.add_argument('-s', '--server-time-url', type=str, default=None)
     args = parser.parse_args()
 
     if args.deactivate_pygame:
@@ -31,9 +30,12 @@ if __name__ == "__main__":
         else:
             con = OfflineController(monitoring)
     else:
-        url = os.environ["URL"]
-        key = os.environ["KEY"]
-        server_time_url = args.server_time_url
+        url = os.getenv("URL")
+        key = os.getenv("KEY")
+        assert url is not None, "URL is not set as environment variable"
+        assert key is not None, "KEY is not set as environment variable"
+
+        server_time_url = os.getenv("TIME_URL")
         data_loader = JSONDataLoader()
         data_writer = JSONDataWriter()
         ai_class = PathfindingAI.__name__

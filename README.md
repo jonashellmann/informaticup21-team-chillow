@@ -50,6 +50,7 @@ Um ein Online-Spiel der KI auf dem Server zu starten, müssen folgende Umgebungs
 Docker-Container automatisch gesetzt bzw. als Parameter übergeben werden:
 - `URL=[SERVER_URL]`
 - `KEY=[API_KEY]`
+- `TIME_URL=[TIME_URL]`
 
 Mittels dem Kommandozeilen-Parameter `--deactivate-pygame` kann entschieden werden, ob eine grafische Oberfläche benutzt
 werden soll oder die Ausgabe wie im Docker-Container über die Konsole erfolgt.
@@ -62,9 +63,6 @@ Wenn das Programm im Online-Modus gestartet wird, ist keine weitere Eingabe des 
 Sobald der Server das Spiel startet, kann entweder auf der Konsole oder in der grafischen Oberfläche der Spielverlauf
 nachvollzogen werden.
 Hier muss der Parameter `--play-online` auf `TRUE` gesetzt werden.
-Dabei kann es sinnvoll sein, eine weitere URL anzugeben, unter der die aktuelle Zeit des Servers abgefragt werden kann,
-um so eine Sychronisierung zwischen der Deadline des Servers und der eigenen Systemzeit zu erreichen.
-Diese kann mit dem Parameter `--server-time-url` festgelegt werden.
 
 Bei einer Ausführung im Offline-Modus wird - je nach manueller Anpassung im `OfflineController` - auf eine
 Eingabe von einem oder mehreren Spielern gewartet, bis die nächste Runde des Spiels gestartet wird.

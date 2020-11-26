@@ -9,4 +9,4 @@ RUN python -m pip install --upgrade pip
 RUN pip install poetry
 RUN poetry export -f requirements.txt | pip install -r /dev/stdin
 
-CMD [ "python", "./main.py", "--deactivate-pygame=TRUE", "--play-online=TRUE", "--server-time-url=https://msoll.de/spe_ed_time" ]
+CMD [ "python", "./main.py", "--deactivate-pygame=TRUE", "--play-online=TRUE" ]
