@@ -23,7 +23,7 @@ class GameService:
             ignore_deadline: Flag to ignore the deadline.
         """
         self.game = game
-        self.turn = Turn(self.game.players, game.deadline)
+        self.turn = Turn(self.game.players)
         self.visited_cells_by_player = {}
         self.__ignore_deadline = ignore_deadline
 
@@ -122,7 +122,8 @@ class GameService:
         for i in range(1, player.speed + 1):
             visited_cells.append((player.x + i * horizontal_multiplier, player.y + i * vertical_multiplier))
 
-        if self.turn.turn_ctr % 6 == 0 and len(visited_cells) > 1:  # Lücke, also nur ersten und letzten Punkt nehmen
+        if self.turn.turn_ctr % 6 == 0 and len(visited_cells) > 1:  # Gap every sixth move, so take only first and
+            # last coordinate
             visited_cells = [visited_cells[0], visited_cells[-1]]
 
         visited_cells_result = []
@@ -188,16 +189,14 @@ class GameService:
 class Turn:
     """Class that represents a game turn."""
 
-    def __init__(self, players: List[Player], deadline):
+    def __init__(self, players: List[Player]):
         """Creates a new game turn.
 
         Args:
             players: List of players that are in the game.
-            deadline: Deadline of the game turn.
         """
         self.players = players.copy()
         self.playersWithPendingAction = players.copy()
-        self.deadline = deadline
         self.turn_ctr = 1
 
     def action(self, player):
@@ -217,13 +216,10 @@ class Turn:
         """
         if player not in self.playersWithPendingAction:
             raise ex.MultipleActionByPlayerException(player)
-        # elif self.deadline < datetime.now():
-        #    raise ex.DeadLineExceededException(player)
         else:
             self.playersWithPendingAction.remove(player)
             if len(self.playersWithPendingAction) == 0:
                 self.turn_ctr += 1
-                self.deadline = datetime.now() + timedelta(0, 180)
                 for player in self.players:
                     if player.active:
                         self.playersWithPendingAction.append(player)

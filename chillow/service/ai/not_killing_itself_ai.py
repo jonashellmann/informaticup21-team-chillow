@@ -140,7 +140,8 @@ class NotKillingItselfAI(ArtificialIntelligence):
             if player.active:
                 interim_result = []
                 if depth > 1:
-                    interim_result = self.find_surviving_actions(gs_copy, depth - 1)
+                    interim_result = self.find_surviving_actions(gs_copy, depth - 1)  # recursive call to look further
+                    # into the future
                 if len(interim_result) > 0 or depth == 1:
                     result += [action]
 
