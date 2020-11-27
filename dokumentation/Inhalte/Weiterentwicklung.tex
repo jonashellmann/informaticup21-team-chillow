@@ -11,11 +11,16 @@ verwendet wurde.
 
 An vielen Stellen im Code haben wir durch die Nutzung allgemeiner Oberklassen eine leichte Austauschbarkeit
 gewährleistet.
-Die Verwendung von abstrakten Oberklassen durch Nutzung der \Code{abc}-Python-Bibliothek war notwendig, da Python
-als Programmiersprache keine Interfaces anbietet. \\
+Die Verwendung von abstrakten Oberklassen durch Nutzung der \Code{abc}-Python-Bibliothek \Vgl{python-abc} war notwendig,
+da Python als Programmiersprache nicht unmittelbar Interfaces oder abstrakte Klassen anbietet. \\
 
 Durch diese Entscheidung war es mithilfe von Dependency Injection möglich, zentral in der Datei \Code{main.py}
 festzulegen, welche spezifischen Implementierungen der allgemeinen Oberklassen verwendet werden sollen.
+"`Dependency Injection überträgt die Verantwortung für das Erzeugen und die Verknüpfung von Objekten an eine
+eigenständige Komponente, wie beispielsweise ein extern konfigurierbares Framework.
+Dadurch wird der Code des Objektes unabhängiger von seiner Umgebung.
+Das kann Abhängigkeiten von konkreten Klassen beim Kompilieren vermeiden und erleichtert besonders die Erstellung von
+Unit-Tests."' \Vgl{dependency-injection}
 Angewendet wurde dieses Vorgehen an oberster Stelle bei den \Code{Controller}n und der zu verwendenden Oberfläche, aber
 auch beim Konvertieren zwischen einer String-Repräsentation und dem Modell im \Code{DataLoader} und \Code{DataWriter}
 ließe sich prinzipiell sehr leicht ein Umstieg von JSON auf ein beliebiges anderes Format ermöglichen.
@@ -24,14 +29,15 @@ Auch ein Austausch der zu verwendenden \ac{KI}-Klasse lässt sich sehr einfach k
 \section{Einsatz von PRs im Git-Workflow}
 \label{sec:git-workflow}
 
-Wir haben uns dazu entschieden, als Versionsverwaltungs-Tool Git einzusetzen und Github als Plattform zu benutzen.
+Wir haben uns dazu entschieden, als Versionsverwaltungs-Tool Git \Vgl{git} einzusetzen und Github als Plattform zu
+benutzen.
 Github ermöglicht die Konfiguration, das Pushen auf den Haupt-Branch, welcher in unserem Fall der \Code{main}-Branch war,
-zu unterbinden.
+zu unterbinden. \Vgl{github-branch-protection}
 So kann kein Code durch einen versehentlichen Push den aktuellen Produktiv-Code in seiner Funktionalität stören.
 Stattdessen können Änderungen in diesen Branch nur durch \ac{PR}s in den Haupt-Branch gemergt werden. \\
 
 Es gab somit für jede logische Einheit für Code-Änderungen einen neuen Branch, auf dem diese entwickelt und getestet
-wurden, bevor eine Überführung in \Code{main} möglich war.
+wurden, bevor eine Überführung in \Code{main} möglich war. \Vgl{github-prs}
 Es wäre möglich gewesen, die Aufgaben als sogenannte Issues zu pflegen und jeden Branch mit einem Issue zu verknüpfen,
 allerdings haben wir dies nicht genutzt, da wir uns durch regelmäßige Absprachen auch so einen Überblick über die
 als Nächstes zu erledigenden Aufgaben ohne ein Ticket-System machen konnten. \\
@@ -39,9 +45,10 @@ als Nächstes zu erledigenden Aufgaben ohne ein Ticket-System machen konnten. \\
 Für \ac{PR}s wurden dann Kriterien festgelegt, die erfüllt sein müssen, um einen Merge durchführen zu können.
 Es wird automatisch von Github kontrolliert, ob mögliche Konflikte beim Mergen auftreten können.
 Falls dies so sein sollte, ist es notwendig, diese zuerst manuell zu beheben.
-Weiterhin haben wir eingestellt, dass mindestens ein Review notwendig ist.
+Weiterhin haben wir eingestellt, dass mindestens ein Code Review notwendig ist.
 Da wir als Zweiergruppe an dem Projekt gearbeitet haben, konnten wir so sicherstellen, dass jeder zu jeder Zeit einen
 Überblick über den aktuellen Stand hat und jeder Code einem Review unterzogen wurde.
+Solche Code Reviews haben \bspw im Ansatz des Extreme Programming eine sehr zentrale Bedeutung. \Vgl{code-review}
 
 \section{Nutzung von Github Actions}
 \label{sec:github-actions}
@@ -58,7 +65,7 @@ Die für unser Projekt verwendete Konfiguration wird in \Anhang{lst:yaml-github-
 Hier läuft nach der Installation aller notwendigen Packages eine Kompilierung und Code-Analyse über den
 Quellcode gefahren, wobei dieser auf Probleme hin untersucht wird.
 Im Anschluss werden alle Tests ausgeführt.
-Bei Kompilier-Fehlern oder fehlschlagenden Tests schlägt auch diese Aktion fehl und verhindert einen Merge. \\
+Bei Kompilier-Fehlern oder fehlschlagenden Tests schlägt auch die Ausführung fehl und verhindert einen Merge. \\
 
 So wird durch Continious Integration automatisch eine Kontrolle vollzogen, die sicherstellt, dass durch Änderungen
 keine bestehende Logik beschädigt wird.
