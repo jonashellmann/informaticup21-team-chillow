@@ -10,7 +10,7 @@ Diese ersten Schritte werden im Folgenden erläutert.
 
 Zu Beginn war zu klären, mit welcher Programmiersprache dieser Lösungsvorschlag umgesetzt werden soll.
 Die Wahl ist dabei schnell auf Python gefallen, obwohl beide Gruppenmitglieder hiermit noch keinerlei Erfahrung
-aufweisen konnte.
+aufweisen konnten.
 Der Grund für diese Entscheidung liegt neben dem starken Interessen an dem Kennenlernen einer neuen Programmiersprache
 auch an der bereits sehr hohen und immer noch steigenden Popularität der Programmiersprache und der damit verbundenen
 zukünftigen Wichtigkeit. \Vgl{tiobe} \Vgl{pypl}
@@ -20,31 +20,39 @@ Machine Learning gesehen haben und Python in diesem Bereich oft empfohlen wird. 
 \section{Erstellung eines lauffähigen Projekts}
 \label{sec:erstellung-projekt}
 
+Damit unsere zu implementierende Lösung auch ausgeführt und manuell getestet werden konnte, war es zunächst notwendig,
+ein minimales, ausführbares Projekt aufzusetzen.
+
 \subsection{Einsatz von Poetry als Build-Tool}
 \label{subsec:poetry}
 
-Der einfachste Weg, um Abhängigkeiten in Python zu verwalten, ist, eine Datei mit dem Namen \Code{requirements.txt} zu
-verwenden und in dieser die eingesetzten Bibliotheken aufzulisten.
+Ein einfacher Weg, um Abhängigkeiten in Python zu verwalten, ist, eine Datei mit dem Namen \Code{requirements.txt} zu
+verwenden und in dieser die eingesetzten Bibliotheken aufzulisten. \Vgl{requirements-txt}
 Wir haben uns allerdings für die Verwendung von Poetry als vollständiges Build-Tool entschieden, da dieses zum Einen
-sehr einfach zum Einstieg ist und simple Kommandozeilen-Befehle bereitstellt, aber auch weitere Funktionen wie das
-Ausführen von Tests und Erstellen eines fertigen Pakets anbietet.
-Zudem funktioniert die Auflösung komplexerer Abhängigkeiten von Paketen durch dieses Tool sehr gut. \Vgl{poetry}
+sehr einfach zum Einstieg ist und simple Kommandozeilen-Befehle bereitstellt, zum Anderen aber auch weitere Funktionen
+wie das Ausführen von Tests und Erstellen eines fertigen Pakets anbietet und die Auflösung komplexerer Abhängigkeiten
+von Paketen durch dieses Tool sehr gut funktioniert. \Vgl{poetry}
 
 \subsection{Entwicklung eines Dockerfile}
 \label{subsec:dockerfile}
 
-Zum Start haben wir ein minimales Python-Skript erstellt, das lediglich die
-an den Docker-Container übergebenen Parameter für die Server-URL und den API-Key ausgibt.
+Zum Start haben wir ein minimales Python-Skript erstellt, das lediglich die an den Docker-Container übergebenen
+Parameter für die Server-URL und den API-Key ausgibt.
 Zwar mussten bis hierhin noch keine Abhängigkeiten hinzugefügt werden, aber bei der Konzeption des Dockerfiles sollte
 bereits die Installation zusätzlicher Bibliotheken berücksichtigt werden.
-Mit der Nutzung des Standard-Python-Containers von Docker Hub wird bereits ein vorgefertigter Container bereitgestellt,
-in dem Python und Pip installiert ist.
-Anschließend wird mittels Pip die Installation von Poetry durchgeführt.
-Dieses Tool wiederum bietet die Möglichkeit, die verwalteten Abhängigkeiten in Form einer
+Mit der Nutzung des Standard-Python-Containers von Docker Hub \Vgl{python-dockerhub} wird bereits ein vorgefertigter
+Container bereitgestellt, in dem Python und Pip installiert sind.
+Bei Pip handelt es sich um "`ein rekursives Akronym für Pip Installs Python und ist das Standardverwaltungswerkzeug
+für Python-Module"' \Vgl{pip}.
+Mittels diesem Tool wird die Installation von Poetry durchgeführt.
+Poetry wiederum bietet anschließend die Möglichkeit, die verwalteten Abhängigkeiten in Form einer
 \texttt{requirements.txt}-Datei zu exportieren, welche dann von Pip eingelesen werden kann, um die Bibliotheken zu
-installieren.
-Später sind noch Umgebungsvariablen zur Steuerung des Programm-Ablaufs hinzugekommen, sodass das Dockerfile
-letztendlich wie in \Listing{lst:dockerfile} dargestellt aussieht.
+installieren. \\
+
+Letztendlich wurde ein Dockerfile entworfen, welches die in \Listing{lst:dockerfile} dargestellten Befehle enthält.
+Die Umgebungsvariable \Code{TERM} wird gesetzt, um eine farbliche Ausgabe in der Konsole zu ermöglichen.
+Auf die Parameter zum Start der Anwendung wird in \Kapitel{ch:benutzerhandbuch} eingegangen.
+Bei der Erstellung wurden die von Docker vorgeschlagenen Best Practices \Vgl{docker-best-practices} umgesetzt.
 
 \lstinputlisting[label=lst:dockerfile,language=Java,caption=Dockerfile zum Erstellen eines lauffähigen Containers]
 {../Dockerfile}
@@ -60,8 +68,8 @@ einer Online-Version im Browser testen zu können, begonnen, die Spiellogik zu a
 Diese Logik ist relativ einfach nachzuvollziehen.
 Nachdem alle Spieler ihre Aktion an den Server gesendet haben, wird jede Aktion eines Spielers in einer Runde zeitgleich
 ausgeführt.
-Trifft der Spieler während seiner Aktion auf ein bereits belegtes Feld, so verliert dieser das Spiel und bewegt sich
-nicht weiter vorwärts, auch wenn seine Aktion dies normalerweise noch bewirkt hätte.
+Trifft der Spieler während seiner Aktion auf ein bereits belegtes Feld, so verliert dieser das Spiel, bewegt sich
+aber noch so viele Felder weiter vorwärts, wie es seine Geschwindigkeit und Richtung normalerweise bewirkt hätten.
 Verhindert werden können solche Kollisionen mithilfe eines Sprungs, der bei entsprechendem Tempo automatisch in jeder
 sechsten Runde des Spiels ausgeführt wird. \\
 
@@ -81,7 +89,7 @@ Diese Darstellung wird in der \Abbildung{fig:KonsolenOberflaeche} verdeutlicht.
 \end{figure}
 
 Zum anderen gibt es auch die Möglichkeit, das Spiel auf einer grafischen Oberfläche zu spielen, die mittels PyGame
-entworfen wurde.
+\Vgl{pygame} entworfen wurde.
 Jedem Spieler wird dabei zu Spielbeginn eine Farbe zugeordnet, um die verschiedenen Spieler auseinanderhalten zu können.
 Ein Spiel mit grafischer Oberfläche wird in \Abbildung{fig:GrafischeOberflaeche} gezeigt.
 

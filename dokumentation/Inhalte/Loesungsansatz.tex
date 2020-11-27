@@ -5,15 +5,27 @@
 \label{sec:selbstlernende-ki-trainingsdaten}
 
 Zunächst war eine Überlegung, ob eine \ac{KI} mithilfe generierter Daten trainiert werden kann.
-Je nach vorliegender Spielsituation würde die \ac{KI} \bspw unter Einsatz von neuronalen Netzen eigene Entscheidungen treffen können.
-Dieser Ansatz bringt jedoch das Problem mit sich, gute Trainingsdatensätze besitzen zu müssen.
+Je nach vorliegender Spielsituation würde die \ac{KI} \bspw unter Einsatz von neuronalen Netzen eigene Entscheidungen
+treffen können.
+Dieser Ansatz bringt jedoch das Problem mit sich, dass "`präzise Trainingsdaten benötigt werden, die den Algorithmen
+helfen, bestimmte Muster oder Ergebnisreihen zu verstehen, wenn eine bestimmte Frage gestellt wird"'
+\Vgl{becominghuman-ai}.
 Bei einer maximalen Anzahl von sechs Spielern im Spiel \texttt{spe\_ed} und fünf unterschiedlichen Aktionen gibt
 es sehr viele Möglichkeiten, wie ein Spiel verlaufen kann.
+Pro Spielzug ergeben sich jeweils $5^6 = 15625$ Varianten, welche sich mit jedem weiteren Spielzug potenzieren.
 Dabei entsteht das Problem, beurteilen zu müssen, welche Spielsituationen und welche Spielverläufe als Trainingsdaten
-gut geeignet sind, sodass die gesamte Komplexität des Spiels in den Trainingsdaten abgebildet wird.
+gut geeignet sind, sodass die gesamte Komplexität des Spiels in den Trainingsdaten abgebildet wird. \\
+
 Ist es nicht möglich, eine ausreichend umfangreiche Menge an Daten generieren zu können, besteht die Gefahr, dass eine
 damit trainierte \ac{KI} deutlich schlechtere Entscheidungen trifft als eine Implementierung, die auf simpleren und
 programmatisch vorgegebenen Heuristiken basiert.
+Dies wird unter anderem in der Arbeit von Erik Bohnsack und Adam Lilja deutlich, die ein selbstlernendes Programm für
+eine ähnliche Problemstellung entwickelt haben, jedoch zu dem Schluss gekommen sind, dass "`jede Art von taktischer
+Vorstellung fehlt, was es bestenfalls zu einem durchschnittlichen Gegner machte"' \Vgl{mastering-achtungdiekurve}.
+Zwar könnten wir eigene Daten durch manuelles Spielen des Spiels erstellen, allerdings nimmt dies sehr viel Zeit in
+Anspruch und gewährleistet darüber hinaus nicht, dass diese Daten repräsentativ für die Strategien anderer Spieler
+sind. \\
+
 Aufgrund dessen fiel die Entscheidung, zunächst Lösungsansätze ohne eine selbstlernende \ac{KI} zu implementieren.
 Diese Strategie hatte für uns den Vorteil, mithilfe einfacherer Lösungsansätze die Komplexität und auftretenden Probleme
 im Spielverlauf besser kennenlernen zu können.
@@ -21,14 +33,14 @@ im Spielverlauf besser kennenlernen zu können.
 \section{Lösungsansätze ohne selbstlernende KIs}
 \label{sec:loesungsansatz-ohne-selbstlernende-kis}
 
-Bei dem Ansatz, Strategien fest in Code zu implementieren, hatten wir mehrere unterschiedliche Ideen,
-die nachfolgend beschrieben werden.
+Bei dem Ansatz, Strategien fest im Code zu implementieren, hatten wir mehrere unterschiedliche Ideen,
+die nachfolgend und aufeinander aufbauend beschrieben werden.
 Ziel war es hierbei, Teilprobleme zu erkennen und zu lösen, mit der Intuition diese unterschiedlichen \ac{KI}s
 kombinieren zu können.
 Die nachfolgend beschriebenen \ac{KI}s und die Abhängigkeiten dieser können in \Anhang{fig:klassendiagramm-AIs}
 nachvollzogen werden.
-Die Mehrfachvererbungen, wie sie im UML-Klassendiagramm dargestellt werden, wurden in der Implementierung durch die
-Verwendung von Python als Programmiersprache genau so umgesetzt.
+Die Mehrfachvererbungen, wie sie im UML-Klassendiagramm dargestellt werden, konnte in der Implementierung durch die
+Verwendung von Python als Programmiersprache genau so umgesetzt werden.
 
 \subsection{RandomAI}
 \label{subsec:random-ai}
@@ -42,9 +54,9 @@ gefahren, mit denen eine Kollision vermeidbar gewesen wäre.
 \subsection{NotKillingItselfAI}
 \label{subsec:notkillingitself-ai}
 
-Aufgrund des beschriebenen Problemes der \Code{RandomAI} haben wir uns dafür entschieden, die \Code{NotKillingItselfAI}
+Aufgrund des beschriebenen Problems der \Code{RandomAI} haben wir uns dafür entschieden, die \Code{NotKillingItselfAI}
 zu implementieren.
-Die \ac{KI} soll aus allen Aktionen eine zufällige Aktion auswählt, die sie nicht direkt verlieren lässt.
+Die \ac{KI} wählt aus allen Aktionen eine zufällige Aktion aus, die sie nicht direkt verlieren lässt.
 Dazu wird für jede mögliche Aktion die Spur berechnet, die entstehen würde und auf Kollisionen überprüft.
 Aktionen, die eine Kollision hervorrufen, werden nicht ausgeführt.
 Hierbei bleiben mögliche Aktionen der Gegenspieler zunächst unberücksichtigt. \\
@@ -69,12 +81,12 @@ jedoch im direkt darauf folgenden Spielzug.
 
 Dieses Problem haben wir bei der Implementierung berücksichtigt und der \Code{NotKillingItselfAI} kann optional eine
 Tiefe übergeben werden, mit der die Anzahl Spielzüge festgelegt wird, in denen die gewählte Aktion nicht zum Verlieren
-führt.
+führen soll.
 Das sorgt dafür, dass die \ac{KI} entsprechend der Tiefe in die Zukunft vorausschaut und nicht verlieren wird.
 Dabei bleiben die gegnerischen Aktionsmöglichkeiten jedoch unberücksichtigt. \\
 
-Außerdem hat die \Code{NotKillingItselfAI} das Problem, dass sie sich zwar nicht mehr im unmittelbar
-folgenden Zug tötete, jedoch häufig in Sackgassen läuft.
+Außerdem hat die \Code{NotKillingItselfAI} das Problem, dass sie sich zwar nicht mehr im unmittelbar folgenden Zug
+tötet, jedoch häufig in Sackgassen läuft.
 Dieses Problem wird in der \Abbildung{fig:Sackgassen-Problem} verdeutlicht.
 
 \begin{figure}[htb]
@@ -87,13 +99,14 @@ Dieses Problem wird in der \Abbildung{fig:Sackgassen-Problem} verdeutlicht.
 \subsection{PathfindingAI}
 \label{subsec:pathfinding-ai}
 
-Folglich der \Code{NotKillingItselfAI} haben wir einen Lösungsansatz gesucht, welcher das Betreten von Sackgassen
-verhindert.
-Genutzt wurde die Basis der \Code{NotKillingItselfAI}, sodass nur zwischen überlebenden Aktionen gewählt wird.
-Um die Aktionen zu finden, die nicht in eine Sackgasse läuft, haben wir uns für einen Lösungsansatz zum Finden von
+Folglich haben wir einen Lösungsansatz gesucht, welcher das Betreten von Sackgassen zu vermeiden versucht.
+Genutzt wurde als Grundlage die \Code{NotKillingItselfAI}, sodass nur zwischen Aktionen gewählt wird, die den eigenen
+Spieler überleben lassen.
+Um Aktionen zu finden, die nicht in eine Sackgasse führen, haben wir uns für einen Lösungsansatz zum Finden von
 Pfaden entschieden.
-Dazu wird eine konfigurierbare Anzahl zufälliger Koordinaten generiert, auf denen sich bisher kein Spieler befindet.
-Anschließend wird für jede Aktion geprüft, zu wie vielen der Koordinaten nach der Ausführung der Aktion noch ein
+Dazu wird eine konfigurierbare Anzahl zufälliger Koordinaten auf dem Spielfeld generiert, auf denen sich bisher kein
+Spieler befindet.
+Anschließend wird für jede Aktion geprüft, zu wie vielen dieser Koordinaten nach der Ausführung der Aktion noch ein
 möglicher Pfad existiert.
 Die Aktion, die die höchste Anzahl Koordinaten erreichen kann, führt mit höchster Wahrscheinlichkeit
 nicht in eine Sackgasse und wird ausgewählt.
@@ -109,18 +122,26 @@ Folglich wählt die \Code{PathfindingAI} die Aktion turn\_right.
     \label{fig:sackgasse-pfade}
 \end{figure}
 
-Bei diesem Lösungsansatz arbeiten wir lediglich mit der Wahrscheinlichkeit, dass wir nicht in eine Sackgasse laufen.
-Dies liegt dem Problem zugrunde, dass wir die Implementierung eines Algorithmus zum tatsächlichen Erkennen von
-Sackgassen oder abgesperrten Gebieten als schwieriger erachteten. \\
+Bei diesem Lösungsansatz arbeiten wir lediglich mit einer Wahrscheinlichkeit, dass wir nicht in eine Sackgasse laufen.
+Je höher allerdings die Zahl der zu prüfenden Pfade in Relation zu den freien Feldern gewählt wird, umso
+unwahrscheinlicher wird eine schlechte Entscheidung.
+Der Grund für dieses Verhalten wird deutlich, wenn man ein Szenario betrachtet, in dem zu jeder freien Zelle ein Pfad
+gesucht wird.
+Hier wird offensichtlich die Aktion genommen, die tatsächlich die meisten Pfade erreichen kann und in den Bereich
+führt, der die meisten freien Felder hat.
+Aufgrund der steigenden Berechnungsdauer mit steigender Anzahl Pfade, die kontrolliert werden müssen, musste eine
+Pfadanzahl kleiner als die der freien Felder gewählt werden.
+In der Evaluation wurde jedoch ersichtlich, dass die Anzahl Pfade deutlich unter der Anzahl freier Felder liegen kann,
+ohne falsche Entscheidungen zu treffen. \todo{Verweis auf den Beleg nach der Evaluation}
 
-Wir haben die Python-Bibliothek \Code{pathfinding} verwendet, die bereits unterschiedliche Algorithmen zum Finden von
-Pfaden in einem Graphen bietet.
+Wir haben die Python-Bibliothek \Code{pathfinding} \Vgl{pathfinding-lib} verwendet, die bereits unterschiedliche
+Algorithmen zum Finden von Pfaden in einem Graphen bietet.
 Die Entscheidung, welcher Algorithmus zum Finden eines Pfades verwendet wird, hat eine große Auswirkung auf die
 Performance der \Code{PathfindingAI}.
 Der Algorithmus stellt den Flaschenhals dar, da dieser je nach Konfiguration mehrere hundert bis tausend mal pro
-Zug ausgeführt werden muss.
-Wir haben unterschiedliche Algorithmen, die die Bibliothek zur Verfügung stellt, hinsichtlich ihrer Ausführungsdauer verglichen und uns folglich für die
-Verwendung vom Best-First-Algorithmus entschieden.
+Zug ausgeführt werden muss, wie es \bspw in \Kapitel{subsubsec:best-first-algorithm} beschrieben wird.
+Wir haben unterschiedliche Algorithmen, die die Bibliothek zur Verfügung stellt, hinsichtlich ihrer Ausführungsdauer
+verglichen und uns folglich für die Verwendung vom Best-First-Algorithmus entschieden.
 Bei dem Vergleich wurde in 50 unterschiedlichen Spielsituationen jeweils 200 Pfade für jede mögliche Aktion gesucht, um
 den schnellsten Algorithmus zu finden.
 Die durchschnittlichen Ausführungszeiten auf unserem Testrechner können der
@@ -144,13 +165,15 @@ Die durchschnittlichen Ausführungszeiten auf unserem Testrechner können der
 \subsubsection*{Best-First-Algorithmus}
 \label{subsubsec:best-first-algorithm}
 
-Bei dem Best-First-Algorithmus handelt es sich um eine Bestensuche, bei der ein gegebener Graph mit einem Start- und
-einem Endpunkt nach einem Pfad durchsucht wird.
-Die Strategie der Bestensuche ist es, den vielversprechendsten Knoten als Nächstes zu wählen und von dort aus dann
-wiederum die Suche fortzusetzen.
+Der Best-First-Algorithmus "`ist ein Algorithmus zum Durchsuchen eines Graphen, bei dem in jeder Iteration der
+vielversprechendste Knoten gewählt wird, bewertet nach einer gewissen Heuristik.
+Damit zählt er zu den informierten Such-Algorithmen"' \Vgl{best-first-suche}.
 Der Dokumentation zur von uns genutzten Klasse \Code{BestFirst} der Bibliothek \Code{pathfinding} kann entnommen werden,
-dass für den Best-First-Algorithmus der A*-Algorithmus genutzt wird und zusätzlich die Heuristik für die Bewertung der
-Nachbarknoten geändert wurde.
+dass für den Best-First-Algorithmus ein ähnlicher Ansatz wie beim A*-Algorithmus genutzt wird und zusätzlich eine
+Heuristik für die Bewertung der Nachbarknoten angegeben werden kann. \Vgl{pathfinding-lib-bestfirst}
+Dieser A*-Algorithmus ist nach Stout "`der am besten etablierte Algorithmus für die allgemeine Suche nach optimalen
+Pfaden"', welcher "`garantiert, den kürzesten Weg zu finden, solange die heuristische Schätzung zulässig ist"'
+\Vgl{Stout1998SmartMI}.
 Als Heuristik zur Berechnung der Distanz zwischen zwei Punkten wird bei diesem Algorithmus die Manhattan-Distanz
 genutzt, die die Summe der absoluten Differenzen der x- und y-Koordinaten darstellt. \Vgl{luderer2017misst}
 
@@ -172,16 +195,22 @@ sein könnte.
 Ziel der \Code{SearchTreeAI} ist es, dass nur Aktionen berücksichtigt werden, bei denen bereits alle möglichen
 gegnerischen Aktionen und dessen Auswirkungen berücksichtigt werden und der eigene Spieler trotzdem überlebt. \\
 
-Unser Lösungsansatz für dieses Problem ist es, mithilfe eines Suchbaums alle möglichen gegnerischen und eigenen
-Aktions-Kombinationen eine bestimmte Anzahl Spielzüge in die Zukunft zu simulieren. 
-Dabei wird dann nach einem Teilbaum gesucht, bei dem
-vorhergesagt werden kann, dass der eigene Spieler unabhängig der von allen anderen Spielern ausgewählten Aktionen nicht
-im nächsten Zug stirbt.
+Unser Lösungsansatz für dieses Problem ist es, mithilfe einer Baumstruktur alle möglichen gegnerischen und eigenen
+Aktions-Kombinationen eine bestimmte Anzahl Spielzüge in die Zukunft zu simulieren.
+Ein solcher Baum besteht aus einer Menge von Knoten, die einem Vorgänger-Knoten zugeordnet sind und Nachfolger haben
+können.
+Eine Ausnahme stellt der Wurzelknoten dar, der den Startpunkt markiert und keinen Vorgänger hat.
+\Vgl{tree-data-structure}
+In unserem Fall repräsentiert jeder Knoten einen Zustand des Spiels, nachdem von eigenen oder allen anderen Spielern
+Aktionen durchgeführt wurden.
+Es wird dann nach einem Teilbaum gesucht, bei dem vorhergesagt werden kann, dass der eigene Spieler unabhängig der von
+allen anderen Spielern ausgewählten Aktionen nicht in den nächsten Zügen stirbt.
 Für diese Simulation konnte viel von der in \Kapitel{sec:offline-implementierung} beschriebenen Implementierung
 wiederverwendet werden. \\
 
 Diese Idee wird in \Abbildung{fig:SearchTreeAIVisualisierung} visualisiert, wobei es in diesem Beispiel neben dem
-eigenen Spieler noch die beiden weiteren Spieler mit den IDs 1 und 2 gibt.
+eigenen Spieler noch die beiden weiteren Spieler mit den IDs 1 und 2 gibt und eine Simulation lediglich für den nächsten
+Schritt demonstriert wird.
 Die Buchstaben an den Pfaden sollen jeweils die simulierte Aktion kennzeichnen.
 Der Baum wird von links nach rechts aufgebaut und besteht pro Zug aus zwei Ebenen.
 Zuerst wird ausgehend vom aktuellen Spielstand die eigene Aktion des Spielers berechnet und abgebrochen, wenn hier schon
@@ -196,10 +225,8 @@ Aktionen simuliert und wiederum das Überleben geprüft. \\
 \label{fig:SearchTreeAIVisualisierung}
 \end{figure}
 
-Gibt es einen Pfad bis zur vorletzten Ebene, nach dem bei der Kombination aller gegnerischen Aktionen immer ein
-Überleben auf der untersten Ebene folgt, ist eine Ausgangsaktion gefunden, die in dem aktuellen Zug ausgeführt werden
-kann, um in jedem Fall die Anzahl der nächsten berechneten Züge überleben zu können. \\
-
+Wurde eine Ausgangsaktion gefunden, bei der alle nachfolgenden Pfade das Überleben des Spielers garantieren, wird
+diese Aktion gewählt.
 Ein Problem stellt hierbei allerdings die für jeden Zug extrem stark steigende Anzahl zu berechnender Aktionen dar.
 Während bei einem Spiel mit der Maximalzahl von sechs Spielern und fünf möglichen Aktionen die Berechnung von drei Zügen
 im schlimmsten Fall $(6 ^ 5) ^ 3 = 470.184.984.576$ Kombinationen umfasst, sind es bei vier Zügen schon
@@ -218,8 +245,8 @@ $470.184.984.576$ auf lediglich $(2 ^ 5) ^ 3 = 32.768$ Kombinationen.
 
 Die \Code{SearchTreePathfindingAI} kombiniert die Stärken der \Code{SearchTreeAI} und der \Code{Pathfinding\-AI}.
 Hierbei wird die Entscheidung der \Code{SearchTreeAI} priorisiert.
-Dazu werden der \Code{PathfindingAI} zur Berechnung der besten Aktionen nur noch die Aktionen zur Verfügung gestellt, die
-durch die \Code{SearchTreeAI} ermittelt wurden.
+Dazu werden der \Code{PathfindingAI} zur Berechnung der besten Aktionen nur noch die Aktionen zur Verfügung gestellt,
+die durch die \Code{SearchTreeAI} ermittelt wurden.
 Dadurch erreichen wir, dass die Aktion mit den meisten Pfaden gewählt wird, die in jedem Fall die nächsten Züge
 entsprechend der gewählten Tiefe des Suchbaums überleben wird.
 
@@ -263,34 +290,35 @@ selbst.
 Nachfolgend werden derartige Lösungsideen beschrieben und erklärt, warum wir uns gegen die Implementierung dieser
 entschieden haben. \\
 
-Als ein möglicher Lösungsansatz stand zur Diskussion, die gegnerischen Spieler an den Spielfeldrand zu drängen und ihn somit
-zum Verlieren zu zwingen.
+Als ein möglicher Lösungsansatz stand zur Diskussion, die gegnerischen Spieler an den Spielfeldrand zu drängen und ihn
+somit zum Verlieren zu zwingen.
 Bei diesem Ansatz muss die eigene KI dicht an die gegnerische \ac{KI} fahren, damit diese zu Entscheidungen gezwungen
 wird, die nicht optimal sind und ein vorzeitiges Verlieren bedeuten.
 
-Problematisch bei einer zu kleinen Distanz zu den gegnerischen Spielern ist jedoch, dass man den Aktionen der Mitspieler
-vertrauen muss.
+Ein Problem, dass uns bei einer zu kleinen Distanz zu den gegnerischen Spielern aufgefallen ist, ist jedoch, dass man
+den Aktionen der Mitspieler vertrauen muss.
 Es ist notwendig, dass der Gegner kein Risiko eingeht und immer nur Aktionen wählt, die unter Berücksichtigung der
 möglichen Aktionen unserer \ac{KI} nicht zum Verlieren führen.
+Ansonsten kann es passieren, dass es aufgrund der Nähe zum anderen Spieler schnell zu einer Kollision kommen kann.
 Würde die \ac{KI} nicht dicht an den Gegner heranfahren und einen Sicherheitsabstand einhalten, wäre diese Strategie
 unwirksam, denn es bleiben zu viele gute Optionen für den Gegner übrig. \\
 
-Resultierend aus dem Problem, nicht absichtlich zu dicht an Mitspieler heranfahren zu wollen, entstand der Lösungsansatz,
-einen Gegner zu umkreisen und somit in ein kleines Gebiet einzusperren.
+Resultierend aus dem Problem, nicht absichtlich zu dicht an Mitspieler heranfahren zu wollen, entstand der
+Lösungsansatz, einen Gegner zu umkreisen und somit in ein kleines Gebiet einzusperren.
 Dadurch würde man dazu beitragen, dass der Gegner entweder nur noch wenige Züge zur Verfügung hat und den verbleibenden
-Platz nutzt oder einen sechsten Zug mit einer Geschwindigkeit größer zwei nutzen muss, um aus dem begrenzten Feld
-wieder heraus zu kommen.
-Die Berechnung, mit einem sechsten Zug über die umkreisende Spur zu kommen, ist nicht trivial und zudem existiert dazu in
-einigen Spielsituationen keine mögliche Option.
+Platz nutzen muss oder einen sechsten Zug mit einer Geschwindigkeit größer zwei nutzen muss, um aus dem begrenzten Feld
+mittels eines Sprungs wieder heraus zu kommen.
+Die Berechnung, mit einem sechsten Zug über die umkreisende Spur zu kommen, ist entsprechend eigener Lösungsversuche
+nicht trivial und zudem existiert dazu in einigen Spielsituationen keine mögliche Option.
 Diese Vorteile sprechen zunächst für diesen Lösungsansatz, jedoch bringt er wiederum auch eine erhöhte Gefahr für das
 Ausscheiden der eigenen \ac{KI} mit sich.
 
-Um einen gegnerischen Spieler umkreisen zu können, muss eine solche aggressive \ac{KI} in den meisten Fällen schneller sein als
-der Gegenspieler.
+Um einen gegnerischen Spieler umkreisen zu können, muss eine solche aggressive \ac{KI} in den meisten Fällen schneller
+sein als der Gegenspieler, da dieser eine solche Umkreisung relativ einfach verhindern kann.
 Dies bedeutet aber auch, dass Geschwindigkeiten erreicht werden müssen, die Löcher in der Spur in jedem sechsten Zug
 hinterlassen, wodurch das Umkreisen an Wirkung verlieren würde.
 Außerdem hat sich eine hohe Geschwindigkeit bei der Evaluation unserer implementierten Lösungsansätze bereits als
-riskant herausgestellt.
+riskant herausgestellt. \todo{Verweis auf den Beleg nach der Evaluation}
 Die erhöhte Geschwindigkeit sorgt dafür, dass häufig nur wenige oder keine Aktion zur Auswahl stehen, die im
 nächsten Spielzug nicht zum Verlieren führen.
 
