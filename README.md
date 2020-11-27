@@ -14,8 +14,8 @@ Die gestellte Aufgabe mit dem Titel **spe_ed** kann in dem
 
 ## Installation
 
-Zur Verwendung dieses Projektes muss es lokal heruntergeladen werden, entweder durch Klonen des Repositorys oder durch
-einen Download als ZIP-Datei.
+Zur Verwendung muss das Projekt lokal heruntergeladen werden, entweder durch Klonen des Repositorys oder durch einen
+Download als ZIP-Datei.
 Das Projekt kann unter folgendem Link eingesehen werden:
 [https://github.com/jonashellmann/informaticup21-team-chillow](https://github.com/jonashellmann/informaticup21-team-chillow)
 
@@ -36,15 +36,15 @@ In der Konsole des Docker-Containers lässt sich dann der Spiel-Verlauf nachvoll
 ### Manuelle Installation
 
 Neben der Docker-Installation kann das Projekt auch eigenständig gebaut werden.
-Dafür ist erforderlich, dass neben Python in der Version 3.8 auch [Poetry](https://python-poetry.org/) als Build-Tool
+Dafür ist erforderlich, dass neben Python in der Version >=3.8 auch [Poetry](https://python-poetry.org/) als Build-Tool
 installiert ist.
 
 Die erforderlichen Abhängigkeiten lassen sich anschließend mittels `poetry install` installieren.
 
-Um ein Spiel mit einer simplen grafischen Oberfläche zu starten, in dem gegen die implementierte KI gespielt werden
+Um ein Spiel mit einer simplen grafischen Oberfläche zu starten, in dem gegen die implementierten KIs gespielt werden
 kann, genügt der Befehl `python ./main.py`.
-Wenn gegen eine andere KI gespielt werden soll als die, für die wir uns am Ende entschieden haben, muss dies im
-`OfflineController` bei der Erstellung des initialen Spiels manuell angepasst werden.
+Wenn gegen andere KI-Konstellationen gespielt werden soll muss dies im `OfflineController` bei der Erstellung des
+initialen Spiels manuell angepasst werden.
 
 Um ein Online-Spiel der KI auf dem Server zu starten, müssen folgende Umgebungsvariablen verwendet werden, die im
 Docker-Container automatisch gesetzt bzw. als Parameter übergeben werden:
@@ -65,7 +65,7 @@ nachvollzogen werden.
 Hier muss der Parameter `--play-online` auf `TRUE` gesetzt werden.
 
 Bei einer Ausführung im Offline-Modus wird - je nach manueller Anpassung im `OfflineController` - auf eine
-Eingabe von einem oder mehreren Spielern gewartet, bis die nächste Runde des Spiels gestartet wird.
+Eingabe von keinem, einem oder mehreren Spielern gewartet, bis die nächste Runde des Spiels gestartet wird.
 Der Tabelle kann entnommen werden, mit welchen Eingaben eine Aktion ausgeführt werden kann.
 Der Parameter `--play-online` muss für diesen Modus auf `FALSE` gesetzt werden.
 
