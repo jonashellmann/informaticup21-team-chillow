@@ -63,3 +63,15 @@ Bei Kompilier-Fehlern oder fehlschlagenden Tests schlägt auch diese Aktion fehl
 So wird durch Continious Integration automatisch eine Kontrolle vollzogen, die sicherstellt, dass durch Änderungen
 keine bestehende Logik beschädigt wird.
 Dies gab uns als Entwickler eine zusätzliche Sicherheit und verringerte die Risiken eines Merges.
+
+\section{Entwickler-Dokumentation}
+\label{sec:entwickler-doku}
+
+Um für die Weiterentwicklung einen Einstieg in das Projekt zu ermöglichen, wurden wie in
+\Kapitel{sec:code-conventions} beschrieben Docstrings verwendet, um den Quellcode zu dokumentieren.
+Für eine bessere Übersichtlichkeit wurde das Tool PDoc eingesetzt, welches aus den Kommentaren im Code automatisiert
+HTML-Seiten generieren kann. \Vgl{PDoc}
+Diese Dateien wurden dann in ein eigenes Repository auf Github gepusht, für welches Github Pages \Vgl{github-pages}
+aktiviert wurden.
+Hiermit ist es möglich, die Entwickler-Dokumentation unter folgender URL bereitzustellen:
+\url{https://jonashellmann.github.io/informaticup21-team-chillow-doc/}.
