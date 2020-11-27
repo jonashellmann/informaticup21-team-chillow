@@ -41,7 +41,7 @@ Parameter für die Server-URL und den API-Key ausgibt.
 Zwar mussten bis hierhin noch keine Abhängigkeiten hinzugefügt werden, aber bei der Konzeption des Dockerfiles sollte
 bereits die Installation zusätzlicher Bibliotheken berücksichtigt werden.
 Mit der Nutzung des Standard-Python-Containers von Docker Hub \Vgl{python-dockerhub} wird bereits ein vorgefertigter
-Container bereitgestellt, in dem Python und Pip installiert ist.
+Container bereitgestellt, in dem Python und Pip installiert sind.
 Bei Pip handelt es sich um "`ein rekursives Akronym für Pip Installs Python und ist das Standardverwaltungswerkzeug
 für Python-Module"' \Vgl{pip}.
 Mittels diesem Tool wird die Installation von Poetry durchgeführt.
@@ -69,7 +69,7 @@ Diese Logik ist relativ einfach nachzuvollziehen.
 Nachdem alle Spieler ihre Aktion an den Server gesendet haben, wird jede Aktion eines Spielers in einer Runde zeitgleich
 ausgeführt.
 Trifft der Spieler während seiner Aktion auf ein bereits belegtes Feld, so verliert dieser das Spiel, bewegt sich
-aber noch so viele Felder weiter vorwärts, wie es seine Geshwindigkeit und Richtung normalerweise bewirkt hätte.
+aber noch so viele Felder weiter vorwärts, wie es seine Geschwindigkeit und Richtung normalerweise bewirkt hätten.
 Verhindert werden können solche Kollisionen mithilfe eines Sprungs, der bei entsprechendem Tempo automatisch in jeder
 sechsten Runde des Spiels ausgeführt wird. \\
 
