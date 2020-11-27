@@ -26,7 +26,7 @@ mit folgendem Befehl ein neuer Container erstellen:
 
 `docker build -t informaticup21-team-chillow .`
 
-Dieser Container kann mit folgendem Befehl gestartet werden, wobei die URL zum spe_ed-Server, der API-Key und die URL
+Dieser Container kann mit folgendem Befehl gestartet werden, bei dem die URL zum spe_ed-Server, der API-Key und die URL
 zur Abfrage der Server-Zeit entsprechend angepasst werden müssen, wobei TIME_URL optional ist:
 
 `docker run -e URL=SERVER_URL -e KEY=API_KEY -e TIME_URL=TIME_URL informaticup21-team-chillow`
