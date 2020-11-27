@@ -34,7 +34,7 @@ im Spielverlauf besser kennenlernen zu können.
 \label{sec:loesungsansatz-ohne-selbstlernende-kis}
 
 Bei dem Ansatz, Strategien fest im Code zu implementieren, hatten wir mehrere unterschiedliche Ideen,
-die nachfolgend beschrieben werden und aufeinander aufbauen.
+die nachfolgend und aufeinander aufbauend beschrieben werden.
 Ziel war es hierbei, Teilprobleme zu erkennen und zu lösen, mit der Intuition diese unterschiedlichen \ac{KI}s
 kombinieren zu können.
 Die nachfolgend beschriebenen \ac{KI}s und die Abhängigkeiten dieser können in \Anhang{fig:klassendiagramm-AIs}
@@ -102,7 +102,7 @@ Dieses Problem wird in der \Abbildung{fig:Sackgassen-Problem} verdeutlicht.
 Folglich haben wir einen Lösungsansatz gesucht, welcher das Betreten von Sackgassen zu vermeiden versucht.
 Genutzt wurde als Grundlage die \Code{NotKillingItselfAI}, sodass nur zwischen Aktionen gewählt wird, die den eigenen
 Spieler überleben lassen.
-Um Aktionen zu finden, die nicht in eine Sackgasse laufen, haben wir uns für einen Lösungsansatz zum Finden von
+Um Aktionen zu finden, die nicht in eine Sackgasse führen, haben wir uns für einen Lösungsansatz zum Finden von
 Pfaden entschieden.
 Dazu wird eine konfigurierbare Anzahl zufälliger Koordinaten auf dem Spielfeld generiert, auf denen sich bisher kein
 Spieler befindet.
@@ -123,8 +123,16 @@ Folglich wählt die \Code{PathfindingAI} die Aktion turn\_right.
 \end{figure}
 
 Bei diesem Lösungsansatz arbeiten wir lediglich mit einer Wahrscheinlichkeit, dass wir nicht in eine Sackgasse laufen.
-Je höher allerdings die Zahl der zu prüfenden Pfade zu freien Feldern gewählt wird, umso unwahrscheinlicher wird eine
-schlechte Entscheidung. \\
+Je höher allerdings die Zahl der zu prüfenden Pfade in Relation zu den freien Feldern gewählt wird, umso
+unwahrscheinlicher wird eine schlechte Entscheidung.
+Der Grund für dieses Verhalten wird deutlich, wenn man ein Szenario betrachtet, in dem zu jeder freien Zelle ein Pfad
+gesucht wird.
+Hier wird offensichtlich die Aktion genommen, die tatsächlich die meisten Pfade erreichen kann und in den Bereich
+führt, der die meisten freien Felder hat.
+Aufgrund der steigenden Berechnungsdauer mit steigender Anzahl Pfade, die kontrolliert werden müssen, musste eine
+Pfadanzahl kleiner als die der freien Felder gewählt werden.
+In der Evaluation wurde jedoch ersichtlich, dass die Anzahl Pfade deutlich unter der Anzahl freier Felder liegen kann,
+ohne falsche Entscheidungen zu treffen. \todo{Verweis auf den Beleg nach der Evaluation}
 
 Wir haben die Python-Bibliothek \Code{pathfinding} \Vgl{pathfinding-lib} verwendet, die bereits unterschiedliche
 Algorithmen zum Finden von Pfaden in einem Graphen bietet.
@@ -191,7 +199,8 @@ Unser Lösungsansatz für dieses Problem ist es, mithilfe einer Baumstruktur all
 Aktions-Kombinationen eine bestimmte Anzahl Spielzüge in die Zukunft zu simulieren.
 Ein solcher Baum besteht aus einer Menge von Knoten, die einem Vorgänger-Knoten zugeordnet sind und Nachfolger haben
 können.
-Eine Ausnahme stellt der Wurzelknoten, der den Startpunkt markiert und keinen Vorgänger hat. \Vgl{tree-data-structure}
+Eine Ausnahme stellt der Wurzelknoten dar, der den Startpunkt markiert und keinen Vorgänger hat.
+\Vgl{tree-data-structure}
 In unserem Fall repräsentiert jeder Knoten einen Zustand des Spiels, nachdem von eigenen oder allen anderen Spielern
 Aktionen durchgeführt wurden.
 Es wird dann nach einem Teilbaum gesucht, bei dem vorhergesagt werden kann, dass der eigene Spieler unabhängig der von
@@ -216,7 +225,7 @@ Aktionen simuliert und wiederum das Überleben geprüft. \\
 \label{fig:SearchTreeAIVisualisierung}
 \end{figure}
 
-Gibt es eine Ausgangsaktion gefunden, bei der alle nachfolgenden Pfade das Überleben des Spielers garantieren, wird
+Wurde eine Ausgangsaktion gefunden, bei der alle nachfolgenden Pfade das Überleben des Spielers garantieren, wird
 diese Aktion gewählt.
 Ein Problem stellt hierbei allerdings die für jeden Zug extrem stark steigende Anzahl zu berechnender Aktionen dar.
 Während bei einem Spiel mit der Maximalzahl von sechs Spielern und fünf möglichen Aktionen die Berechnung von drei Zügen
@@ -299,8 +308,8 @@ Lösungsansatz, einen Gegner zu umkreisen und somit in ein kleines Gebiet einzus
 Dadurch würde man dazu beitragen, dass der Gegner entweder nur noch wenige Züge zur Verfügung hat und den verbleibenden
 Platz nutzen muss oder einen sechsten Zug mit einer Geschwindigkeit größer zwei nutzen muss, um aus dem begrenzten Feld
 mittels eines Sprungs wieder heraus zu kommen.
-Die Berechnung, mit einem sechsten Zug über die umkreisende Spur zu kommen, ist nicht trivial und zudem existiert dazu
-in einigen Spielsituationen keine mögliche Option.
+Die Berechnung, mit einem sechsten Zug über die umkreisende Spur zu kommen, ist entsprechend eigener Lösungsversuche
+nicht trivial und zudem existiert dazu in einigen Spielsituationen keine mögliche Option.
 Diese Vorteile sprechen zunächst für diesen Lösungsansatz, jedoch bringt er wiederum auch eine erhöhte Gefahr für das
 Ausscheiden der eigenen \ac{KI} mit sich.
 
