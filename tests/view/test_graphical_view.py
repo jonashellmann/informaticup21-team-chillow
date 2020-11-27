@@ -13,7 +13,7 @@ from chillow.view.graphical_view import GraphicalView
 pygame_mock = Mock()
 
 
-class ConsoleViewTest(unittest.TestCase):
+class GraphicalViewTest(unittest.TestCase):
 
     def setUp(self) -> None:
         self.sut = GraphicalView(pygame_mock)
