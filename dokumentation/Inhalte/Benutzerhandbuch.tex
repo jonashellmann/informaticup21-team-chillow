@@ -22,11 +22,12 @@ Falls Sie Docker auf Ihrem Rechner installiert haben, lässt sich für das Proje
 docker build -t informaticup21-team-chillow .
 \end{verbatim}
 
-Dieser Container kann mit folgendem Befehl gestartet werden, wobei die URL zum spe\_ed-Server und der API-Key
-entsprechend angepasst werden müssen:
+Dieser Container kann mit folgendem Befehl gestartet werden, wobei die URL zum spe\_ed-Server, der API-Key und die URL
+zur Abfrage der Server-Zeit entsprechend angepasst werden müssen, wobei TIME\_URL optional ist:
 
 \begin{verbatim}
-docker run -e URL=SERVER_URL -e KEY=API_KEY informaticup21-team-chillow
+docker run -e URL=SERVER_URL -e KEY=API_KEY \
+    -e TIME_URL=TIME_URL informaticup21-team-chillow
 \end{verbatim}
 
 In der Konsole des Docker-Containers lässt sich dann der Spiel-Verlauf nachvollziehen.
