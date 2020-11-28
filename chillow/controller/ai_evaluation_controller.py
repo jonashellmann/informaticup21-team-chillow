@@ -47,10 +47,10 @@ class AIEvaluationController(OfflineController):
                 self.__run_simulations(max_game_id)
 
     def _create_game(self) -> None:
-        height = 20
-        width = 20
+        height = randint(30, 70)
+        width = randint(30, 70)
 
-        player_count = 3
+        player_count = randint(3, 6)
         players = []
         occupied_coordinates = []
         for i in range(1, player_count + 1):
