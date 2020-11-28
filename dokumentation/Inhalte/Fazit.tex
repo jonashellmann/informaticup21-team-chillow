@@ -2,15 +2,53 @@
 \label{ch:fazit}
 
 \section{Einschätzung unserer Lösung}
-\label{sec:einschaetzuung}
+\label{sec:einschaetzung}
 
 \todo{Kapitel ausformulieren}
 
 \subsection{Umsetzung von optionalen Erweiterungen}
 \label{subsec:optionale-erweiterungen}
 
-% Verschiedene Oberflächen, Offline-Spiel, Evaluation inkl. DB
-\todo{Kapitel ausformulieren}
+Der in der Aufgabenstellung geforderte Umfang des Lösungsvorschlags \Vgl{informaticup21-aufgabe} wurde in diesem Projekt
+an einigen Stellen durch zusätzliche Erweiterungen ergänzt.
+Diese wurden in der Dokumentation in vorangegangenen Abschnitten bereits erläutert, sollen an dieser Stelle aber noch
+einmal zusammenfassend erwähnt werden. \\
+
+Es wurden zwei verschiedene \ac{UI}s für eine konsolenbasierte Ausgabe und eine grapfische Darstellung des Spiels in
+einer Desktop-Anwendung, auf deren Entwicklung in \Kapitel{subsec:oberflaeche-konsole} und
+\Kapitel{subsec:oberflaeche-pygame} eingegangen wird.
+Diese Oberflächen erlauben neben der automatischen Berechnung der nächsten Aktion durch eine \ac{KI} durch in
+\Kapitel{ch:benutzerhandbuch} genannte Konfigurationen auch die Interaktion mit einem menschlichen Spieler mittels
+Benutzereingaben. \\
+
+Zusätzlich zu der geforderten Aufgabe, "`ein Programm zu schreiben, das selbstständig (also ohne menschliche
+Unterstützung) das Spiel spe\_ed spielen kann"' \Vgl{informaticup21-aufgabe}, welches lediglich als Client fungiert und
+mit einem Server kommuniziert, wurde die gesamte Logik des Servers wie in \Kapitel{sec:offline-implementierung}
+beschrieben nachgebildet.
+Dadurch wird ermöglicht, in den bereitgestellten \ac{UI}s auch offline Spiele der \ac{KI}s durchzuführen. \\
+
+Auf diese Möglichkeit wurde aufgebaut, indem eine Erweiterung bereitgestellt wird, die es ermöglicht, eine beliebige
+Anzahl an Spielen mit zufällig generierten Spieleinstellungen zu erzeugen.
+Hierauf wurde in \Kapitel{sec:vorgehen-strategieauswahl} eingegangen.
+Um auf die Ergebnisse dieser Simulationen zugreifen zu können, wurde ein Entity-Relationship-Modell entworfen, das in
+ein relationales Datenbank-Modell überführt wurde.
+Auf Grundlage dieses Modells wird bei der Simulation eine SQlite3-Datenbank verwendet und befüllt, aus welcher dann mit
+SQL-Statements Informationen zu der Stärke einer \ac{KI} gewonnen werden können. \\
+
+Bei der Entwicklung des Produktiv-Codes wurden \ua Standards festgelegt und eingehalten, der Code dokumentiert und die
+Wartbarkeit des Projektes berücksicht (siehe \Kapitel{ch:software-qualitaet} und \Kapitel{sec:erweiterbarkeit})
+Viel Zeit ist darüber hinaus in die Implementierung von automatisierten Tests geflossen, die in \Kapitel{sec:tests}
+erwähnt werden und bei denen neben der einfachen Verwendung des Test-Frameworks auch Techniken zum Ersetzen von
+Abhängigkeiten mithilfe von Stubs und Mocks angewendet wurden.
+
+Zusätzlich zur unmittelbaren Entwicklung wurden bei der Umsetzung des Projektes Strategien auf dem DevOps-Bereich
+angewendet, die uns aus beruflichen Projekten teils bereits bekannt waren.
+In \Kapitel{Einsatz von PRs im Git-Workflow} wird die kollaborative Zusammenarbeit an diesem Projekt mit der
+Unterstützung von Git und Github erklärt.
+\Kapitel{sec:github-actions} geht dann insbesondere auf Continious Integration durch die Nutzung von Github Actions
+als Build-Server. \\
+
+\todo{Ggf. um Erweiterungen ergänzen}
 
 \section{Reflexion des Wettbewerbs}
 \label{sec:reflexion}
