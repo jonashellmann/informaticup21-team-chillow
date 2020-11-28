@@ -2,15 +2,40 @@
 \label{ch:fazit}
 
 \section{Einschätzung unserer Lösung}
-\label{sec:einschaetzuung}
+\label{sec:einschaetzung}
 
 \todo{Kapitel ausformulieren}
 
 \subsection{Umsetzung von optionalen Erweiterungen}
 \label{subsec:optionale-erweiterungen}
 
-% Verschiedene Oberflächen, Offline-Spiel, Evaluation inkl. DB
-\todo{Kapitel ausformulieren}
+Der geforderte Umfang der Aufgabenstellung \Vgl{informaticup21-aufgabe} wurde in unserem Lösungsvorschlag an einigen
+Stellen durch zusätzliche Erweiterungen ergänzt.
+Diese wurden in der Dokumentation in vorangegangenen Abschnitten bereits erläutert, sollen an dieser Stelle aber noch
+einmal zusammenfassend erwähnt werden. \\
+
+Es wurden zwei verschiedene \ac{UI}s für eine konsolenbasierte Ausgabe und eine grafische Darstellung des Spiels in
+einer Desktop-Anwendung implementiert, auf deren Entwicklung in \Kapitel{subsec:oberflaeche-konsole} und
+\Kapitel{subsec:oberflaeche-pygame} eingegangen wurde.
+Diese Oberflächen erlauben neben der automatischen Berechnung der nächsten Aktion durch eine \ac{KI} mithilfe der im
+\Kapitel{ch:benutzerhandbuch} genannten Konfigurationen auch die Interaktion eines menschlichen Spielers mittels
+Benutzereingaben. \\
+
+Zusätzlich zu der geforderten Aufgabe, "`ein Programm zu schreiben, das selbstständig (also ohne menschliche
+Unterstützung) das Spiel spe\_ed spielen kann"' \Vgl{informaticup21-aufgabe}, welches lediglich als Client fungiert und
+mit einem Server kommuniziert, wurde die gesamte Logik des Servers wie in \Kapitel{sec:offline-implementierung}
+beschrieben nachgebildet.
+Dadurch wird ermöglicht, in den bereitgestellten \ac{UI}s auch offline Spiele der \ac{KI}s durchzuführen. \\
+
+Auf diese Möglichkeit wurde aufgebaut, indem eine Erweiterung bereitgestellt wird, die es ermöglicht, eine beliebige
+Anzahl an Spielen mit zufällig generierten Spieleinstellungen zu erzeugen.
+Hierauf wurde in \Kapitel{sec:vorgehen-strategieauswahl} eingegangen.
+Um auf die Ergebnisse dieser Simulationen zugreifen zu können, wurde ein Entity-Relationship-Modell entworfen, das in
+ein relationales Datenbank-Modell überführt wurde.
+Auf Grundlage dieses Modells wird bei der Simulation eine SQlite3-Datenbank verwendet und befüllt, aus der mithilfe von
+SQL-Statements Informationen zu der Stärke einer \ac{KI} gewonnen werden können. \\
+
+\todo{Ggf. um Erweiterungen ergänzen}
 
 \section{Reflexion des Wettbewerbs}
 \label{sec:reflexion}
