@@ -67,6 +67,7 @@ class AIEvaluationController(OfflineController):
             cells[player.y][player.x] = Cell([player])
 
         self._game = Game(width, height, cells, players, 1, True, datetime.now() + timedelta(5, 15))
+        self._game_round = 0
 
         self._ais = []
 
@@ -110,20 +111,39 @@ class AIEvaluationController(OfflineController):
             self.__connection.commit()
 
     def __create_db_tables(self):
-        self.__cursor.execute("CREATE TABLE IF NOT EXISTS games (id INTEGER, width INTEGER, height INTEGER, date TEXT,"
-                              "winner_id INTEGER)")
-        self.__cursor.execute("CREATE TABLE IF NOT EXISTS players (id INTEGER, class TEXT, info TEXT)")
-        self.__cursor.execute("CREATE TABLE IF NOT EXISTS participants (player_id INTEGER, game_id INTEGER)")
-        self.__cursor.execute("CREATE TABLE IF NOT EXISTS execution_times (player_id INTEGER, game_id INTEGER,"
-                              "execution REAL)")
+        self.__cursor.execute("CREATE TABLE IF NOT EXISTS players ("
+                              "id INTEGER NOT NULL PRIMARY KEY,"
+                              "class TEXT NOT NULL,"
+                              "info TEXT)")
+        self.__cursor.execute("CREATE TABLE IF NOT EXISTS games ("
+                              "id INTEGER NOT NULL PRIMARY KEY,"
+                              "width INTEGER NOT NULL,"
+                              "height INTEGER NOT NULL,"
+                              "date TEXT NOT NULL,"
+                              "winner_id INTEGER),"
+                              "FOREIGN KEY (winner_id) REFERENCES players (id)")
+        self.__cursor.execute("CREATE TABLE IF NOT EXISTS participants ("
+                              "player_id INTEGER NOT NULL,"
+                              "game_id INTEGER NOT NULL,"
+                              "PRIMARY KEY(player_id, game_id),"
+                              "FOREIGN KEY (player_id) REFERENCES players (id),"
+                              "FOREIGN KEY (game_id) REFERENCES games (id))")
+        self.__cursor.execute("CREATE TABLE IF NOT EXISTS execution_times ("
+                              "player_id INTEGER NOT NULL,"
+                              "game_id INTEGER NOT NULL,"
+                              "game_round INTEGER NOT NULL,"
+                              "execution REAL NOT NULL,"
+                              "PRIMARY KEY(player_id, game_id, game_round),"
+                              "FOREIGN KEY (player_id) REFERENCES players (id),"
+                              "FOREIGN KEY (game_id) REFERENCES games (id))")
 
     def _log_execution_time(self, ai: ArtificialIntelligence, execution_time: float):
         ai_class = ai.__class__.__name__
         ai_info = ai.get_information()
         player_id = self.__get_player_id(ai_class, ai_info)
 
-        self.__cursor.execute("INSERT INTO execution_times VALUES ({}, {}, {})"
-                              .format(player_id, self.__current_game_id, execution_time))
+        self.__cursor.execute("INSERT INTO execution_times VALUES ({}, {}, {}, {})"
+                              .format(player_id, self.__current_game_id, self._game_round, execution_time))
 
     def __get_player_id(self, ai_class: str, ai_info: str) -> int:
         player_id = self.__cursor.execute(
