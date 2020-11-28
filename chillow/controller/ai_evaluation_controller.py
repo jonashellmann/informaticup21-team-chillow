@@ -2,7 +2,6 @@ from contextlib import closing
 from datetime import datetime, timedelta, timezone
 from random import randint
 import sqlite3
-from typing import List, Tuple
 
 from chillow.controller import OfflineController
 from chillow.model.cell import Cell
@@ -89,7 +88,7 @@ class AIEvaluationController(OfflineController):
             self.__current_game_id = i + 1 + max_game_id
             super().play()
 
-            self.__cursor.execute("INSERT INTO games VALUES ({}, {}, {}, '{}')"
+            self.__cursor.execute("INSERT INTO games VALUES ({}, {}, {}, '{}', NULL)"
                                   .format(self.__current_game_id, self._game.width, self._game.height,
                                           datetime.now(timezone.utc)))
 
@@ -105,16 +104,16 @@ class AIEvaluationController(OfflineController):
 
                 # Save how often an AI configuration won a game
                 if ai.player == winner_player:
-                    self.__cursor.execute("INSERT INTO winners VALUES ({}, {})"
+                    self.__cursor.execute("UPDATE games SET winner_id = {} WHERE id = {}"
                                           .format(player_id, self.__current_game_id))
 
             self.__connection.commit()
 
     def __create_db_tables(self):
-        self.__cursor.execute("CREATE TABLE IF NOT EXISTS games (id INTEGER, width INTEGER, height INTEGER, date TEXT)")
+        self.__cursor.execute("CREATE TABLE IF NOT EXISTS games (id INTEGER, width INTEGER, height INTEGER, date TEXT,"
+                              "winner_id INTEGER)")
         self.__cursor.execute("CREATE TABLE IF NOT EXISTS players (id INTEGER, class TEXT, info TEXT)")
         self.__cursor.execute("CREATE TABLE IF NOT EXISTS participants (player_id INTEGER, game_id INTEGER)")
-        self.__cursor.execute("CREATE TABLE IF NOT EXISTS winners (player_id INTEGER, game_id INTEGER)")
         self.__cursor.execute("CREATE TABLE IF NOT EXISTS execution_times (player_id INTEGER, game_id INTEGER,"
                               "execution REAL)")
 
