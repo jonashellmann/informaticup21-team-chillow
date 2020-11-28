@@ -47,10 +47,10 @@ class AIEvaluationController(OfflineController):
                 self.__run_simulations(max_game_id)
 
     def _create_game(self) -> None:
-        height = randint(30, 70)
-        width = randint(30, 70)
+        height = 20
+        width = 20
 
-        player_count = randint(3, 6)
+        player_count = 3
         players = []
         occupied_coordinates = []
         for i in range(1, player_count + 1):
@@ -120,8 +120,8 @@ class AIEvaluationController(OfflineController):
                               "width INTEGER NOT NULL,"
                               "height INTEGER NOT NULL,"
                               "date TEXT NOT NULL,"
-                              "winner_id INTEGER),"
-                              "FOREIGN KEY (winner_id) REFERENCES players (id)")
+                              "winner_id INTEGER,"
+                              "FOREIGN KEY (winner_id) REFERENCES players (id))")
         self.__cursor.execute("CREATE TABLE IF NOT EXISTS participants ("
                               "player_id INTEGER NOT NULL,"
                               "game_id INTEGER NOT NULL,"
