@@ -10,8 +10,8 @@ Kapitel eingegangen wird.
 
 Die Überlegung hierbei war es, basierend auf der in \Kapitel{sec:offline-implementierung} beschriebenen
 Möglichkeit, Spiele auch ohne Zugriff auf den spe\_ed-Server mit mehreren unserer \ac{KI}s ausführen zu können,
-eine Simulation von einer möglichst großen Anzahl an Spielen durchzuführen.
-Die daraus resultierenden Ergebnisse sollten in einer Form gespeichert werden, die es im Anschluss ermöglich, daraus
+eine automatisierte Simulation möglichst vieler Spiele durchführen zu können.
+Die daraus resultierenden Ergebnisse sollten in einer Form gespeichert werden, die es im Anschluss ermöglicht, daraus
 Informationen über die Stärke einer bestimmten \ac{KI} mit ihren unterschiedlichen Konfigurations-Möglichkeiten gewinnen
 zu können. \\
 
@@ -43,7 +43,7 @@ Die Verbindung konnte dann mit der Python-Bibliothek \Code{sqlite3} \Vgl{python-
 Zuerst aber war es notwendig, die \ac{DB}-Struktur zu entwerfen, um anschließend entsprechende SQL-Statements im Code
 auf die \ac{DB} anwenden zu können.
 
-\subsection{Erstellen des \acl{ER}-Modell}
+\subsection{Erstellen des \acl{ER}-Modells}
 \label{subsec:er-modell}
 
 Das Vorgehen zum Entwerfen einer \ac{DB}-Struktur war uns aus dem Modul Informationssysteme I, das an der Universität
