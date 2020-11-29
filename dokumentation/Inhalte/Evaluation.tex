@@ -52,6 +52,9 @@ Oldenburg von \href{https://uol.de/is/personen/mitarbeiter/ralf-krause}{Ralf Kra
 Im ersten Schritt wurde dazu ein \ac{ER}-Modell basierend auf den zugrunde liegenden Anforderung entworfen.
 Wie bereits beschrieben, wollen wir primär Informationen erhalten, wie oft eine
 bestimmte \ac{KI} mit welchen Parametern in den simulierten Spielen gewonnen hat.
+Ziel dieser Evaluation war es nicht, das Verhalten der \ac{KI} in bestimmten Spielsituationen zu beurteilen,
+sondern die Qualität der Folge aller Entscheidungen einer \ac{KI} in einem Spiel zu beurteilen.
+Die \ac{KI}, die die beste Folge von Entscheidungen getroffen hat sollte gewonnen haben, sodass wir die Anzahl gewonnener Spiele als Maßzahl für die Stärke der \ac{KI} gewählt haben.
 Ein weiterer wichtiger Wert stellt die durchschnittliche Ausführungsdauer einer \ac{KI} dar und diesen \ua
 mit der Spielfeldgröße und der Anzahl der am Spiel teilnehmenden Gegnern in Korrelation bringen zu können.
 Das daraus resultierende \ac{ER}-Modell ist in \Abbildung{fig:er-schema} dargestellt.
@@ -66,10 +69,11 @@ Das daraus resultierende \ac{ER}-Modell ist in \Abbildung{fig:er-schema} dargest
 \subsection{Überführung in ein relationales \acl{DB}-Modell}
 \label{subsec:db-schema}
 
-Dieses Modell wurde dann anschließend in ein relationales Modell überführt, welches die tatsächlichen Relationen in der
+Das \ac{ER}-Modell wurde anschließend in ein relationales Modell überführt, welches die tatsächlichen Relationen in der
 Datenbank darstellt.
 Dazu wurden Primärschlüssel festgelegt und über Fremdschlüssel Verknüpfungen zwischen den Relationen hergestellt.
-Bei der Modellierung wurde darauf geachtet, die dritte Normalform der \ac{DB}-Normalisierung einzuhalten.
+Bei der Modellierung wurde darauf geachtet, die dritte Normalform der \ac{DB}-Normalisierung einzuhalten,
+um Anomalien und Redundanzen zu verhindern.
 \Vgl{db-normalisierung}
 In \Abbildung{fig:relationales-db-schema} ist das entworfene relationale Modell zu sehen.
 
