@@ -37,6 +37,7 @@ class OfflineController(Controller):
         self._view.update(self._game)
 
         while self._game.running:
+            self._game_round += 1
             time_to_react = randint(3, 15)
             self.__reset_game_deadline(time_to_react)
 
@@ -75,6 +76,7 @@ class OfflineController(Controller):
         cells[player4.y][player4.x] = Cell([player4])
 
         self._game = Game(width, height, cells, players, 1, True, datetime.now(time_zone))
+        self._game_round = 0
 
         self.__you = None
         ai0 = NotKillingItselfAI(player1, [AIOptions.max_distance], 1, 0, 3)
