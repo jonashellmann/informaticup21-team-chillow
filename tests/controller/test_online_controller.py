@@ -12,6 +12,7 @@ from chillow.model.player import Player
 from chillow.service.ai import PathfindingAI
 
 
+# Solution to use a Mock in await expression found here: https://stackoverflow.com/a/51399767
 async def async_magic():
     pass
 
