@@ -37,7 +37,7 @@ class Game:
     __you: int = field(repr=False)
     you: Player = field(init=False)
     running: bool
-    deadline: datetime = None, field(compare=False)
+    deadline: datetime = None, field(repr=False)
 
     def __post_init__(self):
         """Performs checks after the game was created.
