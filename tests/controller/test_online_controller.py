@@ -39,8 +39,9 @@ def create_game(game_ended: bool):
 
 class OnlineControllerTest(unittest.TestCase):
 
-    @patch('websockets.connect', return_value=mock)
-    def test_online_connection_can_be_executed(self, _):
+    @patch('websockets.connect')
+    def test_online_connection_can_be_executed(self, connect_mock):
+        connect_mock.return_value = mock
         view = Mock()
         data_loader = Mock()
         data_loader.load.side_effect = [create_game(True), create_game(False)]
@@ -54,5 +55,3 @@ class OnlineControllerTest(unittest.TestCase):
         view.end.assert_called_once()
         data_loader.load.assert_has_calls([call(""), call("")], any_order=False)
         mock.send.assert_has_calls([call(Action.get_default())])
-
-
