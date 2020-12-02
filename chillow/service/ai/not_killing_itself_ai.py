@@ -15,6 +15,7 @@ from chillow.service.game_service import GameService
 
 
 class AIOptions(Enum):
+    """Enumeration that holds possible options for the AIs."""
     max_distance = range(1)
 
 
@@ -110,7 +111,7 @@ class NotKillingItselfAI(ArtificialIntelligence):
                     best_actions = updated_best_actions
                 elif straight_distance >= max_straight_distance - self.__max_worse_distance:  # still good option
                     best_actions[action] = straight_distance
-            except Exception as ex:
+            except InvalidPlayerMoveException as ex:
                 logging.warning(ex)
                 continue
 

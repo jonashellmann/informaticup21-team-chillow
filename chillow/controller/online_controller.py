@@ -1,8 +1,8 @@
 import asyncio
-import requests
-import websockets
 import multiprocessing
 from datetime import datetime, timezone
+import requests
+import websockets
 from requests import RequestException
 
 from chillow.controller.controller import Controller
