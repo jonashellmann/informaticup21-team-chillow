@@ -11,7 +11,7 @@ from chillow.model.game import Game
 from chillow.service.data_loader import DataLoader
 from chillow.service.data_writer import DataWriter
 from chillow.view.view import View
-from chillow.service.ai import *
+from chillow.service.ai import *  # noqa: F403
 
 
 class OnlineController(Controller):
@@ -70,7 +70,7 @@ class OnlineController(Controller):
 
                 if self.__ai is None:
                     self.__ai = globals()[self.__ai_class](game.you, *self.__ai_params)
-                    self.__default_ai = NotKillingItselfAI(game.you, [AIOptions.max_distance], 1, 0, 3)
+                    self.__default_ai = NotKillingItselfAI(game.you, [AIOptions.max_distance], 1, 0, 3)  # noqa: F405
 
                 if game.you.active:
                     action = self.__choose_action(game, server_time.tzinfo)
