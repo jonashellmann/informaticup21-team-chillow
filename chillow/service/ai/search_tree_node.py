@@ -127,7 +127,6 @@ class SearchTreeRoot(object):
             except InvalidPlayerMoveException:
                 game_service.set_player_inactive(player)
 
-    @staticmethod
     def get_action(self):
         return None
 
