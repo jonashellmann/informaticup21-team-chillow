@@ -102,7 +102,7 @@ class PathfindingAI(NotKillingItselfAI):
                 grid = Grid(matrix=matrix)
                 start = grid.node(player.x, player.y)
                 end = grid.node(free_cells_for_pathfinding[i][0], free_cells_for_pathfinding[i][1])
-                path, runs = path_finder.find_path(start, end, grid)
+                path, _ = path_finder.find_path(start, end, grid)
                 if len(path) > 0:  # a path exists
                     current_possible_paths += 1
 
