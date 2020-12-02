@@ -15,7 +15,7 @@ from chillow.service.game_service import GameService
 
 
 class AIOptions(Enum):
-    """Enum that hold possible options for the AIs."""
+    """Enumeration that holds possible options for the AIs."""
     max_distance = range(1)
 
 

@@ -153,7 +153,7 @@ class AIEvaluationController(OfflineController):
     def __get_player_id(self, ai_class: str, ai_info: str) -> int:
         player_id = self.__cursor.execute(
             "SELECT MAX(id) FROM players p WHERE p.class = '{}' AND p.info = '{}'"
-                .format(ai_class, ai_info)).fetchone()[0]
+            .format(ai_class, ai_info)).fetchone()[0]
 
         if player_id is None:
             max_player_id = self.__cursor.execute("SELECT MAX(id) FROM players").fetchone()[0]
