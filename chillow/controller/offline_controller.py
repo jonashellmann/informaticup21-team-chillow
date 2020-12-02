@@ -8,7 +8,7 @@ from chillow.model.cell import Cell
 from chillow.model.direction import Direction
 from chillow.model.game import Game
 from chillow.model.player import Player
-from chillow.service.ai import NotKillingItselfAI, PathfindingAI, SearchTreeAI, SearchTreePathfindingAI, AIOptions
+from chillow.service.ai import *
 from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.service.game_service import GameService
 from chillow.view.view import View
