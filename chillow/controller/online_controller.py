@@ -11,7 +11,7 @@ from chillow.model.game import Game
 from chillow.service.data_loader import DataLoader
 from chillow.service.data_writer import DataWriter
 from chillow.view.view import View
-from chillow.service.ai import NotKillingItselfAI, AIOptions
+from chillow.service.ai import *
 
 
 class OnlineController(Controller):
