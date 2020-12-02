@@ -8,7 +8,8 @@ from chillow.model.cell import Cell
 from chillow.model.direction import Direction
 from chillow.model.game import Game
 from chillow.model.player import Player
-from chillow.service.ai import *
+from chillow.service.ai import NotKillingItselfAI, PathfindingSearchTreeAI, PathfindingAI, SearchTreeAI, \
+    SearchTreePathfindingAI, RandomAI, AIOptions
 from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.view.headless_view import HeadlessView
 
@@ -30,6 +31,10 @@ class AIEvaluationController(OfflineController):
         self.__db_path = db_path
         self.__connection = None
         self.__cursor = None
+        self._game = None
+        self._game_round = 0
+        self.__current_game_id = None
+        self._ais = []
 
     def play(self):
         """See base class."""
@@ -148,7 +153,7 @@ class AIEvaluationController(OfflineController):
     def __get_player_id(self, ai_class: str, ai_info: str) -> int:
         player_id = self.__cursor.execute(
             "SELECT MAX(id) FROM players p WHERE p.class = '{}' AND p.info = '{}'"
-            .format(ai_class, ai_info)).fetchone()[0]
+                .format(ai_class, ai_info)).fetchone()[0]
 
         if player_id is None:
             max_player_id = self.__cursor.execute("SELECT MAX(id) FROM players").fetchone()[0]

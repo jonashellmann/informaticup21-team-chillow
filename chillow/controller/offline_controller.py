@@ -1,6 +1,5 @@
 import multiprocessing
 from datetime import datetime, timedelta, timezone
-from multiprocessing import Value
 from random import randint
 
 from chillow.controller.controller import Controller
@@ -9,7 +8,7 @@ from chillow.model.cell import Cell
 from chillow.model.direction import Direction
 from chillow.model.game import Game
 from chillow.model.player import Player
-from chillow.service.ai import *
+from chillow.service.ai import NotKillingItselfAI, PathfindingAI, SearchTreeAI, SearchTreePathfindingAI, AIOptions
 from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.service.game_service import GameService
 from chillow.view.view import View
@@ -28,6 +27,9 @@ class OfflineController(Controller):
         """
         super().__init__(view)
         self.__you = None
+        self._game = None
+        self._game_round = 0
+        self._ais = []
 
     def play(self):
         """See base class."""

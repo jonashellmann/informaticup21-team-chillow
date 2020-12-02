@@ -20,7 +20,6 @@ class Controller(metaclass=ABCMeta):
     @abstractmethod
     def play(self):
         """Executes the logic to play a game and show the state in an UI."""
-        pass
 
     @staticmethod
     def call_ai(ai: ArtificialIntelligence, game: Game, return_value: multiprocessing.Value):

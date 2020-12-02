@@ -1,18 +1,17 @@
 import asyncio
-import requests
-import websockets
 import multiprocessing
 from datetime import datetime, timezone
+import requests
+import websockets
 from requests import RequestException
 
 from chillow.controller.controller import Controller
 from chillow.model.action import Action
 from chillow.model.game import Game
-from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.service.data_loader import DataLoader
 from chillow.service.data_writer import DataWriter
 from chillow.view.view import View
-from chillow.service.ai import *
+from chillow.service.ai import NotKillingItselfAI, AIOptions
 
 
 class OnlineController(Controller):
