@@ -31,10 +31,7 @@ class AIEvaluationController(OfflineController):
         self.__db_path = db_path
         self.__connection = None
         self.__cursor = None
-        self._game = None
-        self._game_round = 0
         self.__current_game_id = None
-        self._ais = []
 
     def play(self):
         """See base class."""
