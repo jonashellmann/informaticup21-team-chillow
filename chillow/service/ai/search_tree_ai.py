@@ -39,10 +39,10 @@ class SearchTreeAI(ArtificialIntelligence):
 
     def get_information(self) -> str:
         """See base class."""
-        return super().get_information() \
-               + ", depth=" + str(self.__depth) \
-               + ", randomize=" + str(self.__randomize) \
-               + ", distance_to_check=" + str(self.__distance_to_check)
+        return (super().get_information() +
+                ", depth=" + str(self.__depth) +
+                ", randomize=" + str(self.__randomize) +
+                ", distance_to_check=" + str(self.__distance_to_check))
 
     def create_next_action(self, game: Game, return_value: Value):
         """See base class."""

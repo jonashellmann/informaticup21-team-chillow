@@ -2,7 +2,7 @@ import os
 import logging
 import argparse
 
-from chillow.service.ai import *
+from chillow.service.ai import *  # noqa: F403
 from chillow.controller import OnlineController, OfflineController, AIEvaluationController
 from chillow.service.data_loader import JSONDataLoader
 from chillow.service.data_writer import JSONDataWriter
@@ -39,7 +39,7 @@ if __name__ == "__main__":
         server_time_url = os.getenv("TIME_URL")
         data_loader = JSONDataLoader()
         data_writer = JSONDataWriter()
-        ai_class = PathfindingAI.__name__
+        ai_class = PathfindingAI.__name__  # noqa: F405
         ai_params = (2, 75)
 
         con = OnlineController(monitoring, url, key, server_time_url, data_loader, data_writer, ai_class, ai_params)

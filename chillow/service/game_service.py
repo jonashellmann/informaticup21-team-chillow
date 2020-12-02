@@ -1,6 +1,6 @@
 import logging
 from typing import List, Tuple
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import chillow.exceptions as ex
 from chillow.exceptions import InvalidPlayerMoveException, PlayerSpeedNotInRangeException
@@ -142,7 +142,7 @@ class GameService:
         return visited_cells_result
 
     @staticmethod
-    def change_player_status_by_action(player: Player, action: Action):
+    def change_player_status_by_action(player: Player, action: Action):  # noqa: F405
         """Changes the direction of the player based on the action.
 
         Args:

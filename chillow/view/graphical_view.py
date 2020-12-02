@@ -66,7 +66,7 @@ class GraphicalView(View):
         self.__pygame.display.update()
         self.__clock.tick(60)
 
-    def read_next_action(self) -> Action:
+    def read_next_action(self) -> Action:  # noqa: F405
         """See base class."""
         while True:
             for event in self.__pygame.event.get():

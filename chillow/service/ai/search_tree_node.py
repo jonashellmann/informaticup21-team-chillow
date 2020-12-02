@@ -14,7 +14,7 @@ class SearchTreeRoot(object):
 
     _game: Game
 
-    def calculate_action(self, player: Player, player_ids_to_watch: List[int], combinations: List[Tuple[Any]],
+    def calculate_action(self, player: Player, player_ids_to_watch: List[int], combinations: List[Tuple[Any]],  # noqa: F405
                          depth: int, turn_counter: int, root: bool, first_actions: List[Action], max_speed: int = 10,
                          randomize: bool = False) \
             -> Optional[Action]:

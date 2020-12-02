@@ -9,7 +9,7 @@ from chillow.model.cell import Cell
 from chillow.model.direction import Direction
 from chillow.model.game import Game
 from chillow.model.player import Player
-from chillow.service.ai import *
+from chillow.service.ai import *  # noqa: F403
 from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.service.game_service import GameService
 from chillow.view.view import View
@@ -79,14 +79,14 @@ class OfflineController(Controller):
         self._game_round = 0
 
         self.__you = None
-        ai0 = NotKillingItselfAI(player1, [AIOptions.max_distance], 1, 0, 3)
+        ai0 = NotKillingItselfAI(player1, [AIOptions.max_distance], 1, 0, 3)  # noqa: F403
         # Comment out next two lines if you want to play on your own.
         # self.__you = player1
         # ai0 = None
 
-        ai1 = PathfindingAI(player2, 2, 75)
-        ai2 = SearchTreePathfindingAI(player3, 2, 75, 2)
-        ai3 = SearchTreeAI(player4, 2)
+        ai1 = PathfindingAI(player2, 2, 75)  # noqa: F403
+        ai2 = SearchTreePathfindingAI(player3, 2, 75, 2)  # noqa: F403
+        ai3 = SearchTreeAI(player4, 2)  # noqa: F403
 
         self._ais = [ai0, ai1, ai2, ai3]
 
