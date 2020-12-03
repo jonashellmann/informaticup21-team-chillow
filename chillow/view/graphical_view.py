@@ -40,8 +40,7 @@ class GraphicalView(View):
             if player is None:
                 print("No winner in game.")
             else:
-                print("Winner: Player " + str(player.id) + " (" +
-                      player.name + "). Your player ID was " +
+                print("Winner: Player " + str(player.id) + " (" + player.name + "). Your player ID was " +
                       str(game.you.id) + ".")
 
         self.__screen.fill((0, 0, 0))  # black background

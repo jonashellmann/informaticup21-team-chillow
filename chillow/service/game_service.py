@@ -105,8 +105,7 @@ class GameService:
 
         return horizontal_multiplier, vertical_multiplier
 
-    def get_and_visit_cells(self, player: Player, action: Action)\
-            -> List[Tuple[int, int]]:
+    def get_and_visit_cells(self, player: Player, action: Action) -> List[Tuple[int, int]]:
         """Simulation of a player performing an action.
 
         Args:
@@ -118,8 +117,7 @@ class GameService:
         """
         visited_cells = []
         GameService.change_player_status_by_action(player, action)
-        horizontal_multiplier, vertical_multiplier = \
-            GameService.get_horizontal_and_vertical_multiplier(player)
+        horizontal_multiplier, vertical_multiplier = GameService.get_horizontal_and_vertical_multiplier(player)
 
         for i in range(1, player.speed + 1):
             visited_cells.append((player.x + i * horizontal_multiplier, player.y + i * vertical_multiplier))
@@ -136,8 +134,7 @@ class GameService:
             player.x = x
             player.y = y
             visited_cells_result.append((x, y))
-            if self.game.cells[y][x].players is None \
-                    or len(self.game.cells[y][x].players) == 0:
+            if self.game.cells[y][x].players is None or len(self.game.cells[y][x].players) == 0:
                 self.game.cells[y][x].players = [player]
             else:
                 self.game.cells[y][x].players.append(player)
