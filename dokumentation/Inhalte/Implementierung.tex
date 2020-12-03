@@ -125,7 +125,17 @@ gegeneinander auszuprobieren, um zu beurteilen, welche die beste Strategie ist.
 Die Implementierung des Offline-Spiels erfolgte in der Klasse \Code{OfflineController}, die entsprechend der Ober-Klasse
 \Code{Controller} die Methode \Code{play()} implementiert. \\
 
-Da wir keine Verbindung zum spe\_ed-Server herstellen, erhalten wir keine Aktualisierung des Spiels.
+Die Logik, wie die Antworten mit den Aktionen der Spieler auf dem Server verarbeitet werden, ist relativ einfach
+nachzuvollziehen und lässt sich wie folgt zusammenfassen:
+Nachdem alle Spieler ihre Aktion an den Server gesendet haben, wird jede Aktion eines Spielers in einer Runde zeitgleich
+ausgeführt.
+Trifft der Spieler während seiner Aktion auf ein bereits belegtes Feld, so verliert dieser das Spiel, bewegt sich
+aber noch so viele Felder weiter vorwärts, wie es seine Geschwindigkeit und Richtung normalerweise bewirkt hätten.
+Verhindert werden können solche Kollisionen mithilfe eines Sprungs, der bei entsprechendem Tempo automatisch in jeder
+sechsten Runde des Spiels ausgeführt wird. \\
+
+Da wir bei der Implementierung keine Verbindung zum spe\_ed-Server herstellen, erhalten wir keine Aktualisierung des
+Spiels.
 Auch müssen die errechneten Aktionen der \ac{KI} nicht versendet, sondern lokal verarbeitet werden.
 Daher haben wir die Spiellogik in der Klasse \Code{GameService} nachgebildet.
 Diese Klasse manipuliert das übergebene Spiel und ist somit der Ersatz zum spe\_ed-Server in der Offline-Variante.
