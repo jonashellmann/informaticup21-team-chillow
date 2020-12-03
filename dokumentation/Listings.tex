@@ -42,3 +42,16 @@
     morekeywords={FROM, COPY, WORKDIR, ENV, RUN, ENTRYPOINT, CMD},
     otherkeywords={-, /, \&}
 }
+
+\lstdefinestyle{githubactionstyle}{
+    keywords={true,false,null,y,n},
+    deletekeywords={max}
+    moredelim=[l][\color{orange}]{\&},
+    moredelim=[l][\color{magenta}]{*},
+    moredelim=**[il][\color{red}{:}\color{blue}]{:},   % switch to value style at :
+    morestring=[b]',
+    morestring=[b]",
+    literate =  {>}{{\textcolor{red}\textgreater}}1
+                {|}{{\textcolor{red}\textbar}}1
+                {\ -\ }{{\mdseries\ -\ }}3,
+}
