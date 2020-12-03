@@ -106,7 +106,7 @@ Weiterhin steuert `--ai-eval-type`, welche Art der Evaluation ausgeführt werden
 Bei Wert 1 werden alle KIs betrachtet und jeweils maximal eine zufällige Konfiguration von einer Klasse zu einem
 Spiel hinzugefügt.
 Bei Wert 2 hingegen sind die nach unserer Evaluation aus dem ersten Lauf heraus ermittelten KI-Konfigurationen
-hinterlegt und es werden nur aus diesen mögliche KIs für ein Spiel ausgewählt.
+hinterlegt und es werden nur aus diesen möglichen Konfigurationen KIs für ein Spiel ausgewählt.
 Andere Werte als 1 und 2 sind für diesen Parameter ungültig.
 
 ## Contribution
