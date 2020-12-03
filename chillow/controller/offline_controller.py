@@ -1,6 +1,5 @@
 import multiprocessing
 from datetime import datetime, timedelta, timezone
-from multiprocessing import Value
 from random import randint
 
 from chillow.controller.controller import Controller
@@ -28,6 +27,9 @@ class OfflineController(Controller):
         """
         super().__init__(view)
         self.__you = None
+        self._game = None
+        self._game_round = 0
+        self._ais = []
 
     def play(self):
         """See base class."""

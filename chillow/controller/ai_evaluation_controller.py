@@ -8,7 +8,8 @@ from chillow.model.cell import Cell
 from chillow.model.direction import Direction
 from chillow.model.game import Game
 from chillow.model.player import Player
-from chillow.service.ai import *
+from chillow.service.ai import NotKillingItselfAI, PathfindingSearchTreeAI, PathfindingAI, SearchTreeAI, \
+    SearchTreePathfindingAI, RandomAI, AIOptions
 from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.view.headless_view import HeadlessView
 
@@ -30,6 +31,7 @@ class AIEvaluationController(OfflineController):
         self.__db_path = db_path
         self.__connection = None
         self.__cursor = None
+        self.__current_game_id = None
 
     def play(self):
         """See base class."""
