@@ -49,7 +49,8 @@ class NotKillingItselfAI(ArtificialIntelligence):
 
     def get_information(self) -> str:
         """See base class."""
-        return super().get_information() + ", max_worse_distance=" + str(self.__max_worse_distance)
+        return (super().get_information() + ", max_worse_distance=" + str(self.__max_worse_distance)
+                + ", depth=" + str(self.__depth))
 
     def create_next_action(self, game: Game, return_value: Value):
         """See base class."""
