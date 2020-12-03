@@ -54,7 +54,7 @@ Die Umgebungsvariable \Code{TERM} wird gesetzt, um eine farbliche Ausgabe in der
 Auf die Parameter zum Start der Anwendung wird in \Kapitel{ch:benutzerhandbuch} eingegangen.
 Bei der Erstellung wurden die von Docker vorgeschlagenen Best Practices \Vgl{docker-best-practices} umgesetzt.
 
-\lstinputlisting[label=lst:dockerfile,language=Java,caption=Dockerfile zum Erstellen eines lauffähigen Containers]
+\lstinputlisting[label=lst:dockerfile,style=dockerfilestyle,caption=Dockerfile zum Erstellen eines lauffähigen Containers]
 {../Dockerfile}
 
 \section{Nachstellung des Spiels}
@@ -65,16 +65,7 @@ damit begonnen, die Spiellogik nachzustellen.
 Dazu haben wir nach Erhalt des API-Keys anhand der bereitgestellten Dokumentation und der Möglichkeit, das Spiel in
 einer Online-Version im Browser testen zu können, begonnen, die Spiellogik zu analysieren. \\
 
-Diese Logik ist relativ einfach nachzuvollziehen.
-Nachdem alle Spieler ihre Aktion an den Server gesendet haben, wird jede Aktion eines Spielers in einer Runde zeitgleich
-ausgeführt.
-Trifft der Spieler während seiner Aktion auf ein bereits belegtes Feld, so verliert dieser das Spiel, bewegt sich
-aber noch so viele Felder weiter vorwärts, wie es seine Geschwindigkeit und Richtung normalerweise bewirkt hätten.
-Verhindert werden können solche Kollisionen mithilfe eines Sprungs, der bei entsprechendem Tempo automatisch in jeder
-sechsten Runde des Spiels ausgeführt wird. \\
-
-Wir haben diese Logik, auf die wir später noch genauer eingehen werden und die bei der Implementierung der \ac{KI}s
-wiederverwendet werden konnte, in einer Klasse \Code{GameService} implementiert.
+Auf diese Analyse wird im \Kapitel{sec:offline-implementierung} genauer eingegangen.
 Zum Testen haben wir zwei verschiedene Oberflächen entwickelt.
 Zum einen kann das Spielfeld nach jeder Runde auf der Konsole ausgegeben werden.
 Dazu wird das Spielfeld als Tabelle dargestellt und in den Zellen, in denen sich ein Spieler befindet, wird dessen

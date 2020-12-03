@@ -1,0 +1,57 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% Code-Eigenschaften %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{
+    backgroundcolor=\color{white},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    commentstyle=\color{mygreen},
+    extendedchars=true,
+    frame=single,
+    keepspaces=true,
+    keywordstyle=\color{blue},
+    numbers=left,
+    numbersep=5pt,
+    numberstyle=\tiny\color{mygray},
+    rulecolor=\color{black},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    stepnumber=1,
+    stringstyle=\color{mymauve},
+    tabsize=2,
+    title=\lstname,
+    emphstyle=\ttb\color{orange}
+}
+
+\lstdefinestyle{pythonstyle}{
+    language=Python,
+    morekeywords={self, None, await, async, with, as},
+    escapeinside={\#*}{*)},
+    emph={@staticmethod}
+}
+
+\lstdefinestyle{dockerfilestyle}{
+    morekeywords={FROM, COPY, WORKDIR, ENV, RUN, ENTRYPOINT, CMD},
+    otherkeywords={-, /, \&}
+}
+
+\lstdefinestyle{githubactionstyle}{
+    keywords={true,false,null,y,n},
+    deletekeywords={max}
+    moredelim=[l][\color{orange}]{\&},
+    moredelim=[l][\color{magenta}]{*},
+    moredelim=**[il][\color{red}{:}\color{blue}]{:},   % switch to value style at :
+    morestring=[b]',
+    morestring=[b]",
+    literate =  {>}{{\textcolor{red}\textgreater}}1
+                {|}{{\textcolor{red}\textbar}}1
+                {\ -\ }{{\mdseries\ -\ }}3,
+}

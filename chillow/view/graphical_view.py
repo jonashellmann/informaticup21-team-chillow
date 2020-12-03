@@ -2,6 +2,7 @@ import sys
 import time
 
 from chillow.model.action import Action
+from chillow.model.cell import Cell
 from chillow.model.game import Game
 from chillow.view.view import View
 
@@ -9,7 +10,7 @@ from chillow.view.view import View
 class GraphicalView(View):
     """Provides a graphical UI using PyGame."""
 
-    RECTANGLE_SIZE = 10
+    RECT_SIZE = 10
     CLOCK_TICK = 60
 
     def __init__(self, pygame):
@@ -46,11 +47,11 @@ class GraphicalView(View):
         for row in range(game.height):
             for col in range(game.width):
                 self.__pygame.draw.rect(self.__screen,
-                                        self._player_colors[game.cells[row][col].get_player_id()],
-                                        (col * self.RECTANGLE_SIZE + col,
-                                         row * self.RECTANGLE_SIZE + row,
-                                         self.RECTANGLE_SIZE,
-                                         self.RECTANGLE_SIZE))
+                                        self.__get_player_color(game.cells[row][col]),
+                                        (col * self.RECT_SIZE + col,
+                                         row * self.RECT_SIZE + row,
+                                         self.RECT_SIZE,
+                                         self.RECT_SIZE))
                 if game.cells[row][col].get_player_id() != 0:
                     player = game.get_player_by_id(game.cells[row][col].get_player_id())
                     if player.x == col and player.y == row:  # print head
@@ -59,12 +60,15 @@ class GraphicalView(View):
                             border_width = 4  # head of the own player has a smaller dot
                         self.__pygame.draw.rect(self.__screen,
                                                 self._player_colors[0],
-                                                (col * self.RECTANGLE_SIZE + col + border_width,
-                                                 row * self.RECTANGLE_SIZE + row + border_width,
-                                                 self.RECTANGLE_SIZE - (2 * border_width),
-                                                 self.RECTANGLE_SIZE - (2 * border_width)))
+                                                (col * self.RECT_SIZE + col + border_width,
+                                                 row * self.RECT_SIZE + row + border_width,
+                                                 self.RECT_SIZE - (2 * border_width),
+                                                 self.RECT_SIZE - (2 * border_width)))
         self.__pygame.display.update()
         self.__clock.tick(60)
+
+    def __get_player_color(self, cell: Cell):
+        return self._player_colors[cell.get_player_id()]
 
     def read_next_action(self) -> Action:  # noqa: C901
         """See base class."""
@@ -99,4 +103,4 @@ class GraphicalView(View):
     def _initialize_interface(self, game: Game):
         super()._initialize_interface(game)
         self.__screen = self.__pygame.display.set_mode(
-            [game.width * self.RECTANGLE_SIZE + game.width, game.height * self.RECTANGLE_SIZE + game.height])
+            [game.width * self.RECT_SIZE + game.width, game.height * self.RECT_SIZE + game.height])
