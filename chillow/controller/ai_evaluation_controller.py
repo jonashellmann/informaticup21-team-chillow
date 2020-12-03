@@ -48,16 +48,21 @@ class AIEvaluationController(OfflineController):
 
     The result of every game and the execution time for each player in each round is saved in an SQLite database."""
 
-    def __init__(self, runs: int, db_path: str):
+    def __init__(self, runs: int, db_path: str, evaluation_type: int):
         """ Creates a new AI evaluation controller.
 
         Args:
             runs: The number of games to be simulated.
             db_path: The path of the SQLite database file.
+            evaluation_type: Defines which evaluation should be performed
         """
         super().__init__(HeadlessView())
         self.__runs = runs
         self.__db_path = db_path
+        if 1 <= evaluation_type <= 2:
+            self.__evaluation_type = evaluation_type
+        else:
+            self.__evaluation_type = 1
         self.__connection = None
         self.__cursor = None
         self.__current_game_id = None
@@ -101,8 +106,11 @@ class AIEvaluationController(OfflineController):
         self._game_round = 0
 
         self._ais = []
-        # self.__generate_ais_for_first_evaluation(player_count, players)
-        self.__generate_ais_for_second_evaluation(player_count, players)
+
+        if self.__evaluation_type == 1:
+            self.__generate_ais_for_first_evaluation(player_count, players)
+        elif self.__evaluation_type == 2:
+            self.__generate_ais_for_second_evaluation(player_count, players)
 
     def __generate_ais_for_first_evaluation(self, player_count: int, players: List[Player]) -> None:
         self._ais.append(PathfindingAI(players[0], randint(1, 3), randint(1, 3) * 25))

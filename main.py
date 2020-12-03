@@ -15,6 +15,7 @@ if __name__ == "__main__":
     parser.add_argument('-d', '--deactivate-pygame', type=bool, default=False)
     parser.add_argument('-r', '--ai-eval-runs', type=int, default=0)
     parser.add_argument('-p', '--ai-eval-db-path', type=str, default="evaluation.db")
+    parser.add_argument('-t', '--ai-eval-type', type=int, default=1)
     args = parser.parse_args()
 
     if args.deactivate_pygame:
@@ -27,7 +28,7 @@ if __name__ == "__main__":
 
     if not args.play_online:
         if args.ai_eval_runs > 0:
-            con = AIEvaluationController(args.ai_eval_runs, args.ai_eval_db_path)
+            con = AIEvaluationController(args.ai_eval_runs, args.ai_eval_db_path, args.ai_eval_type)
         else:
             con = OfflineController(monitoring)
     else:
