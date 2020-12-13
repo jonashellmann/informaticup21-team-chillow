@@ -19,7 +19,7 @@ Zu diesem Zweck wurde die Klasse \Code{AIEvaluationController} erstellt, der vom
 \Code{OfflineController} erbt.
 Dieser ruft bei der Ausführung in einer Schleife die \Code{play}-Methode des \Code{OfflineController} auf, wobei bei
 jedem Aufruf ein neues Spiel generiert wird.
-Hierbei mussten allerdings einige Annahmen getroffen werden, die potentiell einen Einfluss auf das Ergebnis haben
+Hierbei mussten allerdings einige Annahmen getroffen werden, die potenziell einen Einfluss auf das Ergebnis haben
 könnten:
 
 \begin{itemize}
@@ -83,5 +83,50 @@ In \Abbildung{fig:relationales-db-schema} ist das entworfene relationale Modell 
 
 \section{Ergebnis der Evaluation}
 \label{sec:ergebnis-evaluation}
+
+Die Evaluation wurde in zwei Etappen durchgeführt.
+Für den ersten Teil der Evaluation wurden auf einem Server der Universität Oldenburg insgesamt 1000 Spiele generiert und
+insgesamt xx Spielzüge berechnet.
+Um aus den in der \ac{DB} gespeicherten Daten die besten \ac{KI}s herauszufiltern, wurde insbesondere jeweils deren
+Siegquote in den Spielen betrachtet, bei denen sie teilgenommen haben.
+Mit dem in \Anhang{lst:eval-sql-1} abgebildetem SQL-Statement wird eine solche Quote gruppiert nach der \ac{KI}-Klasse
+berechnet.
+
+\begin{table}[htb]
+    \centering
+    \begin{tabular}{|l|c|c|c|c|c|c|c|}
+        \hline
+		\textbf{Klasse} & {\textbf{Gewonnene Spiele}} & \textbf{Gespielte Spiele} & \textbf{Gewinnrate (\%)} & \textbf{Max Zeit (Sek)} & \textbf{Avg Zeit (Sek)} & \textbf{Avg Zeit oD (Sek)} & \textbf{Deadline eingehalten (\%)} \\ \hline
+        NotKillingItselfAI &  &  &  &  &  &  &  \\ \hline
+        PathfindingAI &  &  &  &  &  &  &  \\ \hline
+		PathfindingSearchTreeAI &  &  &  &  &  &  &  \\ \hline
+		SearchTreePathfindingAI &  &  &  &  &  &  &  \\ \hline
+		SearchTreeAI &  &  &  &  &  &  &  \\ \hline
+		RandomAI &  &  &  &  &  &  &  \\ \hline
+    \end{tabular}
+    \caption{Steuerung der Oberflächen}
+    \label{tab:evaluation-ki-klasse}
+\end{table}
+
+\todo{Ergebnis}
+Um allerdings ein genaueres Ergebnis zu erhalten, wurde die Abfrage aus \Anhang{lst:eval-sql-2} ausgeführt, welches die
+nicht nur die Art der \ac{KI} sondern zusätzlich auch ihre jeweiligen Konfigurations-Parameter betrachtet.
+
+\begin{table}[htb]
+    \centering
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|}
+        \hline
+		\textbf{Klasse} & \textbf{Info} & {\textbf{Gewonnene Spiele}} & \textbf{Gespielte Spiele} & \textbf{Gewinnrate (\%)} & \textbf{Max Zeit (Sek)} & \textbf{Avg Zeit (Sek)} & \textbf{Avg Zeit oD (Sek)} & \textbf{Deadline eingehalten (\%)} \\ \hline
+        NotKillingItselfAI &  &  &  &  &  &  &  &  \\ \hline
+    \end{tabular}
+    \caption{Steuerung der Oberflächen}
+    \label{tab:evaluation-ki-konfiguration}
+\end{table}
+
+\todo{Ergebnis beschreiben}
+Hierbei wird deutlich, dass die \Code{NotKillingItselfAI} deutlich schlechter abschneidet als nach der ersten Auswertung
+womöglich angenommen.
+Das wird darn liegen, dass die anderen Implementierungen abhängig von der Konfiguration deutlich besser, aber eben auch
+deutlich schlechter abschneiden können.
 
 \todo{Kapitel schreiben}
