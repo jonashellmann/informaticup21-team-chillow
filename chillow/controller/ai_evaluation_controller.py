@@ -2,6 +2,7 @@ from contextlib import closing
 from datetime import datetime, timedelta, timezone
 from random import randint
 import sqlite3
+from typing import List
 
 from chillow.controller import OfflineController
 from chillow.model.cell import Cell
@@ -13,22 +14,55 @@ from chillow.service.ai import NotKillingItselfAI, PathfindingSearchTreeAI, Path
 from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.view.headless_view import HeadlessView
 
+best_ais_configurations = [
+    (SearchTreePathfindingAI.__name__, (1, 25, 2, 20)),
+    (PathfindingSearchTreeAI.__name__, (1, 50, 2, 0.75, 30)),
+    (PathfindingSearchTreeAI.__name__, (1, 75, 3, 0.75, 30)),
+    (SearchTreePathfindingAI.__name__, (1, 50, 2, 30)),
+    (PathfindingSearchTreeAI.__name__, (2, 75, 2, 0.75, 30)),
+    (PathfindingSearchTreeAI.__name__, (1, 25, 2, 0.75, 20)),
+    (SearchTreePathfindingAI.__name__, (1, 25, 2, 10)),
+    (PathfindingSearchTreeAI.__name__, (1, 25, 2, 0.75, 10)),
+    (PathfindingSearchTreeAI.__name__, (1, 50, 2, 0.75, 20)),
+    (PathfindingSearchTreeAI.__name__, (1, 75, 3, 0.75, 10)),
+    (PathfindingSearchTreeAI.__name__, (1, 75, 3, 0.75, 20)),
+    (SearchTreePathfindingAI.__name__, (2, 25, 2, 20)),
+    (SearchTreePathfindingAI.__name__, (2, 25, 2, 30)),
+    (PathfindingSearchTreeAI.__name__, (2, 25, 2, 0.75, 10)),
+    (PathfindingSearchTreeAI.__name__, (2, 25, 2, 0.75, 20)),
+    (PathfindingSearchTreeAI.__name__, (3, 25, 3, 0.75, 10)),
+    (PathfindingSearchTreeAI.__name__, (3, 50, 3, 0.75, 30)),
+    (PathfindingAI.__name__, (2, 25)),
+    (PathfindingAI.__name__, (1, 50)),
+    (PathfindingAI.__name__, (3, 25)),
+    (PathfindingAI.__name__, (1, 25)),
+    (NotKillingItselfAI.__name__, ([AIOptions.max_distance], 3, 0, 3)),
+    (PathfindingSearchTreeAI.__name__, (2, 25, 3, 0.75, 10)),
+    (PathfindingSearchTreeAI.__name__, (2, 50, 2, 0.75, 20)),
+    (PathfindingSearchTreeAI.__name__, (2, 50, 3, 0.75, 30))
+]
+
 
 class AIEvaluationController(OfflineController):
     """Executes multiple games after each other with randomly created games and players.
 
     The result of every game and the execution time for each player in each round is saved in an SQLite database."""
 
-    def __init__(self, runs: int, db_path: str):
+    def __init__(self, runs: int, db_path: str, evaluation_type: int):
         """ Creates a new AI evaluation controller.
 
         Args:
             runs: The number of games to be simulated.
             db_path: The path of the SQLite database file.
+            evaluation_type: Defines which evaluation should be performed
         """
         super().__init__(HeadlessView())
         self.__runs = runs
         self.__db_path = db_path
+        if 1 <= evaluation_type <= 2:
+            self.__evaluation_type = evaluation_type
+        else:
+            self.__evaluation_type = 1
         self.__connection = None
         self.__cursor = None
         self.__current_game_id = None
@@ -73,6 +107,12 @@ class AIEvaluationController(OfflineController):
 
         self._ais = []
 
+        if self.__evaluation_type == 1:
+            self.__generate_ais_for_first_evaluation(player_count, players)
+        elif self.__evaluation_type == 2:
+            self.__generate_ais_for_second_evaluation(player_count, players)
+
+    def __generate_ais_for_first_evaluation(self, player_count: int, players: List[Player]) -> None:
         self._ais.append(PathfindingAI(players[0], randint(1, 3), randint(1, 3) * 25))
         self._ais.append(PathfindingSearchTreeAI(players[1], randint(1, 3), randint(1, 3) * 25, randint(2, 3), 0.75,
                                                  randint(1, 3) * 10))
@@ -85,6 +125,11 @@ class AIEvaluationController(OfflineController):
                                                     randint(1, 3)))
                 if player_count > 5:
                     self._ais.append(RandomAI(players[5], randint(1, 3)))
+
+    def __generate_ais_for_second_evaluation(self, player_count: int, players: List[Player]) -> None:
+        for i in range(player_count):
+            ai = best_ais_configurations[randint(0, len(best_ais_configurations) - 1)]
+            self._ais.append(globals()[ai[0]](players[i], *ai[1]))
 
     def __run_simulations(self, max_game_id):
         for i in range(self.__runs):
