@@ -1,8 +1,8 @@
 SELECT
     class AS "Klasse",
     info AS "Info",
-    Gewonnene_Spiele AS "Gewonnene Spiele",
-    Gespielte_Spiele AS "Gespielte Spiele",
+    Gewonnene_Spiele AS "Wins",
+    Gespielte_Spiele AS "Plays",
     ROUND((CAST(Gewonnene_Spiele AS DOUBLE) * 100 /
            CAST(Gespielte_Spiele AS DOUBLE)), 2) AS "Gewinnrate (%)",
     Max_Ausfuerungszeit_in_Sek AS "Max Zeit (Sek)",
