@@ -43,7 +43,7 @@ Die erforderlichen Abhängigkeiten lassen sich anschließend mittels `poetry ins
 
 Um ein Spiel mit einer simplen grafischen Oberfläche zu starten, in dem gegen die implementierten KIs gespielt werden
 kann, genügt der Befehl `python ./main.py`.
-Wenn gegen andere KI-Konstellationen gespielt werden soll muss dies im `OfflineController` bei der Erstellung des
+Wenn gegen andere KI-Konstellationen gespielt werden soll, muss dies im `OfflineController` bei der Erstellung des
 initialen Spiels manuell angepasst werden.
 
 Um ein Online-Spiel der KI auf dem Server zu starten, müssen folgende Umgebungsvariablen verwendet werden, die im
@@ -64,7 +64,7 @@ Sobald der Server das Spiel startet, kann entweder auf der Konsole oder in der g
 nachvollzogen werden.
 Hier muss der Parameter `--play-online` auf `TRUE` gesetzt werden.
 
-Bei einer Ausführung im Offline-Modus wird - je nach manueller Anpassung im `OfflineController` - auf eine
+Bei einer Ausführung im Offline-Modus wird – je nach manueller Anpassung im `OfflineController` - auf eine
 Eingabe von keinem, einem oder mehreren Spielern gewartet, bis die nächste Runde des Spiels gestartet wird.
 Der Tabelle kann entnommen werden, mit welchen Eingaben eine Aktion ausgeführt werden kann.
 Der Parameter `--play-online` muss für diesen Modus auf `FALSE` gesetzt werden.
