@@ -91,13 +91,16 @@ Um aus den in der \ac{DB} gespeicherten Daten die besten \ac{KI}s herauszufilter
 Siegquote in den Spielen betrachtet, bei denen sie teilgenommen haben.
 Mit dem in \Anhang{lst:eval-sql-1} abgebildetem SQL-Statement wird eine solche Quote gruppiert nach der \ac{KI}-Klasse
 berechnet.
+Das Ergebnis kann der \Tabelle{tab:evaluation-ki-klasse} entnommen werden.
 
 \begin{table}[htb]
     \centering
-    \begin{tabularx}{\textwidth}{|X|X|X|X|X|X|X|X|}
+    \begin{tabularx}{\textwidth}{|X|c|c|c|c|c|c|c|}
         \hline
-		\textbf{Klasse} & \textbf{Wins} & \textbf{Plays} & \textbf{Gewinn\-rate (\%)} & \textbf{Max Zeit (Sek)} & \textbf{Avg Zeit (Sek)} & \textbf{Avg Zeit oD (Sek)} & \textbf{Deadline eingehalten (\%)} \\ \hline
-        Not\-Killing\-Itself\-AI &  &  &  &  &  &  &  \\ \hline
+		\textbf{Klasse} & \textbf{Wins} & \textbf{Plays} & \textbf{Gewinn-}   & \textbf{Max}   & \textbf{Avg}   & \textbf{Avg}     & \textbf{Deadline} \\
+                        &               &                & \textbf{rate (\%)} & \textbf{Zeit}  & \textbf{Zeit}  & \textbf{Zeit oD} & \textbf{eingehal-} \\
+                        &               &                &                    & \textbf{(Sek)} & \textbf{(Sek)} & \textbf{(Sek)}   & \textbf{ten (\%)} \\ \hline
+        Not\-Killing\-Itself\-AI & 130 & 399 & 32.58 & 1.5989 & 0.3621 & 0.3621 & 100 \\ \hline
         Path\-finding\-AI &  &  &  &  &  &  &  \\ \hline
 		Path\-finding\-Search\-Tree\-AI &  &  &  &  &  &  &  \\ \hline
 		Search\-Tree\-Path\-finding\-AI &  &  &  &  &  &  &  \\ \hline
@@ -111,13 +114,16 @@ berechnet.
 \todo{Ergebnis}
 Um allerdings ein genaueres Ergebnis zu erhalten, wurde die Abfrage aus \Anhang{lst:eval-sql-2} ausgeführt, welches die
 nicht nur die Art der \ac{KI} sondern zusätzlich auch ihre jeweiligen Konfigurations-Parameter betrachtet.
+In \Tabelle{tab:evaluation-ki-konfiguration} werden die ersten Einträge reduziert auf die relevantesten Spalten
+abgebildet.
 
 \begin{table}[htb]
     \centering
-    \begin{tabularx}{\textwidth}{|X|X|X|X|X|}
+    \begin{tabularx}{\textwidth}{|X|X|c|c|c|}
         \hline
-		\textbf{Klasse} & \textbf{Info} & \textbf{Wins} & \textbf{Plays} & \textbf{Gewinnrate (\%)} \\ \hline
-        Not\-Killing\-Itself\-AI &  &  &  &  \\ \hline
+		\textbf{Klasse} & \textbf{Info} & \textbf{Wins} & \textbf{Plays} & \textbf{Gewinn-} \\
+                        &               &               &                & \textbf{rate (\%)} \\ \hline
+        Path\-finding\-Search\-Tree\-AI & max\_""speed""=""1, paths\_""tolerance""=""0.75, count\_""paths\_""to\_""check""=""25, depth""=""2, distance\_""to\_""check""=""10 & 8 & 11 & 72.73 \\ \hline
     \end{tabularx}
     \caption{Auswertung der besten \ac{KI}-Konfiguration}
     \label{tab:evaluation-ki-konfiguration}
@@ -126,7 +132,5 @@ nicht nur die Art der \ac{KI} sondern zusätzlich auch ihre jeweiligen Konfigura
 \todo{Ergebnis beschreiben}
 Hierbei wird deutlich, dass die \Code{NotKillingItselfAI} deutlich schlechter abschneidet als nach der ersten Auswertung
 womöglich angenommen.
-Das wird darn liegen, dass die anderen Implementierungen abhängig von der Konfiguration deutlich besser, aber eben auch
+Das liegt daran, dass die anderen Implementierungen abhängig von der Konfiguration deutlich besser, aber eben auch
 deutlich schlechter abschneiden können.
-
-\todo{Kapitel schreiben}
