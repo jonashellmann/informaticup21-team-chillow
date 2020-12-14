@@ -11,7 +11,7 @@ SELECT
            CAST(Anzahl_Executions AS DOUBLE)), 2) AS "Deadline eingehalten (%)"
 FROM (
     SELECT
-        class,
+        p.class,
         (SELECT COUNT(winner_id) FROM games g
             JOIN players ssp ON ssp.id = g.winner_id
             WHERE ssp.class = p.class) AS Gewonnene_Spiele,
