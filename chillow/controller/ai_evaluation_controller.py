@@ -14,32 +14,33 @@ from chillow.service.ai import NotKillingItselfAI, PathfindingSearchTreeAI, Path
 from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.view.headless_view import HeadlessView
 
+# These AIs are considered as the top 25 after 1000 simulated game in the first part of the evaluation
 best_ais_configurations = [
-    (SearchTreePathfindingAI.__name__, (1, 25, 2, 20)),
     (PathfindingSearchTreeAI.__name__, (1, 50, 2, 0.75, 30)),
-    (PathfindingSearchTreeAI.__name__, (1, 75, 3, 0.75, 30)),
-    (SearchTreePathfindingAI.__name__, (1, 50, 2, 30)),
-    (PathfindingSearchTreeAI.__name__, (2, 75, 2, 0.75, 30)),
-    (PathfindingSearchTreeAI.__name__, (1, 25, 2, 0.75, 20)),
-    (SearchTreePathfindingAI.__name__, (1, 25, 2, 10)),
+    (SearchTreePathfindingAI.__name__, (1, 25, 2, 20)),
     (PathfindingSearchTreeAI.__name__, (1, 25, 2, 0.75, 10)),
-    (PathfindingSearchTreeAI.__name__, (1, 50, 2, 0.75, 20)),
     (PathfindingSearchTreeAI.__name__, (1, 75, 3, 0.75, 10)),
-    (PathfindingSearchTreeAI.__name__, (1, 75, 3, 0.75, 20)),
-    (SearchTreePathfindingAI.__name__, (2, 25, 2, 20)),
-    (SearchTreePathfindingAI.__name__, (2, 25, 2, 30)),
-    (PathfindingSearchTreeAI.__name__, (2, 25, 2, 0.75, 10)),
-    (PathfindingSearchTreeAI.__name__, (2, 25, 2, 0.75, 20)),
-    (PathfindingSearchTreeAI.__name__, (3, 25, 3, 0.75, 10)),
-    (PathfindingSearchTreeAI.__name__, (3, 50, 3, 0.75, 30)),
-    (PathfindingAI.__name__, (2, 25)),
+    (PathfindingSearchTreeAI.__name__, (2, 75, 3, 0.75, 20)),
+    (PathfindingSearchTreeAI.__name__, (1, 75, 2, 0.75, 10)),
     (PathfindingAI.__name__, (1, 50)),
-    (PathfindingAI.__name__, (3, 25)),
-    (PathfindingAI.__name__, (1, 25)),
-    (NotKillingItselfAI.__name__, ([AIOptions.max_distance], 3, 0, 3)),
-    (PathfindingSearchTreeAI.__name__, (2, 25, 3, 0.75, 10)),
+    (PathfindingSearchTreeAI.__name__, (1, 25, 2, 0.75, 20)),
     (PathfindingSearchTreeAI.__name__, (2, 50, 2, 0.75, 20)),
-    (PathfindingSearchTreeAI.__name__, (2, 50, 3, 0.75, 30))
+    (PathfindingSearchTreeAI.__name__, (1, 50, 2, 0.75, 20)),
+    (NotKillingItselfAI.__name__, ([AIOptions.max_distance], 1, 0, 1)),
+    (NotKillingItselfAI.__name__, ([AIOptions.max_distance], 2, 0, 3)),
+    (PathfindingSearchTreeAI.__name__, (1, 50, 3, 0.75, 10)),
+    (PathfindingSearchTreeAI.__name__, (1, 75, 3, 0.75, 30)),
+    (SearchTreePathfindingAI.__name__, (1, 75, 2, 10)),
+    (PathfindingAI.__name__, (1, 75)),
+    (PathfindingSearchTreeAI.__name__, (1, 75, 3, 0.75, 20)),
+    (SearchTreePathfindingAI.__name__, (2, 50, 2, 20)),
+    (SearchTreePathfindingAI.__name__, (1, 25, 2, 10)),
+    (PathfindingSearchTreeAI.__name__, (1, 75, 2, 0.75, 20)),
+    (PathfindingAI.__name__, (1, 25)),
+    (PathfindingSearchTreeAI.__name__, (1, 50, 3, 0.75, 30)),
+    (PathfindingSearchTreeAI.__name__, (1, 50, 3, 0.75, 20)),
+    (PathfindingSearchTreeAI.__name__, (2, 75, 2, 0.75, 30)),
+    (SearchTreePathfindingAI.__name__, (1, 50, 2, 10))
 ]
 
 
