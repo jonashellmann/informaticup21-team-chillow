@@ -14,6 +14,7 @@ from chillow.service.ai import NotKillingItselfAI, PathfindingSearchTreeAI, Path
 from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.view.headless_view import HeadlessView
 
+# These AIs are considered as the top 25 after 1000 simulated game in the first part of the evaluation
 best_ais_configurations = [
     (PathfindingSearchTreeAI.__name__, (1, 50, 2, 0.75, 30)),
     (SearchTreePathfindingAI.__name__, (1, 25, 2, 20)),
