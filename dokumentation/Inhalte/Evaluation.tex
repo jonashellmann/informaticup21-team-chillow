@@ -77,7 +77,7 @@ In \Abbildung{fig:relationales-db-schema} ist das entworfene relationale Modell 
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=0.5\textwidth]{Bilder/relationales_db_schema.png}
+	\includegraphics[width=0.8\textwidth]{Bilder/relationales_db_schema.png}
 	\caption{Relationales Datenbankschema der Evaluations-Datenbank}
 	\label{fig:relationales-db-schema}
 \end{figure}
@@ -88,6 +88,7 @@ In \Abbildung{fig:relationales-db-schema} ist das entworfene relationale Modell 
 Die Evaluation wurde in zwei Etappen durchgeführt.
 Für den ersten Teil der Evaluation wurden auf einem Server der Universität Oldenburg insgesamt 1000 Spiele generiert und
 insgesamt xx Spielzüge berechnet.
+\todo{Subsection erstellen}
 Um aus den in der \ac{DB} gespeicherten Daten die besten \ac{KI}s herauszufiltern, wurde insbesondere jeweils deren
 Siegquote in den Spielen betrachtet, bei denen sie teilgenommen haben.
 Mit dem in \Anhang{lst:eval-sql-1} abgebildetem SQL-Statement wird eine solche Quote gruppiert nach der \ac{KI}-Klasse
@@ -101,12 +102,12 @@ Das Ergebnis kann der \Tabelle{tab:evaluation-ki-klasse} entnommen werden.
 		\textbf{Klasse} & \textbf{Wins} & \textbf{Plays} & \textbf{Gewinn-}   & \textbf{Max}   & \textbf{Avg}   & \textbf{Avg}     & \textbf{Deadline} \\
                         &               &                & \textbf{rate (\%)} & \textbf{Zeit}  & \textbf{Zeit}  & \textbf{Zeit oD} & \textbf{eingehal-} \\
                         &               &                &                    & \textbf{(Sek)} & \textbf{(Sek)} & \textbf{(Sek)}   & \textbf{ten (\%)} \\ \hline
-        Not\-Killing\-Itself\-AI & 130 & 399 & 32.58 & 1.5989 & 0.3621 & 0.3621 & 100 \\ \hline
-        Path\-finding\-AI &  &  &  &  &  &  &  \\ \hline
-		Path\-finding\-Search\-Tree\-AI &  &  &  &  &  &  &  \\ \hline
-		Search\-Tree\-Path\-finding\-AI &  &  &  &  &  &  &  \\ \hline
-		Search\-Tree\-AI &  &  &  &  &  &  &  \\ \hline
-		Random\-AI &  &  &  &  &  &  &  \\ \hline
+        Not\-Killing\-Itself\-AI & 149 & 491 & 30.35 & 1.5989 & 0.3621 & 0.3568 & 100 \\ \hline
+        Path\-finding\-AI & 303 & 1000 & 30.3 & 60.001 & 4.3782 & 2.1739 & 96.19 \\ \hline
+		Path\-finding\-Search\-Tree\-AI & 297 & 1000 & 29.7 & 60.002 & 9.3117 & 2.6884 & 88.44 \\ \hline
+		Search\-Tree\-Path\-finding\-AI & 238 & 1000 & 23.8 & 60.002 & 6.6962 & 2.24 & 92.28 \\ \hline
+		Search\-Tree\-AI & 6 & 733 & 0.82 & 60.002 & 4.2471 & 0.3472 & 93.46 \\ \hline
+		Random\-AI & 0 & 257 & 0 & 0.0251 & 0.0078 & 0.0078 & 100 \\ \hline
     \end{tabularx}
     \caption{Auswertung der besten \ac{KI}-Klasse}
     \label{tab:evaluation-ki-klasse}
@@ -124,7 +125,14 @@ abgebildet.
         \hline
 		\textbf{Klasse} & \textbf{Info} & \textbf{Wins} & \textbf{Plays} & \textbf{Gewinn-} \\
                         &               &               &                & \textbf{rate (\%)} \\ \hline
-        Path\-finding\-Search\-Tree\-AI & max\_""speed""=""1, paths\_""tolerance""=""0.75, count\_""paths\_""to\_""check""=""25, depth""=""2, distance\_""to\_""check""=""10 & 8 & 11 & 72.73 \\ \hline
+        Path\-finding\-Search\-Tree\-AI & max\_""speed""=""1, paths\_""tolerance""=""0.75, count\_""paths\_""to\_""check""=""50, depth""=""2, distance\_""to\_""check""=""30 & 12 & 18 & 66.67 \\ \hline
+        Search\-Tree\-Path\-finding\-AI & max\_""speed""=""1, count\_""paths\_""to\_""check""=""25, depth""=""2, distance\_""to\_""check""=""20 & 17 & 26 & 65.38 \\ \hline
+        Path\-finding\-Search\-Tree\-AI & max\_""speed""=""1, paths\_""tolerance""=""0.75, count\_""paths\_""to\_""check""=""25, depth""=""2, distance\_""to\_""check""=""10 & 10 & 16 & 62.50 \\ \hline
+        Path\-finding\-Search\-Tree\-AI & max\_""speed""=""1, paths\_""tolerance""=""0.75, count\_""paths\_""to\_""check""=""75, depth""=""3, distance\_""to\_""check""=""10 & 7 & 12 & 58.33 \\ \hline
+        Path\-finding\-Search\-Tree\-AI & max\_""speed""=""2, paths\_""tolerance""=""0.75, count\_""paths\_""to\_""check""=""75, depth""=""3, distance\_""to\_""check""=""20 & 8 & 15 & 53.33 \\ \hline
+        Path\-finding\-Search\-Tree\-AI & max\_""speed""=""1, paths\_""tolerance""=""0.75, count\_""paths\_""to\_""check""=""75, depth""=""2, distance\_""to\_""check""=""10 & 9 & 17 & 52.94 \\ \hline
+        Path\-finding\-AI & max\_""speed""=""1, count\_""paths\_""to\_""check""=""50 & 63 & 120 & 52.50 \\ \hline
+        \ldots & \ldots & \ldots & \ldots & \ldots \\ \hline
     \end{tabularx}
     \caption{Auswertung der besten \ac{KI}-Konfiguration}
     \label{tab:evaluation-ki-konfiguration}
