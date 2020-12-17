@@ -128,14 +128,14 @@ class AIEvaluationController(OfflineController):
                     self._ais.append(RandomAI(players[5], randint(1, 3)))
 
     def __generate_ais_for_second_evaluation(self, player_count: int, players: List[Player]) -> None:
-        used_ais = []
+        used_ai_indices = []
         for i in range(player_count):
             ai_index = randint(0, len(best_ais_configurations) - 1)
             # Prevent that the same AI configuration is used in one game
-            while ai_index in used_ais:
+            while ai_index in used_ai_indices:
                 ai_index = randint(0, len(best_ais_configurations) - 1)
 
-            used_ais.append(used_ais)
+            used_ai_indices.append(ai_index)
             ai = best_ais_configurations[ai_index]
             self._ais.append(globals()[ai[0]](players[i], *ai[1]))
 
