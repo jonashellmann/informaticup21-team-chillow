@@ -54,7 +54,7 @@ Sobald dies der Fall ist, ist das Spielende eingetreten und die Oberfläche wird
 In der im vorherigen Absatz bereits erwähnten Methode \Code{\_\_play()} in dem \Code{OnlineController} wird eine
 Websocket-Verbindung zum Server aufgebaut.
 Anschließend wird in einer Endlosschleife die Logik zur Ausführung eines einzelnen Spielzugs ausgeführt.
-Wie ein solcher Spielzug abläuft, ist in \Anhang{fig:sequenzdiagramm-spielzug} in Form eines Sequenzdiagrammes
+Wie ein solcher Spielzug abläuft, ist in \Anhang{fig:sequenzdiagramm-spielzug} in Form eines Sequenzdiagramms
 nachvollziehbar und die Umsetzung im Python-Code kann zusammen mit dem Verbindungsaufbau dem \Anhang{lst:online-__play}
 entnommen werden.
 
@@ -68,7 +68,7 @@ Zur Serialisierung wird das Spiel in ein JSON-Format übersetzt.
 Ein Beispiel zur Veranschaulichung dieses Formats ist in \Anhang{lst:json-spiel} abgebildet. \\
 
 Dieser eingelesene String wird an ein Objekt der Klasse \Code{JSONDataLoader} übergeben, welches die Übersetzung des
-JSON-Formats in ein \Code{Game}-Objekt - das wie in \Kapitel{sec:modellierung} beschrieben modelliert ist - zur Aufgabe
+JSON-Formats in ein \Code{Game}-Objekt – das wie in \Kapitel{sec:modellierung} beschrieben modelliert ist – zur Aufgabe
 hat. \\
 
 Sobald das Spiel fertig aufgebaut wurde, wird ein \Code{GET}-Request an den Server geschickt, auf welchen

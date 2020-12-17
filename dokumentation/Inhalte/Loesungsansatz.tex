@@ -131,8 +131,8 @@ Hier wird offensichtlich die Aktion genommen, die tatsächlich die meisten Pfade
 führt, der die meisten freien Felder hat.
 Aufgrund der steigenden Berechnungsdauer mit steigender Anzahl Pfade, die kontrolliert werden müssen, musste eine
 Pfadanzahl kleiner als die der freien Felder gewählt werden.
-In der Evaluation wurde jedoch ersichtlich, dass die Anzahl Pfade deutlich unter der Anzahl freier Felder liegen kann,
-ohne falsche Entscheidungen zu treffen. \todo{Verweis auf den Beleg nach der Evaluation}
+In der Evaluation in \Kapitel{subsec:erste-evaluation} wurde jedoch ersichtlich, dass die Anzahl Pfade deutlich unter
+der Anzahl freier Felder liegen kann, ohne offensichtlich schlechte Entscheidungen zu treffen.
 
 Wir haben die Python-Bibliothek \Code{pathfinding} \Vgl{pathfinding-lib} verwendet, die bereits unterschiedliche
 Algorithmen zum Finden von Pfaden in einem Graphen bietet.
@@ -318,11 +318,12 @@ sein als der Gegenspieler, da dieser eine solche Umkreisung relativ einfach verh
 Dies bedeutet aber auch, dass Geschwindigkeiten erreicht werden müssen, die Löcher in der Spur in jedem sechsten Zug
 hinterlassen, wodurch das Umkreisen an Wirkung verlieren würde.
 Außerdem hat sich eine hohe Geschwindigkeit bei der Evaluation unserer implementierten Lösungsansätze bereits als
-riskant herausgestellt. \todo{Verweis auf den Beleg nach der Evaluation}
+riskant herausgestellt.
 Die erhöhte Geschwindigkeit sorgt dafür, dass häufig nur wenige oder keine Aktion zur Auswahl stehen, die im
 nächsten Spielzug nicht zum Verlieren führen.
+Diese Erkenntnis kann dem \Kapitel{subsec:erste-evaluation} entnommen werden.
 
-Daher steigt die Wahrscheinlichkeit, dass die eigene \ac{KI} durch ihr agressives Verhalten frühzeitig ausscheidet.
+Daher steigt die Wahrscheinlichkeit, dass die eigene \ac{KI} durch ihr aggressives Verhalten frühzeitig ausscheidet.
 Dieses Risiko gepaart mit dem Problem der Löcher in der Umkreisung hat dafür gesorgt, dass auch dieser Lösungsansatz
 nicht implementiert wurde. \\
 
