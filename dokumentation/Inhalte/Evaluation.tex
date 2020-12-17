@@ -77,7 +77,7 @@ In \Abbildung{fig:relationales-db-schema} ist das entworfene relationale Modell 
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=0.8\textwidth]{Bilder/relationales_db_schema.png}
+	\includegraphics[width=0.7\textwidth]{Bilder/relationales_db_schema.png}
 	\caption{Relationales Datenbankschema der Evaluations-Datenbank}
 	\label{fig:relationales-db-schema}
 \end{figure}
@@ -86,9 +86,15 @@ In \Abbildung{fig:relationales-db-schema} ist das entworfene relationale Modell 
 \label{sec:ergebnis-evaluation}
 
 Die Evaluation wurde in zwei Etappen durchgeführt.
-Für den ersten Teil der Evaluation wurden auf einem Server der Universität Oldenburg insgesamt 1000 Spiele generiert und
-insgesamt xx Spielzüge berechnet.
-\todo{Subsection erstellen}
+Für den ersten Teil der Evaluation wurden alle Taktiken in verschiedenen Konfigurationen für die Simulation betrachtet.
+Aufbauend aus diesen Ergebnissen wurde eine zweite Simulation gestartet, in der nur die besten \ac{KI}s berücksichtigt
+wurden.
+
+\subsection{Ergebnisse der ersten Evaluation}
+\label{subsec:erste-evaluation}
+
+Mit dem oben beschriebenen \Code{AIEvaluationController} wurden in einem Zeitraum von 16 Tagen insgesamt 1000 Spiele
+mit zufälligen \ac{KI}-Konstellationen simuliert und dabei insgesamt 638685 Spielzüge berechnet.
 Um aus den in der \ac{DB} gespeicherten Daten die besten \ac{KI}s herauszufiltern, wurde insbesondere jeweils deren
 Siegquote in den Spielen betrachtet, bei denen sie teilgenommen haben.
 Mit dem in \Anhang{lst:eval-sql-1} abgebildetem SQL-Statement wird eine solche Quote gruppiert nach der \ac{KI}-Klasse
@@ -113,8 +119,9 @@ Das Ergebnis kann der \Tabelle{tab:evaluation-ki-klasse} entnommen werden.
     \label{tab:evaluation-ki-klasse}
 \end{table}
 
-\todo{Ergebnis}
-Um allerdings ein genaueres Ergebnis zu erhalten, wurde die Abfrage aus \Anhang{lst:eval-sql-2} ausgeführt, welches die
+Etwas überraschend hat die \Code{NotKillingItselfAI} am besten abgeschnitten, obwohl andere Taktiken wie bereits
+erläutert hierauf aufbauen und mindestens gleich gute Entscheidungen treffen sollten.
+Um ein genaueres Ergebnis zu erhalten, wurde die Abfrage aus \Anhang{lst:eval-sql-2} ausgeführt, welches die
 nicht nur die Art der \ac{KI} sondern zusätzlich auch ihre jeweiligen Konfigurations-Parameter betrachtet.
 In \Tabelle{tab:evaluation-ki-konfiguration} werden die ersten Einträge reduziert auf die relevantesten Spalten
 abgebildet.
@@ -138,8 +145,27 @@ abgebildet.
     \label{tab:evaluation-ki-konfiguration}
 \end{table}
 
-\todo{Ergebnis beschreiben}
 Hierbei wird deutlich, dass die \Code{NotKillingItselfAI} deutlich schlechter abschneidet als nach der ersten Auswertung
 womöglich angenommen.
 Das liegt daran, dass die anderen Implementierungen abhängig von der Konfiguration deutlich besser, aber eben auch
 deutlich schlechter abschneiden können.
+Dies kann an den komplexeren Berechnungen liegen, die je nach Zustand des Spiels nicht innerhalb der Deadline
+abgeschlossen werden können und dann eine schlechte Bewegung durch eine fehlende Rückmeldung an den Server zur Folge
+haben. \\
+
+Weitere Erkenntnisse, die aus dem Ergebnis gezogen werden konnte, waren \ua, dass die Anzahl der Felder, die von der
+\Code{PathfindingAI} geprüft werden, auch sehr deutlich unter der Anzahl aller Felder liegen kann.
+Die beste Konfiguration prüft nur Pfade zu 50 Felder, während ein Spielfeld aus mindestens $30 * 30 = 900$ Feldern
+besteht.
+Außerdem ist zu sehen, dass besonders \ac{KIs} mit einer niedrigen Maximal-Geschwindigkeit von 1 oder 2 gute Ergebnisse
+erzielen.
+
+\subsection{Ergebnisse der zweite Evaluation}
+\label{subsec:zweite-evaluation}
+
+Anschließend wurden die besten 25 Konfigurationen, die wir als Ergebnis in der \Tabelle{tab:evaluation-ki-konfiguration}
+erhalten haben, hart in einem Array codiert.
+Die Spielerstellung wurde dahingehend zur ersten Evaluation angepasst, dass nicht mehr zufällige \ac{KI}s für die
+Spieler gewählt wurden, sondern die zufällige Auswahl auf die Einträge dieses Arrays beschränkt wurde.
+
+\todo{Kapitel ausformulieren}
