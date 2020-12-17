@@ -152,7 +152,12 @@ Stand:\par\noindent
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \pagebreak
+
 \onespacing
+\makeatletter
+\g@addto@macro{\UrlBreaks}{\UrlOrds}
+\makeatother
+
 \addcontentsline{toc}{chapter}{Literaturverzeichnis}
 \bibliographystyle{ieeetr}
 \bibliography{literatur}
