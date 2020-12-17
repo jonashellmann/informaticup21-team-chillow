@@ -12,8 +12,8 @@
 
 // ---
 
-[Cell]-players *>[Player]
-[Game]-players *>[Player]
-[Game]-cells *>[Cell]
-[Game]-you 1>[Player]
-[Player]-direction 1>[<<enumaration>> Direction]
+[Cell]-players *   >[Player]
+[Game]-players *       >[Player]
+[Game]-cells *   >[Cell]
+[Game]-you 1   >[Player]
+[Player]-direction 1   >[<<enumaration>> Direction]
