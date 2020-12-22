@@ -40,8 +40,8 @@ if __name__ == "__main__":
         server_time_url = os.getenv("TIME_URL")
         data_loader = JSONDataLoader()
         data_writer = JSONDataWriter()
-        ai_class = ai.PathfindingAI.__name__
-        ai_params = (2, 75)
+        ai_class = ai.PathfindingSearchTreeAI.__name__
+        ai_params = (1, 50, 2, 0.75, 20)
 
         con = OnlineController(monitoring, url, key, server_time_url, data_loader, data_writer, ai_class, ai_params)
 
