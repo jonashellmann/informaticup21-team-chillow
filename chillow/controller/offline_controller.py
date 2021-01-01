@@ -81,14 +81,14 @@ class OfflineController(Controller):
         self._game_round = 0
 
         self.__you = None
-        ai0 = ai.NotKillingItselfAI(player1, [ai.AIOptions.max_distance], 1, 0, 3)
+        ai0 = ai.RandomAI(player1)
         # Comment out next two lines if you want to play on your own.
         # self.__you = player1
         # ai0 = None
 
         ai1 = ai.PathfindingAI(player2, 2, 75)
-        ai2 = ai.SearchTreePathfindingAI(player3, 2, 75, 2)
-        ai3 = ai.SearchTreeAI(player4, 2)
+        ai2 = ai.NotKillingItselfAI(player3, [ai.AIOptions.max_distance], 1, 0, 3)
+        ai3 = ai.SearchTreeAI(player4, 2, 1, True, 10)
 
         self._ais = [ai0, ai1, ai2, ai3]
 
