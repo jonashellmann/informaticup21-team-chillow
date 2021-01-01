@@ -45,7 +45,7 @@ class OfflineController(Controller):
 
             # Read input from user if there is a human player
             player_action = None
-            if self.__you is not None:
+            if self.__you is not None and self.__you.active:
                 player_action = self._view.read_next_action()
                 if datetime.now(time_zone) > self._game.deadline:
                     player_action = Action.get_default()
