@@ -1,5 +1,18 @@
 # informatiCup 2021 - Team Chillow
 
+<div>
+    <a href="https://github.com/jonashellmann/informaticup21-team-chillow/actions?query=workflow%3A%22Python+Application%22">
+        <img src="https://img.shields.io/github/workflow/status/jonashellmann/informaticup21-team-chillow/Python%20Application?label=GitHub%20Action" alt="Github Action Badge"/>
+    </a>
+    <img src="https://img.shields.io/tokei/lines/github/jonashellmann/informaticup21-team-chillow" alt="LoC Badge"/>
+    <a href="https://github.com/jonashellmann/informaticup21-team-chillow/blob/main/LICENSE">
+        <img src="https://img.shields.io/github/license/jonashellmann/informaticup21-team-chillow" alt="License Badge"/>
+    </a>
+    <a href="https://github.com/jonashellmann/informaticup21-team-chillow/commits/">
+        <img src="https://img.shields.io/github/commit-activity/y/jonashellmann/informaticup21-team-chillow" alt="Commit Activity Badge"/>
+    </a>
+</div>
+
 Dieses Repository beinhaltet den Beitrag von Team Chillow mit den Teammitgliedern
 [@Florian3007](https://github.com/Florian3007) und [@jonashellmann](https://github.com/jonashellmann) von der
 [Universität Oldenburg](https://uol.de) zum [informatiCup 2021](https://informaticup.github.io/).
