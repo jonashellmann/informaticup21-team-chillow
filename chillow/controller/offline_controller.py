@@ -8,7 +8,7 @@ from chillow.model.cell import Cell
 from chillow.model.direction import Direction
 from chillow.model.game import Game
 from chillow.model.player import Player
-from chillow.service import ai
+from chillow.service import ai as ai_classes
 from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.service.game_service import GameService
 from chillow.view.view import View
@@ -44,11 +44,11 @@ class OfflineController(Controller):
             self.__reset_game_deadline(time_to_react)
 
             # Read input from user if there is a human player
-            action = None
-            if self.__you is not None:
-                action = self._view.read_next_action()
+            player_action = None
+            if self.__you is not None and self.__you.active:
+                player_action = self._view.read_next_action()
                 if datetime.now(time_zone) > self._game.deadline:
-                    action = Action.get_default()
+                    player_action = Action.get_default()
                 self.__reset_game_deadline(time_to_react)
 
             for ai in self._ais:
@@ -58,8 +58,9 @@ class OfflineController(Controller):
                     self.__reset_game_deadline(time_to_react)
 
             # Perform action of human player after AIs finished their calculations
-            if self.__you is not None:
-                game_service.do_action(self.__you, action)
+            # Otherwise the AIs would already know the players move
+            if self.__you is not None and player_action is not None:
+                game_service.do_action(self.__you, player_action)
 
             self._view.update(self._game)
 
@@ -81,14 +82,14 @@ class OfflineController(Controller):
         self._game_round = 0
 
         self.__you = None
-        ai0 = ai.NotKillingItselfAI(player1, [ai.AIOptions.max_distance], 1, 0, 3)
-        # Comment out next two lines if you want to play on your own.
-        # self.__you = player1
-        # ai0 = None
+        ai0 = ai_classes.RandomAI(player1)
+        # Make a comment out of the next two lines if you do not want to play on your own.
+        self.__you = player1
+        ai0 = None
 
-        ai1 = ai.PathfindingAI(player2, 2, 75)
-        ai2 = ai.SearchTreePathfindingAI(player3, 2, 75, 2)
-        ai3 = ai.SearchTreeAI(player4, 2)
+        ai1 = ai_classes.PathfindingAI(player2, 2, 75)
+        ai2 = ai_classes.NotKillingItselfAI(player3, [ai_classes.AIOptions.max_distance], 1, 0, 3)
+        ai3 = ai_classes.SearchTreeAI(player4, 2, 1, True, 10)
 
         self._ais = [ai0, ai1, ai2, ai3]
 
