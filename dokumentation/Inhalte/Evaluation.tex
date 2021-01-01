@@ -166,16 +166,16 @@ Anschließend wurden die besten 25 Konfigurationen, die wir als Ergebnis in der 
 erhalten haben, hart in einem Array codiert.
 Die Spielerstellung wurde im Vergleich zur ersten Evaluation dahingehend angepasst, dass nicht mehr zufällige \ac{KI}s
 für die Spieler gewählt wurden, sondern die zufällige Auswahl auf die Einträge dieses Arrays beschränkt wurde.
-Im zweiten Teil sollte somit sichergestellt werden, dass nur noch starke \ac{KI}s gegeneinander antreten und somit eine
+Im zweiten Teil sollte sichergestellt werden, dass nur noch starke \ac{KI}s gegeneinander antreten und dadurch eine
 bessere Vergleichbarkeit der Siegquoten möglich ist. \\
 
 Am Ende von 500 simulierten Spielen mit 508407 berechneten Spielzügen wurde erneut die SQL-Abfrage aus
-\Anhang{lst:eval-sql-2} verwendet, um erneut, insbesondere anhand des Verhältnisses von gewonnen zu gespielten Spielen,
+\Anhang{lst:eval-sql-2} verwendet, um erneut insbesondere anhand des Verhältnisses von gewonnen zu gespielten Spielen
 einen Gewinner der zweiten Evaluation zu ermitteln.
 Das Ergebnis der Evaluation wird in \Tabelle{tab:evaluation-ki-konfiguration-zwei} gezeigt.
-Es wird deutlich, dass die Kombination aus der \Code{PathfindingAI} und der \Code{SearchTreeAI} im Vergleich zu unseren
-anderen Lösungsansätzen die besten Ergebnisse in den Spielen erzielt, sodass diese schlussendlich auch für die Abgabe
-des Projektes ausgewählt wurde.
+Es wird deutlich, dass die Kombination aus der \Code{PathfindingAI} und der \Code{SearchTreeAI}, die in
+\Kapitel{subsec:pathfinding-searchtree-ai} erläutert wurde, im Vergleich zu unseren anderen Lösungsansätzen die besten
+Ergebnisse in den Spielen erzielt, sodass diese schlussendlich auch für die Abgabe des Projektes ausgewählt wurde.
 
 \begin{table}[htb]
     \centering
