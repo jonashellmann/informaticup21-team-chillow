@@ -82,9 +82,8 @@ class OfflineController(Controller):
         self._game_round = 0
 
         self.__you = None
-
         ai0 = ai_classes.RandomAI(player1)
-        # Make comment out of next two lines and add ai0 to self._ais array if you do not want to play on your own.
+        # Make a comment out of the next two lines if you do not want to play on your own.
         self.__you = player1
         ai0 = None
 
@@ -92,7 +91,7 @@ class OfflineController(Controller):
         ai2 = ai_classes.NotKillingItselfAI(player3, [ai_classes.AIOptions.max_distance], 1, 0, 3)
         ai3 = ai_classes.SearchTreeAI(player4, 2, 1, True, 10)
 
-        self._ais = [ai1, ai2, ai3]
+        self._ais = [ai0, ai1, ai2, ai3]
 
     def _log_execution_time(self, ai: ArtificialIntelligence, execution_time: float):
         pass
