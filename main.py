@@ -41,7 +41,7 @@ if __name__ == "__main__":
         data_loader = JSONDataLoader()
         data_writer = JSONDataWriter()
         ai_class = ai.PathfindingSearchTreeAI.__name__
-        ai_params = (1, 50, 2, 0.75, 20)
+        ai_params = (1, 50, 3, 0.75, 10)
 
         con = OnlineController(monitoring, url, key, server_time_url, data_loader, data_writer, ai_class, ai_params)
 
