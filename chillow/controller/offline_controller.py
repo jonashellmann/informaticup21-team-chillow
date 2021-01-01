@@ -8,7 +8,7 @@ from chillow.model.cell import Cell
 from chillow.model.direction import Direction
 from chillow.model.game import Game
 from chillow.model.player import Player
-from chillow.service import ai
+from chillow.service import ai as ai_classes
 from chillow.service.ai.artificial_intelligence import ArtificialIntelligence
 from chillow.service.game_service import GameService
 from chillow.view.view import View
@@ -81,16 +81,17 @@ class OfflineController(Controller):
         self._game_round = 0
 
         self.__you = None
-        ai0 = ai.RandomAI(player1)
-        # Comment out next two lines if you want to play on your own.
-        # self.__you = player1
-        # ai0 = None
 
-        ai1 = ai.PathfindingAI(player2, 2, 75)
-        ai2 = ai.NotKillingItselfAI(player3, [ai.AIOptions.max_distance], 1, 0, 3)
-        ai3 = ai.SearchTreeAI(player4, 2, 1, True, 10)
+        ai0 = ai_classes.RandomAI(player1)
+        # Make comment out of next two lines and add ai0 to self._ais array if you do not want to play on your own.
+        self.__you = player1
+        ai0 = None
 
-        self._ais = [ai0, ai1, ai2, ai3]
+        ai1 = ai_classes.PathfindingAI(player2, 2, 75)
+        ai2 = ai_classes.NotKillingItselfAI(player3, [ai_classes.AIOptions.max_distance], 1, 0, 3)
+        ai3 = ai_classes.SearchTreeAI(player4, 2, 1, True, 10)
+
+        self._ais = [ai1, ai2, ai3]
 
     def _log_execution_time(self, ai: ArtificialIntelligence, execution_time: float):
         pass
