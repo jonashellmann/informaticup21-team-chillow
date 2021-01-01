@@ -166,5 +166,32 @@ Anschließend wurden die besten 25 Konfigurationen, die wir als Ergebnis in der 
 erhalten haben, hart in einem Array codiert.
 Die Spielerstellung wurde im Vergleich zur ersten Evaluation dahingehend angepasst, dass nicht mehr zufällige \ac{KI}s
 für die Spieler gewählt wurden, sondern die zufällige Auswahl auf die Einträge dieses Arrays beschränkt wurde.
+Im zweiten Teil sollte sichergestellt werden, dass nur noch starke \ac{KI}s gegeneinander antreten und dadurch eine
+bessere Vergleichbarkeit der Siegquoten möglich ist. \\
 
-\todo{Kapitel ausformulieren}
+Am Ende von 500 simulierten Spielen mit 508407 berechneten Spielzügen wurde erneut die SQL-Abfrage aus
+\Anhang{lst:eval-sql-2} verwendet, um insbesondere anhand des Verhältnisses von gewonnen zu gespielten Spielen
+den Gewinner der zweiten Evaluation zu ermitteln.
+Das Ergebnis der Evaluation wird in \Tabelle{tab:evaluation-ki-konfiguration-zwei} gezeigt.
+Es wird deutlich, dass die Kombination aus der \Code{PathfindingAI} und der \Code{SearchTreeAI}, die in
+\Kapitel{subsec:pathfinding-searchtree-ai} erläutert wurde, im Vergleich zu unseren anderen Lösungsansätzen die besten
+Ergebnisse in den Spielen erzielt, sodass diese schlussendlich auch für die Abgabe des Projektes ausgewählt wurde.
+
+\begin{table}[htb]
+    \centering
+    \begin{tabularx}{\textwidth}{|X|X|c|c|c|}
+        \hline
+		\textbf{Klasse} & \textbf{Info} & \textbf{Wins} & \textbf{Plays} & \textbf{Gewinn-} \\
+                        &               &               &                & \textbf{rate (\%)} \\ \hline
+        Path\-finding\-Search\-Tree\-AI & max\_""speed""=""1, paths\_""tolerance""=""0.75, count\_""paths\_""to\_""check""=""50, depth""=""3, distance\_""to\_""check""=""10 & 33 & 99 & 33.33 \\ \hline
+        Path\-finding\-Search\-Tree\-AI & max\_""speed""=""1, paths\_""tolerance""=""0.75, count\_""paths\_""to\_""check""=""50, depth""=""2, distance\_""to\_""check""=""20 & 31 & 96 & 32.29 \\ \hline
+        Path\-finding\-Search\-Tree\-AI & max\_""speed""=""1, paths\_""tolerance""=""0.75, count\_""paths\_""to\_""check""=""50, depth""=""2, distance\_""to\_""check""=""30 & 25 & 88 & 28.41 \\ \hline
+        Path\-finding\-Search\-Tree\-AI & max\_""speed""=""1, paths\_""tolerance""=""0.75, count\_""paths\_""to\_""check""=""75, depth""=""2, distance\_""to\_""check""=""10 & 27 & 99 & 27.27 \\ \hline
+        Search\-Tree\-Path\-finding\-AI & max\_""speed""=""1, count\_""paths\_""to\_""check""=""75, depth""=""2, distance\_""to\_""check""=""10 & 25 & 93 & 26.88 \\ \hline
+        Path\-finding\-Search\-Tree\-AI & max\_""speed""=""1, paths\_""tolerance""=""0.75, count\_""paths\_""to\_""check""=""75, depth""=""3, distance\_""to\_""check""=""10 & 23 & 89 & 25.84 \\ \hline
+        Search\-Tree\-Path\-finding\-AI & max\_""speed""=""1, count\_""paths\_""to\_""check""=""50, depth""=""2, distance\_""to\_""check""=""10 & 23 & 90 & 25.56 \\ \hline
+        \ldots & \ldots & \ldots & \ldots & \ldots \\ \hline
+    \end{tabularx}
+    \caption{Ergebnis der zweiten Evaluation}
+    \label{tab:evaluation-ki-konfiguration-zwei}
+\end{table}
