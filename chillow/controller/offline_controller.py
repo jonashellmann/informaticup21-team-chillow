@@ -44,11 +44,11 @@ class OfflineController(Controller):
             self.__reset_game_deadline(time_to_react)
 
             # Read input from user if there is a human player
-            action = None
+            player_action = None
             if self.__you is not None:
-                action = self._view.read_next_action()
+                player_action = self._view.read_next_action()
                 if datetime.now(time_zone) > self._game.deadline:
-                    action = Action.get_default()
+                    player_action = Action.get_default()
                 self.__reset_game_deadline(time_to_react)
 
             for ai in self._ais:
@@ -58,8 +58,9 @@ class OfflineController(Controller):
                     self.__reset_game_deadline(time_to_react)
 
             # Perform action of human player after AIs finished their calculations
-            if self.__you is not None:
-                game_service.do_action(self.__you, action)
+            # Otherwise the AIs would already know the players move
+            if self.__you is not None and player_action is not None:
+                game_service.do_action(self.__you, player_action)
 
             self._view.update(self._game)
 
